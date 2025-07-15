@@ -5,13 +5,16 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* dart = "/usr/bin/dart", *code = "/tmp/code.dart";
+const char* egel = "/usr/local/bin/egel", *code = "code.eg";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(dart, argv);
+        execv(egel, argv);
         ERR_AND_EXIT("execv");
     }
+
+    if (chdir("/tmp"))
+        ERR_AND_EXIT("chdir");
 
     FILE* fp;
 
@@ -28,13 +31,13 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int dargc = argc + 1;
-    char** dargv = malloc(dargc * sizeof(char*));
-    dargv[0] = (char*) dart;
-    dargv[1] = (char*) code;
-    memcpy(&dargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    dargv[dargc - 1] = NULL;
+    int eargc = argc + 1;
+    char** eargv = malloc(eargc * sizeof(char*));
+    eargv[0] = (char*) egel;
+    eargv[1] = (char*) code;
+    memcpy(&eargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    eargv[eargc - 1] = NULL;
 
-    execv(dart, dargv);
+    execv(egel, eargv);
     ERR_AND_EXIT("execv");
 }

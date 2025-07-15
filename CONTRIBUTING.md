@@ -20,8 +20,8 @@ In addition, each section may define the following fields:
 - `experiment` - ID of the issue that suggested this hole. All experimental holes need to link to an issue so that the community can vote and suggest improvements.
 - `variants` - List of names of the holes that are variants of this hole, including itself.
 - `case-fold` - A flag indicating that the output should be checked case insensitively.
-- `item-delimiter` - If set, indicates that the output should be understood as a collection of items that can appear in any order and that the items should be delimited by the provided token.
-- `multiset-delimiter` - If set, treats output as fixed order collection of multiple multisets, each separated by `item-delimiter`. Otherwise, output is treated as a single multiset.
+- `multiset-item-delimiter` - If set, indicates that the output should be understood as a collection of items that can appear in any order and that the items should be delimited by the provided token.
+- `output-delimiter` - If set, treats output as fixed order collection of multiple outputs and treats each one individually.
 
 Example:
 
@@ -49,24 +49,27 @@ If the hole has no inputs, the expected output needs to be placed in `/config/ho
 
 ### Holes with computed solutions
 
-For computed solutions, a case switch needs to be added to `/hole/play.go`. The value needs to match the URLized version of the hole name. When a case matches, a function defined in its own file in `/holes/` is called.
+For computed solutions, a function is defined and registered in its own file in `/holes/`.
 This function must return data for at least one test run. Data for each run takes form of a list of inputs and a single string containing the expected output.
-
-`/hole/play.go`
-
-```go
-switch hole.ID {
-case "hole-name":
-    runs = holeName()
-```
 
 `/hole/hole-name.go`
 
 ```go
-func holeName() []Run {
+var _ = answerFunc("hole-id", func() []Answer {
     // Implement hole and create tests
 
     return outputTests(shuffle(tests))
+}
+```
+
+### Custom judges
+In addition to simply comparing the user output to the expected output (either from the static file or the generator) by equality, holes can employ custom judges. Given a run (list of inputs and a user output) a judge determines whether the output is correct or not. If it is, the judge must return the user output. Otherwise, it should return an output that is correct and is as close to the user output as possible. To write a custom judge, you may use the `perOutputJudge` or `oneOfPerOutputJudge` helper functions. A judge is registered in a similar way to the answer function:
+
+```go
+var _ = judge("hole-id", func(run Run) string {
+    // Return a valid answer similar to `run.Stdout`
+
+    return run.Answer.Answer;
 }
 ```
 

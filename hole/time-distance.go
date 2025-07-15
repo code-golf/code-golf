@@ -42,7 +42,7 @@ func formatDistance(secs int) string {
 	return "in " + result
 }
 
-func timeDistance() []Run {
+var _ = answerFunc("time-distance", func() []Answer {
 	inputs := []int{0}
 
 	timeUnitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
@@ -75,4 +75,4 @@ func timeDistance() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

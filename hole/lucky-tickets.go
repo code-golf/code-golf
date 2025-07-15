@@ -58,7 +58,7 @@ func sumDigits(number, base int64) (result int64) {
 	return result
 }
 
-func luckyTickets() []Run {
+var _ = answerFunc("lucky-tickets", func() []Answer {
 	var tickets [40]ticket
 
 	// Add all fixed test cases.
@@ -99,4 +99,4 @@ func luckyTickets() []Run {
 
 	const argc = 20 // Preserve original argc
 	return outputTests(tests[:argc], tests[len(tests)-argc:])
-}
+})
