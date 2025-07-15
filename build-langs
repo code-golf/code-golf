@@ -79,6 +79,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
 
             when 'ALGOL 68'    { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
+               | 'Bash'
                | 'Forth'
                | 'Fortran'
                | 'sed'         { $ver = "GNU $name $digits" }
