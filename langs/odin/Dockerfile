@@ -15,7 +15,7 @@ RUN ln -s /usr/local/lib/base \
 
 WORKDIR /usr/local/lib
 
-RUN make -j`nproc` release-native \
+RUN make -j`nproc` release \
  && strip odin
 
 COPY odin.c /
