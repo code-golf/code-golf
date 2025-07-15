@@ -1,0 +1,17 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+<script id=holes type=application/json>{{ .Data.Holes }}</script>
+<script id=langs type=application/json>{{ .Data.Langs }}</script>
+
+<main>
+    <div id=search>
+        <input id=searchInput autofocus/>
+        <span><input id=isRegexInput type=checkbox checked/><label for="isRegexInput">Regex</label></span>
+        <select id=languageInput><option>All languages</option></select>
+    </div>
+    <div id="resultsOverview"></div>
+    <div id=results></div>
+</main>
+
+{{ template "footer" }}

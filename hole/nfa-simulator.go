@@ -166,7 +166,7 @@ func generateNFA() string {
 			inputNFA.WriteByte(' ')
 		}
 
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			inputNFA.WriteByte('F')
 		} else {
 			inputNFA.WriteByte(' ')

@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* mojo = "/usr/bin/magic", *code = "code.mojo";
+const char* mojo = "/usr/bin/pixi", *code = "code.mojo";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {

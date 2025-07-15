@@ -41,16 +41,16 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 			Country            *config.Country
 			Name               string
 		}
-		Langs          []*config.Lang
+		Langs []struct {
+			Lang                          *config.Lang
+			RankBytes, RankChars, RankMin *int
+		}
 		OAuthProviders map[string]*oauth.Config
-		Trophies       map[string]map[string]int
 		Wall           []row
 	}{
 		CategoryOverview: map[string]map[string]int{"bytes": {}, "chars": {}},
 		Connections:      oauth.GetConnections(db, golfer.ID, true),
-		Langs:            config.LangList,
 		OAuthProviders:   oauth.Providers,
-		Trophies:         map[string]map[string]int{},
 		Wall:             make([]row, 0, limit),
 	}
 
@@ -164,7 +164,8 @@ rows:
 		data.CategoryOverview[cat.Scoring][cat.Category] = cat.Points
 	}
 
-	rows, err = db.Query(
+	if err := db.Select(
+		&data.Langs,
 		`WITH ranks AS (
 		    SELECT user_id, scoring, lang,
 		           RANK() OVER (PARTITION BY scoring, lang
@@ -172,30 +173,17 @@ rows:
 		      FROM rankings
 		     WHERE NOT experimental
 		  GROUP BY user_id, scoring, lang
-		) SELECT lang, scoring, rank FROM ranks WHERE user_id = $1`,
+		) SELECT lang,
+		         any_value(rank) FILTER (WHERE scoring = 'bytes') rank_bytes,
+		         any_value(rank) FILTER (WHERE scoring = 'chars') rank_chars,
+		         min(rank)                                        rank_min
+		    FROM ranks
+		    JOIN langs ON lang = id
+		   WHERE user_id = $1
+		GROUP BY lang
+		ORDER BY rank_min, any_value(name)`,
 		golfer.ID,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var lang, scoring string
-		var rank int
-
-		if err := rows.Scan(&lang, &scoring, &rank); err != nil {
-			panic(err)
-		}
-
-		if _, ok := data.Trophies[lang]; !ok {
-			data.Trophies[lang] = map[string]int{}
-		}
-
-		data.Trophies[lang][scoring] = rank
-	}
-
-	if err := rows.Err(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 
