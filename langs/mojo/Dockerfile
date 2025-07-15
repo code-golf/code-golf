@@ -9,9 +9,9 @@ ENV VER=25.4.0
 RUN wget -qO- https://pixi.sh/install.sh \
   | PIXI_ARCH='x86_64' PIXI_HOME='/usr' sh
 
-RUN pixi init . -c https://conda.modular.com/max -c conda-forge
+RUN pixi init -c https://conda.modular.com/max -c conda-forge
 
-RUN pixi add modular=$VER
+RUN pixi add modular==$VER
 
 COPY mojo.c /
 
