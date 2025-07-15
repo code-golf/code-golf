@@ -198,7 +198,7 @@ BEGIN {
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
 size    = '1.27 MiB'
-version = 'GNU Bash 5.3.0'
+version = '5.3.0'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '151 MiB'
-version = 'Clang 20.1.7'
+version = 'Clang 20.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
