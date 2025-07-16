@@ -20,7 +20,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-var timeout = 60 * time.Second
+var timeout = 5 * time.Second
 
 // Increase the timeout under e2e as the hardware is less powerful than live.
 func init() {
@@ -267,15 +267,6 @@ func runCode(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
-	case "scala":
-		args := run.Args
-		if hole.ID == "emojify" || hole.ID == "hexdump" || hole.ID == "pangram-grep" || hole.ID == "rot13" || hole.ID == "star-wars-opening-crawl" {
-			args = nil
-			for _, arg := range run.Args {
-				args = append(args, strings.ReplaceAll(arg, "'", "'\\''"))
-			}
-		}
-		cmd.Args = append(cmd.Args, args...)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"
