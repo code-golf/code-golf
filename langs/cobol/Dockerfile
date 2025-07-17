@@ -1,32 +1,38 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl gmp-dev
 
-RUN curl https://ftp.gnu.org/gnu/gnucobol/gnucobol-3.2.tar.xz | tar xJ
+ENV VER=3.2
 
-COPY patch /
-RUN cd gnucobol-3.2                        \
- && patch -p0 < /patch                     \
- && ./configure --prefix=/usr --without-db \
- && make -j`nproc` install                 \
- && strip /usr/bin/cobc /usr/lib/libcob.so.4.2.0
+RUN curl -#L https://ftp.gnu.org/gnu/gnucobol/gnucobol-$VER.tar.xz \
+  | tar xJ --strip-components 1
 
-COPY cobol.c /
+COPY cobol.c codegen.patch /
 
-RUN gcc -s -o cobol cobol.c
+RUN patch -p0 < codegen.patch
 
-# HACK Put in a dir so COPY will preserve the symlinks.
-RUN mkdir /usr/lib/libcob \
- && mv /usr/lib/libcob.so* /usr/lib/libcob
+RUN ./configure            \
+    --prefix=/usr          \
+    --without-db           \
+ && make -j`nproc` install \
+ && strip /usr/bin/cobc    \
+          /usr/lib/libcob.so
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/cobol -s cobol.c
+
+# Docker can only copy symlinks by copying the whole folder.
+# See https://github.com/moby/moby/issues/40449
+WORKDIR /usr/lib
+RUN mkdir /usr-lib && cp -P libcob.so* libgmp.so* /usr-lib
 
 FROM codegolf/lang-c
 
-COPY --from=0 /cobol /usr/bin/cobc  /usr/bin/
-COPY --from=0 /usr/lib/libcob       /usr/lib
-COPY --from=0 /usr/lib/libgmp.so.10 /usr/lib/
+COPY --from=0 /usr/bin/cobc         \
+              /usr/bin/cobol        /usr/bin/
 COPY --from=0 /usr/include/gmp.h    \
               /usr/include/libcob.h /usr/include/
 COPY --from=0 /usr/include/libcob   /usr/include/libcob
+COPY --from=0 /usr-lib              /usr/lib
 COPY --from=0 /usr/share/gnucobol   /usr/share/gnucobol
 
 ENTRYPOINT ["cobol"]

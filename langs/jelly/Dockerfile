@@ -1,28 +1,25 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
+RUN apk add --no-cache curl gcc libffi-dev make musl-dev openssl-dev zlib-dev
 
-ENV PYVER=3.13.2 VER=70c9fd9
+ENV PYVER=3.13.5 VER=70c9fd9
 
-RUN curl -# https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
+RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
+  | tar xJ --strip-components 1
 
-WORKDIR /Python-$PYVER
-
-RUN ./configure                \
+RUN CC='cc' ./configure        \
     --disable-test-modules     \
     --prefix=/usr              \
-    --with-lto                 \
+    --with-lto=thin            \
     --without-static-libpython \
  && make -j`nproc` install     \
  && strip /usr/bin/python3.13  \
           /usr/lib/python3.13/lib-dynload/*.so
 
-WORKDIR /jelly
-
 RUN curl -#L https://github.com/DennisMitchell/jellylanguage/tarball/$VER \
-  | tar xz --strip-components 1
+  | tar xz --directory /tmp --strip-components 1
 
-RUN pip3 install --upgrade .
+RUN pip3 install --upgrade /tmp
 
 WORKDIR /usr/lib/python3.13
 
@@ -40,9 +37,9 @@ RUN find . -name '*.opt-[12].pyc' -delete \
           turtledemo                      \
           unittest
 
-COPY jellywrapper.c /
+COPY jelly.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/jellywrapper -s -static /jellywrapper.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/jellywrapper -s -static /jelly.c
 
 FROM codegolf/lang-base
 

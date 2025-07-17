@@ -1,16 +1,13 @@
-FROM alpine:3.20 AS builder
+FROM nimlang/nim:2.2.2-alpine AS builder
 
-RUN apk add --no-cache curl g++ nim pcre
+RUN apk add --no-cache pcre
 
-ENV VER=1c12b00
+ENV VER=5f3443c
 
 RUN curl -#L https://github.com/arturo-lang/arturo/tarball/$VER \
   | tar xz --strip-components 1
 
-RUN ./build.nims \
-    --install    \
-    --mode mini  \
-    --release
+RUN ./build.nims --install --mode mini --release
 
 FROM codegolf/lang-base
 

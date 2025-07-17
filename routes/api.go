@@ -1,13 +1,18 @@
 package routes
 
 import (
+	"cmp"
+	"context"
 	"database/sql"
 	_ "embed"
 	"encoding/json"
 	"errors"
 	"io"
+	"maps"
 	"net/http"
 	"reflect"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -220,6 +225,91 @@ func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
 	encodeJSON(w, rows)
 }
 
+// GET /api/solutions-search
+func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
+	hole := config.AllHoleByID[r.FormValue("hole")]
+	lang := config.AllLangByID[r.FormValue("lang")]
+	pattern := r.FormValue("pattern")
+	if pattern == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	type Match struct {
+		Before  string `json:"before"`
+		Match   string `json:"match"`
+		After   string `json:"after"`
+		Count   int    `json:"count"`
+		Hole    string `json:"hole"`
+		Lang    string `json:"lang"`
+		Scoring string `json:"scoring"`
+	}
+
+	matches := []Match{}
+
+	db := session.Database(r)
+	golfer := session.Golfer(r)
+
+	// Fetch data, if there is no case-sensitive match, match case-insensitively
+	for _, flags := range []string{"", "i"} {
+		ctx, cancel := context.WithTimeout(r.Context(), 100*time.Millisecond)
+		defer cancel()
+
+		if err := db.SelectContext(
+			ctx,
+			&matches,
+			`WITH matches AS (
+			  SELECT code, hole, lang, scoring,
+			         regexp_count(code, $2, 1, $3)       count,
+			         regexp_instr(code, $2, 1, 1, 0, $3) start,
+			         regexp_instr(code, $2, 1, 1, 1, $3) end
+			    FROM solutions
+			   WHERE user_id = $1
+			     AND regexp_like(code, $2, $3)
+			     AND (hole = $4 OR $4 IS NULL)
+			     AND (lang = $5 OR $5 IS NULL)
+			   LIMIT 1000
+			) SELECT hole, lang, scoring, count,
+			         substr(code, GREATEST(start - 30, 1), LEAST(30, start - 1)) before,
+			         substr(code, start, "end" - start)                          match,
+			         substr(code, "end", 30)                                     after
+			    FROM matches`,
+			golfer.ID, pattern, flags, hole, lang,
+		); err != nil {
+			if ctx.Err() == context.DeadlineExceeded {
+				w.WriteHeader(http.StatusRequestTimeout)
+				return
+			}
+			panic(err)
+		}
+
+		if len(matches) > 0 {
+			break
+		}
+	}
+
+	// process the results - remove duplicate results for identical bytes/chars solutions
+	matchMap := make(map[string]Match)
+	for _, match := range matches {
+		key := match.Before + match.Match + match.After + match.Hole + match.Lang
+		existing, exists := matchMap[key]
+		if exists {
+			existing.Scoring = ""
+			matchMap[key] = existing
+		} else {
+			matchMap[key] = match
+		}
+	}
+
+	encodeJSON(w, slices.SortedFunc(maps.Values(matchMap), func(a, b Match) int {
+		return cmp.Or(
+			strings.Compare(a.Hole, b.Hole),
+			strings.Compare(a.Lang, b.Lang),
+			strings.Compare(a.Scoring, b.Scoring),
+		)
+	}))
+}
+
 // GET /api/suggestions/golfers
 func apiSuggestionsGolfersGET(w http.ResponseWriter, r *http.Request) {
 	var json []byte
@@ -268,7 +358,11 @@ func apiWikiPageGET(w http.ResponseWriter, r *http.Request) {
 
 func encodeJSON(w http.ResponseWriter, v any) {
 	if v == nil || reflect.ValueOf(v).IsNil() {
-		w.WriteHeader(http.StatusNotFound)
+		if t := reflect.TypeOf(v); t != nil && t.Kind() == reflect.Slice {
+			w.Write([]byte("[]"))
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
 	} else if err := json.NewEncoder(w).Encode(v); err != nil {
 		panic(err)
 	}

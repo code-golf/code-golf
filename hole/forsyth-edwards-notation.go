@@ -7,7 +7,7 @@ var pieceMap = map[rune]rune{
 	'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔', 'P': '♙',
 }
 
-func forsythEdwardsNotation() []Run {
+var _ = answerFunc("forsyth-edwards-notation", func() []Answer {
 	args := shuffle([]string{
 		"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
 		"rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1",
@@ -41,4 +41,4 @@ func forsythEdwardsNotation() []Run {
 	}
 
 	return outputTestsWithSep("\n\n", tests)
-}
+})

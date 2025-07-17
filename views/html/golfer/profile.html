@@ -80,31 +80,18 @@
         <canvas></canvas>
     </section>
 
-    {{ with len .Data.Trophies }}
+    {{ with .Data.Langs }}
         <section class=icons>
-            <h2>{{ . }} / {{ len $.Data.Langs }} Languages</h2>
-    {{ range $.Data.Langs }}
-        {{ $trophy := index $.Data.Trophies .ID }}
-        {{ if $trophy }}
-            {{ $bytes := index $trophy "bytes" }}
-            {{ $chars := index $trophy "chars" }}
-
-            {{/* Lowest non-zero rank */}}
-            {{ $rank := $bytes }}
-            {{ if and $chars (or (not $bytes) (lt $chars $bytes)) }}
-                {{ $rank = $chars }}
-            {{ end }}
-
-            <a class="rank-{{ $rank }}"
-                href="/rankings/holes/all/{{ .ID }}/bytes"
-               title="{{ .Name }}: {{/* */}}
-                {{- with $bytes }}{{ . }}{{ ord . }} in Bytes{{ end }}
-                {{- if and $bytes $chars }}, {{ end }}
-                {{- with $chars }}{{ . }}{{ ord . }} in Chars{{ end }}.">
-                {{ svg .ID }}
+            <h2>{{ len . }} / {{ $.GolferInfo.LangsTotal }} Languages</h2>
+        {{ range . }}
+            <a class="rank-{{ .RankMin }}"
+                href="/rankings/holes/all/{{ .Lang.ID }}/bytes"
+               title="{{ .Lang.Name }}: {{/* */}}
+                {{- .RankBytes }}{{ ord .RankBytes }} in Bytes
+                {{- with .RankChars }}, {{ . }}{{ ord . }} in Chars{{ end }}.">
+                {{ svg .Lang.ID }}
             </a>
         {{ end }}
-    {{ end }}
         </section>
     {{ end }}
 

@@ -1,6 +1,6 @@
-FROM alpine:3.21
+FROM alpine:3.22
 
-ENV VER=0.35.0
+ENV VER=0.36.0
 
 RUN apk add --no-cache curl firefox ttf-dejavu \
  && curl -L https://github.com/mozilla/geckodriver/releases/download/v$VER/geckodriver-v$VER-linux64.tar.gz \

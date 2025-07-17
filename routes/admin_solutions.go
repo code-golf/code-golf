@@ -71,14 +71,22 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 			for s := range solutions {
 				// Run each solution up to three times.
 				for range 3 {
-					// Get the first failing (or last overall) run.
-					var run hole.Run
-					for _, r := range hole.Play(
+					runs, err := hole.Play(
 						r.Context(),
 						config.AllHoleByID[s.HoleID],
 						config.AllLangByID[s.LangID],
 						s.Code,
-					) {
+					)
+					if err != nil {
+						s.Failing = true
+						s.Stderr = err.Error()
+						s.Took = 0
+						continue
+					}
+
+					// Get the first failing (or last overall) run.
+					var run hole.Run
+					for _, r := range runs {
 						run = r
 						if !r.Pass {
 							break
@@ -95,16 +103,17 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				}
 
 				// If we passed, or we're okay saving failures, or we used to
-				// fail then save to at least update the tested time.
+				// fail then save to at least update lang_digest & tested.
 				if s.Pass || !noNewFailures || s.Failing {
 					db.MustExec(
 						`UPDATE solutions
-						    SET failing = $1, tested = DEFAULT
-						  WHERE code    = $2
-						    AND hole    = $3
-						    AND lang    = $4
-						    AND user_id = $5`,
+						    SET failing = $1, lang_digest = $2, tested = DEFAULT
+						  WHERE code    = $3
+						    AND hole    = $4
+						    AND lang    = $5
+						    AND user_id = $6`,
 						!s.Pass,
+						config.AllLangByID[s.LangID].DigestTrunc,
 						s.Code,
 						s.HoleID,
 						s.LangID,
@@ -160,11 +169,13 @@ func getSolutions(r *http.Request) chan solution {
 			                  hole hole_id, lang lang_id, tested
 			    FROM solutions
 			    JOIN users   ON id = user_id
+			LEFT JOIN langs  ON lang_digest = digest_trunc
 			   WHERE failing IN (true, $1)
 			     AND (login = $2 OR $2 = '')
 			     AND (hole  = $3 OR $3 IS NULL)
 			     AND (lang  = $4 OR $4 IS NULL)
 			     AND DATE(TIMEZONE($5, TIMEZONE('UTC', tested))) BETWEEN $6 AND $7
+			     AND (NOT $8 OR digest_trunc IS NULL)
 			ORDER BY tested
 			) SELECT *, COUNT(*) OVER () total FROM distinct_solutions`,
 			r.FormValue("failing") == "on",
@@ -174,6 +185,7 @@ func getSolutions(r *http.Request) chan solution {
 			session.Golfer(r).TimeZone,
 			r.FormValue("tested-from"),
 			r.FormValue("tested-to"),
+			r.FormValue("old-lang-digests") == "on",
 		)
 		if err != nil {
 			panic(err)
