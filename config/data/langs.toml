@@ -712,7 +712,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '685 KiB'
+size       = '681 KiB'
 version    = '1.5.3'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -1193,7 +1193,7 @@ for (arg in args)
 
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '367 KiB'
+size    = '362 KiB'
 version = '5.4.8'
 website = 'https://www.lua.org'
 example = '''
