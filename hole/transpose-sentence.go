@@ -2,7 +2,7 @@ package hole
 
 import "strings"
 
-func transposeSentence() []Run {
+var _ = answerFunc("transpose-sentence", func() []Answer {
 	tests := make([]test, randInt(100, 130))
 
 	for i := range tests {
@@ -26,7 +26,7 @@ func transposeSentence() []Run {
 	tests = append(tests, test{sentence, transpose(sentence)})
 
 	return outputTests(shuffle(tests))
-}
+})
 
 func transpose(s string) string {
 	srcWords := strings.Fields(s)

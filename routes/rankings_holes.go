@@ -18,30 +18,23 @@ import (
 // GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Distribution []struct {
-			Strokes   int
-			Frequency int
-		}
+		Distribution                          []struct{ Frequency, Strokes int }
 		Strokes                               int
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
-		Holes                                 []*config.Hole
-		Langs                                 []*config.Lang
 		Pager                                 *pager.Pager
 		Recent                                bool
 		Rows                                  []struct {
-			Country                             config.NullCountry
-			Holes, Rank, Points, Strokes, Total int
-			Lang                                *config.Lang
-			Name                                string
-			OtherStrokes                        *int
-			Submitted                           time.Time
+			Country                                  *config.Country
+			Holes, Points, Rank, Row, Strokes, Total int
+			Lang                                     *config.Lang
+			Name                                     string
+			OtherStrokes                             *int
+			Submitted                                time.Time
 		}
 	}{
 		HoleID:  param(r, "hole"),
-		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
-		Langs:   config.LangList,
 		Pager:   pager.New(r),
 		Recent:  strings.HasPrefix(r.URL.Path, "/rankings/recent-holes"),
 		Scoring: param(r, "scoring"),
@@ -140,12 +133,13 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          other_strokes    other_strokes,
 			          points           points,
 			          rank_overall     rank,
+			          row_overall      row,
 			          strokes          strokes,
 			          submitted        submitted,
 			          COUNT(*) OVER()  total
 			     FROM rankings
 			     JOIN users ON user_id = id
-			    WHERE hole = $1 AND scoring = $2 AND NOT experimental_lang
+			    WHERE hole = $1 AND scoring = $2
 			 ORDER BY rank_overall, submitted
 			    LIMIT $3 OFFSET $4`
 
@@ -157,6 +151,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          other_strokes    other_strokes,
 			          points_for_lang  points,
 			          rank             rank,
+			          row              row,
 			          strokes          strokes,
 			          submitted        submitted,
 			          COUNT(*) OVER()  total
@@ -219,7 +214,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		desc.WriteString("All holes in ")
 	}
 
-	if lang, ok := config.LangByID[data.LangID]; ok {
+	if lang, ok := config.AllLangByID[data.LangID]; ok {
 		desc.WriteString(lang.Name)
 		desc.WriteString(" in ")
 	} else {

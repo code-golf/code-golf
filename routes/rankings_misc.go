@@ -17,7 +17,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		Pager *pager.Pager
 		Rows  []struct {
 			Bytes, Chars, Count, Rank, Total int
-			Country                          config.NullCountry `db:"country_flag"`
+			Country                          *config.Country `db:"country_flag"`
 			Hole                             *config.Hole
 			Lang                             *config.Lang
 			Me                               bool

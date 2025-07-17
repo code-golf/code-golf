@@ -79,7 +79,7 @@ func printTrail(s string) string {
 	return trail.String()
 }
 
-func snake() []Run {
+var _ = answerFunc("snake", func() []Answer {
 	tests := make([]test, 100)
 
 	for i := range tests {
@@ -89,4 +89,4 @@ func snake() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})
