@@ -1632,7 +1632,7 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '7.42 MiB'
+size    = '7.40 MiB'
 version = 'Chez Scheme 10.2.0'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
