@@ -2,7 +2,7 @@
 
 use TOML::Thumb;
 
-unit sub MAIN(Bool :$no-push, *@langs);
+unit sub MAIN(Bool :$no-cache, Bool :$no-push, *@langs);
 
 chdir $*PROGRAM.dirname;
 
@@ -21,13 +21,22 @@ run <docker buildx build>,
     '--tag',    'codegolf/lang-base',
     '.';
 
-for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
+# Build all languages if no arguments are specified.
+@langs ||= %langs.keys.sort: *.fc;
+
+for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     my $id  = id($name);
     my $img = "codegolf/lang-$id";
 
-    # Tag the builder stage so "docker system prune" won't remove it.
-    run «docker buildx build -t "{$img}-builder" --pull --target builder "langs/$id"»;
-    run «docker buildx build -t $img "langs/$id"»;
+    if !$no-cache {
+        # Tag the builder stage so "docker system prune" won't remove it.
+        run «docker buildx build -t "{$img}-builder" --pull --target builder "langs/$id"»;
+    }
+
+    run <docker buildx build>,
+         ( '--no-cache' if $no-cache ),
+         '--tag', $img,
+         "langs/$id";
 
     # Size.
     my $proc = run :out,

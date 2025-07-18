@@ -823,6 +823,9 @@ preamble = '''
 ['Day of Week']
 category = 'Transform'
 released = 2023-04-16
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Determination_of_the_day_of_the_week' },
+]
 synopsis = 'Given a date, output the day of the week.'
 preamble = '''
 <p>
@@ -2138,11 +2141,11 @@ preamble = '''
 
 [Mandelbrot]
 category = 'Art'
-experiment = 813
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
 ]
+released = 2025-07-01
 synopsis = 'Draw the Mandelbrot set.'
 preamble = '''
 <p>
@@ -4188,6 +4191,23 @@ preamble = '''
 <p>Print the following tongue twisters with a blank line between each one:
 
 <pre>{{ .Answer }}</pre>
+'''
+
+['Topological Sort']
+experiment = 2308
+category = 'Computing'
+synopsis = 'Perform topological sort.'
+preamble = '''
+<p>
+    Given the set of edges of a directed graph, print the linear order of its
+    nodes. The order is always unique. Each edge is given on a separate line;
+    an edge from node <b>u</b> to node <b>v</b> is given as <code>u v</code>.
+    The nodes are numbered from <b>0</b> to <b>N - 1</b>, where <b>2 ≤ N ≤
+    10</b> is the number of nodes in the graph.
+
+<p>
+    This is similar to the <code>tsort</code> utility, except that output nodes
+    are separated with spaces instead of newlines.
 '''
 
 ['Transpose Sentence']

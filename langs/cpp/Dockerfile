@@ -1,8 +1,8 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base cmake curl linux-headers ninja python3
+RUN apk add --no-cache cmake curl g++ linux-headers ninja python3
 
-ENV VER=20.1.6
+ENV VER=20.1.8
 
 RUN curl -#L https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz \
   | tar xz --strip-components 1
@@ -24,7 +24,7 @@ RUN cmake -G Ninja                    \
 
 RUN ninja install        \
  && strip /usr/bin/clang \
-          /usr/lib/libLLVM-20.so
+          /usr/lib/libLLVM.so
 
 COPY cpp.c /
 
@@ -43,7 +43,7 @@ COPY --from=0 /usr/include/sys/*.h              /usr/include/sys/
 COPY --from=0 /usr/lib/Scrt1.o                  \
               /usr/lib/crti.o                   \
               /usr/lib/crtn.o                   \
-              /usr/lib/libLLVM-20.so            \
+              /usr/lib/libLLVM.so               \
               /usr/lib/libbfd-2.44.so           \
               /usr/lib/libc.so                  \
               /usr/lib/libctf.so.0              \

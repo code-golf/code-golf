@@ -20,7 +20,7 @@ constant %paths = (
     'Arturo'       => 'github.com/arturo-lang/arturo',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'AWK'          => 'ftp.gnu.org/gnu/gawk/?C=M;O=D',
-    'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
+    'Bash'         => 'ftp.gnu.org/gnu/bash/?C=M;O=D',
     'BASIC'        => 'github.com/freebasic/fbc/releases/latest',
     'Befunge'      => 'github.com/VorpalBlade/cfunge',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
@@ -98,8 +98,9 @@ constant %paths = (
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
-    'Uiua'         => 'github.com/uiua-lang/uiua/releases/latest',
+    'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
+    'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
@@ -128,6 +129,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'gnome.org'      / { $res ~~ / 'Release ' <(<ver>)> / }
         when / 'golfscript.com' / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'       / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'lists.sr.ht'    / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }

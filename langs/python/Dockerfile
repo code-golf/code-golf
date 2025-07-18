@@ -3,15 +3,15 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
 # Also bump Coconut, Hy.
-ENV VER=3.13.4
+ENV VER=3.13.5
 
 RUN curl -#L https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz \
   | tar xJ --strip-components 1
 
-RUN ./configure                \
+RUN CC='cc' ./configure        \
     --disable-test-modules     \
     --prefix=/usr              \
-    --with-lto                 \
+    --with-lto=thin            \
     --without-ensurepip        \
     --without-static-libpython \
  && make -j`nproc` install     \
