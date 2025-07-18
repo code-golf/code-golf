@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* haskell = "/usr/local/bin/runghc", *code = "/tmp/code.hs";
+const char* haskell = "/usr/local/bin/ghc", *code = "/tmp/code.hs";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -28,13 +28,14 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int hargc = argc + 3;
+    int hargc = argc + 4;
     char** hargv = malloc(hargc * sizeof(char*));
     hargv[0] = (char*) haskell;
-    hargv[1] = "--ghc-arg=-fdiagnostics-color=always";
+    hargv[1] = "--run";
     hargv[2] = (char*) code;
-    hargv[3] = "--";
-    memcpy(&hargv[4], &argv[2], (argc - 2) * sizeof(char*));
+    hargv[3] = "-fdiagnostics-color=always";
+    hargv[4] = "--";
+    memcpy(&hargv[5], &argv[2], (argc - 2) * sizeof(char*));
     hargv[hargc - 1] = NULL;
 
     execv(haskell, hargv);
