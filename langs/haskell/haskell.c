@@ -28,14 +28,15 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int hargc = argc + 4;
+    int hargc = argc + 5;
     char** hargv = malloc(hargc * sizeof(char*));
     hargv[0] = (char*) haskell;
     hargv[1] = "--run";
     hargv[2] = (char*) code;
     hargv[3] = "-fdiagnostics-color=always";
     hargv[4] = "--";
-    memcpy(&hargv[5], &argv[2], (argc - 2) * sizeof(char*));
+    hargv[5] = "";
+    memcpy(&hargv[6], &argv[2], (argc - 2) * sizeof(char*));
     hargv[hargc - 1] = NULL;
 
     execv(haskell, hargv);
