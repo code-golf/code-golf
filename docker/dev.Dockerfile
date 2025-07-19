@@ -24,6 +24,7 @@ COPY --from=codegolf/lang-cpp          ["/", "/langs/cpp/rootfs/"         ] #  1
 COPY --from=codegolf/lang-groovy       ["/", "/langs/groovy/rootfs/"      ] #  148 MiB
 COPY --from=codegolf/lang-powershell   ["/", "/langs/powershell/rootfs/"  ] #  136 MiB
 COPY --from=codegolf/lang-cjam         ["/", "/langs/cjam/rootfs/"        ] #  134 MiB
+COPY --from=codegolf/lang-jelly        ["/", "/langs/jelly/rootfs/"       ] #  119 MiB
 COPY --from=codegolf/lang-assembly     ["/", "/langs/assembly/rootfs/"    ] #  118 MiB
 COPY --from=codegolf/lang-f-sharp      ["/", "/langs/f-sharp/rootfs/"     ] #  110 MiB
 COPY --from=codegolf/lang-c-sharp      ["/", "/langs/c-sharp/rootfs/"     ] #  108 MiB
