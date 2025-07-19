@@ -1,7 +1,7 @@
 FROM alpine:3.22 AS builder
 
 RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --no-cache build-base curl libffi-dev linux-headers pypy
+    --no-cache curl gcc libffi-dev linux-headers make musl-dev pypy
 
 ENV LDFLAGS='-static' PYVER=3.11-v7.3.19 VER=96b1cfc
 
