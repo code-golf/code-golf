@@ -197,7 +197,7 @@ BEGIN {
 
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
-size    = '1.28 MiB'
+size    = '1.27 MiB'
 version = '5.3.0'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '151 MiB'
-version = 'Clang 20.1.7'
+version = 'Clang 20.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <iostream>
@@ -546,8 +546,8 @@ example   = '''
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '270 MiB'
-version = '1.16.3'
+size    = '271 MiB'
+version = '1.17.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -712,7 +712,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '685 KiB'
+size       = '681 KiB'
 version    = '1.5.3'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -836,7 +836,7 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-size       = '33.2 MiB'
+size       = '33.3 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
 example    = '''
@@ -1032,7 +1032,7 @@ example    = '''
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
-size       = '33.3 MiB'
+size       = '33.4 MiB'
 version    = '1.1'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
@@ -1193,7 +1193,7 @@ for (arg in args)
 
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '367 KiB'
+size    = '362 KiB'
 version = '5.4.8'
 website = 'https://www.lua.org'
 example = '''
@@ -1255,7 +1255,7 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '84.4 MiB'
+size    = '83.3 MiB'
 version = '5.3.0'
 website = 'https://ocaml.org'
 example = '''
@@ -1326,7 +1326,7 @@ end.
 
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
-size    = '5.67 MiB'
+size    = '5.66 MiB'
 version = '5.42.0'
 website = 'https://www.perl.org'
 example = '''
@@ -1344,7 +1344,7 @@ say for @ARGV;
 
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
-size    = '8.40 MiB'
+size    = '8.39 MiB'
 version = '8.4.10'
 website = 'https://www.php.net'
 example = '''
@@ -1594,7 +1594,7 @@ end
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '33.2 MiB'
-version = '3.4.4'
+version = '3.4.5'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
