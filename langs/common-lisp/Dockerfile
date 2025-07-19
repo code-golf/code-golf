@@ -4,7 +4,7 @@ FROM alpine:3.22 AS builder
 
 ARG VER
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev
 
 RUN curl -#L https://haible.de/bruno/gnu/clisp-$VER.tar.bz2 \
   | tar xj --strip-components 1
@@ -15,7 +15,7 @@ RUN FORCE_UNSAFE_CONFIGURE=1       \
     ../configure                   \
     --ignore-absence-of-libsigsegv \
     --prefix=/usr                  \
- && make install
+ && make -j`nproc` install
 
 FROM codegolf/lang-base
 
