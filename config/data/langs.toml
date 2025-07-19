@@ -1280,6 +1280,31 @@ main :: proc() {
 }
 '''
 
+[Ox]
+args       = [ '/usr/bin/ox', '-' ]
+experiment = 1910
+size       = '5.70 MiB'
+version    = '9.30'
+website    = 'https://www.doornik.com'
+example    = '''
+#include <oxstd.oxh>
+
+main() {
+    // Printing
+    println("Hello, World!");
+
+    // Looping
+    for (decl i = 0; i < 10; ++i)
+        println(i);
+
+    // Accessing arguments
+    decl args = arglist();
+
+    for (decl i = 1; i < sizeof(args); ++i)
+        println(args[i]);
+}
+'''
+
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '26.8 MiB'
