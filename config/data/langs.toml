@@ -546,8 +546,8 @@ example   = '''
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '270 MiB'
-version = '1.16.3'
+size    = '271 MiB'
+version = '1.17.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -712,7 +712,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '685 KiB'
+size       = '681 KiB'
 version    = '1.5.3'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -1193,7 +1193,7 @@ for (arg in args)
 
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '367 KiB'
+size    = '362 KiB'
 version = '5.4.8'
 website = 'https://www.lua.org'
 example = '''
@@ -1233,7 +1233,7 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '84.4 MiB'
+size    = '83.3 MiB'
 version = '5.3.0'
 website = 'https://ocaml.org'
 example = '''
@@ -1304,7 +1304,7 @@ end.
 
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
-size    = '5.67 MiB'
+size    = '5.66 MiB'
 version = '5.42.0'
 website = 'https://www.perl.org'
 example = '''
@@ -1322,7 +1322,7 @@ say for @ARGV;
 
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
-size    = '8.40 MiB'
+size    = '8.39 MiB'
 version = '8.4.10'
 website = 'https://www.php.net'
 example = '''
