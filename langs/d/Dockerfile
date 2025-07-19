@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl dpkg gcc libc6-dev
 
-ENV VER=2.110.0
+ENV VER=2.111.0
 
 RUN curl -o dmd.deb https://downloads.dlang.org/releases/2.x/$VER/dmd_$VER-0_amd64.deb \
  && dpkg -i dmd.deb

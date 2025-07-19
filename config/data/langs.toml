@@ -567,8 +567,8 @@ end
 [D]
 args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]
-size    = '93.3 MiB'
-version = 'DMD 2.110.0'
+size    = '95.1 MiB'
+version = 'DMD 2.111.0'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
