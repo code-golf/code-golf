@@ -17,12 +17,9 @@ RUN make -j`nproc` install
 
 WORKDIR /usr/local
 
-RUN gleam new --name main --skip-git .
-
-RUN gleam add argv \
+RUN gleam new --name main . \
+ && gleam add argv          \
  && gleam remove gleeunit
-
-RUN chmod -R 777 .
 
 COPY gleam.c /
 
@@ -34,11 +31,15 @@ COPY --from=0 /                                   /
 COPY --from=1 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/
 COPY --from=1 /usr/bin/gleam                      /usr/bin/
 COPY --from=1 /usr/lib/locale                     /usr/lib/locale
-COPY --from=1 /usr/local/gleam.toml               \
+COPY --chown=nobody                               \
+     --from=1 /usr/local/gleam.toml               \
               /usr/local/manifest.toml            /usr/local/
-COPY --from=1 /usr/local/cargo/bin/gleam          /usr/local/bin/
-COPY --from=1 /usr/local/build/packages           /usr/local/build/packages
-COPY --from=1 /usr/local/src                      /usr/local/src
+COPY --chown=nobody                               \
+     --from=1 /usr/local/cargo/bin/gleam          /usr/local/bin/
+COPY --chown=nobody                               \
+     --from=1 /usr/local/build/packages           /usr/local/build/packages
+COPY --chown=nobody                               \
+     --from=1 /usr/local/src                      /usr/local/src
 
 ENTRYPOINT ["gleam"]
 
