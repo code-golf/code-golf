@@ -1029,6 +1029,28 @@ example    = '''
     (print arg))
 '''
 
+[Idris]
+args       = [ '/usr/bin/idris', '-' ]
+experiment = -1
+size       = '69.5 MiB'
+version    = 'Idris 2 0.7.0'
+website    = 'https://www.idris-lang.org'
+example    = '''
+import System
+
+main : IO ()
+main = do
+  -- Printing
+  putStrLn "Hello, World!"
+
+  -- Looping
+  sequence_ $ map (putStrLn . show) [0..9]
+
+  -- Accessing arguments
+  args <- getArgs
+  print args
+'''
+
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
