@@ -4,13 +4,13 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc make perl
 
-# Also rebuild Elixir, Gleam.
+# Also rebuild 05AB1E, Elixir, Gleam.
 ENV VER=28.0.1
 
-WORKDIR /erlang
+RUN git clone --branch OTP-$VER \
+    https://github.com/erlang/otp
 
-RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz \
-  | tar xz --strip-components 1
+WORKDIR /otp
 
 RUN ./configure            \
     --enable-m64-build     \
@@ -56,9 +56,9 @@ COPY --from=0 /usr/bin/basename                      \
               /usr/bin/erlang                        \
               /usr/bin/erlc                          \
               /usr/bin/escript                       /usr/bin/
-COPY --from=0 /usr/local                             /usr/lib/erlang
-COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot \
-              /usr/lib/erlang/bin/start.boot         /usr/lib/erlang/bin/
+COPY --from=0 /usr/lib/erlang                        /usr/lib/erlang
+# COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot \
+#               /usr/lib/erlang/bin/start.boot         /usr/lib/erlang/bin/
 
 ENTRYPOINT ["erlang"]
 
