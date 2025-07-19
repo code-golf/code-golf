@@ -50,6 +50,7 @@ COPY --from=codegolf/lang-factor       ["/", "/langs/factor/rootfs/"      ] #  1
 COPY --from=codegolf/lang-dart         ["/", "/langs/dart/rootfs/"        ] #  168 MiB
 COPY --from=codegolf/lang-vyxal        ["/", "/langs/vyxal/rootfs/"       ] #  154 MiB
 COPY --from=codegolf/lang-cpp          ["/", "/langs/cpp/rootfs/"         ] #  151 MiB
+COPY --from=codegolf/lang-kamilalisp   ["/", "/langs/kamilalisp/rootfs/"  ] #  150 MiB
 COPY --from=codegolf/lang-groovy       ["/", "/langs/groovy/rootfs/"      ] #  148 MiB
 COPY --from=codegolf/lang-powershell   ["/", "/langs/powershell/rootfs/"  ] #  136 MiB
 COPY --from=codegolf/lang-cjam         ["/", "/langs/cjam/rootfs/"        ] #  134 MiB
