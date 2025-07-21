@@ -1612,12 +1612,12 @@ fn main() {
 '''
 
 [Scala]
-args       = [ '/usr/bin/scalawrapper', '-' ]
-env        = [ 'JAVA_HOME=/opt/java' ]
+args       = [ '/usr/bin/scala', '-' ]
+env        = [ 'COURSIER_CACHE=/cache', 'JAVA_HOME=/opt/java' ]
 experiment = 235
-size       = '289 MiB'
-version    = '3.7.1'
-website    = 'https://www.scala-lang.org'
+size       = '280 MiB'
+version    = 'Scala CLI 1.8.4'
+website    = 'https://scala-cli.virtuslab.org'
 example    = '''
 // Printing
 println("Hello, World!")
