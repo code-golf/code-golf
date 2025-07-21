@@ -1820,7 +1820,7 @@ example    = '''
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '51.4 MiB'
+size    = '38.3 MiB'
 version = '0.4.11'
 website = 'https://vlang.io'
 example = '''
