@@ -26,7 +26,7 @@ type Golfer struct {
 	Admin, HasNotes, ShowCountry, Sponsor bool
 	BytesPoints, CharsPoints, ID          int
 	Cheevos, Holes                        pq.StringArray
-	Country                               config.NullCountry
+	Country                               *config.Country
 	Delete                                null.Time
 	FailingSolutions                      FailingSolutions
 	Following                             pq.Int64Array

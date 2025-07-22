@@ -1,12 +1,14 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2025.01 https://github.com/rakudo/rakudo.git
+ENV VER=2025.06.1
+
+RUN git clone --branch $VER https://github.com/rakudo/rakudo.git
 
 WORKDIR /rakudo
 
-RUN CFLAGS=-flto              \
+RUN CFLAGS='-flto'            \
     ./Configure.pl            \
     --gen-moar                \
     --moar-option=--ar=gcc-ar \
