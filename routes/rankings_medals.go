@@ -13,20 +13,16 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Hole, PrevHole, NextHole *config.Hole
 		HoleID, LangID, Scoring  string
-		Holes                    []*config.Hole
-		Langs                    []*config.Lang
 		Pager                    *pager.Pager
 		Rows                     []struct {
-			Country                       config.NullCountry
-			Diamond, Gold, Silver, Bronze int
-			Name                          string
-			Rank, Total                   int
+			Country                                *config.Country
+			Unicorn, Diamond, Gold, Silver, Bronze int
+			Name                                   string
+			Rank, Total                            int
 		}
 	}{
 		HoleID:  param(r, "hole"),
-		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
-		Langs:   config.LangList,
 		Pager:   pager.New(r),
 		Scoring: param(r, "scoring"),
 	}
@@ -46,6 +42,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		&data.Rows,
 		`WITH counts AS (
 		    SELECT user_id,
+		           COUNT(*) FILTER (WHERE medal = 'unicorn') unicorn,
 		           COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
 		           COUNT(*) FILTER (WHERE medal = 'gold'   ) gold,
 		           COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
@@ -58,7 +55,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		) SELECT RANK() OVER(
 		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
 		         ),
-		         diamond, gold, silver, bronze,
+		         unicorn, diamond, gold, silver, bronze,
 		         country_flag country, login name, COUNT(*) OVER() total
 		    FROM counts
 		    JOIN users ON id = user_id
@@ -99,7 +96,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		description += " in " + data.Scoring
 	}
 
-	description += "."
+	description += ". Ranked by golds, then diamonds, then silvers, then bronzes."
 
 	render(w, r, "rankings/medals", data, "Rankings: Medals", description)
 }

@@ -45,7 +45,10 @@ func golferHolesGET(w http.ResponseWriter, r *http.Request) {
 		  UNION ALL
 		 SELECT hole, lang, true, 0, 0, 0, 0
 		   FROM solutions
-		  WHERE failing AND user_id = $2 AND scoring = $3`,
+		   JOIN holes ON hole = holes.id
+		   JOIN langs ON lang = langs.id
+		  WHERE holes.experiment = 0 AND langs.experiment = 0
+		    AND failing AND user_id = $2 AND scoring = $3`,
 		data.Scope == "overall",
 		golfer.ID,
 		data.Scoring,

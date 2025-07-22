@@ -1,0 +1,55 @@
+@import "./_golfer.css";
+
+#search {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    label {
+        margin-left: .25rem;
+    }
+}
+
+#searchInput {
+    flex-grow: 1;
+}
+
+#results {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    a {
+        border: 2px solid var(--color);
+        color: var(--color);
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+        padding: 1rem;
+    }
+
+    span {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    code {
+        white-space: pre;
+        background-color: var(--light-grey);
+        border-radius: .25rem;
+        padding: .25rem;
+        .match {
+            background-color: var(--yellow);
+        }
+    }
+
+    a:hover {
+        background: var(--color);
+        color: var(--background);
+        text-decoration: none;
+
+        code {
+            background-color: var(--grey);
+        }
+    }
+}

@@ -58,7 +58,11 @@ form.onsubmit = async e => {
             <td>{holes[line.hole]}</td>
             <td>{langs[line.lang]}</td>
             <td>{`${line.golfer} (${line.golfer_id})`}</td>
-            <td>{comma(Math.round(line.took / 1e6)) + 'ms'}</td>
+            <td>
+                <a href={`solutions/${line.hole}/${line.lang}/${line.golfer_id}`}>
+                    {comma(Math.round(line.took / 1e6)) + 'ms'}
+                </a>
+            </td>
             <td><span class={line.pass ? 'green' : 'red'}>
                 {line.pass ? 'PASS' : 'FAIL'}
             </span></td>
