@@ -1,6 +1,6 @@
 FROM eclipse-temurin:24.0.1_9-jre-alpine-3.21 AS builder
 
-ENV VER=3.7.0
+ENV VER=3.8.0
 
 RUN wget -O vyxal.jar https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar
 
