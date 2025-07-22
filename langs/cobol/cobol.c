@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* cobol = "/usr/local/bin/cobc", *C = "/usr/bin/c", *code = "code.c";
+const char* cobol = "/usr/bin/cobc", *C = "/usr/bin/c", *code = "code.c";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 
     int status;
 
-    waitpid(pid, &status, 0);
+    waitpid(pid, &status, 0); 
 
     if (!WIFEXITED(status))
         exit(EXIT_FAILURE);
