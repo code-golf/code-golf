@@ -28,7 +28,7 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 		Tested                             time.Time
 	}{
 		Hole:    config.AllHoleByID[param(r, "hole")],
-		Lang:    config.LangByID[param(r, "lang")],
+		Lang:    config.AllLangByID[param(r, "lang")],
 		Scoring: param(r, "scoring"),
 	}
 
@@ -76,7 +76,7 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 // POST /golfers/{golfer}/{hole}/{lang}/{scoring}
 func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	hole := config.AllHoleByID[param(r, "hole")]
-	lang := config.LangByID[param(r, "lang")]
+	lang := config.AllLangByID[param(r, "lang")]
 	scoring := param(r, "scoring")
 
 	if hole == nil || lang == nil || (scoring != "bytes" && scoring != "chars") {
@@ -116,7 +116,10 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		Timeout bool          `json:"timeout"`
 	}
 
-	runs := h.Play(ctx, hole, lang, code)
+	runs, err := h.Play(ctx, hole, lang, code)
+	if err != nil {
+		panic(err)
+	}
 	subsetRuns := make([]SubsetRun, len(runs))
 
 	overallPass := true
@@ -128,19 +131,19 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Update the last tested value if we can.
+	// Update the lang_digest & tested values if we can.
 	if overallPass || previouslyFailing {
 		if _, err := db.ExecContext(
 			ctx,
 			`UPDATE solutions
-			    SET tested = DEFAULT
-			  WHERE code    = $1
-			    AND failing = $2
-			    AND hole    = $3
-			    AND lang    = $4
-			    AND scoring = $5
-			    AND user_id = $6`,
-			code, previouslyFailing, hole.ID, lang.ID, scoring, golfer.ID,
+			    SET lang_digest = $1, tested = DEFAULT
+			  WHERE code    = $2
+			    AND failing = $3
+			    AND hole    = $4
+			    AND lang    = $5
+			    AND scoring = $6
+			    AND user_id = $7`,
+			lang.DigestTrunc, code, previouslyFailing, hole.ID, lang.ID, scoring, golfer.ID,
 		); err != nil {
 			panic(err)
 		}

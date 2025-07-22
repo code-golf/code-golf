@@ -45,12 +45,12 @@ export function $$<MatchType extends HTMLElement>(selector: string) {
 export const comma = (i: number | undefined) => i?.toLocaleString('en');
 
 /**
- * Debounce in the following sense:
+ * Throttle in the following sense:
  *  - never fire more than once in any consecutive `interval` ms
  *  - always fire at least once within the first `interval` ms after the call
  *  - always fire as soon as possible, subject to these restrictions
  */
-export function debounce(fn: () => void, interval: number) {
+export function throttle(fn: () => void, interval: number) {
     let pendingTimeout: number | undefined;
     let needsAnother = false;
     return () => {
@@ -65,5 +65,16 @@ export function debounce(fn: () => void, interval: number) {
             }, interval);
             fn();
         }
+    };
+}
+
+/**
+ * Fire once when `timeout` ms has passed since the last input.
+ */
+export function debounce(func: () => void, timeout = 500) {
+    let timer: number | undefined;
+    return () => {
+        clearTimeout(timer);
+        timer = setTimeout(func, timeout);
     };
 }
