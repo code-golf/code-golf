@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.100-alpine3.20 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.301-alpine3.22-amd64 AS builder
 
-WORKDIR /work
+WORKDIR /powershell
 
 COPY powershell.cs powershell.csproj ./
 

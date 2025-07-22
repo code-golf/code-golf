@@ -54,14 +54,14 @@ func randReplacements(gFrames []rune) []rune {
 			continue
 		}
 
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			frames[i] = replacement
 		}
 	}
 	return frames
 }
 
-func tenPinBowling() []Run {
+var _ = answerFunc("ten-pin-bowling", func() []Answer {
 	extraCases := 22
 	tests := make([]test, len(games)+extraCases)
 
@@ -151,4 +151,4 @@ func tenPinBowling() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

@@ -6,12 +6,12 @@ import {
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffView         from './_diff';
-import { $, $$, comma, debounce } from './_util';
+import { $, $$, comma, throttle } from './_util';
 import {
     init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
-    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
+    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
     getScorings,
     updateLocalStorage,
     getLang,
@@ -90,7 +90,7 @@ function updateReadonlyPanel(name: string) {
         break;
     case 'diff':
         const ignoreCase = JSON.parse($('#case-fold').innerText);
-        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.MultisetDelimiter, subRes.ItemDelimiter);
+        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.OutputDelimiter, subRes.MultisetItemDelimiter);
         output.replaceChildren(diff);
     }
 }
@@ -163,9 +163,22 @@ function makeEditor(parent: HTMLDivElement) {
                     .join(', ');
             }
 
-            $('#strokes').innerText = scorings.selection
-                ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
-                : formatScore(scorings.total);
+            $('#strokes').innerText = (() => {
+                let innertext = scorings.selection
+                    ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
+                    : formatScore(scorings.total);
+                if (scorings.selection?.char === 1) {
+                    const sel = tr.state.sliceDoc(tr.state.selection.main.from, tr.state.selection.main.to);
+                    const code = sel.codePointAt(0);
+                    if (code !== undefined) {
+                        const hex = code.toString(16).toUpperCase().padStart(4, '0');
+                        const bin = code.toString(2).padStart(8, '0');
+                        innertext += ` ${sel} - ${code} - 0x${hex} - ${bin}`;
+                    }
+                }
+                return innertext;
+            })();
+
 
             updateLocalStorage(code);
             updateRestoreLinkVisibility(editor);
@@ -342,7 +355,7 @@ layout.registerComponentFactoryFunction('details', container => {
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
     container.element.id = 'details-content';
-    initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
+    initCopyButtons(container.element.querySelectorAll('[data-copy]'));
 });
 
 const titles: Record<string, string | undefined> = {
@@ -449,7 +462,7 @@ function getViewState(): ViewState {
     };
 }
 
-const saveLayout = debounce(() => {
+const saveLayout = throttle(() => {
     const state = getViewState();
     if (!state.config.root) return;
     localStorage.setItem('lastViewState', JSON.stringify(state));

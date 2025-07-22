@@ -2,25 +2,27 @@ CREATE EXTENSION citext;
 CREATE EXTENSION hstore;
 
 CREATE TYPE cheevo AS ENUM (
-    '0xdead', 'aged-like-fine-wine', 'alchemist', 'archivist',
-    'assembly-required', 'bakers-dozen', 'big-brother', 'biohazard',
-    'bird-is-the-word', 'black-box-testing', 'blackjack', 'bullseye',
-    'busy-beaver', 'caffeinated', 'centenarian', 'cobowl', 'cunning-linguist',
-    'dammit-janet', 'different-strokes', 'disappearing-act', 'dont-panic',
-    'double-slit-experiment', 'elephpant-in-the-room', 'emergency-room',
-    'evil-scheme', 'fish-n-chips', 'fore', 'forty-winks', 'go-forth',
-    'gone-in-60-holes', 'happy-birthday-code-golf', 'happy-go-lucky',
-    'hello-world', 'hextreme-agony', 'inception', 'independence-day',
-    'interview-ready', 'its-over-9000', 'jeweler', 'just-kidding',
-    'like-comment-subscribe', 'marathon-runner', 'mary-had-a-little-lambda',
-    'may-the-4ᵗʰ-be-with-you', 'my-god-its-full-of-stars',
-    'neunundneunzig-luftballons', 'off-the-grid', 'omniglot', 'omniglutton',
-    'ouroboros', 'pangramglot', 'patches-welcome', 'phileas-fogg', 'pi-day',
-    'polyglot', 'polyglutton', 'real-programmers', 'right-on', 'rm-rf',
-    'rtfm', 'rule-34', 's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x-factor', 'x86'
+    '0xdead', 'aged-like-fine-wine', 'alchemist', 'alphabet-soup',
+    'archivist', 'assembly-required', 'bakers-dozen', 'big-brother',
+    'biohazard', 'bird-is-the-word', 'black-box-testing', 'blackjack',
+    'bullseye', 'busy-beaver', 'caffeinated', 'centenarian', 'cobowl',
+    'cunning-linguist', 'dammit-janet', 'different-strokes',
+    'disappearing-act', 'dont-panic', 'double-slit-experiment',
+    'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
+    'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
+    'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
+    'hextreme-agony', 'how-about-second-pi', 'hugs-and-kisses', 'inception',
+    'independence-day', 'interview-ready', 'into-space', 'its-over-9000',
+    'jeweler', 'just-kidding', 'like-comment-subscribe', 'marathon-runner',
+    'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
+    'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
+    'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
+    'patches-welcome', 'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton',
+    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
+    'slowcoach', 'smörgåsbord', 'solve-quine', 'sounds-quite-nice', 'takeout',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
+    'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -33,12 +35,12 @@ CREATE TYPE hole AS ENUM (
     'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
     'ascii-table', 'billiards', 'brainfuck', 'calendar',
     'card-number-validation', 'catalan-numbers', 'catalans-constant',
-    'christmas-trees', 'collatz', 'css-colors', 'css-grid', 'cubes',
-    'day-of-week', 'dfa-simulator', 'diamonds', 'divisors',
-    'ellipse-perimeters', 'emirp-numbers', 'emirp-numbers-long', 'emojify',
-    'evil-numbers', 'evil-numbers-long', 'factorial-factorisation',
-    'farey-sequence', 'fibonacci', 'fizz-buzz', 'flags',
-    'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
+    'christmas-trees', 'collatz', 'connect-four', 'css-colors',
+    'css-colors-inverse', 'css-grid', 'cubes', 'day-of-week', 'dfa-simulator',
+    'diamonds', 'divisors', 'ellipse-perimeters', 'emirp-numbers',
+    'emirp-numbers-long', 'emojify', 'evil-numbers', 'evil-numbers-long',
+    'factorial-factorisation', 'farey-sequence', 'fibonacci', 'fizz-buzz',
+    'flags', 'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
     'forsyth-edwards-notation', 'fractions', 'game-of-life',
     'gijswijts-sequence', 'gray-code-decoder', 'gray-code-encoder',
     'happy-numbers', 'happy-numbers-long', 'hexagonal-spiral', 'hexdump',
@@ -47,43 +49,48 @@ CREATE TYPE hole AS ENUM (
     'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
     'levenshtein-distance', 'leyland-numbers', 'ln-2', 'look-and-say',
     'lucky-numbers', 'lucky-tickets', 'mahjong', 'mandelbrot', 'maze',
-    'medal-tally', 'morse-decoder', 'morse-encoder', 'musical-chords',
-    'n-queens', 'nfa-simulator', 'niven-numbers', 'niven-numbers-long',
-    'number-spiral', 'odd-polyomino-tiling', 'odious-numbers',
-    'odious-numbers-long', 'ordinal-numbers', 'p-adic-expansion',
-    'palindromemordnilap', 'pangram-grep', 'partition-numbers',
-    'pascals-triangle', 'pernicious-numbers', 'pernicious-numbers-long',
-    'placeholder', 'poker', 'polyominoes', 'prime-numbers',
-    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'qr-encoder',
-    'quadratic-formula', 'quine', 'recamán', 'repeating-decimals',
-    'reverse-polish-notation', 'reversi', 'rijndael-s-box',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rot13',
-    'rule-110', 'scrambled-alphabetization', 'semiprime-numbers', 'set',
+    'medal-tally', 'minesweeper', 'morse-decoder', 'morse-encoder',
+    'musical-chords', 'n-queens', 'nfa-simulator', 'niven-numbers',
+    'niven-numbers-long', 'number-spiral', 'odd-polyomino-tiling',
+    'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
+    'p-adic-expansion', 'palindromemordnilap', 'pangram-grep',
+    'partition-numbers', 'pascals-triangle', 'pernicious-numbers',
+    'pernicious-numbers-long', 'poker', 'polygon-triangulations',
+    'polyominoes', 'prime-numbers', 'prime-numbers-long', 'proximity-grid',
+    'qr-decoder', 'qr-encoder', 'quadratic-formula', 'quine', 'recamán',
+    'repeating-decimals', 'reverse-polish-notation', 'reversi',
+    'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
+    'rot13', 'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set',
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
-    'spelling-numbers', 'sphenic-numbers', 'star-wars-gpt',
-    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
-    'ten-pin-bowling', 'tic-tac-toe', 'time-distance', 'tongue-twisters',
-    'transpose-sentence', 'trinomial-triangle', 'turtle', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
-    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'snake', 'spelling-numbers', 'sphenic-numbers', 'star-wars-gpt',
+    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
+    'tic-tac-toe', 'time-distance', 'tongue-twisters', 'topological-sort',
+    'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
+    'united-states', 'vampire-numbers', 'van-eck-sequence',
+    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
+    '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE lang AS ENUM (
-    'assembly', 'awk', 'bash', 'basic', 'berry', 'brainfuck', 'c', 'c-sharp',
-    'civet', 'clojure',  'cpp', 'cobol', 'coconut', 'common-lisp', 'crystal',
-    'd', 'dart', 'elixir', 'f-sharp', 'factor', 'fish', 'forth', 'fortran',
-    'go', 'golfscript', 'haskell', 'hexagony', 'j', 'janet', 'java',
-    'javascript', 'jq', 'julia', 'k', 'kotlin', 'lua', 'nim', 'ocaml',
-    'pascal', 'perl', 'php', 'powershell', 'prolog', 'python', 'r', 'raku',
-    'rockstar', 'rockstar-2', 'ruby', 'rust', 'scheme', 'sed', 'sql', 'swift',
-    'tcl', 'tex', 'v', 'viml', 'wren', 'zig'
+    '05ab1e', 'algol-68', 'apl', 'arturo', 'assembly', 'awk', 'bash', 'basic',
+    'befunge', 'berry', 'bqn', 'brainfuck', 'c', 'c-sharp', 'civet', 'cjam',
+    'clojure', 'cobol', 'coconut', 'coffeescript', 'common-lisp', 'cpp',
+    'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang', 'f-sharp', 'factor',
+    'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go', 'golfscript',
+    'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
+    'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'kotlin',
+    'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
+    'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku', 'rebol',
+    'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed', 'sql',
+    'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'v', 'vala', 'viml',
+    'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
 
-CREATE TYPE pronouns AS ENUM ('he/him', 'she/her', 'they/them');
+CREATE TYPE pronouns AS ENUM ('he/him', 'he/they', 'she/her', 'she/they', 'they/them');
 
 CREATE TYPE scoring AS ENUM ('bytes', 'chars');
 
@@ -122,13 +129,13 @@ CREATE TABLE users (
     started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     theme        theme     NOT NULL DEFAULT 'auto',
-    -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
-    country_flag char(2)   NOT NULL GENERATED ALWAYS AS
-        (COALESCE(CASE WHEN show_country THEN country END, '')) STORED,
     pronouns     pronouns,
     settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
     about        text      NOT NULL DEFAULT '',
-    CHECK (country IS NULL OR country = UPPER(country)),
+    -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
+    country_flag char(2)            GENERATED ALWAYS AS
+        (CASE WHEN show_country THEN country END) STORED,
+    CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),              -- Can't refer yourself!
     CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
@@ -168,8 +175,10 @@ CREATE UNLOGGED TABLE holes (
 
 -- Ditto for config/data/langs.toml.
 CREATE UNLOGGED TABLE langs (
-    id         lang NOT NULL PRIMARY KEY,
-    experiment int  NOT NULL
+    id           lang   NOT NULL PRIMARY KEY,
+    experiment   int    NOT NULL,
+    digest_trunc bytea  NOT NULL,
+    name         citext NOT NULL
 );
 
 CREATE TABLE notes (
@@ -188,16 +197,17 @@ CREATE TABLE sessions (
 );
 
 CREATE TABLE solutions (
-    submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    bytes     int       NOT NULL,
-    chars     int,
-    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    hole      hole      NOT NULL,
-    lang      lang      NOT NULL,
-    scoring   scoring   NOT NULL,
-    failing   bool      NOT NULL DEFAULT false,
-    code      text      NOT NULL,
-    tested    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    submitted   timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    bytes       int       NOT NULL,
+    chars       int,
+    user_id     int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hole        hole      NOT NULL,
+    lang        lang      NOT NULL,
+    scoring     scoring   NOT NULL,
+    failing     bool      NOT NULL DEFAULT false,
+    code        text      NOT NULL,
+    tested      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    lang_digest bytea     NOT NULL,
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)
@@ -231,12 +241,13 @@ CREATE TABLE trophies (
     PRIMARY KEY (user_id, trophy)
 );
 
--- Hole isn't experimental and solution isn't failing.
+-- Hole/lang isn't experimental and solution isn't failing.
 CREATE VIEW stable_passing_solutions AS
      SELECT solutions.*
        FROM solutions
-       JOIN holes ON id = hole
-      WHERE experiment = 0 AND NOT failing;
+       JOIN holes ON hole = holes.id
+       JOIN langs ON lang = langs.id
+      WHERE holes.experiment = 0 AND langs.experiment = 0 AND NOT failing;
 
 CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
     SELECT user_id, hole, lang, scoring, submitted,
@@ -264,16 +275,24 @@ GROUP BY hole, lang, scoring
 
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
     select hole, lang, scoring, user_id, submitted,
+           holes.experiment != 0                          experimental_hole,
+           langs.experiment != 0                          experimental_lang,
+           holes.experiment != 0 OR langs.experiment != 0 experimental,
            case when scoring = 'bytes' then bytes else chars end strokes,
            case when scoring = 'bytes' then chars else bytes end other_strokes
-      from stable_passing_solutions
+      from solutions
+      join holes ON hole = holes.id
+      join langs ON lang = langs.id
+     where not failing
 ), min as (
     select hole, scoring, min(strokes)::numeric Sa
       from strokes
+     where not experimental
   group by hole, scoring
 ), min_per_lang as (
     select hole, lang, scoring, min(strokes)::numeric S, sqrt(count(*)) N
      from strokes
+     where not experimental
   group by hole, lang, scoring
 ), bayesian_estimators as (
     select hole, lang, scoring, S,
@@ -282,10 +301,11 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       join min_per_lang using(hole, scoring)
 ), points as (
     select hole, lang, scoring, user_id, strokes, other_strokes, submitted,
-           round(Sb / strokes * 1000) points,
-           round(S  / strokes * 1000) points_for_lang
+           experimental_hole, experimental_lang, experimental,
+           coalesce(round(Sb / strokes * 1000), 0) points,
+           coalesce(round(S  / strokes * 1000), 0) points_for_lang
       from strokes
-      join bayesian_estimators using(hole, lang, scoring)
+ left join bayesian_estimators using(hole, lang, scoring)
 ), ranks as (
     select *,
            count(*)     over (partition by hole, lang, scoring) golfers,

@@ -1,12 +1,27 @@
 package hole
 
-import "strings"
+import (
+	"math/rand/v2"
+	"strings"
+)
 
-func rot13() []Run {
+var _ = answerFunc("rot13", func() []Answer {
 	tests := make([]test, 0, 100)
 
-	for range 100 {
-		argument := generateSequence()
+	// Enforce one sequence consisting of only one alphabetic character, randomly generated.
+	argument := string(rune(randInt(65, 90) + 32*rand.IntN(2)))
+
+	for i := 0; i < 100; {
+		if i > 0 {
+			argument = generateSequence()
+		}
+
+		// Prevent arguments from starting with '@' because some languages cannot handle them correctly.
+		if argument[0] == '@' {
+			continue
+		}
+
+		i++
 
 		tests = append(tests, test{
 			argument,
@@ -15,7 +30,7 @@ func rot13() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})
 
 func generateSequence() string {
 	var sequence strings.Builder

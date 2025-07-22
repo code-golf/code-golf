@@ -17,10 +17,12 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		Pager *pager.Pager
 		Rows  []struct {
 			Bytes, Chars, Count, Rank, Total int
-			Country                          config.NullCountry `db:"country_flag"`
-			Hole, Lang, Scoring              string
+			Country                          *config.Country `db:"country_flag"`
+			Hole                             *config.Hole
+			Lang                             *config.Lang
 			Me                               bool
 			Name                             string `db:"login"`
+			Scoring                          string
 			Submitted                        time.Time
 		}
 	}{Pager: pager.New(r)}
@@ -31,11 +33,13 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	case "diamond-deltas":
 		desc = "Deltas between diamonds and silvers."
 		sql = `WITH diamonds AS (
-			    SELECT * FROM rankings WHERE rank = 1 AND tie_count = 1
+			    SELECT *
+			      FROM rankings
+			     WHERE rank = 1 AND tie_count = 1 AND NOT experimental
 			), silvers AS (
 			    SELECT DISTINCT hole, lang, scoring, strokes
 			      FROM rankings
-			     WHERE rank = 2
+			     WHERE rank = 2 AND NOT experimental
 			) SELECT country_flag, hole, lang, login, scoring,
 			         silvers.strokes - diamonds.strokes count,
 			         RANK() OVER(ORDER BY silvers.strokes - diamonds.strokes DESC),
