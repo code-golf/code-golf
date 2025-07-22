@@ -30,6 +30,7 @@ import { cpp }                                      from '@codemirror/lang-cpp';
 import { crystal }                                  from '@codemirror/legacy-modes/mode/crystal';
 import { d }                                        from '@codemirror/legacy-modes/mode/d';
 import { elixirLanguage }                           from 'codemirror-lang-elixir';
+import { erlang }                                   from '@codemirror/legacy-modes/mode/erlang';
 import { factor }                                   from '@codemirror/legacy-modes/mode/factor';
 import { forth }                                    from '@codemirror/legacy-modes/mode/forth';
 import { fortran }                                  from '@codemirror/legacy-modes/mode/fortran';
@@ -119,8 +120,15 @@ export const extensions : { [key: string]: any } = {
             { key: 'Mod-/', run: toggleComment },
         ]),
         highlightWhitespace(),
-        lineNumbers(),
     ],
+    'lineNumbers': lineNumbers(),
+    'zeroIndexedLineNumbers': lineNumbers(
+        {
+            formatNumber(num: number) {
+                return `${num - 1}`;
+            },
+        },
+    ),
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
 
@@ -131,9 +139,11 @@ export const extensions : { [key: string]: any } = {
     // TODO arturo
     'assembly':      assembly(),
     'assembly-wiki': assembly({ byteDumps: false }),
+    // TODO awk
     'bash':          StreamLanguage.define(shell),
     // TODO basic
     // TODO befunge
+    // TODO berry
     // TODO bqn
     'brainfuck':     brainfuck(),
     'c':             StreamLanguage.define(c),
@@ -152,8 +162,10 @@ export const extensions : { [key: string]: any } = {
     'dart':          StreamLanguage.define(dart),
     // TODO egel
     'elixir':        elixir,
+    'erlang':        StreamLanguage.define(erlang),
     'f-sharp':       StreamLanguage.define(fSharp),
     'factor':        StreamLanguage.define(factor),
+    // TODO fennel
     // TODO fish
     'forth':         StreamLanguage.define({ ...forth, languageData: { commentTokens: { line: '\\' } } }),
     'fortran':       StreamLanguage.define({ ...fortran, languageData: { commentTokens: { line: '!' } } }),
@@ -168,6 +180,7 @@ export const extensions : { [key: string]: any } = {
     // TODO hexagony
     // TODO hush
     // TODO hy
+    // TODO iogii
     'j':             j(),
     'janet':         janet(),
     'java':          java(),
@@ -183,9 +196,11 @@ export const extensions : { [key: string]: any } = {
     'pascal':        StreamLanguage.define(pascal),
     'perl':          StreamLanguage.define(perl),
     'php':           php,
+    // TODO picat
     'powershell':    StreamLanguage.define(powerShell),
     'prolog':        prolog(),
     'python':        python,
+    // TODO qore
     'r':             StreamLanguage.define(r),
     'racket':        StreamLanguage.define(scheme),
     'raku':          StreamLanguage.define(raku),
@@ -199,12 +214,15 @@ export const extensions : { [key: string]: any } = {
     // TODO sed
     'sql':           sql,
     'squirrel':      StreamLanguage.define(squirrel),
+    // TODO stax
     'swift':         StreamLanguage.define(swift),
     'tcl':           StreamLanguage.define(tcl),
     'tex':           StreamLanguage.define(stex),
     // TODO uiua
     // TODO v
+    'vala':          StreamLanguage.define(csharp),
     // TODO viml
+    // TODO vyxal
     'wren':          wren,
     'zig':           zig(),
 };

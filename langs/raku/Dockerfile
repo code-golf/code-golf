@@ -1,20 +1,28 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base git perl
 
-RUN git clone -b 2024.12 https://github.com/rakudo/rakudo.git \
- && cd rakudo                                                 \
- && CFLAGS=-flto ./Configure.pl                               \
-    --gen-moar                                                \
-    --moar-option=--ar=gcc-ar                                 \
-    --prefix=/usr                                             \
- && make -j`nproc` install                                    \
- && strip /usr/bin/rakudo /usr/lib/libmoar.so
+ENV VER=2025.06.1
 
-RUN rm -r /usr/share/nqp/lib/profiler            \
-    /usr/share/perl6/runtime/rakudo-debug.moarvm \
-    /usr/share/perl6/runtime/rakudo.moarvm       \
-    /usr/share/perl6/runtime/perl6-debug.moarvm
+RUN git clone --branch $VER https://github.com/rakudo/rakudo.git
+
+WORKDIR /rakudo
+
+RUN CFLAGS='-flto'            \
+    ./Configure.pl            \
+    --gen-moar                \
+    --moar-option=--ar=gcc-ar \
+    --prefix=/usr             \
+ && make -j`nproc` install    \
+ && strip /usr/bin/rakudo     \
+          /usr/lib/libmoar.so \
+ && rm -r /usr/share/nqp/lib/profiler
+
+WORKDIR /usr/share/perl6/runtime
+
+RUN rm rakudo.moarvm       \
+       rakudo-debug.moarvm \
+       perl6-debug.moarvm
 
 FROM codegolf/lang-base
 

@@ -1,14 +1,11 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev
 
-ENV VER=8.4.2
+ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.4.10
 
-RUN curl -#L https://php.net/distributions/php-$VER.tar.xz | tar xJ
-
-WORKDIR /php-$VER
-
-ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static'
+RUN curl -#L https://php.net/distributions/php-$VER.tar.xz \
+  | tar xJ --strip-components 1
 
 RUN LDFLAGS= ./configure       \
     --disable-all              \

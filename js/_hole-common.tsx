@@ -9,10 +9,24 @@ let tabLayout: boolean = false;
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`);
-        langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
+        langWikiCache[lang] = await _getLangWikiContent(lang);
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
+}
+async function _getLangWikiContent(lang: string): Promise<string | null> {
+    const resp  = await fetch(`/api/wiki/langs/${lang}`);
+    const {content, title} = await resp.json() as {content: string, title: string};
+    if (resp.status !== 200) {
+        return null;
+    }
+    const header = (<p id={`lang-wiki-${lang}`}>
+        Wiki: {title}{' '}
+        <a href={`/wiki/langs/${lang}`} target="_blank">
+            (open in new tab)
+        </a>
+        .
+    </p>).outerHTML;
+    return header + content;
 }
 
 const holeLangNotesCache: Record<string, string | null> = {};
@@ -29,6 +43,7 @@ const renamedHoles: Record<string, string> = {
     'eight-queens':                  'n-queens',
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing':                  'css-grid',
+    'placeholder':                   'tutorial',
     'sudoku-v2':                     'sudoku-fill-in',
 };
 
@@ -97,9 +112,10 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
     });
 }
 
-export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
-    copyBtn?.addEventListener('click', () =>
-        navigator.clipboard.writeText($('#data').innerText));
+export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
+    for (const btn of buttons)
+        btn.onclick = () =>
+            navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
 export const langs = JSON.parse($('#langs').innerText);
@@ -182,7 +198,7 @@ export function setState(code: string, editor: EditorView) {
                 extensions[lang as keyof typeof extensions] ?? [],
                 // These languages shouldn't match brackets.
                 ['fish', 'hexagony'].includes(lang)
-                    ? [] : extensions.bracketMatching,
+                    ? extensions.zeroIndexedLineNumbers : [extensions.lineNumbers, extensions.bracketMatching],
                 // These languages shouldn't wrap lines.
                 ['assembly', 'fish', 'hexagony'].includes(lang)
                     ? [] : EditorView.lineWrapping,
@@ -237,7 +253,7 @@ function updateLangPicker() {
     picker.replaceChildren(...sortedLangs.map((l: any) => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
-        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
         if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
@@ -344,8 +360,8 @@ export interface RankUpdate {
 
 export interface Run {
     answer: string,
-    multiset_delimiter: string,
-    item_delimiter: string,
+    output_delimiter: string,
+    multiset_item_delimiter: string,
     args: string[],
     exit_code: number,
     pass: boolean,
@@ -361,8 +377,8 @@ export interface ReadonlyPanelsData {
     Exp: string,
     Err: string,
     Argv: string[],
-    MultisetDelimiter: string,
-    ItemDelimiter: string
+    OutputDelimiter: string,
+    MultisetItemDelimiter: string
 }
 
 export interface SubmitResponse {
@@ -392,8 +408,7 @@ const scorePopups = (updates: RankUpdate[]) => {
     const rank = [0, 0];
     let newSolution = false;
 
-    for (const i of [0, 1] as const) {
-        const update = updates[i];
+    for (const [i, update] of updates.entries()) {
         if (update.to.strokes) {
             const newBest = update.oldBestStrokes != null ?
                 Math.min(update.oldBestStrokes, update.to.strokes) :
@@ -481,8 +496,7 @@ const diamondPopups = (updates: RankUpdate[]) => {
     const newDiamonds: string[] = [];
     const matchedDiamonds: string[] = [];
 
-    for (const i of [0, 1] as const) {
-        const update = updates[i];
+    for (const update of updates) {
         if (update.to.rank !== 1) {
             continue;
         }
@@ -615,8 +629,8 @@ export async function submit(
             Exp: run.answer,
             Err: run.stderr,
             Out: run.stdout,
-            MultisetDelimiter: run.multiset_delimiter,
-            ItemDelimiter: run.item_delimiter,
+            OutputDelimiter: run.output_delimiter,
+            MultisetItemDelimiter: run.multiset_item_delimiter,
         });
 
         const ms = Math.round(run.time_ns / 10**6);
@@ -762,31 +776,27 @@ export async function populateScores(editor: any) {
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>
+            <td title={tooltip(r, 'Bytes')}>
                 {scoringID != 'bytes' ? comma(r.bytes) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
                         <span>{comma(r.bytes)}</span>
                     </a>}
             </td>
-            {lang == 'assembly' ? '' : <td data-tooltip={tooltip(r, 'Chars')}>
+            {lang == 'assembly' ? '' : <td title={tooltip(r, 'Chars')}>
                 {scoringID != 'chars' ? comma(r.chars) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
                         <span>{comma(r.chars)}</span>
                     </a>}
             </td>}
         </tr>): <tr><td colspan={colspan}>(Empty)</td></tr>
-    }{
-        // Padding.
-        tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan={colspan}>&nbsp;</td></tr>)
     }</tbody>);
 
-    if (tabLayout) {
-        if (view === 'me')
-            $('.me')?.scrollIntoView({block: 'center'});
-        else
-            $('#scores-wrapper').scrollTop = 0;
-    }
+    // Scroll the rankings to the top or the "me" row if applicable.
+    const me            = $('.me');
+    const scoresWrapper = $('#scores-wrapper');
+    scoresWrapper.scrollTop = (view === 'me' && me)
+        ? me.offsetTop + (me.offsetHeight / 2) - (scoresWrapper.offsetHeight / 2)
+        : 0;
 
     $$<HTMLAnchorElement>('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {

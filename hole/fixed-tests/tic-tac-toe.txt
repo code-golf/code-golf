@@ -1,0 +1,4789 @@
+< XXX
+< OOX
+< OXO
+> X
+
+< XOO
+< .XO
+< XXO
+> O
+
+< OXO
+< XOX
+< X.O
+> O
+
+< OXX
+< X.X
+< OOO
+> O
+
+< OXO
+< XXO
+< XOX
+> -
+
+< XXO
+< O.O
+< XXO
+> O
+
+< XOX
+< OXX
+< OXO
+> -
+
+< OOO
+< XX.
+< OXX
+> O
+
+< ..O
+< ..O
+< XXX
+> X
+
+< XOX
+< OOX
+< OXX
+> X
+
+< XXO
+< XXO
+< OOX
+> X
+
+< OXX
+< OX.
+< X.O
+> X
+
+< XXX
+< .OO
+< XO.
+> X
+
+< OXO
+< .OX
+< OXX
+> O
+
+< OXX
+< XXO
+< OOX
+> -
+
+< XXO
+< XOX
+< O.O
+> O
+
+< XXX
+< XOO
+< OXO
+> X
+
+< OXO
+< OXX
+< XOX
+> -
+
+< OOX
+< XXX
+< ..O
+> X
+
+< OOX
+< XXO
+< XOX
+> X
+
+< OOX
+< XXX
+< OXO
+> X
+
+< XOO
+< XXO
+< XOX
+> X
+
+< OOX
+< OXO
+< XXX
+> X
+
+< OXX
+< OOX
+< XOX
+> X
+
+< .O.
+< .O.
+< XXX
+> X
+
+< OOO
+< OXX
+< XX.
+> O
+
+< O..
+< XXX
+< .O.
+> X
+
+< XOO
+< XXO
+< X..
+> X
+
+< ..O
+< XXX
+< OXO
+> X
+
+< OOO
+< X.X
+< OXX
+> O
+
+< OO.
+< XXX
+< OX.
+> X
+
+< .OX
+< XXX
+< .OO
+> X
+
+< XXO
+< XOX
+< OO.
+> O
+
+< OOO
+< XX.
+< .X.
+> O
+
+< OXX
+< OOX
+< .XO
+> O
+
+< OOO
+< XXO
+< X.X
+> O
+
+< X.O
+< XXX
+< .OO
+> X
+
+< XXX
+< ..O
+< ..O
+> X
+
+< XXX
+< OXO
+< XOO
+> X
+
+< OOX
+< XOX
+< OXX
+> X
+
+< XXO
+< .XO
+< OX.
+> X
+
+< X.X
+< XXO
+< OOO
+> O
+
+< XOX
+< .OX
+< XOO
+> O
+
+< O..
+< OXX
+< OX.
+> O
+
+< OXO
+< XXX
+< XOO
+> X
+
+< XOX
+< O.X
+< O.X
+> X
+
+< XOX
+< XXO
+< OXO
+> -
+
+< X.X
+< OOO
+< X..
+> O
+
+< XX.
+< XO.
+< XOO
+> X
+
+< X..
+< .XO
+< .OX
+> X
+
+< .XO
+< XO.
+< O.X
+> O
+
+< OXO
+< OXX
+< XXO
+> X
+
+< XOX
+< XOX
+< OXO
+> -
+
+< XXX
+< OOX
+< XOO
+> X
+
+< O..
+< .OX
+< XXO
+> O
+
+< X.O
+< XOX
+< OOX
+> O
+
+< OOO
+< XOX
+< X.X
+> O
+
+< XXX
+< .O.
+< XOO
+> X
+
+< XXX
+< .OO
+< OX.
+> X
+
+< OXX
+< OXX
+< O.O
+> O
+
+< OXO
+< XOX
+< XOX
+> -
+
+< XXO
+< XOO
+< XOX
+> X
+
+< X.O
+< OXX
+< O.X
+> X
+
+< X.O
+< .O.
+< OXX
+> O
+
+< ..X
+< OOX
+< OXX
+> X
+
+< .O.
+< OXO
+< XXX
+> X
+
+< XOO
+< XXO
+< OXX
+> X
+
+< XXX
+< XOO
+< XOO
+> X
+
+< XX.
+< OOO
+< XOX
+> O
+
+< XXO
+< OOX
+< XXO
+> -
+
+< XXO
+< OOX
+< XOX
+> -
+
+< .OO
+< XXX
+< O.X
+> X
+
+< XOX
+< OOO
+< XX.
+> O
+
+< OXX
+< OX.
+< O..
+> O
+
+< XXX
+< OXO
+< .O.
+> X
+
+< OO.
+< O.X
+< XXX
+> X
+
+< XXO
+< .OX
+< OOX
+> O
+
+< XOX
+< OXX
+< XOO
+> X
+
+< OXX
+< .XX
+< OOO
+> O
+
+< OXX
+< XXO
+< XOO
+> X
+
+< XXX
+< ..O
+< XOO
+> X
+
+< OOX
+< OXX
+< XXO
+> X
+
+< X.X
+< OOO
+< XOX
+> O
+
+< O.X
+< O..
+< OXX
+> O
+
+< XOX
+< XXO
+< OOX
+> X
+
+< XX.
+< ..X
+< OOO
+> O
+
+< O.X
+< XOX
+< .OX
+> X
+
+< OXX
+< XXO
+< OXO
+> X
+
+< OX.
+< O.X
+< O.X
+> O
+
+< XOX
+< .OX
+< .O.
+> O
+
+< X.O
+< XOX
+< OXO
+> O
+
+< ..O
+< XOO
+< XXX
+> X
+
+< XXO
+< XOO
+< X..
+> X
+
+< OXX
+< XOX
+< OOX
+> X
+
+< ..X
+< OXO
+< X..
+> X
+
+< OXX
+< OOO
+< XX.
+> O
+
+< XXO
+< OXO
+< OXX
+> X
+
+< ..O
+< XXX
+< ..O
+> X
+
+< .OX
+< .OX
+< OXX
+> X
+
+< XOO
+< OXO
+< XXX
+> X
+
+< X.O
+< XO.
+< O.X
+> O
+
+< OX.
+< OX.
+< .X.
+> X
+
+< O.X
+< XOO
+< XXO
+> O
+
+< OXO
+< XXO
+< X.O
+> O
+
+< .X.
+< .X.
+< OXO
+> X
+
+< XX.
+< XOO
+< XO.
+> X
+
+< OXO
+< XOO
+< XXX
+> X
+
+< XOX
+< OXO
+< OXX
+> X
+
+< XOX
+< XOO
+< XXO
+> X
+
+< XOX
+< .OX
+< O.X
+> X
+
+< XXO
+< XOX
+< XOO
+> X
+
+< OXO
+< OOX
+< XXX
+> X
+
+< XXO
+< OXX
+< OXO
+> X
+
+< OOX
+< OXX
+< X..
+> X
+
+< OX.
+< OXX
+< OOX
+> O
+
+< XXX
+< OO.
+< XO.
+> X
+
+< XOX
+< OOX
+< XXO
+> -
+
+< XOX
+< .X.
+< XOO
+> X
+
+< XOO
+< XXX
+< O..
+> X
+
+< OXX
+< .OX
+< O.X
+> X
+
+< .XX
+< O.X
+< OOX
+> X
+
+< OOX
+< XXO
+< XXO
+> X
+
+< OXX
+< OO.
+< XXO
+> O
+
+< .XO
+< XOO
+< OXX
+> O
+
+< .XX
+< XXO
+< OOO
+> O
+
+< OOX
+< .XX
+< O.X
+> X
+
+< XOO
+< OXX
+< OXX
+> X
+
+< .XO
+< OX.
+< XXO
+> X
+
+< XXX
+< XOO
+< .O.
+> X
+
+< ..X
+< OOX
+< XOX
+> X
+
+< .X.
+< OX.
+< .XO
+> X
+
+< XO.
+< XO.
+< X..
+> X
+
+< XXX
+< OX.
+< OO.
+> X
+
+< XXO
+< OOO
+< X.X
+> O
+
+< X.X
+< OXO
+< X.O
+> X
+
+< OXO
+< XOX
+< .XO
+> O
+
+< XOX
+< .O.
+< .OX
+> O
+
+< .OO
+< XXO
+< XXO
+> O
+
+< .OX
+< OXX
+< .OX
+> X
+
+< OXX
+< XOO
+< OXX
+> -
+
+< X.O
+< XXX
+< O.O
+> X
+
+< ..X
+< O.X
+< .OX
+> X
+
+< .XX
+< OOO
+< ..X
+> O
+
+< OOX
+< .OX
+< XXO
+> O
+
+< XXX
+< OO.
+< .XO
+> X
+
+< .O.
+< XOX
+< XO.
+> O
+
+< .OX
+< OX.
+< XOX
+> X
+
+< X.O
+< XO.
+< X..
+> X
+
+< ..O
+< XXO
+< X.O
+> O
+
+< .X.
+< XXO
+< OXO
+> X
+
+< OXX
+< O.X
+< O..
+> O
+
+< OOX
+< XOO
+< XXX
+> X
+
+< X.O
+< .X.
+< O.X
+> X
+
+< X.X
+< OXX
+< OOO
+> O
+
+< XOO
+< .XO
+< .XX
+> X
+
+< XX.
+< .XO
+< OXO
+> X
+
+< O.X
+< .OX
+< ..X
+> X
+
+< OXX
+< XOO
+< XOX
+> -
+
+< ..O
+< XXX
+< O..
+> X
+
+< XXX
+< XO.
+< O.O
+> X
+
+< XOX
+< XOO
+< OXX
+> -
+
+< XXX
+< O.O
+< .XO
+> X
+
+< XOO
+< XXX
+< OXO
+> X
+
+< OOX
+< XOX
+< X.O
+> O
+
+< XOO
+< OXX
+< XXO
+> -
+
+< .XO
+< XX.
+< OXO
+> X
+
+< OOO
+< .XX
+< XOX
+> O
+
+< OOX
+< .XX
+< .OX
+> X
+
+< OXX
+< OXO
+< XXO
+> X
+
+< .OX
+< .XO
+< XXO
+> X
+
+< .X.
+< OXX
+< OXO
+> X
+
+< XO.
+< .XO
+< XOX
+> X
+
+< XXX
+< .XO
+< .OO
+> X
+
+< XXO
+< .XO
+< ..O
+> O
+
+< .O.
+< .OX
+< XOX
+> O
+
+< OOO
+< .XX
+< ..X
+> O
+
+< XOX
+< XX.
+< OOO
+> O
+
+< XO.
+< XXX
+< O.O
+> X
+
+< XXX
+< .XO
+< OO.
+> X
+
+< XOO
+< XOO
+< XXX
+> X
+
+< XOX
+< X.O
+< X.O
+> X
+
+< X.O
+< XXO
+< .OX
+> X
+
+< OXO
+< XOX
+< O.X
+> O
+
+< XXO
+< .OX
+< OXO
+> O
+
+< XOO
+< OXX
+< XOX
+> X
+
+< XOX
+< OXO
+< ..X
+> X
+
+< OXO
+< X.O
+< XXO
+> O
+
+< X.O
+< .OX
+< O.X
+> O
+
+< OXO
+< XXX
+< OOX
+> X
+
+< OOX
+< .X.
+< XXO
+> X
+
+< XO.
+< XXO
+< XO.
+> X
+
+< X.O
+< X.O
+< .XO
+> O
+
+< XXX
+< ..O
+< .O.
+> X
+
+< X..
+< XXO
+< XOO
+> X
+
+< .XX
+< OOO
+< .X.
+> O
+
+< XOX
+< .XX
+< OOO
+> O
+
+< .OO
+< .XO
+< XXX
+> X
+
+< OXX
+< .X.
+< OXO
+> X
+
+< XXO
+< XOO
+< .XO
+> O
+
+< .XX
+< OOO
+< X..
+> O
+
+< .OX
+< XOO
+< XOX
+> O
+
+< O.O
+< .XO
+< XXX
+> X
+
+< .OX
+< .XO
+< X..
+> X
+
+< XXO
+< OO.
+< OXX
+> O
+
+< X.O
+< OX.
+< ..X
+> X
+
+< ..X
+< OOX
+< ..X
+> X
+
+< XOO
+< X..
+< X..
+> X
+
+< OX.
+< XXX
+< O.O
+> X
+
+< O.X
+< .OX
+< .XO
+> O
+
+< OOX
+< ..X
+< ..X
+> X
+
+< XXO
+< OXX
+< OOX
+> X
+
+< X.X
+< OOO
+< XXO
+> O
+
+< XOX
+< OOO
+< .XX
+> O
+
+< XOO
+< OOX
+< XXX
+> X
+
+< OOX
+< OOX
+< XXX
+> X
+
+< .XO
+< XXO
+< OX.
+> X
+
+< OO.
+< OXX
+< OXX
+> O
+
+< OO.
+< XXX
+< X.O
+> X
+
+< O..
+< O..
+< XXX
+> X
+
+< OXO
+< OXX
+< O.X
+> O
+
+< O.X
+< XOX
+< XOO
+> O
+
+< XOO
+< XOX
+< XXO
+> X
+
+< O..
+< XXX
+< O..
+> X
+
+< OXO
+< OX.
+< XX.
+> X
+
+< OO.
+< ...
+< XXX
+> X
+
+< OXX
+< OOO
+< .XX
+> O
+
+< XXX
+< XOO
+< OOX
+> X
+
+< O.X
+< .XX
+< XOO
+> X
+
+< X.X
+< OOO
+< OXX
+> O
+
+< XXO
+< XXO
+< O.O
+> O
+
+< XOX
+< XOO
+< X..
+> X
+
+< OXX
+< OXX
+< XOO
+> X
+
+< OOO
+< XX.
+< XOX
+> O
+
+< OOO
+< XOX
+< .XX
+> O
+
+< OOO
+< OXX
+< X.X
+> O
+
+< ..O
+< OXO
+< XXX
+> X
+
+< O..
+< OOX
+< XXX
+> X
+
+< .XO
+< .O.
+< OXX
+> O
+
+< .OX
+< O.O
+< XXX
+> X
+
+< X.O
+< .XX
+< OOX
+> X
+
+< .XO
+< XOX
+< OXO
+> O
+
+< XOO
+< XXX
+< XOO
+> X
+
+< X.X
+< OXO
+< O.X
+> X
+
+< .XX
+< ..X
+< OOO
+> O
+
+< OOO
+< XXO
+< .XX
+> O
+
+< XOX
+< OXO
+< XOX
+> X
+
+< XXX
+< .OO
+< X.O
+> X
+
+< ..O
+< .XO
+< XXO
+> O
+
+< .XX
+< .XO
+< OXO
+> X
+
+< XO.
+< XXO
+< .OX
+> X
+
+< OO.
+< .OX
+< XXX
+> X
+
+< OO.
+< XXX
+< ...
+> X
+
+< OOX
+< XXO
+< OXX
+> -
+
+< XOX
+< OXO
+< X..
+> X
+
+< X.X
+< OOO
+< .X.
+> O
+
+< OOO
+< X..
+< .XX
+> O
+
+< O.O
+< X.O
+< XXX
+> X
+
+< ..X
+< ..X
+< OOX
+> X
+
+< XXO
+< OX.
+< .XO
+> X
+
+< OXX
+< O.X
+< OXO
+> O
+
+< X.O
+< XXO
+< OXO
+> O
+
+< XOX
+< OO.
+< XOX
+> O
+
+< OX.
+< .XX
+< OXO
+> X
+
+< X.X
+< .XO
+< XOO
+> X
+
+< O.O
+< XXX
+< OX.
+> X
+
+< XXX
+< O..
+< OXO
+> X
+
+< OOX
+< XOX
+< XO.
+> O
+
+< O.X
+< XXX
+< O.O
+> X
+
+< XXO
+< X.X
+< OOO
+> O
+
+< .XX
+< OXO
+< .XO
+> X
+
+< XO.
+< XX.
+< OOX
+> X
+
+< OXX
+< XO.
+< ..O
+> O
+
+< XXO
+< X.O
+< OXO
+> O
+
+< O.X
+< .OX
+< XOX
+> X
+
+< ..O
+< XXX
+< XOO
+> X
+
+< X.X
+< OX.
+< OOX
+> X
+
+< .OX
+< .XX
+< OOX
+> X
+
+< XXO
+< XOO
+< OX.
+> O
+
+< XXX
+< ...
+< .OO
+> X
+
+< XXX
+< .O.
+< O..
+> X
+
+< XOX
+< OXO
+< XXO
+> X
+
+< OXX
+< OXO
+< .X.
+> X
+
+< .OX
+< ..X
+< O.X
+> X
+
+< XXX
+< OXO
+< OXO
+> X
+
+< OX.
+< .XO
+< XXO
+> X
+
+< .OX
+< OXX
+< O.X
+> X
+
+< XO.
+< X..
+< X.O
+> X
+
+< XOX
+< X.X
+< OOO
+> O
+
+< OOO
+< .XX
+< OXX
+> O
+
+< OXO
+< XO.
+< XXO
+> O
+
+< XO.
+< .OO
+< XXX
+> X
+
+< OOX
+< X.X
+< O.X
+> X
+
+< .OX
+< .XO
+< XOX
+> X
+
+< X.O
+< XXO
+< XO.
+> X
+
+< XXO
+< OOX
+< O.X
+> O
+
+< O.X
+< OX.
+< XOX
+> X
+
+< OOX
+< .XO
+< XX.
+> X
+
+< OX.
+< .XO
+< .X.
+> X
+
+< X.O
+< .XO
+< XOX
+> X
+
+< ...
+< .OO
+< XXX
+> X
+
+< .X.
+< OOO
+< .XX
+> O
+
+< OX.
+< XXO
+< .XO
+> X
+
+< XXX
+< O..
+< .O.
+> X
+
+< .XO
+< OXO
+< .XX
+> X
+
+< X.O
+< XOX
+< O..
+> O
+
+< X.O
+< .XO
+< .XO
+> O
+
+< OX.
+< OO.
+< XXX
+> X
+
+< XO.
+< OX.
+< ..X
+> X
+
+< X..
+< OX.
+< O.X
+> X
+
+< X.O
+< XXO
+< ..O
+> O
+
+< .OX
+< XO.
+< .OX
+> O
+
+< O..
+< XO.
+< XXO
+> O
+
+< OOX
+< OXX
+< ..X
+> X
+
+< OXX
+< O..
+< OX.
+> O
+
+< .OX
+< OXO
+< XX.
+> X
+
+< OOO
+< X..
+< XX.
+> O
+
+< XOX
+< .XO
+< O.X
+> X
+
+< XXX
+< .OX
+< O.O
+> X
+
+< OO.
+< XOX
+< XOX
+> O
+
+< .XX
+< OOX
+< O.X
+> X
+
+< XXX
+< .O.
+< .O.
+> X
+
+< XOO
+< OXX
+< ..X
+> X
+
+< X..
+< .XO
+< O.X
+> X
+
+< OOO
+< ..X
+< .XX
+> O
+
+< XXX
+< OX.
+< O.O
+> X
+
+< .XX
+< OOO
+< XXO
+> O
+
+< OXX
+< OXO
+< XOX
+> X
+
+< ..O
+< XXX
+< OOX
+> X
+
+< XO.
+< OX.
+< OXX
+> X
+
+< XOO
+< OX.
+< .XX
+> X
+
+< .OX
+< .X.
+< XO.
+> X
+
+< OXO
+< XOX
+< OX.
+> O
+
+< OOX
+< XOX
+< .XO
+> O
+
+< O.X
+< XOX
+< O.X
+> X
+
+< OO.
+< XXX
+< O.X
+> X
+
+< XXO
+< .O.
+< O.X
+> O
+
+< .OO
+< XOX
+< OXX
+> O
+
+< OXX
+< XOO
+< .XO
+> O
+
+< ..X
+< OX.
+< XO.
+> X
+
+< XO.
+< X.O
+< X..
+> X
+
+< XO.
+< XOX
+< .O.
+> O
+
+< O.X
+< OXO
+< X.X
+> X
+
+< XXX
+< .OO
+< ...
+> X
+
+< O..
+< XOX
+< X.O
+> O
+
+< ...
+< XXX
+< .OO
+> X
+
+< X.X
+< .X.
+< OOO
+> O
+
+< OXO
+< .O.
+< XXX
+> X
+
+< XO.
+< X.X
+< XOO
+> X
+
+< XOO
+< XOX
+< OX.
+> O
+
+< X.X
+< OOX
+< .OX
+> X
+
+< O.X
+< OXX
+< O..
+> O
+
+< .OX
+< XXX
+< O.O
+> X
+
+< XXX
+< OO.
+< ...
+> X
+
+< .XO
+< X.O
+< X.O
+> O
+
+< OXO
+< XXO
+< OXX
+> X
+
+< X.O
+< XOO
+< X.X
+> X
+
+< .XX
+< OOO
+< OXX
+> O
+
+< OXX
+< .OX
+< XOO
+> O
+
+< .XO
+< XXO
+< ..O
+> O
+
+< OOX
+< XO.
+< XXO
+> O
+
+< XXO
+< OOO
+< .XX
+> O
+
+< OOO
+< .X.
+< X.X
+> O
+
+< .OX
+< O.X
+< XOX
+> X
+
+< XXO
+< OXO
+< XOX
+> X
+
+< XO.
+< XOX
+< OOX
+> O
+
+< .OX
+< OXO
+< X.X
+> X
+
+< .XO
+< OOX
+< OXX
+> O
+
+< XX.
+< OOO
+< OXX
+> O
+
+< XOO
+< .OX
+< XOX
+> O
+
+< ..O
+< XOX
+< O.X
+> O
+
+< OX.
+< OOX
+< OXX
+> O
+
+< XOO
+< X.O
+< X.X
+> X
+
+< XX.
+< OXO
+< .XO
+> X
+
+< X.O
+< .X.
+< .OX
+> X
+
+< OOO
+< XXO
+< XX.
+> O
+
+< OXX
+< .OX
+< ..O
+> O
+
+< O.X
+< XXX
+< .OO
+> X
+
+< .XX
+< XOX
+< OOO
+> O
+
+< XX.
+< X..
+< OOO
+> O
+
+< OOX
+< OX.
+< XX.
+> X
+
+< OOX
+< XXX
+< XOO
+> X
+
+< ..O
+< OOX
+< XXX
+> X
+
+< OXX
+< .OX
+< OXO
+> O
+
+< X..
+< X.O
+< X.O
+> X
+
+< XOO
+< XX.
+< X.O
+> X
+
+< XXO
+< .XX
+< OOO
+> O
+
+< X..
+< X.O
+< XO.
+> X
+
+< XOX
+< OOX
+< XO.
+> O
+
+< XOX
+< XXO
+< XOO
+> X
+
+< OOX
+< ..X
+< OXX
+> X
+
+< XXO
+< OOX
+< OX.
+> O
+
+< XXX
+< OX.
+< .OO
+> X
+
+< XXO
+< XO.
+< O..
+> O
+
+< .O.
+< XXX
+< O..
+> X
+
+< XOO
+< XX.
+< O.X
+> X
+
+< O.X
+< XXO
+< X.O
+> X
+
+< OXX
+< XOO
+< X.O
+> O
+
+< .OX
+< XX.
+< XOO
+> X
+
+< .OX
+< ..X
+< .OX
+> X
+
+< OXO
+< XXO
+< .X.
+> X
+
+< OX.
+< XOX
+< XOO
+> O
+
+< XOO
+< .O.
+< XXX
+> X
+
+< OX.
+< O.O
+< XXX
+> X
+
+< OOO
+< .XX
+< XXO
+> O
+
+< OOX
+< O.X
+< .XX
+> X
+
+< O..
+< XXX
+< ..O
+> X
+
+< XXO
+< OXX
+< XOO
+> -
+
+< XXX
+< ...
+< OO.
+> X
+
+< X.O
+< XXX
+< OO.
+> X
+
+< O.O
+< XXX
+< .XO
+> X
+
+< X.O
+< O.O
+< XXX
+> X
+
+< OX.
+< XX.
+< OXO
+> X
+
+< XO.
+< XOX
+< X.O
+> X
+
+< ..X
+< .XO
+< X.O
+> X
+
+< XXO
+< .OX
+< O..
+> O
+
+< XX.
+< OOO
+< ..X
+> O
+
+< O.X
+< OX.
+< X..
+> X
+
+< XO.
+< .XO
+< ..X
+> X
+
+< OXO
+< XXX
+< OXO
+> X
+
+< OXO
+< .OX
+< XXO
+> O
+
+< XO.
+< .X.
+< .OX
+> X
+
+< O.O
+< XOX
+< XXO
+> O
+
+< X..
+< OX.
+< .OX
+> X
+
+< XXX
+< .OX
+< .OO
+> X
+
+< OXX
+< OX.
+< XO.
+> X
+
+< .OX
+< .OX
+< ..X
+> X
+
+< OXO
+< .X.
+< .X.
+> X
+
+< O.X
+< OOX
+< XXO
+> O
+
+< XOO
+< O..
+< XXX
+> X
+
+< OXO
+< .X.
+< XXO
+> X
+
+< OXX
+< .OX
+< .OX
+> X
+
+< .XO
+< .OO
+< XXX
+> X
+
+< XXO
+< OX.
+< .OX
+> X
+
+< XXX
+< OO.
+< .OX
+> X
+
+< OXX
+< XX.
+< OOO
+> O
+
+< X.X
+< X..
+< OOO
+> O
+
+< XXX
+< OXO
+< OOX
+> X
+
+< OOX
+< .X.
+< X..
+> X
+
+< XX.
+< OXX
+< OOO
+> O
+
+< XO.
+< X.O
+< XXO
+> X
+
+< .OX
+< OOX
+< X.X
+> X
+
+< XXX
+< OO.
+< X.O
+> X
+
+< XOO
+< .XO
+< X.X
+> X
+
+< XXO
+< OOO
+< XX.
+> O
+
+< XO.
+< OO.
+< XXX
+> X
+
+< .OX
+< .OO
+< XXX
+> X
+
+< X.O
+< OX.
+< XOX
+> X
+
+< OOO
+< XX.
+< X..
+> O
+
+< .XO
+< OO.
+< XXX
+> X
+
+< OX.
+< XXX
+< .OO
+> X
+
+< O.O
+< XXX
+< XO.
+> X
+
+< OXO
+< OX.
+< .XX
+> X
+
+< .XX
+< OXO
+< XO.
+> X
+
+< X..
+< XO.
+< X.O
+> X
+
+< XOX
+< XO.
+< X.O
+> X
+
+< X.X
+< OOX
+< O.X
+> X
+
+< XXX
+< O.O
+< X.O
+> X
+
+< OXX
+< OOX
+< OX.
+> O
+
+< .OX
+< X.X
+< OOX
+> X
+
+< X..
+< .X.
+< OOX
+> X
+
+< XO.
+< .XO
+< OXX
+> X
+
+< OOX
+< .XO
+< X.X
+> X
+
+< OOX
+< XXO
+< X..
+> X
+
+< XOO
+< XOX
+< O.X
+> O
+
+< XXX
+< .OO
+< .XO
+> X
+
+< OOO
+< .XX
+< X..
+> O
+
+< OXX
+< XOX
+< .OO
+> O
+
+< .O.
+< XO.
+< XOX
+> O
+
+< O.O
+< XO.
+< XXX
+> X
+
+< OX.
+< XOX
+< OXO
+> O
+
+< O.X
+< OO.
+< XXX
+> X
+
+< .O.
+< XXX
+< OOX
+> X
+
+< XO.
+< .OX
+< XO.
+> O
+
+< X.O
+< X.X
+< XOO
+> X
+
+< .OX
+< OX.
+< X..
+> X
+
+< X..
+< OOO
+< .XX
+> O
+
+< .X.
+< X.X
+< OOO
+> O
+
+< XOO
+< XO.
+< XX.
+> X
+
+< O.X
+< OOX
+< .XX
+> X
+
+< OXX
+< .XO
+< OX.
+> X
+
+< XXO
+< XO.
+< OXO
+> O
+
+< OOX
+< XOX
+< ..X
+> X
+
+< .OO
+< OX.
+< XXX
+> X
+
+< O.X
+< .X.
+< X.O
+> X
+
+< XOX
+< OOX
+< ..X
+> X
+
+< .XX
+< OX.
+< OXO
+> X
+
+< OOO
+< OXX
+< .XX
+> O
+
+< XOO
+< .OX
+< OXX
+> O
+
+< XXX
+< ..O
+< OXO
+> X
+
+< XO.
+< XXO
+< O.X
+> X
+
+< O.X
+< OXO
+< OXX
+> O
+
+< XX.
+< OOO
+< XXO
+> O
+
+< X.O
+< X..
+< X.O
+> X
+
+< XOO
+< .X.
+< XOX
+> X
+
+< OXO
+< XXX
+< .O.
+> X
+
+< .OX
+< XXO
+< X.O
+> X
+
+< X.X
+< .OX
+< OOX
+> X
+
+< O.X
+< OXX
+< X.O
+> X
+
+< OOO
+< X.X
+< ..X
+> O
+
+< XXX
+< O.X
+< OO.
+> X
+
+< OOO
+< XX.
+< XXO
+> O
+
+< O.X
+< ..X
+< O.X
+> X
+
+< OOX
+< OXX
+< XOX
+> X
+
+< X..
+< OXO
+< ..X
+> X
+
+< .OX
+< .O.
+< XOX
+> O
+
+< XOO
+< XXX
+< OOX
+> X
+
+< XO.
+< XXX
+< OO.
+> X
+
+< O.X
+< XX.
+< XOO
+> X
+
+< OOX
+< OX.
+< X.X
+> X
+
+< X.O
+< XOO
+< OXX
+> O
+
+< X..
+< OXO
+< OXX
+> X
+
+< XO.
+< OOX
+< XOX
+> O
+
+< XXX
+< XO.
+< OO.
+> X
+
+< XOX
+< ..X
+< OOX
+> X
+
+< XXX
+< .OO
+< .OX
+> X
+
+< XO.
+< XX.
+< XOO
+> X
+
+< O.X
+< O.X
+< OX.
+> O
+
+< X.O
+< XX.
+< OOX
+> X
+
+< OX.
+< XXX
+< OO.
+> X
+
+< XXX
+< O..
+< XOO
+> X
+
+< OOX
+< XX.
+< X.O
+> X
+
+< XXX
+< OOX
+< OOX
+> X
+
+< .XO
+< .XO
+< X.O
+> O
+
+< .XO
+< OX.
+< OXX
+> X
+
+< XOX
+< OX.
+< X.O
+> X
+
+< .OX
+< O.X
+< ..X
+> X
+
+< ..X
+< .OX
+< O.X
+> X
+
+< X.O
+< .XO
+< OXX
+> X
+
+< O.X
+< XO.
+< .XO
+> O
+
+< XOX
+< OXX
+< OOX
+> X
+
+< O..
+< XXX
+< XOO
+> X
+
+< .OX
+< XO.
+< XO.
+> O
+
+< XOX
+< .OO
+< XOX
+> O
+
+< OXO
+< XXX
+< ..O
+> X
+
+< O.X
+< XO.
+< X.O
+> O
+
+< O.X
+< XOX
+< ..O
+> O
+
+< OXO
+< O.X
+< OXX
+> O
+
+< X.O
+< OX.
+< OXX
+> X
+
+< XOO
+< XO.
+< OXX
+> O
+
+< .XO
+< OXX
+< .XO
+> X
+
+< OO.
+< .XO
+< XXX
+> X
+
+< X.O
+< OXX
+< .OX
+> X
+
+< XO.
+< XOO
+< XX.
+> X
+
+< OX.
+< OXO
+< .XX
+> X
+
+< O.O
+< XOX
+< OXX
+> O
+
+< .OX
+< O.X
+< OXX
+> X
+
+< .OX
+< .OX
+< XO.
+> O
+
+< XO.
+< XOO
+< X.X
+> X
+
+< XOO
+< X..
+< XXO
+> X
+
+< O.X
+< .XX
+< OOX
+> X
+
+< OO.
+< XXX
+< .XO
+> X
+
+< .XO
+< XXX
+< O.O
+> X
+
+< OXX
+< OOX
+< X.O
+> O
+
+< OX.
+< .X.
+< .XO
+> X
+
+< XXX
+< O.O
+< ...
+> X
+
+< OX.
+< .OX
+< .XO
+> O
+
+< XOO
+< XOX
+< .OX
+> O
+
+< XXX
+< OO.
+< OX.
+> X
+
+< ...
+< O.O
+< XXX
+> X
+
+< OXO
+< O..
+< XXX
+> X
+
+< O.X
+< X.X
+< OOX
+> X
+
+< OXX
+< XO.
+< OXO
+> O
+
+< X..
+< XOO
+< XXO
+> X
+
+< XO.
+< .OX
+< .OX
+> O
+
+< X..
+< OXX
+< OOX
+> X
+
+< .XO
+< ..O
+< XXO
+> O
+
+< OXX
+< OXO
+< O.X
+> O
+
+< OX.
+< XOO
+< XXO
+> O
+
+< ..O
+< XXO
+< .XO
+> O
+
+< .XO
+< .OX
+< O.X
+> O
+
+< XOX
+< XOX
+< OO.
+> O
+
+< XOX
+< .XO
+< .OX
+> X
+
+< XO.
+< .X.
+< O.X
+> X
+
+< .O.
+< XXX
+< ..O
+> X
+
+< O.X
+< OOX
+< X.X
+> X
+
+< XXX
+< XOO
+< ..O
+> X
+
+< OOO
+< XX.
+< ..X
+> O
+
+< OOO
+< X.X
+< XXO
+> O
+
+< OX.
+< OOX
+< XXO
+> O
+
+< XXO
+< XX.
+< OOO
+> O
+
+< .XO
+< XO.
+< OX.
+> O
+
+< OX.
+< OXX
+< O..
+> O
+
+< XO.
+< XO.
+< XXO
+> X
+
+< XXX
+< O.O
+< XO.
+> X
+
+< .X.
+< OX.
+< OX.
+> X
+
+< XXX
+< O.X
+< O.O
+> X
+
+< O.O
+< OX.
+< XXX
+> X
+
+< OX.
+< OXO
+< XX.
+> X
+
+< XOX
+< .O.
+< XO.
+> O
+
+< XO.
+< XXX
+< .OO
+> X
+
+< XOO
+< X.O
+< XX.
+> X
+
+< ..O
+< XOX
+< OX.
+> O
+
+< O.X
+< OXO
+< XX.
+> X
+
+< O.X
+< .XO
+< X..
+> X
+
+< X.X
+< XOO
+< X.O
+> X
+
+< O.X
+< OXX
+< OXO
+> O
+
+< ..O
+< XO.
+< OXX
+> O
+
+< OXX
+< OOO
+< X.X
+> O
+
+< OXX
+< .XO
+< X.O
+> X
+
+< XXO
+< XO.
+< XO.
+> X
+
+< .OO
+< O.X
+< XXX
+> X
+
+< O.O
+< XXX
+< ...
+> X
+
+< OOX
+< XXX
+< OOX
+> X
+
+< O..
+< O.X
+< OXX
+> O
+
+< OXO
+< XO.
+< OXX
+> O
+
+< XOO
+< .XX
+< .OX
+> X
+
+< .X.
+< OOO
+< X.X
+> O
+
+< OXX
+< XO.
+< XOO
+> O
+
+< .XO
+< .X.
+< .XO
+> X
+
+< .OO
+< .OX
+< XXX
+> X
+
+< ..X
+< XX.
+< OOO
+> O
+
+< XOX
+< X.O
+< XO.
+> X
+
+< OOO
+< .X.
+< XX.
+> O
+
+< O.O
+< XXX
+< X.O
+> X
+
+< O..
+< XXX
+< OOX
+> X
+
+< OOX
+< OX.
+< OXX
+> O
+
+< OXO
+< .XO
+< .XX
+> X
+
+< OXX
+< OO.
+< OXX
+> O
+
+< XOX
+< XOX
+< .OO
+> O
+
+< XXO
+< OXO
+< X.O
+> O
+
+< OXO
+< ..O
+< XXX
+> X
+
+< X..
+< XOX
+< XOO
+> X
+
+< .OO
+< XXX
+< .OX
+> X
+
+< O.X
+< XOX
+< OXO
+> O
+
+< .XX
+< OXO
+< OX.
+> X
+
+< OXX
+< OXO
+< X..
+> X
+
+< OOO
+< X.X
+< XOX
+> O
+
+< X.O
+< .OX
+< OX.
+> O
+
+< XXO
+< .OO
+< OXX
+> O
+
+< XOX
+< XOO
+< .OX
+> O
+
+< O.X
+< .XO
+< XXO
+> X
+
+< .XO
+< .X.
+< OX.
+> X
+
+< X..
+< OOO
+< XX.
+> O
+
+< O.X
+< OX.
+< XXO
+> X
+
+< XXO
+< OX.
+< O.X
+> X
+
+< OXX
+< .X.
+< XOO
+> X
+
+< X.O
+< XO.
+< XOX
+> X
+
+< OO.
+< XXX
+< XO.
+> X
+
+< XXO
+< XOO
+< O.X
+> O
+
+< XOX
+< OX.
+< .OX
+> X
+
+< .XO
+< OX.
+< .X.
+> X
+
+< OOX
+< .OX
+< X.X
+> X
+
+< XOO
+< OX.
+< X.X
+> X
+
+< ..X
+< X.X
+< OOO
+> O
+
+< .OO
+< XOX
+< XOX
+> O
+
+< XXX
+< O.O
+< OX.
+> X
+
+< O.O
+< .OX
+< XXX
+> X
+
+< .XO
+< OXO
+< XX.
+> X
+
+< .OX
+< OO.
+< XXX
+> X
+
+< X.X
+< XOO
+< XO.
+> X
+
+< O..
+< ..O
+< XXX
+> X
+
+< OXO
+< XX.
+< OX.
+> X
+
+< .XO
+< .XX
+< OXO
+> X
+
+< XOX
+< XO.
+< OOX
+> O
+
+< XXO
+< OXO
+< .X.
+> X
+
+< X..
+< XOO
+< X..
+> X
+
+< OOX
+< XO.
+< XOX
+> O
+
+< OX.
+< .O.
+< XXO
+> O
+
+< XXO
+< .O.
+< OX.
+> O
+
+< ..X
+< XXO
+< XOO
+> X
+
+< .XX
+< OOO
+< XOX
+> O
+
+< OX.
+< .OX
+< X.O
+> O
+
+< XXX
+< X.O
+< O.O
+> X
+
+< X.O
+< OXO
+< XXO
+> O
+
+< X.O
+< X.O
+< X..
+> X
+
+< X.O
+< X..
+< XO.
+> X
+
+< ..X
+< .OX
+< .OX
+> X
+
+< XO.
+< O.O
+< XXX
+> X
+
+< OO.
+< OX.
+< XXX
+> X
+
+< .OX
+< XOX
+< XOO
+> O
+
+< ..O
+< O..
+< XXX
+> X
+
+< X..
+< XO.
+< XO.
+> X
+
+< .OO
+< X.O
+< XXX
+> X
+
+< X.X
+< OXO
+< XO.
+> X
+
+< XXX
+< .XO
+< O.O
+> X
+
+< OOX
+< O.X
+< X.X
+> X
+
+< X.X
+< .XO
+< OOX
+> X
+
+< O..
+< OXX
+< O.X
+> O
+
+< X.O
+< XOX
+< X.O
+> X
+
+< XOO
+< ..O
+< XXX
+> X
+
+< .X.
+< .XX
+< OOO
+> O
+
+< .OO
+< XXX
+< .XO
+> X
+
+< .X.
+< .XO
+< .XO
+> X
+
+< X.X
+< O.X
+< OOX
+> X
+
+< .XO
+< XXX
+< .OO
+> X
+
+< ..X
+< OXO
+< XXO
+> X
+
+< OXX
+< .XO
+< XO.
+> X
+
+< OXX
+< .XO
+< .XO
+> X
+
+< ..X
+< O.X
+< O.X
+> X
+
+< XXX
+< XO.
+< .OO
+> X
+
+< OXX
+< XOX
+< O.O
+> O
+
+< .XO
+< .XO
+< .X.
+> X
+
+< .X.
+< OXO
+< XXO
+> X
+
+< XXX
+< X.O
+< .OO
+> X
+
+< .X.
+< OXO
+< OXX
+> X
+
+< ...
+< OO.
+< XXX
+> X
+
+< ..X
+< OOO
+< XX.
+> O
+
+< ..X
+< .XO
+< XO.
+> X
+
+< XOX
+< OOO
+< X.X
+> O
+
+< OOX
+< XXX
+< O..
+> X
+
+< X.O
+< ..O
+< XXO
+> O
+
+< X..
+< XX.
+< OOO
+> O
+
+< XXX
+< OOX
+< ..O
+> X
+
+< .OX
+< OOX
+< .XX
+> X
+
+< .X.
+< .XO
+< OX.
+> X
+
+< X..
+< OXO
+< XOX
+> X
+
+< ...
+< XXX
+< O.O
+> X
+
+< OX.
+< .X.
+< OX.
+> X
+
+< XOX
+< XO.
+< .O.
+> O
+
+< .OO
+< ...
+< XXX
+> X
+
+< .OX
+< OXX
+< XO.
+> X
+
+< OOO
+< X.X
+< .X.
+> O
+
+< OXX
+< O..
+< O.X
+> O
+
+< OOO
+< XOX
+< XX.
+> O
+
+< O.O
+< XXO
+< XXO
+> O
+
+< OX.
+< XO.
+< .XO
+> O
+
+< XOX
+< OX.
+< XO.
+> X
+
+< .O.
+< XOX
+< .OX
+> O
+
+< XO.
+< OXX
+< .OX
+> X
+
+< XXX
+< OOX
+< O..
+> X
+
+< OXX
+< OOX
+< ..X
+> X
+
+< OOX
+< OXX
+< OX.
+> O
+
+< X.O
+< OXO
+< X.X
+> X
+
+< XO.
+< X..
+< XO.
+> X
+
+< OOX
+< XX.
+< XO.
+> X
+
+< OXX
+< .O.
+< X.O
+> O
+
+< ..X
+< OX.
+< X.O
+> X
+
+< O.X
+< .X.
+< XO.
+> X
+
+< O.X
+< XXX
+< OO.
+> X
+
+< OX.
+< XXO
+< OX.
+> X
+
+< X.X
+< XOX
+< OOO
+> O
+
+< XO.
+< .O.
+< XOX
+> O
+
+< XXX
+< ..O
+< OOX
+> X
+
+< OXX
+< OX.
+< OOX
+> O
+
+< XXO
+< XXO
+< .OO
+> O
+
+< XXO
+< .XO
+< XOO
+> O
+
+< XXX
+< .O.
+< ..O
+> X
+
+< O..
+< .O.
+< XXX
+> X
+
+< OX.
+< OX.
+< O.X
+> O
+
+< O.X
+< O.O
+< XXX
+> X
+
+< XXO
+< XO.
+< X.O
+> X
+
+< XOO
+< XXX
+< ..O
+> X
+
+< O.X
+< OX.
+< OX.
+> O
+
+< OXO
+< OXO
+< XXX
+> X
+
+< XOO
+< X.X
+< XO.
+> X
+
+< X.O
+< .XO
+< ..X
+> X
+
+< XX.
+< OOO
+< .X.
+> O
+
+< XXX
+< O.O
+< .OX
+> X
+
+< XXX
+< ...
+< O.O
+> X
+
+< OXO
+< .X.
+< OXX
+> X
+
+< .X.
+< OOO
+< XX.
+> O
+
+< .O.
+< XOO
+< XXX
+> X
+
+< OXO
+< XX.
+< .XO
+> X
+
+< X.O
+< OOX
+< OXX
+> O
+
+< XOX
+< OX.
+< O.X
+> X
+
+< OX.
+< XOX
+< ..O
+> O
+
+< XOO
+< XO.
+< X.X
+> X
+
+< ..O
+< XXX
+< .O.
+> X
+
+< XXX
+< O.O
+< O.X
+> X
+
+< XO.
+< OX.
+< XOX
+> X
+
+< OOX
+< .OX
+< .XX
+> X
+
+< ..X
+< .XX
+< OOO
+> O
+
+< ..X
+< OXX
+< XOO
+> X
+
+< XX.
+< XOX
+< OOO
+> O
+
+< XX.
+< X.O
+< XOO
+> X
+
+< .XX
+< OXX
+< OOO
+> O
+
+< X..
+< X..
+< XOO
+> X
+
+< X.X
+< X.O
+< XOO
+> X
+
+< X.O
+< .XO
+< X.O
+> O
+
+< OXX
+< O.O
+< OXX
+> O
+
+< OO.
+< XOX
+< XXO
+> O
+
+< .XX
+< X..
+< OOO
+> O
+
+< OOO
+< X.X
+< X..
+> O
+
+< XOO
+< XXO
+< .XO
+> O
+
+< .XO
+< XOX
+< OOX
+> O
+
+< XOO
+< .XX
+< O.X
+> X
+
+< .XO
+< XOX
+< O..
+> O
+
+< O.X
+< OXX
+< .OX
+> X
+
+< OOX
+< XXX
+< .O.
+> X
+
+< ..X
+< OOO
+< X.X
+> O
+
+< O..
+< XXX
+< OXO
+> X
+
+< X..
+< XXO
+< OOX
+> X
+
+< .XX
+< OXO
+< X.O
+> X
+
+< ..O
+< X.O
+< XXO
+> O
+
+< .OX
+< XXO
+< XO.
+> X
+
+< XO.
+< OXO
+< .XX
+> X
+
+< OXX
+< .O.
+< .XO
+> O
+
+< ..X
+< OXX
+< OOX
+> X
+
+< O.X
+< .O.
+< XXO
+> O
+
+< XO.
+< OXX
+< O.X
+> X
+
+< XXO
+< .OO
+< XXO
+> O
+
+< O.X
+< .OO
+< XXX
+> X
+
+< O.O
+< O.X
+< XXX
+> X
+
+< OXX
+< ..X
+< OOX
+> X
+
+< X.X
+< XO.
+< XOO
+> X
+
+< .XO
+< XXO
+< XOO
+> O
+
+< XX.
+< OX.
+< OOX
+> X
+
+< XX.
+< OXO
+< .OX
+> X
+
+< X.O
+< XOO
+< XX.
+> X
+
+< O..
+< OXO
+< XXX
+> X
+
+< .XX
+< .X.
+< OOO
+> O
+
+< .XO
+< XXX
+< OO.
+> X
+
+< OOX
+< .XX
+< XO.
+> X
+
+< .O.
+< O..
+< XXX
+> X
+
+< XOO
+< .X.
+< ..X
+> X
+
+< X.O
+< XXO
+< O.X
+> X
+
+< X.O
+< XX.
+< XOO
+> X
+
+< XXX
+< .OO
+< O.X
+> X
+
+< ..X
+< .X.
+< XOO
+> X
+
+< OOX
+< ..X
+< XOX
+> X
+
+< XOO
+< X.X
+< X.O
+> X
+
+< O..
+< OX.
+< OXX
+> O
+
+< ..X
+< XOX
+< OOX
+> X
+
+< XX.
+< XXO
+< OOO
+> O
+
+< OXO
+< .XX
+< OX.
+> X
+
+< XXO
+< ..O
+< .XO
+> O
+
+< .OX
+< .X.
+< X.O
+> X
+
+< O.X
+< O.X
+< ..X
+> X
+
+< .X.
+< OXO
+< .X.
+> X
+
+< ..X
+< OOO
+< .XX
+> O
+
+< .XO
+< X.O
+< .XO
+> O
+
+< XXX
+< O..
+< ..O
+> X
+
+< OOX
+< O..
+< XXX
+> X
+
+< XOX
+< .XO
+< XO.
+> X
+
+< OOX
+< .O.
+< XXX
+> X
+
+< .XX
+< .XO
+< XOO
+> X
+
+< XXO
+< .X.
+< OXO
+> X
+
+< XXO
+< .XO
+< .OX
+> X
+
+< OOX
+< .XX
+< X.O
+> X
+
+< X..
+< XOO
+< XOX
+> X
+
+< XX.
+< OX.
+< OXO
+> X
+
+< X.O
+< XO.
+< OX.
+> O
+
+< .OO
+< XXX
+< OX.
+> X
+
+< XO.
+< XO.
+< .OX
+> O
+
+< .O.
+< ..O
+< XXX
+> X
+
+< X.O
+< OO.
+< XXX
+> X
+
+< X.O
+< OXO
+< .XX
+> X
+
+< OXX
+< O.X
+< .OX
+> X
+
+< O.X
+< XXO
+< XO.
+> X
+
+< .OX
+< XOX
+< .O.
+> O
+
+< X.X
+< OX.
+< XOO
+> X
+
+< XXO
+< ..O
+< X.O
+> O
+
+< OOO
+< X..
+< X.X
+> O
+
+< .OX
+< XOX
+< O.X
+> X
+
+< O.O
+< ...
+< XXX
+> X
+
+< XXO
+< .XO
+< O.X
+> X
+
+< O.O
+< XXX
+< O.X
+> X
+
+< .OO
+< XXX
+< ...
+> X
+
+< ...
+< XXX
+< OO.
+> X
+
+< OX.
+< .XO
+< OXX
+> X
+
+< XXX
+< .O.
+< OOX
+> X
+
+< X.O
+< .OO
+< XXX
+> X
+
+< .OX
+< OX.
+< XXO
+> X
+
+< XXO
+< .X.
+< OOX
+> X
+
+< XOO
+< XX.
+< .OX
+> X
+
+< .XO
+< .XO
+< OXX
+> X
+
+< ..O
+< .O.
+< XXX
+> X
+
+< XX.
+< XOO
+< X.O
+> X
+
+< O.X
+< .OX
+< X.O
+> O
+
+< OXX
+< .OO
+< XXO
+> O
+
+< X.X
+< OXO
+< .OX
+> X
+
+< O.X
+< ..X
+< .OX
+> X
+
+< OX.
+< OXX
+< .XO
+> X
+
+< XXX
+< XOO
+< O..
+> X
+
+< X..
+< X.X
+< OOO
+> O
+
+< ..X
+< OXO
+< XOX
+> X
+
+< XXX
+< OXO
+< O..
+> X
+
+< OOX
+< ..O
+< XXX
+> X
+
+< XXX
+< ..O
+< O..
+> X
+
+< XOO
+< XX.
+< XO.
+> X
+
+< XX.
+< .XO
+< OOX
+> X
+
+< O..
+< XOX
+< .XO
+> O
+
+< XXX
+< OXO
+< ..O
+> X
+
+< X.X
+< ..X
+< OOO
+> O
+
+< OX.
+< O.X
+< OX.
+> O
+
+< XXX
+< OOX
+< .O.
+> X
+
+< XX.
+< OOO
+< X..
+> O
+
+< XXO
+< X..
+< XOO
+> X
+
+< .XX
+< OX.
+< XOO
+> X
+
+< OX.
+< .OO
+< XXX
+> X
+
+< OOO
+< .XX
+< .X.
+> O
+
+< XOX
+< X..
+< XOO
+> X
+
+< .O.
+< XXX
+< OXO
+> X
+
+< ..O
+< .OX
+< OXX
+> O
+
+< OO.
+< XO.
+< XXX
+> X
+
+< .XO
+< O.O
+< XXX
+> X
+
+< XXX
+< OO.
+< O.X
+> X
+
+< XXO
+< XO.
+< OOX
+> O
+
+< .XO
+< .OX
+< OX.
+> O
+
+< O.X
+< .XO
+< XOX
+> X
+
+< XXX
+< X.O
+< OO.
+> X
+
+< .O.
+< XXX
+< XOO
+> X
+
+< OO.
+< X.O
+< XXX
+> X
+
+< .X.
+< XX.
+< OOO
+> O
+
+< .OO
+< XO.
+< XXX
+> X
+
+< O.O
+< OXX
+< OXX
+> O
+
+< OX.
+< OX.
+< XXO
+> X
+
+< X..
+< .XX
+< OOO
+> O
+
+< O.O
+< XXX
+< .OX
+> X
+
+< XOO
+< X..
+< XOX
+> X
+
+< X.X
+< OOO
+< ..X
+> O
+
+< XOO
+< XXX
+< .O.
+> X
+
+< .XO
+< OXX
+< OX.
+> X
+
+< .XO
+< XOO
+< XXO
+> O
+
+< XXX
+< .O.
+< OXO
+> X
+
+< OOO
+< ..X
+< XX.
+> O
+
+< XXX
+< O..
+< O..
+> X
+
+< .XX
+< OOX
+< .OX
+> X
+
+< .OX
+< .XX
+< XOO
+> X
+
+< XO.
+< .XX
+< OOX
+> X
+
+< OX.
+< XO.
+< X.O
+> O
+
+< OXO
+< OXX
+< .X.
+> X
+
+< X.O
+< XO.
+< XXO
+> X
+
+< X.O
+< X.O
+< XOX
+> X
+
+< XXO
+< X.O
+< XO.
+> X
+
+< OOX
+< X.X
+< .OX
+> X
+
+< XX.
+< .X.
+< OOO
+> O
+
+< O.X
+< OXX
+< XO.
+> X
+
+< XO.
+< OXO
+< X.X
+> X
+
+< OXO
+< .XO
+< XX.
+> X
+
+< XXX
+< .OX
+< OO.
+> X
+
+< XXO
+< OX.
+< OX.
+> X
+
+< OXO
+< XXX
+< O..
+> X
+
+< XXO
+< OXO
+< ..X
+> X
+
+< X..
+< OOO
+< X.X
+> O
+
+< XXO
+< X.O
+< ..O
+> O
+
+< .XX
+< .OX
+< OOX
+> X
+
+< .O.
+< OOX
+< XXX
+> X
+
+< .O.
+< XXX
+< .O.
+> X
+
+< XXX
+< O..
+< OOX
+> X
+
+< .OX
+< OXX
+< X.O
+> X
+
+< .OX
+< XXX
+< OO.
+> X
+
+< OXX
+< OXX
+< OO.
+> O
+
+< OX.
+< O..
+< OXX
+> O
+
+< XOX
+< O.X
+< .OX
+> X
+
+< XXX
+< O.X
+< .OO
+> X
+
+< XO.
+< X.O
+< XOX
+> X
+
+< XX.
+< OXO
+< O.X
+> X
+
+< X.O
+< XOX
+< XO.
+> X
+
+< XOO
+< XOX
+< X..
+> X
+
+< OXO
+< .XX
+< .XO
+> X
+
+< O.X
+< O.X
+< XOX
+> X
+
+< XOX
+< .X.
+< OOX
+> X
+
+< O.X
+< .OX
+< OXX
+> X
+
+< .OO
+< XXX
+< XO.
+> X
+
+< O..
+< XOO
+< XXX
+> X
+
+< OXX
+< OX.
+< .XO
+> X
+
+< XOO
+< .X.
+< OXX
+> X
+
+< XX.
+< OXO
+< OX.
+> X
+
+< OO.
+< XXX
+< .OX
+> X
+
+< XO.
+< XXO
+< X.O
+> X
+
+< OOO
+< ..X
+< X.X
+> O
+
+< .OO
+< XXX
+< X.O
+> X
+
+< OOX
+< .X.
+< XOX
+> X
+
+< XOO
+< XXO
+< ..X
+> X
+
+< OOO
+< .X.
+< .XX
+> O
+
+< O.X
+< OX.
+< O.X
+> O
+
+< XOX
+< .XO
+< X.O
+> X

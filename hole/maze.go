@@ -132,7 +132,7 @@ func draw(grid [height][width]int, si, sj, ei, ej int, path [height][width]int, 
 	return mazestr[:len(mazestr)-1]
 }
 
-func maze() []Run {
+var _ = answerFunc("maze", func() []Answer {
 	runs := make([][]test, 5)
 
 	for i := range runs {
@@ -152,4 +152,4 @@ func maze() []Run {
 	}
 
 	return outputTests(runs...)
-}
+})
