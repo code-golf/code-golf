@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func rot13() []Run {
+var _ = answerFunc("rot13", func() []Answer {
 	tests := make([]test, 0, 100)
 
 	// Enforce one sequence consisting of only one alphabetic character, randomly generated.
@@ -30,7 +30,7 @@ func rot13() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})
 
 func generateSequence() string {
 	var sequence strings.Builder

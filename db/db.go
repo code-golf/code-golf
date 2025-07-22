@@ -27,11 +27,10 @@ func Open() (db *sqlx.DB) {
 // Queryable includes all methods shared by sqlx.DB & sqlx.Tx, allowing either
 // type to be used interchangeably. https://github.com/jmoiron/sqlx/pull/809
 type Queryable interface {
-	sqlx.ExecerContext
 	sqlx.Ext
+	sqlx.ExtContext
 	sqlx.Preparer
 	sqlx.PreparerContext
-	sqlx.QueryerContext
 
 	Get(any, string, ...any) error
 	GetContext(context.Context, any, string, ...any) error

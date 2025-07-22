@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"crypto/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -38,26 +39,22 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		LogInURL, Name, Nonce, Path, Theme string
 		Golfer                             *golfer.Golfer
 		GolferInfo                         *golfer.GolferInfo
-		Holes                              map[string]*config.Hole
 		JS                                 []string
-		Langs                              map[string]*config.Lang
 		Location                           *time.Location
 		Nav                                *config.Navigaton
 		Request                            *http.Request
 		Settings                           []*config.Setting
 	}{
-		Banners:     banners(session.Database(r), theGolfer, time.Now().UTC()),
+		Banners:     banners(theGolfer, time.Now().UTC()),
 		Cheevos:     config.CheevoTree,
 		CSS:         []cssLink{{config.Assets["css/common/base.css"], ""}},
 		Data:        data[0],
 		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
 		Golfer:      theGolfer,
 		GolferInfo:  session.GolferInfo(r),
-		Holes:       config.HoleByID,
 		JS:          []string{config.Assets["js/base.tsx"]},
-		Langs:       config.LangByID,
 		Name:        name,
-		Nonce:       nonce(),
+		Nonce:       rand.Text(),
 		Path:        r.URL.Path,
 		Request:     r,
 		Settings:    config.Settings[strings.TrimSuffix(name, "-tabs")],
@@ -86,7 +83,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	// Get route specific CSS, JS, and navigation by splitting the name.
 	// e.g. foo/bar/baz → foo, foo/bar, foo/bar/baz.
 	subName := ""
-	for _, part := range strings.Split(name, "/") {
+	for part := range strings.SplitSeq(name, "/") {
 		subName = path.Join(subName, part)
 
 		if nav, ok := config.Nav[subName]; ok {

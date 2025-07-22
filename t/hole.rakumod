@@ -37,8 +37,14 @@ our $python_fibonacci_126_60 is export = "exec('砽《礽ㄊ景爠椠楮⁲慮�
 
 class HoleWebDriver is WebDriver is export {
     method create(::?CLASS:U $wd:) {
+        my %prefs = (
+            'devtools.console.stdout.content'           => True,
+            'extensions.webcompat.perform_injections'   => False,
+            'extensions.webcompat.perform_ua_overrides' => False,
+        );
+
         $wd.new: :4444port, :host<firefox>, :capabilities(:alwaysMatch(
-            {:acceptInsecureCerts, 'moz:firefoxOptions' => {:args('-headless',), :prefs('devtools.console.stdout.content' => True)}}));
+            {:acceptInsecureCerts, 'moz:firefoxOptions' => {:args('-headless',), :%prefs}}));
     }
 
     method clearLocalStorage {

@@ -1,8 +1,10 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base dash git ncurses-dev
 
-RUN git clone --branch v9.1.0447 --depth 1 https://github.com/vim/vim.git
+ENV VER=9.1.0447
+
+RUN git clone --branch v$VER --depth 1 https://github.com/vim/vim.git
 
 WORKDIR /vim/src
 

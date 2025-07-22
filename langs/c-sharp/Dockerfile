@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.102-alpine3.21 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.301-alpine3.22-amd64 AS builder
 
-WORKDIR /work
+WORKDIR /c-sharp
 
 COPY c-sharp.cs c-sharp.csproj ./
 
