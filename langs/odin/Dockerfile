@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache clang curl dash llvm-dev make
 
-ENV VER=2025-07
+ENV CPPFLAGS='-march=x86-64-v3' VER=2025-07
 
 RUN curl -#L https://github.com/odin-lang/Odin/archive/refs/tags/dev-$VER.tar.gz \
   | tar xz --directory /usr/local/lib --strip-components 1
@@ -15,7 +15,7 @@ RUN ln -s /usr/local/lib/base \
 
 WORKDIR /usr/local/lib
 
-RUN make -j`nproc` release-native \
+RUN make -j`nproc` release \
  && strip odin
 
 COPY odin.c /
