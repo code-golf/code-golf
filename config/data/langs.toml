@@ -544,10 +544,9 @@ example   = '''
 '''
 
 [Crystal]
-args    = [ '/usr/bin/crystal', 'i', 'code.cr', '--' ]
-env     = [ 'PATH=/usr/bin:/bin' ]
-size    = '95.2 MiB'
-version = '1.16.3'
+args    = [ '/usr/bin/crystal', '-' ]
+size    = '183 MiB'
+version = '1.17.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing

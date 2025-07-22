@@ -1,22 +1,41 @@
-ARG VER=1.17.0
+ARG VER=1.17.1
 
-FROM crystallang/crystal:$VER-alpine AS builder
+FROM crystallang/crystal:$VER-alpine-build AS builder
 
 ARG VER
 
-RUN apk add --no-cache build-base curl gc-dev libevent-dev libstdc++-dev llvm18-dev llvm18-static zstd-dev zstd-static
+RUN apk add --no-cache curl dash
 
 RUN curl -#L https://github.com/crystal-lang/crystal/archive/refs/tags/$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN make -j`nproc` crystal interpreter=1 release=1 static=1
+RUN make interpreter=1 release=1 -j`nproc` install \
+ && strip /usr/local/bin/crystal
 
-RUN strip /.build/crystal \
- && shards install
+COPY crystal.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/crystal -s crystal.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /.build/crystal /usr/bin/
+COPY --from=0 /usr/bin/dash            /bin/sh
+COPY --from=0 /lib/ld-musl-x86_64.so.1 \
+              /lib/libz.so.1           /lib/
+COPY --from=0 /usr/bin/cc              \
+              /usr/bin/crystal         \
+              /usr/bin/pkg-config      /usr/bin/
+COPY --from=0 /usr/lib/libLLVM.so.*    \
+              /usr/lib/libffi.so.8     \
+              /usr/lib/libgc.so.1      \
+              /usr/lib/libgcc_s.so.1   \
+              /usr/lib/liblzma.so.5    \
+              /usr/lib/libpcre2-8.so.0 \
+              /usr/lib/libpkgconf.so.5 \
+              /usr/lib/libstdc++.so.6  \
+              /usr/lib/libxml2.so.2    \
+              /usr/lib/libzstd.so.1    /usr/lib/
+COPY --from=0 /usr/local/bin/crystal   /usr/local/bin/
+COPY --from=0 /usr/local/share/crystal /usr/local/share/crystal
 
 ENTRYPOINT ["crystal"]
 
