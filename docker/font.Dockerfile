@@ -1,7 +1,10 @@
-FROM node:23.11.0-bookworm-slim
+FROM node:24.4.1-bookworm-slim
 
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    ca-certificates curl fontforge fonttools make python3-fontforge unzip woff2 zip
+RUN apt-get update                                \
+ && DEBIAN_FRONTEND='noninteractive'              \
+    apt-get install --no-install-recommends --yes \
+    ca-certificates curl fontforge fonttools make \
+    python3-fontforge unzip woff2 zip
 
 WORKDIR /twemoji-colr
 
@@ -17,6 +20,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/1f308.svg'       `# Rainbow`                      \
     '*/1f30c.svg'       `# Milky Way`                    \
     '*/1f340.svg'       `# Four Leaf Clover`             \
+    '*/1f355.svg'       `# Pizza`                        \
     '*/1f356.svg'       `# Meat on Bone`                 \
     '*/1f35e.svg'       `# Bread`                        \
     '*/1f36f.svg'       `# Honey Pot`                    \
@@ -98,6 +102,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/1f636.svg'       `# Face Without Mouth`           \
     '*/1f641.svg'       `# Slightly Frowning Face`       \
     '*/1f642.svg'       `# Slightly Smiling Face`        \
+    '*/1f680.svg'       `# Rocket`                       \
     '*/1f697.svg'       `# Automobile`                   \
     '*/1f6a2.svg'       `# Ship`                         \
     '*/1f910.svg'       `# Zipper-Mouth Face`            \
@@ -105,6 +110,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/1f948.svg'       `# 2nd Place Medal`              \
     '*/1f949.svg'       `# 3rd Place Medal`              \
     '*/1f961.svg'       `# Takeout Box`                  \
+    '*/1f963.svg'       `# Bowl with Spoon`              \
     '*/1f967.svg'       `# Pie`                          \
     '*/1f96a.svg'       `# Sandwich`                     \
     '*/1f970.svg'       `# Smiling Face with Hearts`     \
@@ -126,6 +132,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/2615.svg'        `# Hot Beverage`                 \
     '*/2623.svg'        `# Biohazard`                    \
     '*/2639.svg'        `# Frowning Face`                \
+    '*/26f2.svg'        `# Fountain`                     \
     '*/26f3.svg'        `# Flag in Hole`                 \
     '*/2702.svg'        `# Scissors`                     \
     '*/274c.svg'        `# Ballot X`                     \

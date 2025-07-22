@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
         execl(
             cpp, cpp, "-std=c++23", "-target", "x86_64-alpine-linux-musl",
             "-O2", "-lstdc++", "-fcolor-diagnostics", "-o", "code", code,
-            "unbuffered.cpp", NULL
+            "/unbuffered.cpp", NULL
         );
         ERR_AND_EXIT("execl");
     }

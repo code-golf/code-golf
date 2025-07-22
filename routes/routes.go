@@ -145,6 +145,7 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/scores/{hole}/{lang}/{scoring}/{page}", scoresGET)
 		r.Post("/solution", solutionPOST)
 		r.Get("/stats", statsGET)
+		r.Get("/stats/{page:cheevos}", statsCheevosGET)
 		r.Get("/stats/{page:countries}", statsCountriesGET)
 		r.Get("/stats/{page:golfers}", statsGolfersGET)
 		r.Get("/stats/{page:(?:holes|langs)}", statsTableGET)
