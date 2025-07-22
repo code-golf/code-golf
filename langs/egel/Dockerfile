@@ -2,52 +2,41 @@ FROM debian:bookworm-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes binutils-dev clang cmake curl libffi-dev libfmt-dev libiberty-dev libicu-dev ninja-build pkg-config zlib1g-dev
+    apt-get install --yes autoconf automake bash cmake g++ git libtool make texinfo
 
-ENV VER=0.1.14
-   
-WORKDIR /lightning
+ENV MAKEFLAGS=-j8 VER=0.1.14
 
-RUN curl -#L https://ftp.gnu.org/gnu/lightning/lightning-2.2.3.tar.gz \
-  | tar xz --strip-components 1
-
-RUN ./configure && make install
+RUN git clone --progress --recurse-submodules -j4 -b v$VER \
+    --shallow-submodules https://github.com/egel-lang/egel
 
 WORKDIR /egel
 
-RUN curl -#L https://github.com/egel-lang/egel/archive/refs/tags/v$VER.tar.gz \
-  | tar xz --strip-components 1
+RUN cp CMakeLists.static CMakeLists.txt
+
+WORKDIR /egel/vendor
+
+RUN bash makeall.sh
 
 WORKDIR /egel/build
 
-RUN cmake -G Ninja .. && ninja install
+RUN cmake -DCMAKE_BUILD_TYPE='MinSizeRel' .. \
+ && make install && strip /usr/local/bin/egel
 
 COPY egel.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/egelwrapper -s /egel.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/egel -s /egel.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libbfd-2.40-*.so     \
-              /lib/x86_64-linux-gnu/libc.so.6            \
-              /lib/x86_64-linux-gnu/libffi.so.8          \
-              /lib/x86_64-linux-gnu/libfmt.so.9          \
-              /lib/x86_64-linux-gnu/libgcc_s.so.1        \
-              /lib/x86_64-linux-gnu/libicudata.so.72     \
-              /lib/x86_64-linux-gnu/libicui18n.so.72     \
-              /lib/x86_64-linux-gnu/libicuio.so.72       \
-              /lib/x86_64-linux-gnu/libicuuc.so.72       \
-              /lib/x86_64-linux-gnu/libm.so.6            \
-              /lib/x86_64-linux-gnu/libopcodes-2.40-*.so \
-              /lib/x86_64-linux-gnu/libsframe.so.0       \
-              /lib/x86_64-linux-gnu/libstdc++.so.6       \
-              /lib/x86_64-linux-gnu/libz.so.1            \
-              /lib/x86_64-linux-gnu/libzstd.so.1         /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2                /lib64/
-COPY --from=0 /usr/bin/egelwrapper /usr/local/bin/egel   /usr/bin/
-COPY --from=0 /usr/local/lib/liblightning.so.2           /usr/lib/
-COPY --from=0 /usr/local/lib/egel                        /usr/lib/egel
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6      \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1  \
+              /lib/x86_64-linux-gnu/libm.so.6      \
+              /lib/x86_64-linux-gnu/libstdc++.so.6 /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2          /lib64/
+COPY --from=0 /usr/bin/egel                        /usr/bin/
+COPY --from=0 /usr/local/bin/egel                  /usr/local/bin/
+COPY --from=0 /usr/local/lib/egel                  /usr/local/lib/egel
 
-ENTRYPOINT ["egelwrapper"]
+ENTRYPOINT ["egel"]
 
 CMD ["--version"]

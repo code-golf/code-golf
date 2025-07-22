@@ -70,7 +70,7 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 	if hole.Experiment != 0 || lang.Experiment != 0 {
 		return chanWildID
 	}
-	if hole.ID == "scrambled-sort" {
+	if hole.ID == "mandelbrot" {
 		return chanFreshID
 	}
 	return chanSourID

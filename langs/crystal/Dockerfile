@@ -1,4 +1,4 @@
-ARG VER=1.16.3
+ARG VER=1.17.0
 
 FROM crystallang/crystal:$VER-alpine AS builder
 

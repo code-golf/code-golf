@@ -1,7 +1,10 @@
-FROM node:24.2.0-bookworm-slim
+FROM node:24.4.1-bookworm-slim
 
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    ca-certificates curl fontforge fonttools make python3-fontforge unzip woff2 zip
+RUN apt-get update                                \
+ && DEBIAN_FRONTEND='noninteractive'              \
+    apt-get install --no-install-recommends --yes \
+    ca-certificates curl fontforge fonttools make \
+    python3-fontforge unzip woff2 zip
 
 WORKDIR /twemoji-colr
 
