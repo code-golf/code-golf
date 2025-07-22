@@ -7,13 +7,13 @@
 
 {{ if eq .Title "Statistics" }}
     <div id=overview>
-        <div>
-            <h2>Cheevos</h2>
+        <a href=stats/cheevos>
+            <h2>Achievements</h2>
             <span>
                 {{ .Data.Cheevos }}
                 <small>({{ comma .Data.CheevosEarned }} earned)</small>
             </span>
-        </div>
+        </a>
 
         <a href=stats/countries><h2>Countries</h2>{{ .Data.Countries }}</a>
         <a href=stats/golfers><h2>Golfers</h2>{{ comma .Data.Golfers }}</a>
@@ -46,6 +46,28 @@
             </span>
         </div>
     </div>
+{{ else if eq .Title "Statistics: Achievements" }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Achievement
+                <th class=right>Golfers
+                <th class=right>Percent
+        <tbody>
+        {{ range .Data }}
+            <tr>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    <a href="/rankings/cheevos/{{ .Cheevo.ID }}"
+                        title="{{ .Cheevo.Name }} - {{ .Cheevo.Description }}">
+                        {{ .Cheevo.Emoji }}
+                        <span>{{ .Cheevo.Name }}</span>
+                    </a>
+                <td class=right>{{ comma .Golfers }}
+                <td class=right>{{ .Percent }}%
+        {{ end }}
+    </table>
 {{ else if eq .Title "Statistics: Countries" }}
     <table class="nowrap-second sticky">
         <thead>
@@ -85,12 +107,14 @@
                 <tr>
                     <th>Year
                     <th class=right>Golfers
-                    <th class=right>∑
+                    <th class=right>Per Day
+                    <th class=right>Total
             <tbody>
             {{ range slice .Data 1 }}
                 <tr>
                     <td>{{ .Date.Year }}
                     <td class=right>{{ comma .Count }}
+                    <td class=right>{{ .PerDay }}
                     <td class=right>{{ comma .Sum }}
             {{ end }}
         </table>
