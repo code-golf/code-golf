@@ -1,10 +1,10 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base ccache curl dash gc-dev libunwind-dev pkgconfig
+RUN apk add --no-cache ccache curl dash gc-dev gcc libunwind-dev make musl-dev pkgconfig
 
 ENV VER=32b9c90
 
-WORKDIR /usr
+WORKDIR /usr/local
 
 RUN curl -#L https://github.com/nitlang/nit/tarball/$VER \
   | tar xz --strip-components 1
@@ -43,10 +43,8 @@ COPY --from=0 /usr/lib/gcc/*/*/crtbeginS.o          \
               /usr/lib/gcc/*/*/libgcc.a             /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/
 COPY --from=0 /usr/libexec/gcc/*/*/cc1              \
               /usr/libexec/gcc/*/*/liblto_plugin.so /usr/libexec/gcc/x86_64-alpine-linux-musl/14.2.0/
-COPY --from=0 /usr/bin/nit                          /usr/local/bin/
-COPY --from=0 /usr/lib/core                         /usr/local/lib/core
-COPY --from=0 /usr/src                              /usr/local/src
+COPY --from=0 /usr/local/bin/nit                    /usr/local/bin/
+COPY --from=0 /usr/local/lib/core                   /usr/local/lib/core
+COPY --from=0 /usr/local/src                        /usr/local/src
 
 ENTRYPOINT ["nit"]
-
-CMD ["--version"]
