@@ -9,8 +9,8 @@ const char* scala = "/usr/bin/scala-cli", *code = "code.sc";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(scala, argv);
-        ERR_AND_EXIT("execv");
+        execl(scala, scala, "version", "--scala", NULL);
+        ERR_AND_EXIT("execl");
     }
 
     if (chdir("/tmp"))
