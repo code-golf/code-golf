@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ make
 
-ENV LDFLAGS='-static' VER=0.29.0
+ENV LDFLAGS='-static' VER=0.29.2
 
 RUN curl -#L https://github.com/IppClub/YueScript/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
