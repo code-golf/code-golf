@@ -1215,13 +1215,12 @@ end
 args       = [ '/usr/bin/nibbles', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1062
-size       = '334 MiB'
-version    = 'f0f01c8'
+size       = '321 MiB'
+version    = '07e0450'
 website    = 'https://golfscript.com/nibbles/'
 example    = '''
 # Printing
-"Hello, World!
-"
+"Hello, World!\n"
 
 # Looping
 `,10

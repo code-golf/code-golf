@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
         if (dup2(open(input, O_RDONLY), STDIN_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(nibbles, nibbles, code, NULL);
+        execl(nibbles, nibbles, "-lit", code, NULL);
         ERR_AND_EXIT("execl");
     }
 

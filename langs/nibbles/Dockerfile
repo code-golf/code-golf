@@ -1,12 +1,12 @@
 ARG GHCVER=8.10.7
 
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 ARG GHCVER
 
-RUN apk add --no-cache build-base curl dash ncurses-dev
+RUN apk add --no-cache curl dash gcc make musl-dev ncurses-dev
 
-ENV VER=f0f01c8
+ENV VER=07e0450
 
 RUN curl -#L https://downloads.haskell.org/~ghc/$GHCVER/ghc-$GHCVER-x86_64-alpine3.10-linux-integer-simple.tar.xz \
   | tar xJ --strip-components 1
@@ -46,7 +46,7 @@ COPY --from=0 /usr/include                                                      
 COPY --from=0 /usr/lib/crt1.o                                                            \
               /usr/lib/crti.o                                                            \
               /usr/lib/crtn.o                                                            \
-              /usr/lib/libbfd-2.43.1.so                                                  \
+              /usr/lib/libbfd-2.44.so                                                    \
               /usr/lib/libc.so                                                           \
               /usr/lib/libctf.so.0                                                       \
               /usr/lib/libdl.a                                                           \
