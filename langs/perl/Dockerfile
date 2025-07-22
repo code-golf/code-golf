@@ -1,10 +1,10 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev
 
-ENV VER=5.40.2
+ENV VER=5.42.0
 
-RUN curl -#L https://cpan.metacpan.org/authors/id/S/SH/SHAY/perl-$VER.tar.gz \
+RUN curl -#L https://cpan.metacpan.org/authors/id/B/BO/BOOK/perl-$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN ./Configure                       \
@@ -25,6 +25,10 @@ RUN ./Configure                       \
     -Dvendorarch=/usr/lib/perl        \
  && make -j`nproc` install            \
  && strip /usr/bin/perl
+
+# Downgrade Math::BigInt for now to fix some holes.
+RUN curl -#L https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-2.003004.tar.gz \
+  | tar --strip-components 2 -xzC /usr/lib/perl Math-BigInt-2.003004/lib
 
 FROM codegolf/lang-base
 
