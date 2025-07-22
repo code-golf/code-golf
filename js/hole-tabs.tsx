@@ -6,7 +6,7 @@ import {
 } from 'golden-layout';
 import { EditorView }   from './_codemirror';
 import diffView         from './_diff';
-import { $, $$, comma, debounce } from './_util';
+import { $, $$, comma, throttle } from './_util';
 import {
     init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
@@ -90,7 +90,7 @@ function updateReadonlyPanel(name: string) {
         break;
     case 'diff':
         const ignoreCase = JSON.parse($('#case-fold').innerText);
-        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.MultisetDelimiter, subRes.ItemDelimiter);
+        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.OutputDelimiter, subRes.MultisetItemDelimiter);
         output.replaceChildren(diff);
     }
 }
@@ -462,7 +462,7 @@ function getViewState(): ViewState {
     };
 }
 
-const saveLayout = debounce(() => {
+const saveLayout = throttle(() => {
     const state = getViewState();
     if (!state.config.root) return;
     localStorage.setItem('lastViewState', JSON.stringify(state));
