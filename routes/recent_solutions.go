@@ -13,7 +13,8 @@ import (
 // GET /recent/solutions/{hole}/{lang}/{scoring}
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country                          config.NullCountry
+		Country                          *config.Country
+		Experimental                     bool
 		Name                             string
 		Hole                             *config.Hole
 		Lang                             *config.Lang
@@ -34,20 +35,20 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		Scoring: param(r, "scoring"),
 	}
 
-	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
-		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
+	if data.HoleID != "all" && config.AllHoleByID[data.HoleID] == nil ||
+		data.LangID != "all" && config.AllLangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+	if data.Hole = config.AllHoleByID[data.HoleID]; data.Hole != nil {
 		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
 	if err := session.Database(r).Select(
 		&data.Rows,
-		` SELECT golfers, hole, lang, login name, strokes, rank, submitted, tie_count
+		` SELECT experimental, golfers, hole, lang, login name, strokes, rank, submitted, tie_count
 		    FROM rankings
 		    JOIN users ON user_id = id
 		   WHERE (hole = $1 OR $1 IS NULL)

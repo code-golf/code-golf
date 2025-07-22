@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.23
+	@go mod tidy -compat=1.24
 	@npm upgrade
 
 cert:
@@ -79,7 +79,7 @@ mathjax-fonts:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v1.62.2 golangci-lint run
+	    golangci/golangci-lint:v2.3.0 golangci-lint run
 
 	@node_modules/.bin/eslint js
 
@@ -112,7 +112,7 @@ logs:
 	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 svgo:
-	@node_modules/.bin/svgo -f views/svg
+	@node_modules/.bin/svgo -f svg
 
 test:
 	@go test ./...

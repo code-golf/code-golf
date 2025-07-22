@@ -1,10 +1,5 @@
 {{ template "header" . }}
 
-<svg>
-    {{ svg "thumbs-up-light" }}
-    {{ svg "thumbs-down-light" }}
-</svg>
-
 {{ define "ideaGrid" }}{{ range . }}
 {{ with .Hole }}
     <a class="card {{ .CategoryColor }}" href="/{{ .ID }}" title="{{ .Name }} ({{ .Category }})">
@@ -24,12 +19,12 @@
             {{ with .Lang }}{{ svg .ID }}{{ end }}
             <span>{{ .Title }}</span>
         </h2>
-        <svg><use href="#thumbs-up"/></svg>
+        {{ svg "thumbs-up" }}
         {{ .ThumbsUp }}
 
         {{ with .Hole }}{{ svg .CategoryIcon }}{{ else }}<span></span>{{ end }}
 
-        <svg><use href="#thumbs-down"/></svg>
+        {{ svg "thumbs-down" }}
         {{ .ThumbsDown }}
     </a>
 {{ end }}{{ end }}
