@@ -6,92 +6,85 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-const char* java = "/opt/jdk/bin/java";
-const char* javac = "/opt/jdk/bin/javac";
-const char* code = "/tmp/code.java";
+#define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
+
+const char* java = "/opt/jdk/bin/java", *javac = "/opt/jdk/bin/javac", *code = "code.java";
 
 int main(int argc, char* argv[]) {
-    if (argc > 1 && strcmp(argv[1], "--version") == 0) {
+    if (!strcmp(argv[1], "--version")) {
         execv(java, argv);
-        perror("execv");
-        return 0;
+        ERR_AND_EXIT("execv");
     }
 
-    FILE* fp = fopen(code, "w");
+    if (chdir("/tmp"))
+        ERR_AND_EXIT("chdir");
 
-    if (!fp)
-        return 1;
+    FILE* fp;
+
+    if (!(fp = fopen(code, "w")))
+        ERR_AND_EXIT("fopen");
 
     char buffer[4096];
     ssize_t nbytes;
 
-    while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0)
-        if (fwrite(buffer, sizeof(char), nbytes, fp) != nbytes)
-            return 2;
+    while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))))
+        if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
+            ERR_AND_EXIT("fwrite");
 
-    fclose(fp);
+    if (fclose(fp))
+        ERR_AND_EXIT("fclose");
 
-    pid_t pid = fork();
-    if (!pid) {
+    pid_t pid;
+
+    if (!(pid = fork())) {
         execl(javac, javac, code, NULL);
-        perror("execl");
-        return 3;
+        ERR_AND_EXIT("execl");
     }
 
     int status;
+
     waitpid(pid, &status, 0);
 
     if (!WIFEXITED(status))
-        return 4;
+        exit(EXIT_FAILURE);
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    if(remove(code)) {
-        perror("Error deleting file");
-        return 5;
-    }
+    if (remove(code))
+        ERR_AND_EXIT("remove");
 
-    // Find the class name.
-    DIR* dir = opendir("/tmp/");
+    DIR* dir;
 
-    if (!dir)
-        return 6;
+    if (!(dir = opendir(".")))
+        ERR_AND_EXIT("opendir");
 
     char class[256];
-    memset(class, 0, sizeof(class));
 
-    errno = 0;
+    memset(class, errno = 0, sizeof(char));
 
-    struct dirent* d;
+    struct dirent* entry;
+    int len;
 
-    while (d = readdir(dir)) {
-        int len = strlen(d->d_name) - 6;
-        if (len > 0 && strcmp(d->d_name + len, ".class") == 0) {
-            if (!class[0] || strcmp(d->d_name, class) < 0)
-                memcpy(class, d->d_name, len);
-        }
-    }
+    // Find the class name.
+    while ((entry = readdir(dir)))
+        if ((len = strlen(entry->d_name) - 6) && !strcmp(entry->d_name + len, ".class"))
+            if (!class[0] || strcmp(entry->d_name, class))
+                memcpy(class, entry->d_name, len);
 
     if (errno)
-        return 7;
+        exit(EXIT_FAILURE);
 
     if (closedir(dir))
-        return 8;
-
-    if(chdir("/tmp")) {
-        perror("Error changing directory");
-        return 9;
-    }
+        ERR_AND_EXIT("closedir");
 
     int jargc = argc + 1;
     char** jargv = malloc(jargc * sizeof(char*));
-    jargv[0] = (char*)java;
+    jargv[0] = (char*) java;
     jargv[1] = class;
     memcpy(&jargv[2], &argv[2], (argc - 2) * sizeof(char*));
     jargv[jargc - 1] = NULL;
 
     execv(java, jargv);
-    perror("execv");
-    return 10;
+    ERR_AND_EXIT("execv");
 }

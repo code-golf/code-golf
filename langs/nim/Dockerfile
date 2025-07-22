@@ -1,9 +1,8 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --no-cache curl dash gcc musl-dev pcre tcc tcc-libs-static
+RUN apk add --no-cache curl dash gcc musl-dev pcre tcc tcc-libs-static
 
-ENV VER=2.2.2
+ENV VER=2.2.4
 
 RUN curl -#L https://nim-lang.org/download/nim-$VER.tar.xz \
   | tar xJ --strip-components 1
@@ -35,7 +34,7 @@ COPY --from=0 /usr/lib/crt1.o          \
               /usr/lib/librt.a         \
               /usr/lib/libtcc.so       /usr/lib/
 COPY --from=0 /nim/lib                 /usr/lib/nim/lib
-COPY --from=0 /usr/lib/tcc             /usr/lib/tcc
+COPY --from=0 /usr/lib/tcc/libtcc1.a   /usr/lib/tcc/
 
 COPY nim.cfg /etc/nim/
 

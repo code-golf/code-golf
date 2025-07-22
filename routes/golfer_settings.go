@@ -146,7 +146,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		    time_zone = $7
 		  WHERE id = $8`,
 		r.Form.Get("about"),
-		r.Form.Get("country"),
+		null.NullIfZero(r.Form.Get("country")),
 		null.NullIfZero(r.Form.Get("pronouns")),
 		r.Form.Get("referrer"),
 		r.Form.Get("show_country") == "on",
