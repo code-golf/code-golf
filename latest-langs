@@ -20,7 +20,7 @@ constant %paths = (
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'AWK'          => 'ftp.gnu.org/gnu/gawk/?C=M;O=D',
-    'Bash'         => 'en.wikipedia.org/wiki/Bash_(Unix_shell)',
+    'Bash'         => 'ftp.gnu.org/gnu/bash/?C=M;O=D',
     'BASIC'        => 'github.com/freebasic/fbc/releases/latest',
     'Befunge'      => 'github.com/VorpalBlade/cfunge',
     'Berry'        => 'github.com/berry-lang/berry/releases/latest',
