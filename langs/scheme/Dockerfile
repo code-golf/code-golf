@@ -1,6 +1,6 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev
 
 ENV VER=10.2.0
 
