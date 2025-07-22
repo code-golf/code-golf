@@ -2,7 +2,7 @@ package hole
 
 import "strconv"
 
-func tutorial() []Run {
+var _ = answerFunc("tutorial", func() []Answer {
 	runs := make([][]test, 5)
 
 	for r := range runs {
@@ -23,4 +23,4 @@ func tutorial() []Run {
 	}
 
 	return outputTests(runs...)
-}
+})
