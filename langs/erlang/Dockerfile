@@ -5,7 +5,7 @@ RUN apt-get update                   \
     apt-get install --yes curl gcc make perl
 
 # Also rebuild 05AB1E, Elixir, Gleam.
-ENV VER=28.0.1
+ENV VER=28.0.2
 
 RUN git clone --branch OTP-$VER \
     https://github.com/erlang/otp

@@ -1,6 +1,6 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base dash gc-dev git
+RUN apk add --no-cache dash gc-dev gcc git make musl-dev
 
 ENV VER=0.4.11
 
