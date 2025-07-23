@@ -415,7 +415,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/opt/java/bin/java', '-jar', 'cjam.jar', '/proc/self/fd/0' ]
 experiment = 1493
-size       = '134 MiB'
+size       = '62.7 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
@@ -449,7 +449,7 @@ example = '''
 
 [COBOL]
 args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.61 MiB'
+size    = '4.21 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -638,7 +638,7 @@ def main =
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '55.9 MiB'
+size    = '56.0 MiB'
 version = '1.18.4'
 website = 'https://elixir-lang.org'
 example = '''
@@ -656,7 +656,7 @@ for arg <- System.argv, do: IO.puts arg
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
 size       = '49.0 MiB'
-version    = 'OTP 28.0.1'
+version    = 'OTP 28.0.2'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -854,7 +854,7 @@ n*
 args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
-size       = '148 MiB'
+size       = '76.5 MiB'
 version    = '4.0.27'
 website    = 'https://groovy-lang.org'
 example    = '''
@@ -1082,8 +1082,8 @@ example = '''
 
 [Java]
 args    = [ '/usr/bin/java', '-' ]
-size    = '59.3 MiB'
-version = 'OpenJDK 24.0.1'
+size    = '57.3 MiB'
+version = 'OpenJDK 24.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 class Main {
@@ -1175,7 +1175,7 @@ example = '''
 [Kotlin]
 args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '217 MiB'
+size    = '140 MiB'
 version = '2.2.0'
 website = 'https://kotlinlang.org'
 example = '''
@@ -1616,7 +1616,7 @@ args       = [ '/usr/bin/scala', '-' ]
 env        = [ 'COURSIER_CACHE=/cache', 'JAVA_HOME=/opt/java' ]
 experiment = 235
 size       = '280 MiB'
-version    = '3.7.1'
+version    = 'Scala CLI 1.8.4'
 website    = 'https://www.scala-lang.org'
 example    = '''
 // Printing
@@ -1892,8 +1892,8 @@ w
 [Vyxal]
 args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
-size       = '154 MiB'
-version    = '3.7.0'
+size       = '83.0 MiB'
+version    = '3.8.0'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
