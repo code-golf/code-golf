@@ -1212,7 +1212,7 @@ end
 '''
 
 [Nial]
-args       = [ '/usr/bin/nial', '-', '--' ]
+args       = [ '/usr/bin/nial', '-' ]
 experiment = 579
 size       = '616 KiB'
 version    = 'cdd6e81'
@@ -1225,7 +1225,7 @@ write 'Hello, World!';
 EACH write tell 10;
 
 % Accessing arguments ;
-EACH write drop 4 sys_argv;
+EACH writescreen drop 4 sys_argv;
 '''
 
 [Nim]

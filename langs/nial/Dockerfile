@@ -1,25 +1,22 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache cmake curl g++ linux-headers make
+RUN apk add --no-cache cmake curl g++ make
 
-ENV LDFLAGS='-static' VER=cdd6e81
+ENV CFLAGS='-Wno-cpp' LDFLAGS='-static' VER=cdd6e81
 
 RUN curl -#L https://github.com/niallang/Nial_Development/tarball/$VER \
-  | tar xz --strip-components 1
+  | tar xz --strip-components 2
 
-RUN cp /usr/include/linux/fcntl.h /usr/include/sys/
-
-WORKDIR /BuildCore/build
+WORKDIR /build
 
 RUN cmake ../src && make \
  && mv nialcore /usr/bin
 
-WORKDIR /BuildNial/pkgblder
+WORKDIR /pkgblder
 
-RUN mkdir ../src \
- && nialcore -defs buildfromcore
+RUN nialcore -defs buildfromcore
 
-WORKDIR /BuildNial/build
+WORKDIR /build
 
 RUN cmake ../src && make   \
  && mv nial /usr/local/bin \
@@ -35,5 +32,3 @@ COPY --from=0 /usr/bin/nial       /usr/bin/
 COPY --from=0 /usr/local/bin/nial /usr/local/bin/
 
 ENTRYPOINT ["nial"]
-
-CMD ["--version"]
