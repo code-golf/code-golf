@@ -1372,8 +1372,8 @@ main(Args) =>
 [Pony]
 args       = [ '/usr/bin/pony', '-' ]
 experiment = 90
-size       = '347 MiB'
-version    = '0.58.13'
+size       = '371 MiB'
+version    = '0.59.0'
 website    = 'https://www.ponylang.io'
 example    = '''
 use "collections"

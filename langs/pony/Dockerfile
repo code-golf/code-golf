@@ -1,8 +1,8 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache binutils-gold clang curl dash
 
-ENV VER=0.58.13
+ENV VER=0.59.0
 
 RUN curl -#L https://github.com/ponylang/ponyup/archive/refs/heads/master.tar.gz \
   | tar xz --strip-components 1
@@ -11,7 +11,7 @@ RUN SHELL='sh' ./ponyup-init.sh
 
 RUN ~/.local/share/ponyup/bin/ponyup update ponyc release-$VER
 
-RUN mv ~/.local/share/ponyup/ponyc-release-$VER-x86_64-linux-musl /usr/local/pony
+RUN mv ~/.local/share/ponyup/ponyc-* /usr/local/pony
 
 COPY pony.c /
 
@@ -27,10 +27,10 @@ COPY --from=0 /usr/bin/clang                             \
 COPY --from=0 /usr/lib/Scrt1.o                           \
               /usr/lib/crti.o                            \
               /usr/lib/crtn.o                            \
-              /usr/lib/libLLVM.so.19.1                   \
+              /usr/lib/libLLVM.so.*                      \
               /usr/lib/libatomic.a                       \
               /usr/lib/libc.so                           \
-              /usr/lib/libclang-cpp.so.19.1              \
+              /usr/lib/libclang-cpp.so.*                 \
               /usr/lib/libdl.a                           \
               /usr/lib/libffi.so.8                       \
               /usr/lib/libgcc_s.so                       \
