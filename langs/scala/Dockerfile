@@ -1,4 +1,4 @@
-FROM eclipse-temurin:24.0.1_9-jre-alpine-3.21 AS builder
+FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl gcc musl-dev
 
@@ -13,27 +13,18 @@ RUN gunzip scala-cli.gz \
 # Download dependencies to the local cache for offline use.
 RUN TERM='dumb' scala-cli
 
+# Delete some previously downloaded dependencies.
+RUN find ~/.cache -type d -name 'github.com' -exec rm -r {} +
+
 COPY scala.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/scala -s -static scala.c
 
-FROM codegolf/lang-base
+FROM codegolf/lang-java
 
-COPY --from=0 /root/.cache/coursier/v1                      /cache
-COPY --from=0 /lib/ld-musl-x86_64.so.1                      /lib/
-COPY --from=0 /opt/java/openjdk/bin/java                    /opt/java/bin/
-COPY --from=0 /opt/java/openjdk/conf/security/java.security /opt/java/conf/security/
-COPY --from=0 /opt/java/openjdk/lib/jvm.cfg                 \
-              /opt/java/openjdk/lib/libjava.so              \
-              /opt/java/openjdk/lib/libjimage.so            \
-              /opt/java/openjdk/lib/libjli.so               \
-              /opt/java/openjdk/lib/libnet.so               \
-              /opt/java/openjdk/lib/libnio.so               \
-              /opt/java/openjdk/lib/libverify.so            \
-              /opt/java/openjdk/lib/libzip.so               \
-              /opt/java/openjdk/lib/modules                 /opt/java/lib/
-COPY --from=0 /opt/java/openjdk/lib/server/libjvm.so        /opt/java/lib/server/
-COPY --from=0 /usr/bin/scala /usr/bin/scala-cli             /usr/bin/
+COPY --from=0 /root/.cache/coursier/v1 /cache
+COPY --from=0 /usr/bin/scala           \
+              /usr/bin/scala-cli       /usr/bin/
 
 ENTRYPOINT ["scala"]
 
