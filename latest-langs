@@ -72,6 +72,7 @@ constant %paths = (
     'Lua'          => 'github.com/lua/lua/releases/latest',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
+    'Octave'       => 'ftp.nluug.nl/pub/gnu/octave/?C=M&O=D',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
@@ -128,7 +129,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
-        when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
+        when / 'ftp.nluug.nl'   / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'gnome.org'      / { $res ~~ / 'Release ' <(<ver>)> / }
         when / 'golfscript.com' / { $res ~~ / 'iogii-' <(<ver>)> / }
