@@ -397,8 +397,8 @@ int main(int argc, char* argv[]) {
 args       = [ '/usr/bin/c3', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 771
-size       = '199 MiB'
-version    = '0.7.2'
+size       = '200 MiB'
+version    = '0.7.3'
 website    = 'https://c3-lang.org'
 example    = '''
 import std::io;
