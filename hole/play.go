@@ -170,7 +170,7 @@ func runCode(
 	case "jsfuck":
 		// Disallow characters other than '!', '(', ')', '+', '[', and ']'.
 		if !regexp.MustCompile(`^[!()+[\]]*$`).MatchString(code) {
-			run.Stderr = "Code in JSFuck must not contain characters other than '!', '(', ')', '+', '[', and ']'."
+			run.Stderr = "Code must not contain characters other than '!', '(', ')', '+', '[', and ']'."
 			return nil
 		}
 	case "k":

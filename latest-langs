@@ -66,7 +66,7 @@ constant %paths = (
         'chromiumdash.appspot.com/fetch_releases?platform=linux',
     ).&from-json.first(*<channel> eq 'Stable')<hashes><v8>,
     'jq'           => 'github.com/jqlang/jq/releases/latest',
-    'JSFuck'       => 'registry.npmjs.org/jsfuck/latest',
+    'JSFuck'       => 'github.com/nodejs/node/releases/latest',
     'Julia'        => 'api.github.com/repos/JuliaLang/julia/releases',
     'K'            => 'codeberg.org/ngn/k',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',

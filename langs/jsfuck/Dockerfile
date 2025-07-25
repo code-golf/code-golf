@@ -1,26 +1,13 @@
-FROM node:23.4.0-alpine3.21 AS builder
+ARG VER=24.4.1
 
-RUN apk add --no-cache gcc musl-dev
-
-ENV VER=0.4.0
-
-RUN npm install --prefix=/usr jsfuck@$VER
-
-COPY jsfuck.c /
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/jsfuck -s -static jsfuck.c
+FROM node:$VER-alpine3.22 AS builder
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1           /lib/
-COPY --from=0 /usr/bin/env                       \
-              /usr/bin/jsfuck                    \
-              /usr/local/bin/node                /usr/bin/
-COPY --from=0 /usr/lib/libgcc_s.so.1             \
-              /usr/lib/libstdc++.so.6            /usr/lib/
-COPY --from=0 /usr/node_modules/.bin             /usr/node_modules/bin
-COPY --from=0 /usr/node_modules/jsfuck/fuck.js   \
-              /usr/node_modules/jsfuck/jsfuck.js /usr/node_modules/jsfuck/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/local/bin/node      /usr/bin/jsfuck
+COPY --from=0 /usr/lib/libgcc_s.so.1   \
+              /usr/lib/libstdc++.so.6  /usr/lib/
 
 ENTRYPOINT ["jsfuck"]
 
