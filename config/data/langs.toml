@@ -1283,7 +1283,7 @@ main :: proc() {
 [Ox]
 args       = [ '/usr/bin/ox', '-' ]
 experiment = 1910
-size       = '5.70 MiB'
+size       = '5.83 MiB'
 version    = '9.30'
 website    = 'https://www.doornik.com'
 example    = '''

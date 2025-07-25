@@ -6,24 +6,30 @@ RUN apt-get update                   \
 
 ENV VER=9.30
 
-RUN curl -o ox.deb https://www.doornik.com/download/oxmetrics9/Ox_Console/oxconsole_$VER-0_amd64.deb \
+RUN curl -#o ox.deb https://www.doornik.com/download/oxmetrics9/Ox_Console/oxconsole_$VER-0_amd64.deb \
  && dpkg -i ox.deb
 
 COPY ox.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/ox -s ox.c
 
+# COPY test.ox /
+# RUN oxl -b test.ox abc def ghi 123 456 789 && false
+
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
-              /lib/x86_64-linux-gnu/libdl.so.2      \
-              /lib/x86_64-linux-gnu/libpthread.so.0 \
-              /lib/x86_64-linux-gnu/librt.so.1      /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /usr/bin/ox /usr/bin/oxl              /usr/bin/
-COPY --from=0 /usr/share/OxMetrics9/ox/libomp.so.5  \
-              /usr/share/OxMetrics9/ox/libox.so.9   /usr/lib/
+COPY --from=0 /bin/sh                                    /bin/
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6            \
+              /lib/x86_64-linux-gnu/libdl.so.2           \
+              /lib/x86_64-linux-gnu/libpthread.so.0      \
+              /lib/x86_64-linux-gnu/librt.so.1           /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2                /lib64/
+COPY --from=0 /usr/bin/ox /usr/bin/oxl                   /usr/bin/
+COPY --from=0 /usr/share/OxMetrics9/ox/include/oxstd.oxh /usr/include/
+COPY --from=0 /usr/share/OxMetrics9/ox/libomp.so.5       \
+              /usr/share/OxMetrics9/ox/libox.so.9        /usr/lib/
+
+# COPY test.ox /
+# RUN oxl -b -i/usr/include test.ox abc def ghi 123 456 789 && false
 
 ENTRYPOINT ["ox"]
-
-CMD ["--version"]

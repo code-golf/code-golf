@@ -8,10 +8,8 @@
 const char* ox = "/usr/bin/oxl", *code = "code.ox";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version")) {
-        execv(ox, argv);
-        ERR_AND_EXIT("execv");
-    }
+    if (!strcmp(argv[1], "--version"))
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
@@ -31,12 +29,13 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int oargc = argc + 2;
+    int oargc = argc + 3;
     char** oargv = malloc(oargc * sizeof(char*));
     oargv[0] = (char*) ox;
     oargv[1] = "-b";
-    oargv[2] = (char*) code;
-    memcpy(&oargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    oargv[2] = "-i/usr/include";
+    oargv[3] = (char*) code;
+    memcpy(&oargv[4], &argv[2], (argc - 2) * sizeof(char*));
     oargv[oargc - 1] = NULL;
 
     execv(ox, oargv);
