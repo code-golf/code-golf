@@ -1779,7 +1779,7 @@ foreach arg $argv {
 
 [TeX]
 args    = [ '/usr/bin/tex', '$code' ]
-size    = '9.67 MiB'
+size    = '9.74 MiB'
 version = '3.141592653'
 website = 'https://tug.org'
 example = '''
