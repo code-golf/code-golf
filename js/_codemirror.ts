@@ -185,6 +185,7 @@ export const extensions : { [key: string]: any } = {
     'java':          java(),
     'javascript':    javascript,
     'jq':            jq(),
+    'jsfuck':        javascript,
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'kotlin':        StreamLanguage.define(kotlin),
