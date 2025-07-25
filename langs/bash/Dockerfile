@@ -1,10 +1,10 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev
 
-WORKDIR /lang
+ENV VER=5.3
 
-RUN curl https://ftp.gnu.org/gnu/bash/bash-5.3.tar.gz \
+RUN curl -#L https://ftpmirror.gnu.org/bash/bash-$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN ./configure                      \
@@ -18,13 +18,14 @@ RUN ./configure                      \
     --disable-prompt-string-decoding \
     --disable-select                 \
     --enable-static-link             \
+    --prefix=/usr                    \
     --without-bash-malloc            \
- && make                             \
- && strip bash
+ && make install                     \
+ && strip /usr/bin/bash
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lang/bash /usr/bin/
+COPY --from=0 /usr/bin/bash /usr/bin/
 
 ENTRYPOINT ["bash"]
 
