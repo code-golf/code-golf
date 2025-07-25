@@ -1,32 +1,21 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache bison clang curl git gmp-dev make mpfr-dev texinfo
+RUN apk add --no-cache clang curl make
 
 # Also rebuild GolfScript, iogii.
-ENV VER=3.4.4
-
-RUN git clone --depth 1 --progress git://sourceware.org/git/binutils-gdb.git binutils
-
-WORKDIR /gold
-
-RUN CC='clang' CXX='clang++' \
-    ../binutils/configure    \
-    --disable-werror         \
-    --enable-gold            \
-    --enable-plugins         \
- && make -j`nproc` all-gold  \
- && mv gold/ld-new /usr/bin/ld
+ENV VER=3.4.5
 
 WORKDIR /ruby
 
 RUN curl -#L https://cache.ruby-lang.org/pub/ruby/3.4/ruby-$VER.tar.xz \
   | tar xJ --strip-components 1
 
-RUN CC='clang' ./configure \
+# Prefer clang to gcc as it produces smaller binaries with adequate stack.
+RUN ./configure            \
     --disable-install-doc  \
     --disable-jit-support  \
     --prefix=/usr          \
-    --without-gmp          \
+    --with-gcc=clang       \
  && make -j`nproc` install \
  && strip -s /usr/bin/ruby
 
