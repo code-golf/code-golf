@@ -6,7 +6,8 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV LANG='C.UTF-8' VER=1.18.4
+# Also rebuild 05AB1E.
+ENV VER=1.18.4
 
 COPY --from=0 /usr /usr
 
@@ -21,8 +22,11 @@ FROM codegolf/lang-base
 
 COPY --from=0 /                          /
 COPY --from=1 /usr/lib/locale            /usr/lib/locale
-COPY --from=1 /usr/local/bin/elixir      /usr/local/bin/
+COPY --from=1 /usr/local/bin/elixir      \
+              /usr/local/bin/mix         /usr/local/bin/
 COPY --from=1 /usr/local/lib/elixir/ebin /usr/local/lib/elixir/ebin
+COPY --from=1 /usr/local/lib/logger/ebin /usr/local/lib/logger/ebin
+COPY --from=1 /usr/local/lib/mix/ebin    /usr/local/lib/mix/ebin
 
 ENTRYPOINT ["elixir"]
 
