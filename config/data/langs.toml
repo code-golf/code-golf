@@ -1128,7 +1128,7 @@ version    = 'Moy a68b339'
 website    = 'https://github.com/Wodan58/Moy'
 example    = '''
 (* Printing *)
-"Hello, World!\n" putchars
+"Hello, World!\n" putchars.
 
 (* Looping *)
 0 [9 <] [dup put '\n putch 1 +] while.

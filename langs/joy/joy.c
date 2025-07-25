@@ -8,10 +8,8 @@
 const char* joy = "/usr/bin/joy", *code = "code.joy";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version")) {
-        execl(joy, joy, "-h", NULL);
-        ERR_AND_EXIT("execl");
-    }
+    if (!strcmp(argv[1], "--version"))
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
@@ -31,12 +29,11 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int jargc = argc + 2;
+    int jargc = argc + 1;
     char** jargv = malloc(jargc * sizeof(char*));
     jargv[0] = (char*) joy;
-    jargv[1] = "-w";
-    jargv[2] = (char*) code;
-    memcpy(&jargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    jargv[1] = (char*) code;
+    memcpy(&jargv[2], &argv[2], (argc - 2) * sizeof(char*));
     jargv[jargc - 1] = NULL;
 
     execv(joy, jargv);
