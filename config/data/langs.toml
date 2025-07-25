@@ -1173,11 +1173,11 @@ example = '''
 '''
 
 [Koka]
-args       = [ '/usr/bin/kokawrapper', '-', '--' ]
+args       = [ '/usr/bin/koka', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1792
-size       = '301 MiB'
-version    = '3.1.2'
+size       = '201 MiB'
+version    = '3.2.2'
 website    = 'https://koka-lang.github.io/koka/doc/index.html'
 example    = '''
 import std/os/env

@@ -31,13 +31,15 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int kargc = argc + 3;
+    int kargc = argc + 5;
     char** kargv = malloc(kargc * sizeof(char*));
     kargv[0] = (char*) koka;
-    kargv[1] = "-e";
-    kargv[2] = "-v0";
-    kargv[3] = (char*) code;
-    memcpy(&kargv[4], &argv[2], (argc - 2) * sizeof(char*));
+    kargv[1] = "-v0";
+    kargv[2] = "--target=js";
+    kargv[3] = "-e";
+    kargv[4] = (char*) code;
+    kargv[5] = "--";
+    memcpy(&kargv[6], &argv[2], (argc - 2) * sizeof(char*));
     kargv[kargc - 1] = NULL;
 
     execv(koka, kargv);
