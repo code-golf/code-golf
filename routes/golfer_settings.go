@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"crypto/rand"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
@@ -44,7 +45,7 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 		oauth.GetConnections(session.Database(r), session.Golfer(r).ID, false),
 		config.CountryTree,
 		oauth.Providers,
-		nonce(),
+		rand.Text(),
 		[]string{"he/him", "he/they", "she/her", "she/they", "they/them"},
 		[]string{"auto", "dark", "light"},
 		zone.List(),
@@ -145,7 +146,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		    time_zone = $7
 		  WHERE id = $8`,
 		r.Form.Get("about"),
-		r.Form.Get("country"),
+		null.NullIfZero(r.Form.Get("country")),
 		null.NullIfZero(r.Form.Get("pronouns")),
 		r.Form.Get("referrer"),
 		r.Form.Get("show_country") == "on",

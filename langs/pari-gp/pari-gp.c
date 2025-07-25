@@ -5,11 +5,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* parigp = "/usr/bin/gp", *code = "code.gp";
+const char* pari = "/usr/bin/gp", *code = "code.gp";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execl(parigp, parigp, "--version-short", NULL);
+        execl(pari, pari, "--version-short", NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    execl(parigp, parigp, "--fast", "--quiet", code, NULL);
+    execl(pari, pari, "--fast", "--quiet", code, NULL);
     ERR_AND_EXIT("execl");
 
     free(args);

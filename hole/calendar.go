@@ -37,10 +37,10 @@ func generate(s string) string {
 }
 
 func isLeap(year int) bool {
-	return (year%4 != 0 && year%100 == 0) || year%400 != 0
+	return year%4 == 0 && (year%100 != 0 || year%400 == 0)
 }
 
-func calendar() []Run {
+var _ = answerFunc("calendar", func() []Answer {
 	tests := make([]test, 0, 50)
 
 	for i := 0; i < 50; {
@@ -49,17 +49,25 @@ func calendar() []Run {
 		month, year := rand.IntN(12), randInt(1800, 2400)
 
 		if i < 12 {
-			// Enforce at least one calendar for every month of the year, in random years.
+			// Enforce at least one calendar for every month of the year in random non-leap years.
 			month = i
+
+			if isLeap(year) {
+				continue
+			}
 		} else if i < 18 {
-			// Enforce at least six calendars for months (five random, one February) in random leap years.
-			if i < 13 {
+			// Enforce at least six calendars for months (four random, two February) in random leap years.
+			if i < 14 {
 				month = 1
 			}
 
 			if !isLeap(year) {
 				continue
 			}
+		} else if i < 25 {
+			// Enforce February in each century
+			month = 1
+			year = 1800 + 100*(i-18)
 		}
 
 		i++
@@ -73,4 +81,4 @@ func calendar() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})
