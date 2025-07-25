@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* zeek = "/usr/bin/zeek", *code = "code.zeek";
+const char* zeek = "/usr/local/bin/zeek", *code = "code.zeek";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -31,11 +31,12 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int zargc = argc + 1;
+    int zargc = argc + 2;
     char** zargv = malloc(zargc * sizeof(char*));
     zargv[0] = (char*) zeek;
-    zargv[1] = (char*) code;
-    memcpy(&zargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    zargv[1] = "--";
+    zargv[2] = (char*) code;
+    memcpy(&zargv[3], &argv[2], (argc - 2) * sizeof(char*));
     zargv[zargc - 1] = NULL;
 
     execv(zeek, zargv);

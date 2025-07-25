@@ -1925,10 +1925,10 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zeek]
-args       = [ '/usr/bin/zeekwrapper', '-' ]
+args       = [ '/usr/bin/zeek', '-' ]
 experiment = 1457
-size       = '197 MiB'
-version    = '7.1.0'
+size       = '33.9 MiB'
+version    = '7.2.2'
 website    = 'https://zeek.org'
 example    = '''
 # Printing
@@ -1936,16 +1936,14 @@ print "Hello, World!";
 
 # Looping
 local i = 0;
-while (i < 10) {
+while ( i < 10 ) {
     print i;
     ++i;
 }
 
 # Accessing arguments
-local args = zeek_args();
-for (i in args) {
-    print args[i];
-}
+for ( _, arg in zeek_script_args )
+    print_raw(fmt("%s\n", arg));
 '''
 
 [Zig]
