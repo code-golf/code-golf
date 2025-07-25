@@ -15,19 +15,23 @@ const char* tex = "/usr/local/bin/tex";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execl(tex, tex, "-v", NULL);
-        ERR_AND_EXIT("execl");
+        execv(tex, argv);
+        ERR_AND_EXIT("execv");
     }
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
+
+    char* code = argv[1];
+
+    memmove(&argv[1], &argv[2], argc-- * sizeof(char*));
 
     char init[RAND_MAX+1], body[RAND_MAX+1];
 
     if (!snprintf(init, sizeof(init), "\\def\\argc{%d}", --argc))
         ERR_AND_EXIT("snprintf");
 
-    if (argc == 1)
+    if (argc == 0)
         strcat(init, "\\global\\def\\argv#1{}");
     else {
         // To pass in values, we need to escape some special characters.
@@ -61,7 +65,7 @@ int main(int argc, char* argv[]) {
         // ensures that arg0 is preceded by a digit (which removes the space), or a macro which doesn't get expanded (which removes the space).
         //
         // Note: If you ever come back to this, make sure it works for argv{\the\i}, argv\i, and argv{\count0}, and hole args starting with digits.
-        if (!snprintf(body, sizeof(body), "globaldefargv1ifnum1=1%selseifcase1or%sfifi", argv[2], each_join(&argv[2], --argc, "or")))
+        if (!snprintf(body, sizeof(body), "globaldefargv1ifnum1=0%selseifcase1or%sfifi", argv[1], each_join(&argv[1], argc, "or")))
             ERR_AND_EXIT("snprintf");
 
         strcat(init, body);
@@ -71,7 +75,7 @@ int main(int argc, char* argv[]) {
     // \parindent=0pt prevents per-paragraph indentation.
     // \hsize and \vsize set the page dimensions. I set them a bit less than the maximum legal dimension which is less than 16384pt.
     // \bye closes the document (TeX doesn't handle EOF how you might expect).
-    if (!snprintf(body, sizeof(body), "\\octet\\footline={}\\parindent=0pt\\hsize=16000pt\\vsize=16000pt\\relax\n%s\n%s\n\\bye", init, argv[1]))
+    if (!snprintf(body, sizeof(body), "\\octet\\footline={}\\parindent=0pt\\hsize=16000pt\\vsize=16000pt\\relax%s%s\\bye", init, code))
         ERR_AND_EXIT("snprintf");
 
     srand((unsigned) time(NULL));
@@ -149,7 +153,7 @@ int main(int argc, char* argv[]) {
 char* each_join(char* arr[], int cnt, const char* sep) {
     size_t len;
 
-    for (int i = 0; i < cnt; ++i)
+    for (int i = 0; i < cnt; i++)
         len += strlen(arr[i]) + strlen(sep);
 
     char* rt;
@@ -157,9 +161,11 @@ char* each_join(char* arr[], int cnt, const char* sep) {
     if (!(rt = malloc(len + 1)))
         ERR_AND_EXIT("malloc");
 
-    for (int i = 1; i < cnt; ++i) {
-        strcat(rt, sep);
+    for (int i = 1; i < cnt; i++) {
         strcat(rt, arr[i]);
+
+        if (i + 1 < cnt)
+            strcat(rt, sep);
     }
 
     return rt;
