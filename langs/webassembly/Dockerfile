@@ -4,9 +4,9 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl musl-dev
 
-ENV CRT='x86_64-unknown-linux-musl' VER=34.0.1
+ENV CRT='x86_64-unknown-linux-musl' VER=35.0.0
 
-WORKDIR /webassembly
+WORKDIR /usr/bin
 
 RUN curl -#L https://github.com/bytecodealliance/wasmtime/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
@@ -17,7 +17,7 @@ RUN cargo install \
     --path .      \
     --root /usr   \
     --target $CRT \
- && strip /usr/bin/wasmtime
+ && strip wasmtime
 
 FROM codegolf/lang-base
 

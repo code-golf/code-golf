@@ -71,6 +71,7 @@ COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 57
 COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] # 56.0 MiB
 COPY --from=codegolf/lang-prolog       ["/", "/langs/prolog/rootfs/"      ] # 49.3 MiB
 COPY --from=codegolf/lang-erlang       ["/", "/langs/erlang/rootfs/"      ] # 49.0 MiB
+COPY --from=codegolf/lang-webassembly  ["/", "/langs/webassembly/rootfs/" ] # 44.5 MiB
 COPY --from=codegolf/lang-javascript   ["/", "/langs/javascript/rootfs/"  ] # 43.9 MiB
 COPY --from=codegolf/lang-hy           ["/", "/langs/hy/rootfs/"          ] # 41.7 MiB
 COPY --from=codegolf/lang-haxe         ["/", "/langs/haxe/rootfs/"        ] # 41.1 MiB
