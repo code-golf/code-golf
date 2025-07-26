@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
     // \parindent=0pt prevents per-paragraph indentation.
     // \hsize and \vsize set the page dimensions. I set them a bit less than the maximum legal dimension which is less than 16384pt.
     // \bye closes the document (TeX doesn't handle EOF how you might expect).
-    if (!snprintf(body, sizeof(body), "\\octet\\footline={}\\parindent=0pt\\hsize=16000pt\\vsize=16000pt\\relax%s%s\\bye", init, code))
+    if (!snprintf(body, sizeof(body), "\\octet\\footline={}\\parindent=0pt\\hsize=16000pt\\vsize=16000pt\\relax\n%s\n%s\n\\bye", init, code))
         ERR_AND_EXIT("snprintf");
 
     srand((unsigned) time(NULL));
@@ -110,8 +110,7 @@ int main(int argc, char* argv[]) {
     if (!snprintf(cmd, sizeof(cmd), "%s %s > /dev/null", tex, src))
         ERR_AND_EXIT("snprintf");
 
-    if (system(cmd))
-        ERR_AND_EXIT("system");
+    system(cmd); // Here we omit `ERR_AND_EXIT` to prevent the program from terminating as soon as /usr/local/bin/tex returns an error.
 
     char log[128];
 
@@ -124,7 +123,7 @@ int main(int argc, char* argv[]) {
     char line[4096];
 
     while (fgets(line, sizeof(line), fp)) {
-        if (strstr(line, file) || strstr(line, "Version 3.141592653") || strstr(line, "=\\count2") || strstr(line, " [1] "))
+        if (strstr(line, file) || strstr(line, "Version 3.141592653") || strstr(line, "=\\count") || strstr(line, " [1] )"))
             continue;
 
         if (fputs(line, stderr))
@@ -163,9 +162,7 @@ char* each_join(char* arr[], int cnt, const char* sep) {
 
     for (int i = 1; i < cnt; i++) {
         strcat(rt, arr[i]);
-
-        if (i + 1 < cnt)
-            strcat(rt, sep);
+        strcat(rt, sep);
     }
 
     return rt;
