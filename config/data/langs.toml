@@ -1799,7 +1799,7 @@ foreach arg $argv {
 
 [TeX]
 args    = [ '/usr/bin/tex', '$code' ]
-size    = '9.67 MiB'
+size    = '7.99 MiB'
 version = '3.141592653'
 website = 'https://tug.org'
 example = '''
@@ -1836,6 +1836,31 @@ example    = '''
 
 # Accessing arguments
 ≡&p↘1&args
+'''
+
+[Umka]
+args       = [ '/usr/bin/umka', '-' ]
+experiment = 1921
+size       = '1.29 MiB'
+version    = '1.5.3'
+website    = 'https://github.com/vtereshkov/umka-lang'
+example    = '''
+import "std.um"
+
+fn main() {
+    // Printing
+    std::println("Hello, World!")
+
+    // Looping
+    for i := 0; i < 10; i++ {
+        printf("%d\n", i)
+    }
+
+    // Accessing arguments
+    for i := 1; i < std::argc(); i++ {
+        std::println(std::argv(i))
+    }
+}
 '''
 
 [V]
