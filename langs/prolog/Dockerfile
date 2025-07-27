@@ -1,4 +1,4 @@
-# Also bump and rebuild Curry.
+# Also bump Curry.
 FROM swipl:9.2.9 AS builder
 
 RUN apt-get update                   \
