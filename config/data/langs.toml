@@ -1818,6 +1818,31 @@ example    = '''
 ≡&p↘1&args
 '''
 
+[Umka]
+args       = [ '/usr/bin/umka', '-' ]
+experiment = 1921
+size       = '1.29 MiB'
+version    = '1.5.3'
+website    = 'https://github.com/vtereshkov/umka-lang'
+example    = '''
+import "std.um"
+
+fn main() {
+    // Printing
+    std::println("Hello, World!")
+
+    // Looping
+    for i := 0; i < 10; i++ {
+        printf("%d\n", i)
+    }
+
+    // Accessing arguments
+    for i := 1; i < std::argc(); i++ {
+        std::println(std::argv(i))
+    }
+}
+'''
+
 [V]
 args    = [ '/usr/bin/V', '-' ]
 size    = '38.3 MiB'
