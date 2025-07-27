@@ -219,6 +219,7 @@ export const extensions : { [key: string]: any } = {
     'tcl':           StreamLanguage.define(tcl),
     'tex':           StreamLanguage.define(stex),
     // TODO uiua
+    // TODO umka
     // TODO v
     'vala':          StreamLanguage.define(csharp),
     // TODO viml
