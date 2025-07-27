@@ -1,11 +1,12 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev patch
 
-WORKDIR /lang
+ENV URL=https://ftpmirror.gnu.org/bash VER=5.3
 
-RUN curl https://ftp.gnu.org/gnu/bash/bash-5.3.tar.gz \
-  | tar xz --strip-components 1
+RUN curl -#L $URL/bash-$VER.tar.gz | tar xz --strip-components 1
+
+RUN curl -#L $URL/bash-$VER-patches/bash53-00[1-3] | patch -p0
 
 RUN ./configure                      \
     --disable-command-timing         \
@@ -18,13 +19,14 @@ RUN ./configure                      \
     --disable-prompt-string-decoding \
     --disable-select                 \
     --enable-static-link             \
+    --prefix=/usr                    \
     --without-bash-malloc            \
- && make                             \
- && strip bash
+ && make install                     \
+ && strip /usr/bin/bash
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lang/bash /usr/bin/
+COPY --from=0 /usr/bin/bash /usr/bin/
 
 ENTRYPOINT ["bash"]
 
