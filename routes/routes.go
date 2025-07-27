@@ -41,6 +41,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r.With(middleware.RedirHolesLangs, middleware.Golfer).Group(func(r chi.Router) {
 		r.Get("/", homeGET)
 		r.Get("/{hole}", holeGET)
+		r.Get("/sandbox", sandboxGET)
 		r.Get("/about", aboutGET)
 		r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
 			r.Get("/", adminGET)
@@ -139,6 +140,7 @@ func Router(db *sqlx.DB) http.Handler {
 				r.Get("/solutions/{hole}/{lang}/{scoring}", recentSolutionsGET)
 			})
 		})
+		r.Post("/sandbox", sandboxPOST)
 		r.Get("/scores/{hole}/{lang}", scoresGET)
 		r.Get("/scores/{hole}/{lang}/all", scoresAllGET)
 		r.Get("/scores/{hole}/{lang}/{scoring}", scoresGET)
