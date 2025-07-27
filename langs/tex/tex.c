@@ -6,7 +6,7 @@
 
 #undef RAND_MAX
 
-#define RAND_MAX __INT16_MAX__
+#define RAND_MAX __UINT16_MAX__
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
 char* each_join(char* arr[], int cnt, const char* sep);
