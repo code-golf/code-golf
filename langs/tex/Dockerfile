@@ -1,4 +1,4 @@
-FROM reitzig/texlive-base:2025.5 AS builder
+FROM reitzig/texlive-minimal:2025.5 AS builder
 
 RUN apk add --no-cache dash gcc musl-dev
 
@@ -24,9 +24,9 @@ RUN ls -R . > ls-R                                           \
  && mktexfmt tex.fmt
 
 # Prune unneeded stuff.
-RUN bash -c "rm -r ../texmf-var/web2c/{lua*,pdftex,metafont}                                         \
-                   ../bin/x86_64-linuxmusl/{lua*,pdf*,*dvi*,mf-nowin,bibtex}                         \
-                   {doc,source,scripts,bibtex,dvips,tex,fonts,xdvi,metafont,makeindex,mft,dvipdfmx}" \
+RUN bash -c "rm -r ../texmf-var/web2c/{lua*,pdftex,metafont}                              \
+                   ../bin/x86_64-linuxmusl/{lua*,pdf*,*dvi*,mf-nowin,bibtex}              \
+                   {scripts,bibtex,dvips,tex,fonts,xdvi,metafont,makeindex,mft,dvipdfmx}" \
  && rm -r ../texmf-var/fonts ../tlpkg
 
 COPY tex.c /
