@@ -123,7 +123,8 @@ int main(int argc, char* argv[]) {
     char line[4096];
 
     while (fgets(line, sizeof(line), fp)) {
-        if (strstr(line, file) || strstr(line, "Version 3.141592653") || strstr(line, "=\\count") || strstr(line, " [1] )"))
+        if (strstr(line, file) || strstr(line, "Version 3.141592653") || strstr(line, " [1] )") ||
+            (strstr(line, "=\\count") && !strstr(line, " =\\count ")))
             continue;
 
         if (fputs(line, stderr))
