@@ -1,43 +1,60 @@
-FROM currylang/pakcs:3.6.0 AS builder
+FROM swipl:9.2.9 AS builder
 
-RUN apt-get remove -y rlwrap
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl gcc gettext make
 
-RUN cypm update \
- && cypm install runcurry
+ENV VER=3.8.0
 
-FROM codegolf/lang-base
+WORKDIR /usr/local
 
-COPY --from=0 /bin                                       /bin
-COPY --from=0 /lib/x86_64-linux-gnu/libacl.so.1          \
-              /lib/x86_64-linux-gnu/libattr.so.1         \
-              /lib/x86_64-linux-gnu/libc.so.6            \
-              /lib/x86_64-linux-gnu/libdl.so.2           \
-              /lib/x86_64-linux-gnu/libgmp.so.10         \
-              /lib/x86_64-linux-gnu/libm.so.6            \
-              /lib/x86_64-linux-gnu/libpcre.so.3         \
-              /lib/x86_64-linux-gnu/libpcre2-8.so.0      \
-              /lib/x86_64-linux-gnu/libpthread.so.0      \
-              /lib/x86_64-linux-gnu/libreadline.so.8     \
-              /lib/x86_64-linux-gnu/librt.so.1           \
-              /lib/x86_64-linux-gnu/libselinux.so.1      \
-              /lib/x86_64-linux-gnu/libtinfo.so.6        \
-              /lib/x86_64-linux-gnu/libutil.so.1         \
-              /lib/x86_64-linux-gnu/libz.so.1            /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2                /lib64/
-COPY --from=0 /pakcs/pakcs                               /pakcs/pakcs
-COPY --from=0 /userhome/.cpm/bin/runcurry                \
-              /usr/bin/basename                          \
-              /usr/bin/dirname                           \
-              /usr/bin/readlink                          \
-              /usr/bin/tty                               /usr/bin/
-COPY --from=0 /usr/lib/libswipl.so.8                     /usr/lib/
-COPY --from=0 /usr/lib/swi-prolog/bin/x86_64-linux/swipl /usr/lib/swi-prolog/bin/x86_64-linux/
-COPY --from=0 /usr/lib/swi-prolog/lib                    /usr/lib/swi-prolog/lib
+RUN curl -#L https://www.curry-lang.org/pakcs/download/pakcs-$VER-amd64-Linux.tar.gz \
+  | tar xz --strip-components 1
 
-COPY /currywrapper /usr/bin/
+# Why does it only work with target 'all'
+RUN make -j`nproc` all
 
-ENV PATH=/pakcs/pakcs/bin:$PATH
+COPY curry.c /
 
-ENTRYPOINT ["currywrapper"]
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/curry -s -static /curry.c
+
+FROM codegolf/lang-prolog
+
+COPY --from=0 /bin/cat                                  \
+              /bin/chmod                                \
+              /bin/expr                                 \
+              /bin/grep                                 \
+              /bin/head                                 \
+              /bin/mv                                   \
+              /bin/rm                                   \
+              /bin/sed                                  \
+              /bin/sh                                   \
+              /bin/tty                                  /bin/
+COPY --from=0 /lib/x86_64-linux-gnu/libacl.so.1         \
+              /lib/x86_64-linux-gnu/libattr.so.1        \
+              /lib/x86_64-linux-gnu/libdl.so.2          \
+              /lib/x86_64-linux-gnu/libpthread.so.0     \
+              /lib/x86_64-linux-gnu/libreadline.so.8    \
+              /lib/x86_64-linux-gnu/librt.so.1          \
+              /lib/x86_64-linux-gnu/libselinux.so.1     \
+              /lib/x86_64-linux-gnu/libutil.so.1        /lib/
+COPY --from=0 /usr/bin/basename                         \
+              /usr/bin/curry                            \
+              /usr/bin/dirname                          \
+              /usr/bin/readlink                         /usr/bin/
+COPY --from=0 /usr/local/pakcsrc.default                /usr/local/
+COPY --from=0 /usr/local/bin/curry                      \
+              /usr/local/bin/pakcs-fcypp                \
+              /usr/local/bin/pakcs-frontend             /usr/local/bin/
+
+COPY --from=0 /usr/local/lib                            /usr/local/lib
+
+COPY --from=0 /usr/local/scripts/makesavedstate         /usr/local/scripts/
+COPY --from=0 /usr/local/src/pakcs                      /usr/local/src/
+
+# Why does it only work with a shell script
+COPY curry /usr/bin/
+
+ENTRYPOINT ["curry"]
 
 CMD ["--version"]
