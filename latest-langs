@@ -99,6 +99,7 @@ constant %paths = (
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
+    'Umka'         => 'github.com/vtereshkov/umka-lang/releases/latest',
     'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
     'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
