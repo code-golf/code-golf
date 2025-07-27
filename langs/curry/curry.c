@@ -29,10 +29,13 @@ int main(int argc, char* argv[]) {
         if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
             ERR_AND_EXIT("fwrite");
 
+    if (fclose(fp))
+        ERR_AND_EXIT("fclose");
+
     pid_t pid;
 
     if (!(pid = fork())) {
-        execl(curry, curry, "-Dbindingoptimization=no", "--nocypm", "--quiet", ":load", code, ":save", ":quit", NULL);
+        execl(curry, curry, "-Dbindingoptimization=no", "--nocypm", "--noreadline", "--quiet", ":load", code, ":save", ":quit", NULL);
         ERR_AND_EXIT("execl");
     }
 

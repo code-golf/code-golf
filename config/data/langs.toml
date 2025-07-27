@@ -578,7 +578,7 @@ main = do
   putStrLn "Hello, World!"
 
   -- Looping
-  mapM print [0..9]
+  putStr . unlines . map show . take 10 $ [0..]
 
   -- Accessing arguments
   getArgs >>= putStrLn . unlines
