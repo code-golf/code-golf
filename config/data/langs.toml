@@ -1173,8 +1173,7 @@ example = '''
 '''
 
 [Kotlin]
-args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
-env     = [ 'JAVA_HOME=/opt/java' ]
+args    = [ '/opt/java/bin/java', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code' ]
 size    = '140 MiB'
 version = '2.2.0'
 website = 'https://kotlinlang.org'
