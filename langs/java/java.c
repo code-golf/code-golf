@@ -8,7 +8,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* java = "/opt/jdk/bin/java", *javac = "/opt/jdk/bin/javac", *code = "code.java";
+const char* java = "/opt/java/bin/java", *javac = "/opt/java/bin/javac", *code = "code.java";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
