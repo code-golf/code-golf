@@ -8,10 +8,8 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc
 
-# RUN curl -#L https://github.com/koka-lang/koka/releases/download/v$VER/koka-v$VER-linux-x64.tar.gz \
-#   | tar xz --directory /usr/local
-
-RUN curl -#L https://github.com/koka-lang/koka/releases/download/v$VER/install.sh | sh
+RUN curl -#L https://github.com/koka-lang/koka/releases/download/v$VER/koka-v$VER-linux-x64.tar.gz \
+  | tar xz --directory /usr/local
 
 COPY koka.c /
 
@@ -32,7 +30,7 @@ COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
 COPY --from=0 /usr/bin/gcc /usr/bin/koka            /usr/bin/
 COPY --from=0 /usr/local/bin/koka                   \
               /usr/local/bin/node                   /usr/local/bin/
-COPY --from=0 /usr/local/share/koka                 /usr/local/share/koka
+COPY --from=0 /usr/local/share/koka/v$VER/lib/std   /usr/local/share/koka/v$VER/lib/std
 
 ENTRYPOINT ["koka"]
 

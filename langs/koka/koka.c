@@ -34,8 +34,8 @@ int main(int argc, char* argv[]) {
     int kargc = argc + 5;
     char** kargv = malloc(kargc * sizeof(char*));
     kargv[0] = (char*) koka;
-    kargv[1] = "-v0";
-    kargv[2] = "--target=js";
+    kargv[1] = "--target=js";
+    kargv[2] = "-v0";
     kargv[3] = "-e";
     kargv[4] = (char*) code;
     kargv[5] = "--";
