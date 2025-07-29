@@ -1,18 +1,23 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl gcc musl-dev
 
 ENV VER=d3cc04f
 
 RUN curl -#L https://github.com/m-ender/labyrinth/tarball/$VER \
-  | tar xz --strip-components 1
+  | tar xz --directory /usr/lib --strip-components 1
+
+COPY labyrinth.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/labyrinth -s labyrinth.c
 
 FROM codegolf/lang-ruby
 
-COPY --from=0 *.rb /
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/bin/labyrinth       /usr/bin/
+COPY --from=0 /usr/lib/direction.rb    \
+              /usr/lib/interpreter.rb  \
+              /usr/lib/labyrinth.rb    \
+              /usr/lib/point2d.rb      /usr/lib/
 
-FROM codegolf/lang-base
-
-COPY --from=1 . /
-
-CMD ["ruby", "labyrinth.rb"]
+ENTRYPOINT ["labyrinth"]

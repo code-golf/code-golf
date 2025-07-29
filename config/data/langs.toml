@@ -1192,9 +1192,9 @@ for (arg in args)
 '''
 
 [Labyrinth]
-args       = [ '/usr/bin/ruby', 'interpreter.rb', '-' ]
+args       = [ '/usr/bin/labyrinth', '-' ]
 experiment = 445
-size       = '28.6 MiB'
+size       = '33.9 MiB'
 version    = 'd3cc04f'
 website    = 'https://github.com/m-ender/labyrinth'
 example    = '''
@@ -1203,9 +1203,9 @@ Printing
    0          _ """
     11_{78_23_" " "
     4         4 ".{\!\ Looping
-    _         " {    )::}_10-@
-    1           }"   "      "
-    08_100_33""""""""""""\!{;
+    _         " {    )::}_10-> Accessing arguments
+    1           }"   "      " ,)
+    08_100_33""""""""""""\!{; .(@
 '''
 
 [Lua]
