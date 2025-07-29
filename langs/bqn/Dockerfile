@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bash build-base clang git
 
-ENV VER=0.7.0
+ENV VER=0.9.0
 
 RUN git clone --branch v$VER https://github.com/dzaima/CBQN.git
 

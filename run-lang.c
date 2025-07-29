@@ -213,7 +213,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(pwritev),         // 296
         ALLOW(read),            // 0
         ALLOW(readv),           // 19
-        ALLOW(sendfile),        // 40 (Used by cat in wrappers, TODO remove)
+        // ALLOW(sendfile),     // 40
         ALLOW(write),           // 1
         ALLOW(writev),          // 20
 
