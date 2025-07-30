@@ -33,9 +33,9 @@ for (const input of $$<any>('[list]')) {
         if (input.value != '')
             input.list.append(...(await (await fetch(
                 `/api/suggestions/${input.list.id}?` +
-                    new URLSearchParams({ ...input.dataset, q: input.value }),
+                new URLSearchParams({ ...input.dataset, q: input.value }),
                 { signal: (controller = new AbortController()).signal },
-            )).json()).map((suggestion: string) => <option value={suggestion}/>));
+            )).json()).map((suggestion: string) => <option value={suggestion} />));
     };
 }
 
@@ -64,6 +64,7 @@ document.addEventListener('keydown', e => {
             dialog.close();
         }
         else {
+            dialog.querySelector('form')?.reset();
             dialog.showModal();
             e.preventDefault();
         }
@@ -107,6 +108,6 @@ function updateResults(results: SearchNavResult[]) {
 const mod = (x: number, modulus: number) => (x % modulus + modulus) % modulus;
 
 function renderResults() {
-    const resultNodes = currentResults.map((r,i) => (<li class={i === mod(currentIndex, currentResults.length) ? 'current-result' : ''}><a href={r.path}><span class='result-description'>{r.description}</span> <span class='result-path'>{r.path}</span></a></li>));
+    const resultNodes = currentResults.map((r, i) => (<li class={i === mod(currentIndex, currentResults.length) ? 'current-result' : ''}><a href={r.path}><span class='result-description'>{r.description}</span> <span class='result-path'>{r.path}</span></a></li>));
     $('#search-nav-results').replaceChildren(...resultNodes);
 }
