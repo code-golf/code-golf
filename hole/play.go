@@ -149,12 +149,6 @@ func runCode(
 		// Add a newline in to avoid commenting it out via ;, and
 		// do it twice to avoid commenting it out via #_.
 		code += "\n(print)(print)"
-	case "factor":
-		// Disable the default warning by adding the following statement at the top
-		// of the source file. However, Factor reads STDIN and is called without
-		// passing a source file. The only solution is likely to prefix the variable
-		// storing the code string with that statement, ending with a newline.
-		code = "USING: command-line io namespaces prettyprint ranges sequences ;\n" + code
 	case "go":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
