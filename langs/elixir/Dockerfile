@@ -7,7 +7,7 @@ RUN apt-get update                   \
     apt-get install --yes curl make
 
 # Also rebuild 05AB1E.
-ENV VER=1.18.4
+ENV LANG='C.UTF-8' VER=1.18.4
 
 COPY --from=0 /usr /usr
 
@@ -18,9 +18,8 @@ RUN curl -#L https://github.com/elixir-lang/elixir/archive/v$VER.tar.gz \
 
 RUN make
 
-FROM codegolf/lang-base
+FROM codegolf/lang-erlang
 
-COPY --from=0 /                          /
 COPY --from=1 /usr/lib/locale            /usr/lib/locale
 COPY --from=1 /usr/local/bin/elixir      \
               /usr/local/bin/mix         /usr/local/bin/

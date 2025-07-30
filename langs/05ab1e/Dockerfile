@@ -1,12 +1,12 @@
-FROM codegolf/lang-elixir
+FROM codegolf/lang-elixir AS builder
 
-FROM debian:bookworm-slim AS builder
+FROM debian:bookworm-slim
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc patch
 
-ENV VER=c31668b
+ENV LANG='C.UTF-8' VER=c31668b
 
 COPY --from=0 /usr /usr
 
@@ -29,9 +29,8 @@ COPY 05ab1e.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/05ab1e -s /05ab1e.c
 
-FROM codegolf/lang-base
+FROM codegolf/lang-elixir
 
-COPY --from=0 /                 /
 COPY --from=1 /usr/bin/05ab1e   /usr/bin/
 COPY --from=1 /usr/local/osabie /usr/local/bin/
 
