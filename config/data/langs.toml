@@ -856,7 +856,7 @@ args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
 size       = '76.5 MiB'
-version    = '4.0.27'
+version    = '4.0.28'
 website    = 'https://groovy-lang.org'
 example    = '''
 // Printing
@@ -1174,8 +1174,7 @@ example = '''
 '''
 
 [Kotlin]
-args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
-env     = [ 'JAVA_HOME=/opt/java' ]
+args    = [ '/opt/java/bin/java', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '140 MiB'
 version = '2.2.0'
 website = 'https://kotlinlang.org'
