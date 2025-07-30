@@ -23,6 +23,7 @@ var id = strings.NewReplacer(
 	// Special.
 	"#", "-sharp",
 	"+", "p",
+	"ñ", "n",
 	"><>", "fish",
 )
 

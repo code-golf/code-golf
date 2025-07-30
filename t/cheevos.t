@@ -92,6 +92,7 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
 
     # Add hole-specific cheevos on the front.
     $earns.=subst: '{', '{sounds-quite-nice,' if $_ eq 'd';
+    $earns.=subst: '{', '{pina-colada,'       if $_ eq 'elixir';
     $earns.=subst: '{', '{caffeinated,'       if $_ eq 'java';
     $earns.=subst: '{', '{go-forth,'          if $_ eq 'go';
     $earns.=subst: '{', '{just-kidding,'      if $_ eq 'k';
