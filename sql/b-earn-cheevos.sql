@@ -145,7 +145,7 @@ BEGIN
 
     -- 🍹 Piña Colada
     IF langs_for_hole @> '{berry,coconut,elixir}' THEN
-        earned := earn(earned, 'pina-colada', user_id); END IF;
+        earned := earn(earned, 'piña-colada', user_id); END IF;
 
     -- 🎮 S-box 360
     IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN

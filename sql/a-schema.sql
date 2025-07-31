@@ -17,7 +17,7 @@ CREATE TYPE cheevo AS ENUM (
     'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
     'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
-    'patches-welcome', 'phileas-fogg', 'pi-day', 'pina-colada', 'polyglot',
+    'patches-welcome', 'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot',
     'polyglutton', 'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34',
     's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
