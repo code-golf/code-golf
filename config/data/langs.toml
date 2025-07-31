@@ -757,7 +757,7 @@ version = 'GNU Fortran 15.1.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 integer :: i
-character(len=2048) :: arg
+character(len=256) :: arg
 
 ! Printing
 print "(a)", "Hello, World!"
