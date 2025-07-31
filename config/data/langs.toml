@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.67 MiB'
-version    = 'Algol 68 Genie 3.5.15'
+version    = 'Algol 68 Genie 3.6.1'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -757,7 +757,7 @@ version = 'GNU Fortran 15.1.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 integer :: i
-character(len=2048) :: arg
+character(len=256) :: arg
 
 ! Printing
 print "(a)", "Hello, World!"
@@ -855,7 +855,7 @@ args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
 size       = '76.5 MiB'
-version    = '4.0.27'
+version    = '4.0.28'
 website    = 'https://groovy-lang.org'
 example    = '''
 // Printing
@@ -1173,8 +1173,7 @@ example = '''
 '''
 
 [Kotlin]
-args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
-env     = [ 'JAVA_HOME=/opt/java' ]
+args    = [ '/opt/java/bin/java', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '140 MiB'
 version = '2.2.0'
 website = 'https://kotlinlang.org'
@@ -1707,7 +1706,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.22 MiB'
-version = 'SQLite 3.50.3'
+version = 'SQLite 3.50.4'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
