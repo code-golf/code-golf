@@ -522,36 +522,6 @@ for arg in process.argv[2..]
     console.log arg
 '''
 
-[Coq]
-args       = [ '/usr/bin/coq', '-' ]
-env        = [ 'OPAM_HOME=/home/opam/.opam/5.2' ]
-experiment = 1425
-size       = '215 MiB'
-version    = '8.20.0'
-website    = 'https://coq.inria.fr'
-example    = '''
-Require Import String Extraction.
-Import List ListNotations.
-
-(* Printing *)
-Definition print := Eval compute in "Hello, World!"%string.
-
-(* Looping *)
-Fixpoint range i :=
-  match i with
-  | O => [0]
-  | S i' => range i' ++ [S i']
-  end.
-
-Definition loop := Eval compute in range 9.
-
-(* Accessing arguments *)
-
-
-Extraction Language OCaml.
-Extraction "print_loop.ml" print loop.
-'''
-
 ['Common Lisp']
 args      = [ '/usr/bin/common-lisp', '-' ]
 redirects = [ 'lisp' ]
@@ -1597,6 +1567,35 @@ end
 for arg in arguments
   print arg
 end
+'''
+
+[Rocq]
+args       = [ '/usr/bin/rocq', '-' ]
+experiment = 1425
+size       = '18.8 MiB'
+version    = '9.0.0'
+website    = 'https://rocq-prover.org'
+example    = '''
+Require Import String Extraction.
+Import List ListNotations.
+
+(* Printing *)
+Definition print := Eval compute in "Hello, World!"%string.
+
+(* Looping *)
+Fixpoint range i :=
+  match i with
+  | O => [0]
+  | S i' => range i' ++ [S i']
+  end.
+
+Definition loop := Eval compute in range 9.
+
+(* Accessing arguments *)
+
+
+Extraction Language OCaml.
+Extraction "print_loop.ml" print loop.
 '''
 
 [Ruby]

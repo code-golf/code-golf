@@ -154,7 +154,6 @@ export const extensions : { [key: string]: any } = {
     'cobol':         StreamLanguage.define(cobol),
     'coconut':       python,
     'coffeescript':  StreamLanguage.define(coffeeScript),
-    // TODO coq
     'common-lisp':   StreamLanguage.define(commonLisp),
     'cpp':           cpp(),
     'crystal':       StreamLanguage.define(crystal),
@@ -207,6 +206,7 @@ export const extensions : { [key: string]: any } = {
     // TODO rebol
     // TODO rexx
     // TODO rockstar
+    // TODO rocq
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
     'scala':         StreamLanguage.define(scala),

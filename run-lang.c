@@ -601,7 +601,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(iopl),            // 172
         // ALLOW(kexec_file_load), // 320
         // ALLOW(kexec_load),      // 246
-        ALLOW(perf_event_open),    // 298 (Used by Coq)
+        ALLOW(perf_event_open),    // 298 (Used by Rocq)
         // ALLOW(personality),     // 135
         // ALLOW(reboot),          // 169
         // ALLOW(_sysctl),         // 156
