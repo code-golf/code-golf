@@ -66,6 +66,7 @@ document.addEventListener('keydown', e => {
         else {
             dialog.querySelector('form')?.reset();
             dialog.showModal();
+            updateResults([]);
             e.preventDefault();
         }
     }

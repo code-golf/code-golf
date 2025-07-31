@@ -42,8 +42,13 @@ function defaultMatchPriority(haystack: string, needle: string) {
 let lastSearch: string | undefined = undefined;
 // eslint-disable-next-line no-unused-vars
 export function requestResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
-    if (!search || lastSearch === search) return;
+    if (lastSearch === search) return;
     lastSearch = search;
+
+    if (!search) {
+        updateResults([]);
+        return;
+    }
 
     if (search.startsWith('@')) {
         requestAtResults(search, updateResults);
