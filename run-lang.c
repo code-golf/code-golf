@@ -16,6 +16,11 @@
 #include <sys/sysmacros.h>
 #include <unistd.h>
 
+// Not defined in alpine yet :-(
+#define __NR_open_tree_attr 467
+#define __NR_file_getattr   468
+#define __NR_file_setattr   469
+
 #define NOBODY 65534
 
 #define ALLOW(name) \
@@ -140,41 +145,47 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(unlinkat),     // 263
 
         // Basic File Attributes
-        ALLOW(access),     // 21
-        ALLOW(chmod),      // 90
-        ALLOW(chown),      // 92
-        ALLOW(faccessat),  // 269
-        ALLOW(faccessat2), // 439
-        ALLOW(fchmod),     // 91
-        ALLOW(fchmodat),   // 268
-        ALLOW(fchmodat2),  // 452
-        ALLOW(fchown),     // 93
-        ALLOW(fchownat),   // 260
-        ALLOW(fstat),      // 5
-        ALLOW(futimesat),  // 261
-        ALLOW(lchown),     // 94
-        ALLOW(lstat),      // 6
-        ALLOW(newfstatat), // 262
-        ALLOW(stat),       // 4
-        ALLOW(statx),      // 332
-        ALLOW(umask),      // 95
-        ALLOW(utime),      // 132
-        ALLOW(utimensat),  // 280
-        ALLOW(utimes),     // 235
+        ALLOW(access),          // 21
+        ALLOW(chmod),           // 90
+        ALLOW(chown),           // 92
+        ALLOW(faccessat),       // 269
+        ALLOW(faccessat2),      // 439
+        ALLOW(fchmod),          // 91
+        ALLOW(fchmodat),        // 268
+        ALLOW(fchmodat2),       // 452
+        ALLOW(fchown),          // 93
+        ALLOW(fchownat),        // 260
+        // ALLOW(file_getattr), // 468
+        // ALLOW(file_setattr), // 469
+        ALLOW(fstat),           // 5
+        ALLOW(futimesat),       // 261
+        ALLOW(lchown),          // 94
+        ALLOW(lstat),           // 6
+        ALLOW(newfstatat),      // 262
+        ALLOW(stat),            // 4
+        ALLOW(statx),           // 332
+        ALLOW(umask),           // 95
+        ALLOW(utime),           // 132
+        ALLOW(utimensat),       // 280
+        ALLOW(utimes),          // 235
 
         // Extended File Attributes
-        // ALLOW(fgetxattr),    // 193
-        // ALLOW(flistxattr),   // 196
-        // ALLOW(fremovexattr), // 199
-        // ALLOW(fsetxattr),    // 190
-        // ALLOW(getxattr),     // 191
-        // ALLOW(lgetxattr),    // 192
-        ALLOW(listxattr),       // 194
-        // ALLOW(llistxattr),   // 195
-        // ALLOW(lremovexattr), // 198
-        // ALLOW(lsetxattr),    // 189
-        // ALLOW(removexattr),  // 197
-        // ALLOW(setxattr),     // 188
+        // ALLOW(fgetxattr),     // 193
+        // ALLOW(flistxattr),    // 196
+        // ALLOW(fremovexattr),  // 199
+        // ALLOW(fsetxattr),     // 190
+        // ALLOW(getxattr),      // 191
+        // ALLOW(getxattrat),    // 464
+        // ALLOW(lgetxattr),     // 192
+        ALLOW(listxattr),        // 194
+        // ALLOW(listxattrat),   // 465
+        // ALLOW(llistxattr),    // 195
+        // ALLOW(lremovexattr),  // 198
+        // ALLOW(lsetxattr),     // 189
+        // ALLOW(removexattr),   // 197
+        // ALLOW(removexattrat), // 466
+        // ALLOW(setxattr),      // 188
+        // ALLOW(setxattrat),    // 463
 
         // File Descriptor Manipulations
         ALLOW(dup2),  // 33
@@ -404,6 +415,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(modify_ldt),    // 154
         ALLOW(mprotect),      // 10
         ALLOW(mremap),        // 25
+        // ALLOW(mseal),      // 462
         ALLOW(munlock),       // 150
         ALLOW(munlockall),    // 152
         ALLOW(munmap),        // 11
@@ -556,19 +568,20 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(quotactl_fd), // 443
 
         // Filesystem (privileged)
-        // ALLOW(fsconfig),      // 431
-        // ALLOW(fsmount),       // 432
-        // ALLOW(fsopen),        // 430
-        // ALLOW(fspick),        // 433
-        // ALLOW(mount),         // 165
-        // ALLOW(mount_setattr), // 442
-        // ALLOW(move_mount),    // 429
-        // ALLOW(nfsservctl),    // 180
-        // ALLOW(open_tree),     // 428
-        // ALLOW(pivot_root),    // 155
-        // ALLOW(swapoff),       // 168
-        // ALLOW(swapon),        // 167
-        // ALLOW(umount2),       // 166
+        // ALLOW(fsconfig),       // 431
+        // ALLOW(fsmount),        // 432
+        // ALLOW(fsopen),         // 430
+        // ALLOW(fspick),         // 433
+        // ALLOW(mount),          // 165
+        // ALLOW(mount_setattr),  // 442
+        // ALLOW(move_mount),     // 429
+        // ALLOW(nfsservctl),     // 180
+        // ALLOW(open_tree),      // 428
+        // ALLOW(open_tree_attr), // 467
+        // ALLOW(pivot_root),     // 155
+        // ALLOW(swapoff),        // 168
+        // ALLOW(swapon),         // 167
+        // ALLOW(umount2),        // 166
 
         // Filesystem (unprivileged)
         ALLOW(fstatfs),      // 138
