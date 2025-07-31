@@ -53,7 +53,7 @@ func solveSWGPT(corpusSanitized string, promptWords map[string]bool) map[string]
 var _ = answerFunc("star-wars-gpt", func() []Answer {
 	corpora := shuffle(slices.Clone(crawls))
 
-	tests := make([]test, 13)
+	tests := make([]test, 15)
 	testWordCount := 12
 
 	for i := 0; i < 10; i += 2 {
@@ -120,5 +120,8 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 	tests[13] = test{staticTest9, staticResult9}
 	tests[14] = test{staticTest10, staticResult10}
 
-	return outputTests(shuffle(tests))
+	tests = shuffle(tests)
+
+	const argc = 13 // Preserve original argc
+	return outputTests(tests[:argc], tests[len(tests)-argc:])
 })
