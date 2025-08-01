@@ -4195,7 +4195,6 @@ preamble = '''
 '''
 
 ['Topological Sort']
-experiment = 2308
 category = 'Computing'
 released = 2025-08-01
 synopsis = 'Perform topological sort.'
