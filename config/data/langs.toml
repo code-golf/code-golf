@@ -1282,8 +1282,8 @@ main :: proc() {
 [Ox]
 args       = [ '/usr/bin/ox', '-' ]
 experiment = 1910
-size       = '5.83 MiB'
-version    = '9.30'
+size       = '6.17 MiB'
+version    = '8.02'
 website    = 'https://www.doornik.com'
 example    = '''
 #include <oxstd.oxh>
@@ -1297,9 +1297,7 @@ main() {
         println(i);
 
     // Accessing arguments
-    decl args = arglist();
-
-    for (decl i = 1; i < sizeof(args); ++i)
+    for (decl i = 1, args = arglist(); i < sizeof(args); ++i)
         println(args[i]);
 }
 '''
