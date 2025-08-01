@@ -1,39 +1,56 @@
+ARG VER=9.12.2
+
 FROM alpine:3.22 AS builder
 
-ENV VER=9.8.2
+ARG VER
 
-RUN apk add --no-cache build-base ghc=$VER-r2
+RUN apk add --no-cache bash binutils-gold build-base cabal curl ghc gmp-dev ncurses-dev python3
 
-RUN echo "#define VER \"$VER\"" > haskell.h
+RUN curl -#L https://downloads.haskell.org/~ghc/$VER/ghc-$VER-src.tar.xz \
+  | tar xJ --strip-components 1
+
+RUN cabal update                   \
+ && ./configure                    \
+ && hadrian/build                  \
+    -j`nproc`                      \
+    --docs=none                    \
+    --flavour=release+omit_pragmas \
+    stage2:exe:ghc-bin
+
+WORKDIR /_build/stage1/lib
+
+# Delete all archive files.
+RUN find . -name '*.a' -delete
+
+# Delete useless shared object files.
+RUN find . \( -name '*debug*.so' -or -name '*p-ghc*.so' \) -delete
+
+WORKDIR /_build/stage1/lib/x86_64-linux-ghc-$VER-inplace
+
+# Remove unused package directories.
+RUN find . \( -name 'ghc-experimental*' -or -name 'ghci*' \) -exec rm -rf {} +
+
+# Delete files not matching a pattern.
+RUN find . -not \( -name '*Constants.h' -or -name '*.dyn_hi' -or -name '*ghc*.so' -or -name 'settings' \) -delete
 
 COPY haskell.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/haskell -s haskell.c
-
-RUN find /usr/lib -name '*.a' -delete
-
-# Delete all libraries except 'ffi', 'ghc', 'gmp', and 'ncursesw'.
-RUN find /usr/lib -not \(                    \
-            -path '/usr/lib'                 \
-        -or -path '/usr/lib/ghc-*'           \
-        -or -path '/usr/lib/libffi.so*'      \
-        -or -path '/usr/lib/libgmp.so*'      \
-        -or -path '/usr/lib/libncursesw.so*' \
-    \) -delete
-
-# Delete unused binaries and libraries.
-RUN rm -r /usr/lib/ghc-$VER/lib/bin                           \
-          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER/Cabal-* \
-          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER/ghci-*  \
- && find /usr/lib/ghc-$VER/bin -type f                        \
-    -not \( -name ghc-$VER -or -name runghc-$VER \) -delete
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/haskell -s /haskell.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/cc              \
-              /usr/bin/haskell         /usr/bin/
-COPY --from=0 /usr/lib                 /usr/lib
+ARG VER
+
+COPY --from=0 /lib/ld-musl-x86_64.so.1                         /lib/
+COPY --from=0 /usr/bin/gcc /usr/bin/haskell                    /usr/bin/
+COPY --from=0 /usr/lib/libffi.so.8                             \
+              /usr/lib/libgmp.so                               \
+              /usr/lib/libgmp.so.10                            \
+              /usr/lib/libncursesw.so.6                        /usr/lib/
+COPY --from=0 /_build/stage1/bin/ghc                           /usr/local/bin/
+COPY --from=0 /_build/stage1/lib/settings                      /usr/local/lib/
+COPY --from=0 /_build/stage1/lib/package.conf.d                /usr/local/lib/package.conf.d
+COPY --from=0 /_build/stage1/lib/x86_64-linux-ghc-$VER-inplace /usr/local/lib/x86_64-linux-ghc-$VER-inplace
 
 ENTRYPOINT ["haskell"]
 
