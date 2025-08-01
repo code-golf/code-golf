@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* ox = "/usr/bin/oxl64", *code = "code.ox";
+const char* ox = "/usr/local/bin/oxl.bin", *code = "code.ox";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -29,13 +29,12 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int oargc = argc + 3;
+    int oargc = argc + 2;
     char** oargv = malloc(oargc * sizeof(char*));
     oargv[0] = (char*) ox;
     oargv[1] = "-b";
-    oargv[2] = "-i/usr/include";
-    oargv[3] = (char*) code;
-    memcpy(&oargv[4], &argv[2], (argc - 2) * sizeof(char*));
+    oargv[2] = (char*) code;
+    memcpy(&oargv[3], &argv[2], (argc - 2) * sizeof(char*));
     oargv[oargc - 1] = NULL;
 
     execv(ox, oargv);

@@ -21,9 +21,9 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6           \
               /lib/x86_64-linux-gnu/libdl.so.2          \
               /lib/x86_64-linux-gnu/libm.so.6           /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2               /lib64/
-COPY --from=0 /usr/bin/ox /usr/bin/oxl64                /usr/bin/
-COPY --from=0 /usr/share/OxMetrics8/ox/include          /usr/include
+COPY --from=0 /usr/bin/ox                               /usr/bin/
 COPY --from=0 /usr/share/OxMetrics8/ox/bin64/libox.so.8 \
-              /usr/share/OxMetrics8/ox/bin64/oxl.bin    /usr/share/OxMetrics8/ox/bin64/
+              /usr/share/OxMetrics8/ox/bin64/oxl.bin    /usr/local/bin/
+COPY --from=0 /usr/share/OxMetrics8/ox/include          /usr/local/include
 
 ENTRYPOINT ["ox"]

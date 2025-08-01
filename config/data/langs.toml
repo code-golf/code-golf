@@ -1281,6 +1281,7 @@ main :: proc() {
 
 [Ox]
 args       = [ '/usr/bin/ox', '-' ]
+env        = [ 'LD_LIBRARY_PATH=/usr/local/bin' ]
 experiment = 1910
 size       = '6.17 MiB'
 version    = '8.02'
@@ -1289,7 +1290,7 @@ example    = '''
 #include <oxstd.oxh>
 
 main() {
-    decl i, args = arglist()[1:];
+    decl i, args = arglist();
 
     // Printing
     println("Hello, World!");
@@ -1299,8 +1300,8 @@ main() {
         println(i);
 
     // Accessing arguments
-    foreach (i in args)
-        println(i);
+    for (i = 1; i < sizeof(args); ++i)
+        println(args[i]);
 }
 '''
 
