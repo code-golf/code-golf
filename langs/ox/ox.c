@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
@@ -28,6 +29,26 @@ int main(int argc, char* argv[]) {
 
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
+
+    pid_t pid;
+
+    if (!(pid = fork())) {
+        if (!dup2(STDERR_FILENO, STDOUT_FILENO))
+            ERR_AND_EXIT("dup2");
+
+        execl(ox, ox, "-b", "-r-", code, NULL);
+        ERR_AND_EXIT("execl");
+    }
+
+    int status;
+
+    waitpid(pid, &status, 0);
+
+    if (!WIFEXITED(status))
+        exit(EXIT_FAILURE);
+
+    if (WEXITSTATUS(status))
+        return WEXITSTATUS(status);
 
     int oargc = argc + 2;
     char** oargv = malloc(oargc * sizeof(char*));
