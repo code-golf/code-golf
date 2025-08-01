@@ -1289,16 +1289,18 @@ example    = '''
 #include <oxstd.oxh>
 
 main() {
+    decl i, args = arglist()[1:];
+
     // Printing
     println("Hello, World!");
 
     // Looping
-    for (decl i = 0; i < 10; ++i)
+    for (i = 0; i < 10; ++i)
         println(i);
 
     // Accessing arguments
-    for (decl i = 1, args = arglist(); i < sizeof(args); ++i)
-        println(args[i]);
+    foreach (i in args)
+        println(i);
 }
 '''
 
