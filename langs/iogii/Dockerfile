@@ -1,6 +1,8 @@
-FROM alpine:3.23 AS builder
+FROM codegolf/lang-haskell
 
-RUN apk add --no-cache dash gcc ghc musl-dev
+FROM alpine:3.22 AS builder
+
+RUN apk add --no-cache gcc musl-dev
 
 ENV BIN='/usr/local/bin/iogii' VER=1.0
 
@@ -16,21 +18,9 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/iogii -s iogii.c
 
 FROM codegolf/lang-ruby
 
-COPY --from=0 /usr/bin/dash        /bin/sh
-COPY --from=0 /usr/bin/env         \
-              /usr/bin/iogii       \
-              /usr/bin/runghc      /usr/bin/
-COPY --from=0 /usr/local/bin/iogii /usr/local/bin/
-
-FROM codegolf/lang-haskell
-
-# Compiling iogii will generate and execute Haskell code.
-# See https://github.com/code-golf/code-golf/issues/1770.
-
-FROM codegolf/lang-base
-
-COPY --from=1 . /
-COPY --from=2 . /
+COPY --from=0 /                    /
+COPY --from=1 /usr/bin/iogii       /usr/bin/
+COPY --from=1 /usr/local/bin/iogii /usr/local/bin/
 
 ENTRYPOINT ["iogii"]
 

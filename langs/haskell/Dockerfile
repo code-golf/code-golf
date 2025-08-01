@@ -1,11 +1,9 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.22 AS builder
 
 # Also rebuild iogii.
 ENV VER=9.8.2
 
-RUN apk add --no-cache ghc=$VER-r2 musl-dev
-
-RUN echo "#define VER \"$VER\"" > haskell.h
+RUN apk add --no-cache dash ghc=$VER-r2 musl-dev
 
 COPY haskell.c /
 
@@ -26,13 +24,14 @@ RUN find /usr/lib -not \(                    \
 RUN rm -r /usr/lib/ghc-$VER/lib/bin                           \
           /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER/Cabal-* \
           /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER/ghci-*  \
- && find /usr/lib/ghc-$VER/bin -type f                        \
-    -not \( -name ghc-$VER -or -name runghc-$VER \) -delete
+ && find /usr/lib/ghc-$VER/bin -not -name ghc-$VER -delete
 
 FROM codegolf/lang-base
 
+COPY --from=0 /usr/bin/dash            /bin/sh
 COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/gcc             \
+COPY --from=0 /usr/bin/cc              \
+              /usr/bin/ghc             \
               /usr/bin/haskell         /usr/bin/
 COPY --from=0 /usr/lib                 /usr/lib
 
