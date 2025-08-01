@@ -6,9 +6,11 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
+ENV VER=397dec7
+
 WORKDIR /twemoji-colr
 
-RUN curl -#L https://github.com/matrix-org/twemoji-colr/tarball/397dec7 \
+RUN curl -#L https://github.com/matrix-org/twemoji-colr/tarball/$VER \
   | tar xz --strip-components 1
 
 RUN npm install
@@ -26,6 +28,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/1f36f.svg'       `# Honey Pot`                    \
     '*/1f371.svg'       `# Bento Box`                    \
     '*/1f377.svg'       `# Wine Glass`                   \
+    '*/1f379.svg'       `# Tropical Drink`               \
     '*/1f37a.svg'       `# Beer Mug`                     \
     '*/1f382.svg'       `# Birthday Cake`                \
     '*/1f385.svg'       `# Santa Claus`                  \

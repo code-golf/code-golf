@@ -143,6 +143,10 @@ BEGIN
     IF hole = 'pangram-grep' AND pangramglot(langs_for_hole) = 26 THEN
         earned := earn(earned, 'pangramglot', user_id); END IF;
 
+    -- 🍹 Piña Colada
+    IF langs_for_hole @> '{berry,coconut,elixir}' THEN
+        earned := earn(earned, 'piña-colada', user_id); END IF;
+
     -- 🎮 S-box 360
     IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN
         earned := earn(earned, 's-box-360', user_id); END IF;
