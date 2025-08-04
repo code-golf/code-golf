@@ -188,6 +188,7 @@ export const extensions : { [key: string]: any } = {
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'kotlin':        StreamLanguage.define(kotlin),
+    // TODO labyrinth
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
