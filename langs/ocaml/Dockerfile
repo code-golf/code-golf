@@ -2,6 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
+# Also bump Rocq.
 ENV VER=5.3.0
 
 RUN curl -#L https://github.com/ocaml/ocaml/archive/refs/tags/$VER.tar.gz \
