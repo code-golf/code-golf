@@ -51,6 +51,7 @@ COPY --from=codegolf/lang-golfscript   ["/", "/langs/golfscript/rootfs/"  ] # 33
 COPY --from=codegolf/lang-ruby         ["/", "/langs/ruby/rootfs/"        ] # 33.2 MiB
 COPY --from=codegolf/lang-common-lisp  ["/", "/langs/common-lisp/rootfs/" ] # 31.0 MiB
 COPY --from=codegolf/lang-r            ["/", "/langs/r/rootfs/"           ] # 30.5 MiB
+COPY --from=codegolf/lang-pip          ["/", "/langs/pip/rootfs/"         ] # 29.4 MiB
 COPY --from=codegolf/lang-racket       ["/", "/langs/racket/rootfs/"      ] # 29.4 MiB
 COPY --from=codegolf/lang-python       ["/", "/langs/python/rootfs/"      ] # 29.1 MiB
 COPY --from=codegolf/lang-05ab1e       ["/", "/langs/05ab1e/rootfs/"      ] # 28.2 MiB
