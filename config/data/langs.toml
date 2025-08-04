@@ -1172,6 +1172,29 @@ example = '''
 `0:x
 '''
 
+[Knight]
+args       = [ '/usr/bin/knight', '-e', '$code' ]
+experiment = 2360
+size       = '721 KiB'
+version    = '3.0.0'
+website    = 'https://github.com/synt7x/knightjit'
+example    = '''
+# Printing
+; OUTPUT "Hello, World!"
+
+# Looping
+; = i 0
+; WHILE > 10 i
+    ; OUTPUT i
+    : = i + i 1
+
+# Accessing arguments
+; = i 0
+: WHILE > LENGTH _ i
+    ; OUTPUT [GET _ i 1
+    : = i + i 1
+'''
+
 [Kotlin]
 args    = [ '/opt/java/bin/java', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '140 MiB'
