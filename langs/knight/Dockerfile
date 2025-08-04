@@ -17,5 +17,3 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
 COPY --from=0 /usr/bin/target/knight /usr/bin/
 
 ENTRYPOINT ["knight"]
-
-CMD ["-v"]

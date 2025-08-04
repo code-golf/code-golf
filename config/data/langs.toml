@@ -1175,8 +1175,8 @@ example = '''
 [Knight]
 args       = [ '/usr/bin/knight', '-e', '$code' ]
 experiment = 2360
-size       = '721 KiB'
-version    = '3.0.0'
+size       = '725 KiB'
+version    = 'a4df017'
 website    = 'https://github.com/synt7x/knightjit'
 example    = '''
 # Printing
