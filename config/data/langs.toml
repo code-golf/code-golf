@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.67 MiB'
-version    = 'Algol 68 Genie 3.6.1'
+version    = 'Algol 68 Genie 3.6.2'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -432,7 +432,7 @@ eaN*
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
 size    = '67.3 MiB'
-version = 'Babashka 1.12.206'
+version = 'Babashka 1.12.207'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -484,7 +484,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '84.5 MiB'
+size    = '83.8 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -780,8 +780,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '73.5 MiB'
-version = '1.11.1'
+size    = '73.8 MiB'
+version = '1.12.0'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -1013,7 +1013,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '41.7 MiB'
+size       = '41.0 MiB'
 version    = '1.1.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -1435,8 +1435,8 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '29.1 MiB'
-version = '3.13.5'
+size    = '29.2 MiB'
+version = '3.13.6'
 website = 'https://www.python.org'
 example = '''
 import sys
