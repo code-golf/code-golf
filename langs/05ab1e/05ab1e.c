@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
         if (dup2(open(input, O_RDONLY), STDIN_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(osabie, osabie, "/osabie", code, NULL);
+        execl(osabie, osabie, "/usr/local/bin/osabie", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
