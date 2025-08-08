@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
-size       = '4.67 MiB'
-version    = 'Algol 68 Genie 3.6.2'
+size       = '4.69 MiB'
+version    = 'Algol 68 Genie 3.7.2'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -1278,7 +1278,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '299 MiB'
-version    = '2025-07'
+version    = '2025-08'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
