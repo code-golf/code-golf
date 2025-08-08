@@ -36,7 +36,7 @@ RUN go build -ldflags -s -trimpath \
 FROM scratch
 
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  543 MiB
-COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  392 MiB
+COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  396 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  339 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  324 MiB
 COPY --from=codegolf/lang-julia        ["/", "/langs/julia/rootfs/"       ] #  300 MiB
@@ -85,7 +85,7 @@ COPY --from=codegolf/lang-python       ["/", "/langs/python/rootfs/"      ] # 29
 COPY --from=codegolf/lang-05ab1e       ["/", "/langs/05ab1e/rootfs/"      ] # 28.2 MiB
 COPY --from=codegolf/lang-pascal       ["/", "/langs/pascal/rootfs/"      ] # 26.8 MiB
 COPY --from=codegolf/lang-viml         ["/", "/langs/viml/rootfs/"        ] # 24.1 MiB
-COPY --from=codegolf/lang-uiua         ["/", "/langs/uiua/rootfs/"        ] # 19.5 MiB
+COPY --from=codegolf/lang-uiua         ["/", "/langs/uiua/rootfs/"        ] # 19.2 MiB
 COPY --from=codegolf/lang-qore         ["/", "/langs/qore/rootfs/"        ] # 17.3 MiB
 COPY --from=codegolf/lang-apl          ["/", "/langs/apl/rootfs/"         ] # 15.0 MiB
 COPY --from=codegolf/lang-nim          ["/", "/langs/nim/rootfs/"         ] # 14.9 MiB
@@ -108,7 +108,7 @@ COPY --from=codegolf/lang-squirrel     ["/", "/langs/squirrel/rootfs/"    ] # 4.
 COPY --from=codegolf/lang-rexx         ["/", "/langs/rexx/rootfs/"        ] # 2.98 MiB
 COPY --from=codegolf/lang-forth        ["/", "/langs/forth/rootfs/"       ] # 2.85 MiB
 COPY --from=codegolf/lang-befunge      ["/", "/langs/befunge/rootfs/"     ] # 2.48 MiB
-COPY --from=codegolf/lang-hush         ["/", "/langs/hush/rootfs/"        ] # 2.30 MiB
+COPY --from=codegolf/lang-hush         ["/", "/langs/hush/rootfs/"        ] # 2.32 MiB
 COPY --from=codegolf/lang-awk          ["/", "/langs/awk/rootfs/"         ] # 1.91 MiB
 COPY --from=codegolf/lang-c            ["/", "/langs/c/rootfs/"           ] # 1.73 MiB
 COPY --from=codegolf/lang-umka         ["/", "/langs/umka/rootfs/"        ] # 1.29 MiB

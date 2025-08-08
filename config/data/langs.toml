@@ -992,7 +992,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.30 MiB'
+size       = '2.32 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1613,8 +1613,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '392 MiB'
-version = '1.88.0'
+size    = '396 MiB'
+version = '1.89.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1826,7 +1826,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.5 MiB'
+size       = '19.2 MiB'
 version    = '0.16.2'
 website    = 'https://www.uiua.org'
 example    = '''
