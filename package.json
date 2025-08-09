@@ -33,7 +33,7 @@
     "golden-layout": "^2.6.0",
     "luxon": "",
     "lz-string": "",
-    "mathjax": "",
+    "mathjax": "^3",
     "nim-codemirror-mode": "",
     "style-mod": ""
   },
