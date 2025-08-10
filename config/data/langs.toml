@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
-size       = '4.67 MiB'
-version    = 'Algol 68 Genie 3.5.15'
+size       = '4.69 MiB'
+version    = 'Algol 68 Genie 3.7.2'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -457,7 +457,7 @@ eaN*
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
 size    = '67.3 MiB'
-version = 'Babashka 1.12.206'
+version = 'Babashka 1.12.207'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -509,7 +509,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '84.5 MiB'
+size    = '83.8 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -617,7 +617,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '168 MiB'
-version = '3.8.1'
+version = '3.8.3'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -782,7 +782,7 @@ version = 'GNU Fortran 15.1.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 integer :: i
-character(len=2048) :: arg
+character(len=256) :: arg
 
 ! Printing
 print "(a)", "Hello, World!"
@@ -805,8 +805,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '73.5 MiB'
-version = '1.11.1'
+size    = '73.8 MiB'
+version = '1.12.0'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -832,7 +832,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '324 MiB'
-version = '1.24.5'
+version = '1.24.6'
 website = 'https://go.dev'
 example = '''
 package main
@@ -880,7 +880,7 @@ args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
 size       = '76.5 MiB'
-version    = '4.0.27'
+version    = '4.0.28'
 website    = 'https://groovy-lang.org'
 example    = '''
 // Printing
@@ -1017,7 +1017,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.30 MiB'
+size       = '2.32 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1038,7 +1038,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '41.7 MiB'
+size       = '41.0 MiB'
 version    = '1.1.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -1129,8 +1129,8 @@ class Main {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '43.9 MiB'
-version = 'V8 13.8.500258'
+size    = '44.7 MiB'
+version = 'V8 13.9.205.16'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1197,9 +1197,31 @@ example = '''
 `0:x
 '''
 
+[Knight]
+args       = [ '/usr/bin/knight', '-e', '$code' ]
+experiment = 2360
+size       = '725 KiB'
+version    = 'a4df017'
+website    = 'https://github.com/synt7x/knightjit'
+example    = '''
+# Printing
+; OUTPUT "Hello, World!"
+
+# Looping
+; = i 0
+; WHILE > 10 i
+    ; OUTPUT i
+    : = i + i 1
+
+# Accessing arguments
+; = i 0
+: WHILE > LENGTH _ i
+    ; OUTPUT [GET _ i 1
+    : = i + i 1
+'''
+
 [Kotlin]
-args    = [ '/usr/bin/kotlin', '-Xuse-fast-jar-file-system', '-e', '$code' ]
-env     = [ 'JAVA_HOME=/opt/java' ]
+args    = [ '/opt/java/bin/java', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '140 MiB'
 version = '2.2.0'
 website = 'https://kotlinlang.org'
@@ -1281,7 +1303,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '299 MiB'
-version    = '2025-07'
+version    = '2025-08'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1348,7 +1370,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.39 MiB'
-version = '8.4.10'
+version = '8.4.11'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1438,8 +1460,8 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '29.1 MiB'
-version = '3.13.5'
+size    = '29.2 MiB'
+version = '3.13.6'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1616,8 +1638,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '392 MiB'
-version = '1.88.0'
+size    = '396 MiB'
+version = '1.89.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1703,7 +1725,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.22 MiB'
-version = 'SQLite 3.50.3'
+version = 'SQLite 3.50.4'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1829,7 +1851,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.5 MiB'
+size       = '19.2 MiB'
 version    = '0.16.2'
 website    = 'https://www.uiua.org'
 example    = '''
