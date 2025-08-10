@@ -5,7 +5,7 @@ for 'config/data/langs.toml'.IO.&from-toml.map({
 }).sort -> (:key($lang), :value($code)) {
     for (
         # Pick a hole that will definitely have unicode arguments.
-        'rock-paper-scissors-spock-lizard',
+        'musical-chords',
 
         # Ensure PowerShell example works on Quine with explicit output.
         ( 'quine' if $lang eq 'powershell' ),

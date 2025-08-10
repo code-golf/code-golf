@@ -193,6 +193,11 @@ description = 'Solve <a href=/pangram-grep>Pangram Grep</a> in languages whose c
 target      = 26
 
 [['Hole/Lang Specific']]
+name        = 'Piña Colada'
+emoji       = '🍹'
+description = 'Solve any hole in Berry, Coconut, and Elixir.'
+
+[['Hole/Lang Specific']]
 name        = 'S-box 360'
 emoji       = '🎮'
 description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'

@@ -55,7 +55,7 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	// Caclulate progress
+	// Calculate progress
 	// TODO Bake it into the cheevos table rather than calculating on the fly.
 	cheevoProgress := func(sql string, cheevoIDs []string, args ...any) {
 		count := -1
