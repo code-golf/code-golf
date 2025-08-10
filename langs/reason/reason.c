@@ -49,12 +49,13 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int rargc = argc + 2;
+    int rargc = argc + 3;
     char** rargv = malloc(rargc * sizeof(char*));
     rargv[0] = (char*) reason;
     rargv[1] = "exec";
     rargv[2] = "./code.exe";
-    memcpy(&rargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    rargv[3] = "--";
+    memcpy(&rargv[4], &argv[2], (argc - 2) * sizeof(char*));
     rargv[rargc - 1] = NULL;
 
     execv(reason, rargv);
