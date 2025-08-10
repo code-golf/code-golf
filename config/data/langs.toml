@@ -1395,7 +1395,7 @@ main(Args) =>
 args       = [ '/usr/bin/python', 'pip.py', '-e', '$code', '--' ]
 experiment = 919
 size       = '29.4 MiB'
-version    = '1.2.0'
+version    = '1.2.1'
 website    = 'https://github.com/dloscutoff/pip'
 example    = '''
 ; Printing
