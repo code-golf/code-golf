@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl dash gcc libxml2-dev
 
-ENV VER=0.7.3
+ENV VER=0.7.4
 
 RUN curl -#L https://github.com/c3lang/c3c/releases/download/v$VER/c3-linux.tar.gz \
   | tar xz --directory /usr/local/bin --strip-components 1
