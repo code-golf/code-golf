@@ -82,4 +82,7 @@ int main(int argc, char* argv[]) {
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
+
+    if (remove(code[1]))
+        ERR_AND_EXIT("remove");
 }
