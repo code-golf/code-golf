@@ -3918,8 +3918,9 @@ preamble = '''
     and a dozen <b>prompts</b> on subsequent lines. For each prompt, output the
     most likely next word in the corpus by frequency (aka <b>mode</b>). If
     there is more than one mode, output the first encountered in the corpus. In
-    this problem, the corpus is fixed to be the
-    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts.
+    this problem, each corpus is formed by concatenating two
+    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
+    (separated by one space).
 '''
 
 ['Star Wars Opening Crawl']
@@ -4194,8 +4195,8 @@ preamble = '''
 '''
 
 ['Topological Sort']
-experiment = 2308
 category = 'Computing'
+released = 2025-08-01
 synopsis = 'Perform topological sort.'
 preamble = '''
 <p>
