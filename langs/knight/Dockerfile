@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl clang musl-dev make git
 
-ENV VER=a4df017 COMPILER=clang STANDARD=EXTENSION
+ENV VER=73e9219 COMPILER=clang STANDARD=EXTENSION
 
 WORKDIR /usr/bin
 
