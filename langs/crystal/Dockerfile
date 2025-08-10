@@ -1,10 +1,10 @@
 ARG VER=1.17.1
 
-FROM crystallang/crystal:$VER-alpine-build AS builder
+FROM crystallang/crystal:$VER-alpine AS builder
 
 ARG VER
 
-RUN apk add --no-cache curl dash
+RUN apk add --no-cache curl dash g++ llvm-dev
 
 RUN curl -#L https://github.com/crystal-lang/crystal/archive/refs/tags/$VER.tar.gz \
   | tar xz --strip-components 1
@@ -24,7 +24,7 @@ COPY --from=0 /lib/ld-musl-x86_64.so.1 \
 COPY --from=0 /usr/bin/cc              \
               /usr/bin/crystal         \
               /usr/bin/pkg-config      /usr/bin/
-COPY --from=0 /usr/lib/libLLVM.so.*    \
+COPY --from=0 /usr/lib/libLLVM-17.so   \
               /usr/lib/libffi.so.8     \
               /usr/lib/libgc.so.1      \
               /usr/lib/libgcc_s.so.1   \
