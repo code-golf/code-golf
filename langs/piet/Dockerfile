@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl gd-dev giflib-dev groff libffi-dev openssl-dev zlib-dev
 
-ENV PYVER=3.13.5 VER=1.3f
+ENV PYVER=3.13.6 VER=1.3f
 
 WORKDIR /piet
 
