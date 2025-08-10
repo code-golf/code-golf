@@ -205,6 +205,46 @@ dialog > * {
     padding: 1rem;
 }
 
+dialog#search-nav-dialog {
+    translate: -50% 0;
+    top: 0;
+    width: 35rem;
+    border-top: none;
+
+    a {
+        justify-content: space-between;
+
+        .result-description {
+            color: var(--color);
+        }
+        .result-path {
+            color: var(--grey);
+        }
+    }
+    a:hover {
+        text-decoration: none;
+    }
+
+    .hint {
+        color: var(--grey);
+    }
+
+    ul {
+        margin: 0;
+        gap: 0;
+    }
+    li {
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+    }
+    ul:not(:has(li:hover)):not(:has(li:focus-within)) li.current-result, li:hover, li:focus-within {
+        background-color: var(--light-grey);
+    }
+    li :focus {
+        outline: none;
+    }
+}
+
 dialog a {
     align-items: center;
     display: flex;

@@ -25,6 +25,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"3c72c36", "2025-08-01 00:00:01", "topological-sort", true},
 		{"4caf324", "2025-07-01 00:00:04", "mandelbrot", true},
 		{"5920cfd", "2025-06-01 00:00:13", "scrambled-sort", true},
 		{"273405d", "2025-05-01 00:00:34", "star-wars-gpt", true},
