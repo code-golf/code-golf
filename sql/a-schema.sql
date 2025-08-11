@@ -84,7 +84,7 @@ CREATE TYPE lang AS ENUM (
     'kotlin', 'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
     'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku',
     'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed',
-    'sql','squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v',
+    'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v',
     'vala', 'viml', 'vyxal', 'wren', 'zig'
 );
 
