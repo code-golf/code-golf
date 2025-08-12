@@ -9,7 +9,8 @@ WORKDIR /usr/bin
 RUN curl -#L https://github.com/synt7x/knightjit/tarball/$VER \
   | tar xz --strip-components 1
 
-RUN make && strip -s /usr/bin/target/knight
+RUN make CFLAGS='-O3 -march=x86-64-v3 -Wall -Wextra -std=c99' \
+ && strip -s /usr/bin/target/knight
 
 FROM codegolf/lang-base
 
