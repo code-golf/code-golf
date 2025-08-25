@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
 size       = '4.87 MiB'
-version    = 'Algol 68 Genie 3.7.7'
+version    = 'Algol 68 Genie 3.8.0'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -1436,7 +1436,7 @@ example = '''
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
 size    = '29.2 MiB'
-version = '3.13.6'
+version = '3.13.7'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1496,8 +1496,8 @@ for (arg in commandArgs(TRUE)) {
 [Racket]
 args       = [ '/usr/bin/racket', '-e', '$code', '--' ]
 experiment = 1358
-size       = '29.4 MiB'
-version    = '8.17'
+size       = '29.5 MiB'
+version    = '8.18'
 website    = 'https://racket-lang.org'
 example    = '''
 ; Printing
@@ -1843,8 +1843,8 @@ example    = '''
 [Umka]
 args       = [ '/usr/bin/umka', '-' ]
 experiment = 1921
-size       = '1.29 MiB'
-version    = '1.5.3'
+size       = '1.32 MiB'
+version    = '1.5.4'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
 import "std.um"
