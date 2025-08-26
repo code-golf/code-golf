@@ -1,6 +1,6 @@
 FROM golang:1.25.0-alpine3.22
 
-ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
+ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 
 # curl is used for the e2e healthcheck.
 RUN apk add --no-cache build-base curl git linux-headers tzdata \
