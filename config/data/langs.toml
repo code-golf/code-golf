@@ -854,8 +854,8 @@ n*
 args       = [ '/usr/bin/groovy', '-e', '$code' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 1145
-size       = '76.5 MiB'
-version    = '4.0.28'
+size       = '76.9 MiB'
+version    = '5.0.0'
 website    = 'https://groovy-lang.org'
 example    = '''
 // Printing
