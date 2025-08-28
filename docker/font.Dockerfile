@@ -139,6 +139,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/26f3.svg'        `# Flag in Hole`                 \
     '*/2702.svg'        `# Scissors`                     \
     '*/274c.svg'        `# Ballot X`                     \
+    '*/2757.svg'        `# Exclamation Mark`             \
     '*/2b50.svg'        `# Star`                         \
  && rm twe-svg.zip                                       \
     svg/1f1ea-1f1fa.svg `# Flag: European Union`         \

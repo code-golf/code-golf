@@ -20,6 +20,7 @@ constant %holes = <
     100 {centenarian}
     107 {busy-beaver}
     111 {disappearing-act}
+    120 {five}
 >;
 
 constant %langs = <
