@@ -6,46 +6,46 @@ interface Match {
 const langs: Record<string, string[]> = JSON.parse($('#langs').innerText);
 const holes: Record<string, string[]> = JSON.parse($('#holes').innerText);
 
-$('#holeInput').replaceChildren(<option value=''>All Holes</option>, ...Object.entries(holes).map(([id,names]) => <option value={id}>{names[0]}</option>));
+const form = $<HTMLFormElement>('#search');
 
-$('#languageInput').replaceChildren(<option value=''>All Languages</option>, ...Object.entries(langs).map(([id,names]) => <option value={id}>{names[0]}</option>));
+form.hole.replaceChildren(<option value=''>All Holes</option>, ...Object.entries(holes).map(([id,names]) => <option value={id}>{names[0]}</option>));
+
+(form.lang as any).replaceChildren(<option value=''>All Languages</option>, ...Object.entries(langs).map(([id,names]) => <option value={id}>{names[0]}</option>));
 
 const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
 
 let searchParams = '';
 
-$('#search').onsubmit = e => e.preventDefault();
+form.onsubmit = e => e.preventDefault();
 
-$('#search').onchange = $('#searchInput').onkeyup = async () => {
-    let pattern = $<HTMLInputElement>('#searchInput').value;
-    if (!pattern) {
-        searchParams = '';
-        $('#resultsOverview').innerText = '';
-        $<HTMLInputElement>('#searchInput').setCustomValidity('');
-        $('#results').replaceChildren();
-        return;
-    }
-    const isRegexInput = $<HTMLInputElement>('#isRegexInput').checked;
-    pattern = isRegexInput ? pattern : pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const hole = $<HTMLSelectElement>('#holeInput').value;
-    const lang = $<HTMLSelectElement>('#languageInput').value;
+form.onchange = form.q.onkeyup = onload = async () => {
+    const hole    = form.hole.value;
+    const lang    = (form.lang as any).value;
+    const pattern = form.regex.checked
+        ? form.q.value : form.q.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
     try {
         new RegExp(pattern);
     }
     catch {
-        $<HTMLInputElement>('#searchInput').setCustomValidity('Invalid Regex');
-        $<HTMLInputElement>('#searchInput').reportValidity();
+        form.q.setCustomValidity('Invalid Regex');
+        form.q.reportValidity();
         return;
     }
 
-    $<HTMLInputElement>('#searchInput').setCustomValidity('');
+    form.q.setCustomValidity('');
+
     const newSearchParams = new URLSearchParams({pattern, hole, lang}).toString();
     if (newSearchParams === searchParams) return;
-
     searchParams = newSearchParams;
-    $('#resultsOverview').innerText = 'searching...';
-    fetchSolutionsDebounced();
+
+    if (pattern != '') {
+        $('#resultsOverview').innerText = 'searching...';
+        fetchSolutionsDebounced();
+    }
+    else {
+        $('#resultsOverview').innerText = $('#results').innerHTML = '';
+    }
 };
 
 const fetchSolutionsDebounced = debounce(fetchSolutions, 500);
@@ -63,8 +63,8 @@ async function fetchSupporting408InFirefox(path: string) {
 async function fetchSolutions() {
     const resp = await fetchSupporting408InFirefox(`/api/solutions-search?${searchParams}`);
     if (resp.status !== 200) {
-        $<HTMLInputElement>('#searchInput').setCustomValidity(resp.status === 408 ? 'Timeout. Try single language or raw text search.' : `Error ${resp.status}`);
-        $<HTMLInputElement>('#searchInput').reportValidity();
+        form.q.setCustomValidity(resp.status === 408 ? 'Timeout. Try single language or raw text search.' : `Error ${resp.status}`);
+        form.q.reportValidity();
         return;
     }
     const results = await resp.json() as Match[];

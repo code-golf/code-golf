@@ -4,15 +4,15 @@
 <main>
     <form id=search>
         <fieldset>
-            <input id=searchInput autofocus>
+            <input name=q autocomplete=off autofocus>
             <label>
-                <input id=isRegexInput type=checkbox checked>
+                <input name=regex type=checkbox checked>
                 Regex
             </label>
         </fieldset>
         <fieldset>
-            <select id=holeInput><option>All Holes</option></select>
-            <select id=languageInput><option>All Languages</option></select>
+            <select name=hole><option>All Holes</option></select>
+            <select name=lang><option>All Languages</option></select>
         </fieldset>
     </form>
     <div id=resultsOverview></div>
