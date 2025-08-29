@@ -6,17 +6,17 @@ interface Match {
 const langs: Record<string, string[]> = JSON.parse($('#langs').innerText);
 const holes: Record<string, string[]> = JSON.parse($('#holes').innerText);
 
-$('#searchInput').onkeyup = onSearch;
-$('#isRegexInput').onchange = onSearch;
-$('#languageInput').onchange = onSearch;
+$('#holeInput').replaceChildren(<option value=''>All Holes</option>, ...Object.entries(holes).map(([id,names]) => <option value={id}>{names[0]}</option>));
 
-$('#languageInput').replaceChildren(<option value=''>All languages</option>, ...Object.entries(langs).map(([id,names]) => <option value={id}>{names[0]}</option>));
+$('#languageInput').replaceChildren(<option value=''>All Languages</option>, ...Object.entries(langs).map(([id,names]) => <option value={id}>{names[0]}</option>));
 
 const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
 
 let searchParams = '';
 
-async function onSearch() {
+$('#search').onsubmit = e => e.preventDefault();
+
+$('#search').onchange = $('#searchInput').onkeyup = async () => {
     let pattern = $<HTMLInputElement>('#searchInput').value;
     if (!pattern) {
         searchParams = '';
@@ -27,6 +27,7 @@ async function onSearch() {
     }
     const isRegexInput = $<HTMLInputElement>('#isRegexInput').checked;
     pattern = isRegexInput ? pattern : pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const hole = $<HTMLSelectElement>('#holeInput').value;
     const lang = $<HTMLSelectElement>('#languageInput').value;
 
     try {
@@ -39,13 +40,13 @@ async function onSearch() {
     }
 
     $<HTMLInputElement>('#searchInput').setCustomValidity('');
-    const newSearchParams = new URLSearchParams(lang ? {pattern, lang} : {pattern}).toString();
+    const newSearchParams = new URLSearchParams({pattern, hole, lang}).toString();
     if (newSearchParams === searchParams) return;
 
     searchParams = newSearchParams;
     $('#resultsOverview').innerText = 'searching...';
     fetchSolutionsDebounced();
-}
+};
 
 const fetchSolutionsDebounced = debounce(fetchSolutions, 500);
 
