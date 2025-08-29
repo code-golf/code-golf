@@ -70,7 +70,7 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 	if hole.Experiment != 0 || lang.Experiment != 0 {
 		return chanWildID
 	}
-	if hole.ID == "topological-sort" {
+	if hole.ID == "topological-sort" || lang.ID == "groovy" {
 		return chanFreshID
 	}
 	return chanSourID
