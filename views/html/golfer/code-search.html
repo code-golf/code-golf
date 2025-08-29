@@ -11,10 +11,10 @@
             </label>
         </fieldset>
         <fieldset>
-            <select name=hole><option>All Holes</option></select>
-            <select name=lang><option>All Languages</option></select>
+            {{ template "settings" . }}
         </fieldset>
     </form>
+
     <div id=resultsOverview></div>
     <div id=results></div>
 </main>

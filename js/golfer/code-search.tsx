@@ -8,10 +8,6 @@ const holes: Record<string, string[]> = JSON.parse($('#holes').innerText);
 
 const form = $<HTMLFormElement>('#search');
 
-form.hole.replaceChildren(<option value=''>All Holes</option>, ...Object.entries(holes).map(([id,names]) => <option value={id}>{names[0]}</option>));
-
-(form.lang as any).replaceChildren(<option value=''>All Languages</option>, ...Object.entries(langs).map(([id,names]) => <option value={id}>{names[0]}</option>));
-
 const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
 
 let searchParams = '';
