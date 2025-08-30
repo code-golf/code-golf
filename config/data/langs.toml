@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--exec', '$code', '--' ]
 experiment = 856
-size       = '4.87 MiB'
-version    = 'Algol 68 Genie 3.8.0'
+size       = '4.86 MiB'
+version    = 'Algol 68 Genie 3.8.4'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '175 MiB'
-version = '3.9.0'
+version = '3.9.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1344,7 +1344,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.39 MiB'
-version = '8.4.11'
+version = '8.4.12'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1514,7 +1514,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.06.1'
+version   = 'Raku 6.d on Rakudo 2025.08'
 website   = 'https://raku.org'
 example   = '''
 # Printing
