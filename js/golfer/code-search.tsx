@@ -1,4 +1,4 @@
-import { $, debounce } from '../_util';
+import { $, amount, debounce } from '../_util';
 
 interface Match {
     before: string, match: string, after: string, count: number, hole: string, lang: string, scoring: string | null
@@ -7,8 +7,6 @@ const langs: Record<string, string[]> = JSON.parse($('#langs').innerText);
 const holes: Record<string, string[]> = JSON.parse($('#holes').innerText);
 
 const form = $<HTMLFormElement>('#search');
-
-const amount = (n: number, singular: string, plural?: string) => `${n} ${n === 1 ? singular : plural ?? singular + 's'}`;
 
 let searchParams = '';
 
