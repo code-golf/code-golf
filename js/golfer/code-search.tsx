@@ -46,20 +46,11 @@ form.onchange = form.q.onkeyup = onload = async () => {
 
 const fetchSolutionsDebounced = debounce(fetchSolutions, 500);
 
-async function fetchSupporting408InFirefox(path: string) {
-    try {
-        return await fetch(path);
-    }
-    catch (e) {
-        if (`${e}`.includes('NetworkError')) return {status: 408} as const;
-        throw e;
-    }
-}
-
 async function fetchSolutions() {
-    const resp = await fetchSupporting408InFirefox(`/api/solutions-search?${searchParams}`);
+    const resp = await fetch(`/api/solutions-search?${searchParams}`);
     if (resp.status !== 200) {
-        form.q.setCustomValidity(resp.status === 408 ? 'Timeout. Try single language or raw text search.' : `Error ${resp.status}`);
+        form.q.setCustomValidity(resp.status === 504 ?
+            'Timeout. Try a less complex search' : `Error ${resp.status}`);
         form.q.reportValidity();
         return;
     }
