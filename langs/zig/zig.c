@@ -35,8 +35,8 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        execl(zig, zig, "build-exe", "--global-cache-dir", ".", "-fstrip",
-            "-freference-trace", "--color", "on", code, NULL);
+        execl(zig, zig, "build-exe", "-freference-trace", "-fstrip",
+            "--color", "on", "--global-cache-dir", ".", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
