@@ -1980,7 +1980,6 @@ const std = @import("std");
 const print = std.debug.print;
 
 pub fn main() !void {
-    // Duplicate `old_fd` to `new_fd`, closing `new_fd` and making it open on the same file.
     try std.posix.dup2(1, 2);
 
     // Printing
