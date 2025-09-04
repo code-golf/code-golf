@@ -101,7 +101,7 @@ loop arg [a] [
 
 [Assembly]
 args    = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
-size    = '118 MiB'
+size    = '119 MiB'
 version = 'DefAssembler 2.4.5'
 website = 'https://www.npmjs.com/package/@defasm/core'
 example = '''
@@ -1195,7 +1195,7 @@ example    = '''
 '''
 
 [Kotlin]
-args    = [ '/opt/java/bin/java', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
+args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '140 MiB'
 version = '2.2.10'
 website = 'https://kotlinlang.org'
@@ -1938,8 +1938,8 @@ w
 [Vyxal]
 args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
-size       = '83.0 MiB'
-version    = '3.9.0'
+size       = '83.1 MiB'
+version    = '3.10.0'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
