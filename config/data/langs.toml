@@ -1977,20 +1977,20 @@ version = '0.15.1'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
-const print = std.debug.print;
 
 pub fn main() !void {
-    try std.posix.dup2(1, 2);
+    var buf = [_]u8{} ** 64;
+    var out = std.fs.File.stdout().writer(&buf);
 
     // Printing
-    print("Hello, World!\n", .{});
+    _ = try std.posix.write(1, "Hello, World!\n");
 
     // Looping
     for (0..10) |i|
-        print("{}\n", .{i});
+        try out.interface.print("{d}\n", .{i});
 
     // Accessing arguments
     for (std.os.argv[1..]) |arg|
-        print("{s}\n", .{arg});
+        try out.interface.print("{s}\n", .{arg});
 }
 '''
