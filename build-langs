@@ -53,7 +53,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <05ab1e apl arturo assembly befunge brainfuck cjam erlang fish golfscript hare hexagony j k qore scala stax umka vyxal> {
+    if $id ~~ any <05ab1e apl arturo assembly befunge brainfuck cjam erlang fish golfscript hare hexagony j k knight qore scala stax umka vyxal> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
 
         %lang<version> = do given $id {
