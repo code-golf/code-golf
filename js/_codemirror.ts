@@ -48,6 +48,7 @@ import { javascriptLanguage }                       from '@codemirror/lang-javas
 import { jq }                                       from 'codemirror-lang-jq';
 import { julia }                                    from '@codemirror/legacy-modes/mode/julia';
 import { k }                                        from 'codemirror-lang-k';
+import { knight }                                   from 'codemirror-lang-knight';
 import { lua }                                      from '@codemirror/legacy-modes/mode/lua';
 import { nim }                                      from 'nim-codemirror-mode';
 import { pascal }                                   from '@codemirror/legacy-modes/mode/pascal';
@@ -187,6 +188,7 @@ export const extensions : { [key: string]: any } = {
     'jq':            jq(),
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
+    'knight':        knight(),
     'kotlin':        StreamLanguage.define(kotlin),
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
