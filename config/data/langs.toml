@@ -1973,8 +1973,8 @@ for (a in Process.arguments) System.print(a)
 [Zeek]
 args       = [ '/usr/bin/zeek', '-' ]
 experiment = 1457
-size       = '33.9 MiB'
-version    = '7.2.2'
+size       = '34.6 MiB'
+version    = '8.0.1'
 website    = 'https://zeek.org'
 example    = '''
 # Printing

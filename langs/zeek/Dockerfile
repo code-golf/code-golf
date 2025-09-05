@@ -2,29 +2,30 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bison cmake curl flex fts-dev g++ libpcap-dev linux-headers make openssl-dev python3 zlib-dev
 
-ENV VER=7.2.2
+ENV VER=8.0.1
 
 RUN curl -#L https://download.zeek.org/zeek-$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN ./configure               \
-    --build-type='MinSizeRel' \
-    --disable-af-packet       \
-    --disable-auxtools        \
-    --disable-broker-tests    \
-    --disable-btest           \
-    --disable-btest-pcaps     \
-    --disable-cpp-tests       \
-    --disable-javascript      \
-    --disable-port-prealloc   \
-    --disable-python          \
-    --disable-spicy           \
-    --disable-zeek-client     \
-    --disable-zeekctl         \
-    --disable-zkg             \
-    --prefix=/usr/local       \
- && make -j`nproc` install    \
- && strip /usr/local/bin/zeek \
+RUN ./configure                      \
+    --build-type='MinSizeRel'        \
+    --disable-af-packet              \
+    --disable-auxtools               \
+    --disable-broker-tests           \
+    --disable-btest                  \
+    --disable-btest-pcaps            \
+    --disable-cluster-backend-zeromq \
+    --disable-cpp-tests              \
+    --disable-javascript             \
+    --disable-port-prealloc          \
+    --disable-python                 \
+    --disable-spicy                  \
+    --disable-zeek-client            \
+    --disable-zeekctl                \
+    --disable-zkg                    \
+    --prefix=/usr/local              \
+ && make -j`nproc` install           \
+ && strip /usr/local/bin/zeek        \
           /usr/local/lib/*.so.*
 
 COPY zeek.c /
