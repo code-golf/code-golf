@@ -1,10 +1,10 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes cmake curl git
 
-ENV VER=0a98ace
+ENV VER=45a3705
 
 RUN curl -#L https://github.com/IoLanguage/io/tarball/$VER \
   | tar xz --strip-components 1
