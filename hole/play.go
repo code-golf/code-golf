@@ -48,7 +48,7 @@ type Run struct {
 	Pass                  bool          `json:"pass"`
 	Stderr                string        `json:"stderr"`
 	Stdout                string        `json:"stdout"`
-	Time                  time.Duration `json:"time_ns"`
+	Time                  time.Duration `json:"time_ns,format:nano"`
 	Timeout               bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly

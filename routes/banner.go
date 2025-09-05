@@ -12,7 +12,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["topological-sort"]
+var nextHole = config.ExpHoleByID["hilbert-curve"]
 
 type banner struct {
 	Body          template.HTML
