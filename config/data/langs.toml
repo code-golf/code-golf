@@ -1636,8 +1636,8 @@ fn main() {
 args       = [ '/usr/bin/scala', '-' ]
 env        = [ 'COURSIER_CACHE=/cache', 'JAVA_HOME=/opt/java' ]
 experiment = 235
-size       = '208 MiB'
-version    = 'Scala CLI 1.8.5'
+size       = '209 MiB'
+version    = 'Scala CLI 1.9.0'
 website    = 'https://www.scala-lang.org'
 example    = '''
 // Printing
