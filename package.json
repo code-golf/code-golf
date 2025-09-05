@@ -25,6 +25,7 @@
     "codemirror-lang-janet": "",
     "codemirror-lang-jq": "",
     "codemirror-lang-k": "",
+    "codemirror-lang-knight": "",
     "codemirror-lang-prolog": "",
     "codemirror-lang-zig": "",
     "diff": "",
@@ -32,7 +33,7 @@
     "golden-layout": "^2.6.0",
     "luxon": "",
     "lz-string": "",
-    "mathjax": "",
+    "mathjax": "^3",
     "nim-codemirror-mode": "",
     "style-mod": ""
   },
