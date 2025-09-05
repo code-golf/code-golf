@@ -78,8 +78,8 @@ mathjax-fonts:
 	@cp -r node_modules/mathjax/es5/output/chtml/fonts/woff-v2 public/mathjax-fonts
 
 lint:
-	@docker run --rm -v $(CURDIR):/app -w /app \
-	    golangci/golangci-lint:v2.3.0 golangci-lint run
+	@docker run --rm -v $(CURDIR):/app -w /app -e GOEXPERIMENT=jsonv2 \
+	    golangci/golangci-lint:v2.4.0 golangci-lint run
 
 	@node_modules/.bin/eslint js
 
@@ -115,7 +115,7 @@ svgo:
 	@node_modules/.bin/svgo -f svg
 
 test:
-	@go test ./...
+	@GOEXPERIMENT=jsonv2 go test ./...
 
 .PHONY: xt
 xt:
