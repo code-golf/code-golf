@@ -3,7 +3,7 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache build-base curl libffi-dev zlib-dev
 
 # Also bump Coconut, Hy.
-ENV VER=3.13.5
+ENV VER=3.13.7
 
 RUN curl -#L https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz \
   | tar xJ --strip-components 1
