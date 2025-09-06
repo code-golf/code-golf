@@ -189,6 +189,7 @@ export const extensions : { [key: string]: any } = {
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
     'knight':        knight(),
+    // TODO koka
     'kotlin':        StreamLanguage.define(kotlin),
     'lua':           StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
