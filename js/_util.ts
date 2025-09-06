@@ -44,6 +44,9 @@ export function $$<MatchType extends HTMLElement>(selector: string) {
 }
 export const comma = (i: number | undefined) => i?.toLocaleString('en');
 
+export const amount = (n: number, singular: string, plural?: string) =>
+    `${comma(n)} ${n === 1 ? singular : plural ?? singular + 's'}`;
+
 /**
  * Throttle in the following sense:
  *  - never fire more than once in any consecutive `interval` ms
