@@ -9,7 +9,7 @@ CREATE TYPE cheevo AS ENUM (
     'cunning-linguist', 'dammit-janet', 'different-strokes',
     'disappearing-act', 'dont-panic', 'double-slit-experiment',
     'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
-    'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
+    'five', 'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
     'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
     'hextreme-agony', 'how-about-second-pi', 'hugs-and-kisses', 'inception',
     'independence-day', 'interview-ready', 'into-space', 'its-over-9000',
@@ -84,7 +84,7 @@ CREATE TYPE lang AS ENUM (
     'k', 'knight', 'kotlin', 'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl',
     'php', 'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket',
     'raku', 'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme',
-    'sed', 'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka',
+    'sed', 'sql',  'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka',
     'v', 'vala', 'viml', 'vyxal', 'wren', 'zig'
 );
 
