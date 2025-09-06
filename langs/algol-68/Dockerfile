@@ -1,10 +1,10 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc make
 
-ENV VER=3.6.1
+ENV VER=3.8.5
 
 RUN curl -#L https://jmvdveer.home.xs4all.nl/algol68g-$VER.tar.gz \
   | tar xz --strip-components 1

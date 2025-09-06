@@ -13,8 +13,26 @@ const langs: Record<string, string[]> = JSON.parse($('#langs').innerText);
 const holes: Record<string, string[]> = JSON.parse($('#holes').innerText);
 
 function defaultMatchPriority(haystack: string, needle: string) {
-    needle = needle.toLowerCase();
-    haystack = haystack.toLowerCase();
+    function normalize(str: string): string {
+        return str.toLowerCase()
+            .replace(/[áàäâãå]/g, 'a')
+            .replace(/[éèëê]/g, 'e')
+            .replace(/[íìïî]/g, 'i')
+            .replace(/[óòöôõ]/g, 'o')
+            .replace(/[úùüû]/g, 'u')
+            .replace(/[ýÿ]/g, 'y')
+            .replace(/[č]/g, 'c')
+            .replace(/[ď]/g, 'd')
+            .replace(/[ě]/g, 'e')
+            .replace(/[ň]/g, 'n')
+            .replace(/[ř]/g, 'r')
+            .replace(/[š]/g, 's')
+            .replace(/[ť]/g, 't')
+            .replace(/[ž]/g, 'z');
+    }
+
+    needle = normalize(needle);
+    haystack = normalize(haystack);
     if (needle === haystack) return 1e10;
     if (haystack.startsWith(needle)) return 1e5 - haystack.length;
     if (haystack.includes(needle)) return 1e3 - haystack.length - needle.length;
@@ -24,15 +42,22 @@ function defaultMatchPriority(haystack: string, needle: string) {
 let lastSearch: string | undefined = undefined;
 // eslint-disable-next-line no-unused-vars
 export function requestResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
-    if (!search || lastSearch === search) return;
+    if (lastSearch === search) return;
     lastSearch = search;
+
+    if (!search) {
+        updateResults([]);
+        return;
+    }
 
     if (search.startsWith('@')) {
         requestAtResults(search, updateResults);
         return;
     }
 
-    const [holeSearch, langSearch] = search.includes('#') ? search.split('#', 2) : [search, undefined];
+    const [holeSearch, langSearch] = search.includes('#')
+        ? [search.slice(0, search.indexOf('#')), search.slice(search.indexOf('#') + 1)]
+        : [search, undefined];
     const currentHole = location.pathname.slice(1) in holes ? location.pathname.slice(1) : undefined;
 
     let matches: SearchNavResultInternal[] = [];
@@ -44,33 +69,31 @@ export function requestResults(search: string, updateResults: (results: SearchNa
             priority: Math.max(...v.map(name => defaultMatchPriority(name, holeSearch))),
         })).filter(x => x.priority > 0);
 
-    if (langSearch) {
-        const langsMatches = langSearch ? Object.entries(langs)
-            .map(([k,v]) => ({
-                path: `#${k}`,
-                description: v[0],
-                priority: Math.max(...v.map(name => defaultMatchPriority(name, langSearch))),
-            })).filter(x => x.priority > 0) : [];
+    const langsMatches = Object.entries(langs)
+        .map(([k,v]) => ({
+            path: `#${k}`,
+            description: v[0],
+            priority: Math.max(...v.map(name => defaultMatchPriority(name, langSearch ?? holeSearch) * (langSearch ? 1 : 0.1))),
+        })).filter(x => x.priority > 0);
 
-        if (holeSearch) {
-            matches = holesMatches.flatMap(hole => langsMatches.map(lang => ({
-                path: hole.path + lang.path,
-                description: hole.description + ' in ' + lang.description,
-                priority: hole.priority * lang.priority,
-            })));
-        }
-        if (currentHole) {
-            matches.push(...langsMatches.map(lang => (
-                {
-                    path: '/' + currentHole + lang.path,
-                    description: holes[currentHole][0] + ' in ' + lang.description,
-                    priority: lang.priority,
-                }
-            )));
-        }
+    if (langSearch && holeSearch) {
+        matches = holesMatches.flatMap(hole => langsMatches.map(lang => ({
+            path: hole.path + lang.path,
+            description: hole.description + ' in ' + lang.description,
+            priority: hole.priority * lang.priority,
+        })));
     }
-    else {
+    else if (holeSearch) {
         matches = holesMatches;
+    }
+    if (currentHole) {
+        matches.push(...langsMatches.map(lang => (
+            {
+                path: '/' + currentHole + lang.path,
+                description: holes[currentHole][0] + ' in ' + lang.description,
+                priority: lang.priority,
+            }
+        )));
     }
 
     updateResults(processResults(matches));
@@ -86,7 +109,7 @@ function processResults(results: SearchNavResultInternal[]) {
 function requestAtResults(search: string, updateResults: (results: SearchNavResult[]) => void) {
     if (search === '@') {
         const currentGolferPath = $<HTMLAnchorElement>('#site-header [title=Profile]')?.href;
-        updateResults(currentGolferPath ? processResults([{path: new URL(currentGolferPath).href, description: 'My Profile', priority: 0}]) : []);
+        updateResults(currentGolferPath ? processResults([{path: new URL(currentGolferPath).pathname, description: 'My Profile', priority: 1}]) : []);
         return;
     }
     requestGolferResults(search.slice(1), updateResults);
