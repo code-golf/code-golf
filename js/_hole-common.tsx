@@ -118,7 +118,7 @@ export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
             navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
-export const langs = JSON.parse($('#langs').innerText);
+export const langs = JSON.parse($('#languages').innerText);
 const sortedLangs  =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 let lang: string = '';
