@@ -9,7 +9,7 @@ CREATE TYPE cheevo AS ENUM (
     'cunning-linguist', 'dammit-janet', 'different-strokes',
     'disappearing-act', 'dont-panic', 'double-slit-experiment',
     'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
-    'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
+    'five', 'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
     'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
     'hextreme-agony', 'how-about-second-pi', 'hugs-and-kisses', 'inception',
     'independence-day', 'interview-ready', 'into-space', 'its-over-9000',
@@ -17,12 +17,12 @@ CREATE TYPE cheevo AS ENUM (
     'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
     'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
-    'patches-welcome', 'phileas-fogg', 'pi-day', 'polyglot', 'polyglutton',
-    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
-    'slowcoach', 'smörgåsbord', 'solve-quine', 'sounds-quite-nice', 'takeout',
-    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
-    'twenty-kiloleagues', 'under-pressure', 'up-to-eleven', 'vampire-byte',
-    'x-factor', 'x86'
+    'patches-welcome', 'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot',
+    'polyglutton', 'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34',
+    's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
+    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
+    'vampire-byte', 'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -80,12 +80,12 @@ CREATE TYPE lang AS ENUM (
     'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang', 'f-sharp', 'factor',
     'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go', 'golfscript',
     'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
-    'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'kotlin',
-    'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php', 'picat',
-    'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku', 'rebol',
-    'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed', 'sql',
-    'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v', 'vala',
-    'viml', 'vyxal', 'wren', 'zig'
+    'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'knight',
+    'kotlin', 'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
+    'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku',
+    'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed',
+    'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v',
+    'vala', 'viml', 'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
