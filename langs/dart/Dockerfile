@@ -1,10 +1,10 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl dpkg
 
-ENV VER=3.8.1
+ENV VER=3.9.2
 
 RUN curl -#o dart.deb https://storage.googleapis.com/dart-archive/channels/stable/release/latest/linux_packages/dart_$VER-1_amd64.deb \
  && dpkg -i dart.deb
