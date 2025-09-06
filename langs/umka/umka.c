@@ -5,13 +5,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* java = "/opt/java/bin/java", *code = "code.java";
+const char* umka = "/usr/local/bin/umka", *code = "code.um";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version")) {
-        execv(java, argv);
-        ERR_AND_EXIT("execv");
-    }
+    if (!strcmp(argv[1], "--version"))
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
@@ -31,13 +29,14 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int jargc = argc + 1;
-    char** jargv = malloc(jargc * sizeof(char*));
-    jargv[0] = (char*) java;
-    jargv[1] = (char*) code;
-    memcpy(&jargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    jargv[jargc - 1] = NULL;
+    int uargc = argc + 2;
+    char** uargv = malloc(uargc * sizeof(char*));
+    uargv[0] = (char*) umka;
+    uargv[1] = "-warn";
+    uargv[2] = (char*) code;
+    memcpy(&uargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    uargv[uargc - 1] = NULL;
 
-    execv(java, jargv);
+    execv(umka, uargv);
     ERR_AND_EXIT("execv");
 }

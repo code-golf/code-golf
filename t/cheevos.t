@@ -20,6 +20,7 @@ constant %holes = <
     100 {centenarian}
     107 {busy-beaver}
     111 {disappearing-act}
+    120 {five}
 >;
 
 constant %langs = <
@@ -92,6 +93,7 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
 
     # Add hole-specific cheevos on the front.
     $earns.=subst: '{', '{sounds-quite-nice,' if $_ eq 'd';
+    $earns.=subst: '{', '{piña-colada,'       if $_ eq 'elixir';
     $earns.=subst: '{', '{caffeinated,'       if $_ eq 'java';
     $earns.=subst: '{', '{go-forth,'          if $_ eq 'go';
     $earns.=subst: '{', '{just-kidding,'      if $_ eq 'k';
