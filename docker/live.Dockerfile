@@ -94,6 +94,7 @@ COPY --from=codegolf/lang-egel         ["/", "/langs/egel/rootfs/"        ] # 11
 COPY --from=codegolf/lang-hare         ["/", "/langs/hare/rootfs/"        ] # 11.5 MiB
 COPY --from=codegolf/lang-j            ["/", "/langs/j/rootfs/"           ] # 11.3 MiB
 COPY --from=codegolf/lang-picat        ["/", "/langs/picat/rootfs/"       ] # 11.1 MiB
+COPY --from=codegolf/lang-arturo       ["/", "/langs/arturo/rootfs/"      ] # 9.44 MiB
 COPY --from=codegolf/lang-hexagony     ["/", "/langs/hexagony/rootfs/"    ] # 8.90 MiB
 COPY --from=codegolf/lang-php          ["/", "/langs/php/rootfs/"         ] # 8.39 MiB
 COPY --from=codegolf/lang-tex          ["/", "/langs/tex/rootfs/"         ] # 7.99 MiB
