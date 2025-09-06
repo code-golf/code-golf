@@ -193,6 +193,11 @@ description = 'Solve <a href=/pangram-grep>Pangram Grep</a> in languages whose c
 target      = 26
 
 [['Hole/Lang Specific']]
+name        = 'Piña Colada'
+emoji       = '🍹'
+description = 'Solve any hole in Berry, Coconut, and Elixir.'
+
+[['Hole/Lang Specific']]
 name        = 'S-box 360'
 emoji       = '🎮'
 description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'
@@ -425,6 +430,12 @@ name        = 'Disappearing Act'
 emoji       = '🪄'
 description = 'Solve your <a href=//tolkiengateway.net/wiki/Bilbo%27s_Farewell_Party>eleventy-first</a> hole.'
 target      = 111
+
+[['Total Holes']]
+name        = 'Five!'
+emoji       = '❗'
+description = 'Solve your <a href=//en.wikipedia.org/wiki/Factorial>one hundred and twentieth</a> hole.'
+target      = 120
 
 # TODO
 # [['Total Holes']]
