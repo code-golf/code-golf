@@ -9,7 +9,7 @@ CREATE TYPE cheevo AS ENUM (
     'cunning-linguist', 'dammit-janet', 'different-strokes',
     'disappearing-act', 'dont-panic', 'double-slit-experiment',
     'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
-    'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
+    'five', 'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
     'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
     'hextreme-agony', 'how-about-second-pi', 'hugs-and-kisses', 'inception',
     'independence-day', 'interview-ready', 'into-space', 'its-over-9000',

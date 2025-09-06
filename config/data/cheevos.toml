@@ -431,6 +431,12 @@ emoji       = '🪄'
 description = 'Solve your <a href=//tolkiengateway.net/wiki/Bilbo%27s_Farewell_Party>eleventy-first</a> hole.'
 target      = 111
 
+[['Total Holes']]
+name        = 'Five!'
+emoji       = '❗'
+description = 'Solve your <a href=//en.wikipedia.org/wiki/Factorial>one hundred and twentieth</a> hole.'
+target      = 120
+
 # TODO
 # [['Total Holes']]
 # name        = 'That’s Gross!'
