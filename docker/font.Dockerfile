@@ -1,4 +1,4 @@
-FROM node:24.4.1-bookworm-slim
+FROM node:24.7.0-bookworm-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
@@ -6,9 +6,11 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
+ENV VER=397dec7
+
 WORKDIR /twemoji-colr
 
-RUN curl -#L https://github.com/matrix-org/twemoji-colr/tarball/397dec7 \
+RUN curl -#L https://github.com/matrix-org/twemoji-colr/tarball/$VER \
   | tar xz --strip-components 1
 
 RUN npm install
@@ -26,6 +28,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/1f36f.svg'       `# Honey Pot`                    \
     '*/1f371.svg'       `# Bento Box`                    \
     '*/1f377.svg'       `# Wine Glass`                   \
+    '*/1f379.svg'       `# Tropical Drink`               \
     '*/1f37a.svg'       `# Beer Mug`                     \
     '*/1f382.svg'       `# Birthday Cake`                \
     '*/1f385.svg'       `# Santa Claus`                  \
@@ -136,6 +139,7 @@ RUN echo [] > extras/ligatures.json                      \
     '*/26f3.svg'        `# Flag in Hole`                 \
     '*/2702.svg'        `# Scissors`                     \
     '*/274c.svg'        `# Ballot X`                     \
+    '*/2757.svg'        `# Exclamation Mark`             \
     '*/2b50.svg'        `# Star`                         \
  && rm twe-svg.zip                                       \
     svg/1f1ea-1f1fa.svg `# Flag: European Union`         \
