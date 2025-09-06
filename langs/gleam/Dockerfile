@@ -1,12 +1,12 @@
 FROM codegolf/lang-erlang
 
-FROM rust:1.88.0-slim-bookworm AS builder
+FROM rust:1.89.0-slim-bookworm AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV VER=1.11.1
+ENV VER=1.12.0
 
 WORKDIR /gleam
 
