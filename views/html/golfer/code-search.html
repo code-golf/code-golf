@@ -2,12 +2,20 @@
 {{ template "golfer" . }}
 
 <main>
-    <div id=search>
-        <input id=searchInput autofocus/>
-        <span><input id=isRegexInput type=checkbox checked/><label for="isRegexInput">Regex</label></span>
-        <select id=languageInput><option>All languages</option></select>
-    </div>
-    <div id="resultsOverview"></div>
+    <form id=search>
+        <fieldset>
+            <input name=q autocomplete=off autofocus>
+            <label>
+                <input name=regex type=checkbox checked>
+                Regex
+            </label>
+        </fieldset>
+        <fieldset>
+            {{ template "settings" . }}
+        </fieldset>
+    </form>
+
+    <div id=resultsOverview></div>
     <div id=results></div>
 </main>
 
