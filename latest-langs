@@ -68,6 +68,7 @@ constant %paths = (
     'jq'           => 'github.com/jqlang/jq/releases/latest',
     'Julia'        => 'api.github.com/repos/JuliaLang/julia/releases',
     'K'            => 'codeberg.org/ngn/k',
+    'Knight'       => 'github.com/synt7x/knightjit',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'github.com/lua/lua/releases/latest',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
