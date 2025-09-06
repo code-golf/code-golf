@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.4.10
+ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.4.12
 
 RUN curl -#L https://php.net/distributions/php-$VER.tar.xz \
   | tar xJ --strip-components 1
