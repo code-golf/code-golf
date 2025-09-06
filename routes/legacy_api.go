@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"encoding/json"
+	"encoding/json/v2"
 	"fmt"
 	"net/http"
 	"slices"
@@ -66,9 +66,13 @@ func scoresGET(w http.ResponseWriter, r *http.Request) {
 
 // POST /solution
 func solutionPOST(w http.ResponseWriter, r *http.Request) {
-	var in struct{ Code, Hole, Lang string }
+	var in struct {
+		Code string `json:"code"`
+		Hole string `json:"hole"`
+		Lang string `json:"lang"`
+	}
 
-	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
+	if err := json.UnmarshalRead(r.Body, &in); err != nil {
 		panic(err)
 	}
 	defer r.Body.Close()
@@ -330,19 +334,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	enc := json.NewEncoder(w)
-	enc.SetEscapeHTML(false)
-
-	// Avoid returning "null" arrays. Eventually fix with json/v2.
-	// See https://github.com/golang/go/issues/37711#issuecomment-1750018405
-	if out.Cheevos == nil {
-		out.Cheevos = []config.Cheevo{}
-	}
-	if out.RankUpdates == nil {
-		out.RankUpdates = []Golfer.RankUpdate{}
-	}
-
-	if err := enc.Encode(&out); err != nil {
+	if err := json.MarshalWrite(w, &out); err != nil {
 		panic(err)
 	}
 }

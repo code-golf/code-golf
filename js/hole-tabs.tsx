@@ -4,9 +4,9 @@ import {
     DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
     RootItemConfig,
 } from 'golden-layout';
-import { EditorView }   from './_codemirror';
-import diffView         from './_diff';
-import { $, $$, comma, throttle } from './_util';
+import { EditorView }              from './_codemirror';
+import diffView                    from './_diff';
+import { $, $$, amount, throttle } from './_util';
 import {
     init, langs, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
@@ -159,7 +159,7 @@ function makeEditor(parent: HTMLDivElement) {
             function formatScore(scoring: any) {
                 return scoringKeys
                     .filter(s => s in scoring)
-                    .map(s => `${comma(scoring[s])} ${s}${scoring[s] != 1 ? 's' : ''}`)
+                    .map(s => amount(scoring[s], s))
                     .join(', ');
             }
 

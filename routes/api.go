@@ -245,7 +245,7 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 		Scoring string `json:"scoring"`
 	}
 
-	matches := []Match{}
+	var matches []Match
 
 	db := session.Database(r)
 	golfer := session.Golfer(r)
@@ -277,7 +277,7 @@ func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
 			golfer.ID, pattern, flags, hole, lang,
 		); err != nil {
 			if ctx.Err() == context.DeadlineExceeded {
-				w.WriteHeader(http.StatusRequestTimeout)
+				w.WriteHeader(http.StatusGatewayTimeout)
 				return
 			}
 			panic(err)

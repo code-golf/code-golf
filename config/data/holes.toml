@@ -1715,12 +1715,12 @@ preamble = '''
 '''
 
 ['Hilbert Curve']
-experiment = 1448
-category   = 'Art'
+category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hilbert_curve' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Hilbert_curve' },
 ]
+released = 2025-09-01
 synopsis = 'Print five iterations of the Hilbert curve.'
 preamble = '''
 <p>
@@ -2832,6 +2832,28 @@ preamble = '''
 <p>Print the first <b>20</b> rows of Pascal’s triangle.
 '''
 
+[['Pascal’s Triangle'.variants]]
+name = 'Trinomial Triangle'
+experiment = 1117
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
+]
+synopsis = 'Print the first 20 rows of the trinomial triangle.'
+preamble = '''
+<p>
+    The trinomial triangle is a triangular array of numbers similar to
+    Pascal's triangle. The top row consists of a single 1, and each subsequent
+    row contains 2 more numbers than the last. Each number is the sum of the 3
+    numbers above it, i.e.
+
+<pre>
+1 2 3
+  6
+</pre>
+
+<p>Print the first <b>20</b> rows of the trinomial triangle.
+'''
+
 ['Pernicious Numbers']
 category = 'Sequence'
 released = 2017-10-18
@@ -3918,8 +3940,9 @@ preamble = '''
     and a dozen <b>prompts</b> on subsequent lines. For each prompt, output the
     most likely next word in the corpus by frequency (aka <b>mode</b>). If
     there is more than one mode, output the first encountered in the corpus. In
-    this problem, the corpus is fixed to be the
-    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts.
+    this problem, each corpus is formed by concatenating two
+    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
+    (separated by one space).
 '''
 
 ['Star Wars Opening Crawl']
@@ -4194,8 +4217,8 @@ preamble = '''
 '''
 
 ['Topological Sort']
-experiment = 2308
 category = 'Computing'
+released = 2025-08-01
 synopsis = 'Perform topological sort.'
 preamble = '''
 <p>
@@ -4243,28 +4266,6 @@ boy
     space after the last letter of each column, which yields:
 
 <p><b>awanpmjadb lonolaauo lrdakcly kyekl s</b>.
-'''
-
-['Trinomial Triangle']
-experiment = 1117
-category = 'Sequence'
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
-]
-synopsis = 'Print the first 20 rows of the trinomial triangle.'
-preamble = '''
-<p>
-    The trinomial triangle is a triangular array of numbers similar to
-    Pascal's triangle. The top row consists of a single 1, and each subsequent
-    row contains 2 more numbers than the last. Each number is the sum of the 3
-    numbers above it, i.e.
-
-<pre>
-1 2 3
-  6
-</pre>
-
-<p>Print the first <b>20</b> rows of the trinomial triangle.
 '''
 
 [Turtle]
