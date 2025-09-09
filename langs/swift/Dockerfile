@@ -1,10 +1,10 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes binutils curl libatomic1 libc6-dev libedit2 libncurses6 libsqlite3-0 libz3-4
 
-ENV VER=6.1.2
+ENV VER=6.1.3
 
 RUN curl -#L https://download.swift.org/swift-$VER-release/debian12/swift-$VER-RELEASE/swift-$VER-RELEASE-debian12.tar.gz \
   | tar xz --strip-components 1
