@@ -1362,8 +1362,8 @@ for ($i = 1; $i < $argc; $i++)
 [Picat]
 args       = [ '/usr/bin/picat', '-' ]
 experiment = 1871
-size       = '11.1 MiB'
-version    = '3.8'
+size       = '11.7 MiB'
+version    = '3.9'
 website    = 'https://picat-lang.org'
 example    = '''
 main =>
