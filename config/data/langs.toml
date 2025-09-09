@@ -62,9 +62,8 @@ OD
 
 [APL]
 args       = [ '/usr/bin/apl', '-' ]
-env        = [ 'DYALOG=/opt/mdyalog/19.0/64/unicode' ]
 experiment = 135
-size       = '15.0 MiB'
+size       = '14.4 MiB'
 version    = 'Dyalog APL 19.0.50027'
 website    = 'https://www.dyalog.com'
 example    = '''
