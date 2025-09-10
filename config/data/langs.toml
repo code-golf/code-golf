@@ -1760,7 +1760,7 @@ Lm
 
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
-size    = '545 MiB'
+size    = '543 MiB'
 version = '6.1.3'
 website = 'https://swift.org'
 example = '''

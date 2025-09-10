@@ -6,7 +6,7 @@ ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 RUN apk add --no-cache build-base curl git linux-headers tzdata \
  && GOBIN=/bin go install github.com/cespare/reflex@latest
 
-COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  545 MiB
+COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  543 MiB
 COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  396 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  339 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  323 MiB
