@@ -19,7 +19,7 @@ for 'config/data/langs.toml'.IO.&from-toml.map({
             # Some langs print noise to STDERR, so don't test for no output.
             is $got<stdout>, $exp, 'Stdout';
             is $got<stderr>,   '', 'Stderr'
-                if $lang ne any < factor kotlin vyxal >;
+                if $lang ne any < factor vyxal >;
         }
     }
 }
