@@ -420,10 +420,10 @@ version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
 e# Printing
-"Hello, World!"
+"Hello, World!"oN
 
 e# Looping
-T{1_$+}9*]N*N
+A{N}/
 
 e# Accessing arguments
 eaN*
