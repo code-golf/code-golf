@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-ENV CFLAGS='-march=x86-64-v3' VER=5.3.2
+ENV VER=5.3.2
 
 RUN curl -#L https://ftpmirror.gnu.org/gnu/gawk/gawk-$VER.tar.xz \
   | tar xJ --strip-components 1
