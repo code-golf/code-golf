@@ -1,12 +1,16 @@
+ARG VER=15.2.0
+
 FROM alpine:3.22 AS builder
+
+ARG VER
 
 RUN apk add --no-cache curl g++ m4 make
 
-ENV LDFLAGS='-static' VER=15.1.0
+ENV GMPVER=6.3.0 LDFLAGS='-static' MPCVER=1.3.1 MPFRVER=4.2.2
 
 WORKDIR /gmp
 
-RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-6.2.1.tar.bz2 \
+RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-$GMPVER.tar.bz2 \
   | tar xj --strip-components 1
 
 RUN ./configure       \
@@ -16,7 +20,7 @@ RUN ./configure       \
 
 WORKDIR /mpfr
 
-RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-4.1.0.tar.bz2 \
+RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-$MPFRVER.tar.bz2 \
   | tar xj --strip-components 1
 
 RUN ./configure         \
@@ -27,7 +31,7 @@ RUN ./configure         \
 
 WORKDIR /mpc
 
-RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-1.2.1.tar.gz \
+RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-$MPCVER.tar.gz \
   | tar xz --strip-components 1
 
 RUN ./configure           \
@@ -67,6 +71,8 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/fortran -s -static /fortran.c
 
 FROM codegolf/lang-base
 
+ARG VER
+
 COPY --from=0 /lib/ld-musl-x86_64.so.1          /lib/
 COPY --from=0 /usr/bin/as                       \
               /usr/bin/fortran                  \
@@ -85,7 +91,7 @@ COPY --from=0 /usr/lib/crt1.o                   \
 COPY --from=0 /usr/local/bin/gfortran           /usr/local/bin/
 COPY --from=0 /usr/local/lib/gcc/*/*/crtbegin.o \
               /usr/local/lib/gcc/*/*/crtend.o   \
-              /usr/local/lib/gcc/*/*/libgcc.a   /usr/local/lib/gcc/x86_64-pc-linux-musl/15.1.0/
+              /usr/local/lib/gcc/*/*/libgcc.a   /usr/local/lib/gcc/x86_64-pc-linux-musl/$VER/
 COPY --from=0 /usr/local/lib64/libgfortran.a    \
               /usr/local/lib64/libgfortran.spec \
               /usr/local/lib64/libquadmath.a    /usr/local/lib64/
