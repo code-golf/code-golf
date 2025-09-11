@@ -1232,6 +1232,27 @@ for i = 1, #arg do
 end
 '''
 
+[Luau]
+args       = [ '/usr/bin/luau', '-' ]
+experiment = 1044
+size       = '5.09 MiB'
+version    = '0.690'
+website    = 'https://luau.org'
+example    = '''
+-- Printing
+print("Hello, World!")
+
+-- Looping
+for i = 0, 9 do
+    print(i)
+end
+
+-- Accessing arguments
+for _, arg in {...} do
+    print(arg)
+end
+'''
+
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
 size    = '14.9 MiB'
