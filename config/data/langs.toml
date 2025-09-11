@@ -62,9 +62,8 @@ OD
 
 [APL]
 args       = [ '/usr/bin/apl', '-' ]
-env        = [ 'DYALOG=/opt/mdyalog/19.0/64/unicode' ]
 experiment = 135
-size       = '15.0 MiB'
+size       = '14.4 MiB'
 version    = 'Dyalog APL 19.0.50027'
 website    = 'https://www.dyalog.com'
 example    = '''
@@ -730,7 +729,7 @@ example    = '''
 
 [Forth]
 args    = [ '/usr/bin/forth', '/proc/self/fd/0' ]
-size    = '2.85 MiB'
+size    = '590 KiB'
 version = 'GNU Forth 0.7.3'
 website = 'https://www.gnu.org/software/gforth/'
 example = '''
@@ -1196,8 +1195,8 @@ example    = '''
 
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '140 MiB'
-version = '2.2.10'
+size    = '141 MiB'
+version = '2.2.20'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1416,7 +1415,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '136 MiB'
-version    = 'PowerShell 7.5.2 on .NET 9.0.8'
+version    = 'PowerShell 7.5.3 on .NET 9.0.8'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
