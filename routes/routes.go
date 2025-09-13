@@ -33,7 +33,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Get("/golfers/{name}/avatar", golferAvatarGET)
 	r.Get(`/golfers/{name}/avatar/{size:\d+}`, golferAvatarGET)
 	r.Get("/healthz", healthzGET)
-	r.Post("/log-out", logOutPost)
+	r.Post("/log-out", logOutPOST)
 	r.Get("/random", randomGET)
 	r.Get("/sitemap.xml", sitemapGET)
 
