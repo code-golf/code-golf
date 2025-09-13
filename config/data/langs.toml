@@ -853,7 +853,7 @@ n*
 args    = [ '/usr/bin/groovy', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
 size    = '76.9 MiB'
-version = '5.0.0'
+version = '5.0.1'
 website = 'https://groovy-lang.org'
 example = '''
 // Printing
