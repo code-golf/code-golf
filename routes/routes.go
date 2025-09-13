@@ -35,7 +35,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Post("/log-out", logOutPost)
 	r.Get("/random", randomGET)
 	r.Get("/sitemap.xml", sitemapGET)
-	r.Get("/users/{name}", userGET)
+	r.Get("/users/{name}", redir("/golfers/{name}"))
 
 	// HTML routes that need middleware.Golfer.
 	r.With(middleware.RedirHolesLangs, middleware.Golfer).Group(func(r chi.Router) {

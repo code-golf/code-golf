@@ -16,6 +16,7 @@ for <
     GET    /recent/perl6                         /recent/raku
     GET    /recent/solutions/billiard/perl/bytes /recent/solutions/billiards/perl/bytes
     GET    /scores/billiard/perl                 /scores/billiards/perl
+    GET    /users/JRaspass                       /golfers/JRaspass
 > -> $method, $start, $end {
     my $res = $ua.request: $method, "https://app:443$start$query";
 
