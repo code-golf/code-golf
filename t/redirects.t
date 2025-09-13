@@ -12,6 +12,7 @@ for <
     GET    /api/notes/billiards/perl6            /api/notes/billiards/raku
     PUT    /api/notes/billiard/go                /api/notes/billiards/go
     GET    /billiard                             /billiards
+    GET    /golfers/JRaspass/isbn/perl6/bytes    /golfers/JRaspass/isbn/raku/bytes
     GET    /rankings/cheevos                     /rankings/cheevos/all
     GET    /rankings/recent-holes/perl6/bytes    /rankings/recent-holes/raku/bytes
     GET    /recent                               /recent/solutions/all/all/bytes

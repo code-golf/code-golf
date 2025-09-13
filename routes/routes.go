@@ -143,8 +143,12 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/holes/{scoring:(?:bytes|chars)}", redir("rankings/lang/{scoring}"))
 			r.Get("/holes/{display:(?:rankings|points)}/{scope:(?:lang|overall)}"+
 				"/{scoring:(?:bytes|chars)}", golferHolesGET)
-			r.Get("/{hole}/{lang}/{scoring}", golferSolutionGET)
-			r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
+
+			// Golfer info routes that use {hole} or {lang}.
+			r.With(middleware.RedirHolesLangs).Group(func(r chi.Router) {
+				r.Get("/{hole}/{lang}/{scoring}", golferSolutionGET)
+				r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
+			})
 		})
 	})
 
