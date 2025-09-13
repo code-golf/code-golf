@@ -372,6 +372,8 @@ svg { fill: currentColor }
 table {
     border-spacing: 0;
     font-variant: tabular-nums;
+
+    &:not(:has(thead)) { border-top: 2px solid var(--color) }
 }
 
 tbody > :nth-child(even) { background: var(--light-grey) }
@@ -574,8 +576,6 @@ td .btn {
     display: grid;
     gap: 1rem;
 }
-
-.headless { border-top: 2px solid var(--color) }
 
 .hide { display: none !important }
 
