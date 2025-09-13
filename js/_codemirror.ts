@@ -226,6 +226,7 @@ export const extensions : { [key: string]: any } = {
     // TODO viml
     // TODO vyxal
     'wren':          wren,
+    'yuescript':     StreamLanguage.define(lua),
     'zig':           zig(),
 };
 
