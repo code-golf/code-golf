@@ -36,6 +36,17 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Post("/log-out", logOutPost)
 	r.Get("/random", randomGET)
 	r.Get("/sitemap.xml", sitemapGET)
+
+	// Legacy redirects.
+	r.Get("/rankings", redir("/rankings/holes/all/all/bytes"))
+	r.Get("/rankings/cheevos", redir("/rankings/cheevos/all"))
+	r.Get("/rankings/holes", redir("/rankings/holes/all/all/bytes"))
+	r.Get("/rankings/holes/all/all/all", redir("/rankings/holes/all/all/bytes"))
+	r.Get("/rankings/langs/bytes", redir("/rankings/langs/all/bytes"))
+	r.Get("/rankings/langs/chars", redir("/rankings/langs/all/chars"))
+	r.Get("/rankings/medals", redir("/rankings/medals/all/all/all"))
+	r.Get("/rankings/solutions", redir("/rankings/misc/solutions"))
+	r.Get("/recent", redir("/recent/solutions/all/all/bytes"))
 	r.Get("/users/{name}", redir("/golfers/{name}"))
 
 	// HTML routes that need middleware.Golfer.
@@ -127,36 +138,18 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
 		})
 
-		r.Route("/rankings", func(r chi.Router) {
-			// Redirect some old URLs that got out.
-			r.Get("/", redir("/rankings/holes/all/all/bytes"))
-			r.Get("/cheevos", redir("/rankings/cheevos/all"))
-			r.Get("/holes", redir("/rankings/holes/all/all/bytes"))
-			r.Get("/holes/all/all/all", redir("/rankings/holes/all/all/bytes"))
-			r.Get("/langs/bytes", redir("/rankings/langs/all/bytes"))
-			r.Get("/langs/chars", redir("/rankings/langs/all/chars"))
-			r.Get("/medals", redir("/rankings/medals/all/all/all"))
-			r.Get("/solutions", redir("/rankings/misc/solutions"))
+		r.With(middleware.RedirHolesLangs).Group(func(r chi.Router) {
+			r.Get("/rankings/holes/{hole}/{lang}/{scoring}", rankingsHolesGET)
+			r.Get("/rankings/recent-holes/{lang}/{scoring}", rankingsHolesGET)
 
-			r.With(middleware.RedirHolesLangs).Group(func(r chi.Router) {
-				r.Get("/holes/{hole}/{lang}/{scoring}", rankingsHolesGET)
-				r.Get("/recent-holes/{lang}/{scoring}", rankingsHolesGET)
+			r.Get("/rankings/cheevos/{cheevo}", rankingsCheevosGET)
+			r.Get("/rankings/medals/{hole}/{lang}/{scoring}", rankingsMedalsGET)
+			r.Get("/rankings/langs/{lang}/{scoring}", rankingsLangsGET)
+			r.Get("/rankings/misc/{type}", rankingsMiscGET)
 
-				r.Get("/cheevos/{cheevo}", rankingsCheevosGET)
-				r.Get("/medals/{hole}/{lang}/{scoring}", rankingsMedalsGET)
-				r.Get("/langs/{lang}/{scoring}", rankingsLangsGET)
-				r.Get("/misc/{type}", rankingsMiscGET)
-			})
-		})
-
-		r.Route("/recent", func(r chi.Router) {
-			r.Get("/", redir("/recent/solutions/all/all/bytes"))
-			r.Get("/golfers", recentGolfersGET)
-
-			r.With(middleware.RedirHolesLangs).Group(func(r chi.Router) {
-				r.Get("/{lang}", recentGET)
-				r.Get("/solutions/{hole}/{lang}/{scoring}", recentSolutionsGET)
-			})
+			r.Get("/recent/{lang}", recentGET)
+			r.Get("/recent/golfers", recentGolfersGET)
+			r.Get("/recent/solutions/{hole}/{lang}/{scoring}", recentSolutionsGET)
 		})
 	})
 

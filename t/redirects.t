@@ -12,7 +12,9 @@ for <
     GET    /api/notes/billiards/perl6            /api/notes/billiards/raku
     PUT    /api/notes/billiard/go                /api/notes/billiards/go
     GET    /billiard                             /billiards
+    GET    /rankings/cheevos                     /rankings/cheevos/all
     GET    /rankings/recent-holes/perl6/bytes    /rankings/recent-holes/raku/bytes
+    GET    /recent                               /recent/solutions/all/all/bytes
     GET    /recent/perl6                         /recent/raku
     GET    /recent/solutions/billiard/perl/bytes /recent/solutions/billiards/perl/bytes
     GET    /scores/billiard/perl                 /scores/billiards/perl
