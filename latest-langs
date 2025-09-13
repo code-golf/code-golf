@@ -74,6 +74,7 @@ constant %paths = (
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
+    'PARI-GP'      => 'pari.math.u-bordeaux.fr/download.html',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
@@ -130,7 +131,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
         when / 'endoflife'      / { $res.&from-json[0]<latest> }
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
-        when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
+        when / 'ftp' || 'pari'  / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'gnome.org'      / { $res ~~ / 'Release ' <(<ver>)> / }
         when / 'golfscript.com' / { $res ~~ / 'iogii-' <(<ver>)> / }
