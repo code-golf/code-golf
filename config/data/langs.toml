@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '4.86 MiB'
-version    = 'Algol 68 Genie 3.9.3'
+version    = 'Algol 68 Genie 3.9.4'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -591,7 +591,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '175 MiB'
-version = '3.9.2'
+version = '3.9.3'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
 size       = '49.6 MiB'
-version    = 'OTP 28.0.3'
+version    = 'OTP 28.0.4'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
