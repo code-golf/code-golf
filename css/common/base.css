@@ -60,7 +60,7 @@ body {
     display: flex;
     flex-direction: column;
     font: 16px emoji, mahjong, system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
 
     &:has(dialog[open]) { overflow: hidden }
