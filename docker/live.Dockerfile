@@ -123,6 +123,7 @@ COPY --from=codegolf/lang-k            ["/", "/langs/k/rootfs/"           ] #  6
 COPY --from=codegolf/lang-forth        ["/", "/langs/forth/rootfs/"       ] #  590 KiB
 COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] #  549 KiB
 COPY --from=codegolf/lang-wren         ["/", "/langs/wren/rootfs/"        ] #  505 KiB
+COPY --from=codegolf/lang-joy          ["/", "/langs/joy/rootfs/"         ] #  427 KiB
 COPY --from=codegolf/lang-lua          ["/", "/langs/lua/rootfs/"         ] #  362 KiB
 COPY --from=codegolf/lang-befunge      ["/", "/langs/befunge/rootfs/"     ] #  303 KiB
 COPY --from=codegolf/lang-sed          ["/", "/langs/sed/rootfs/"         ] #  244 KiB
