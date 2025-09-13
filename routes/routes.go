@@ -56,6 +56,15 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/about", aboutGET)
 		r.Get("/feeds", feedsGET)
 		r.Get("/ideas", ideasGET)
+		r.Get("/rankings/cheevos/{cheevo}", rankingsCheevosGET)
+		r.Get("/rankings/holes/{hole}/{lang}/{scoring}", rankingsHolesGET)
+		r.Get("/rankings/langs/{lang}/{scoring}", rankingsLangsGET)
+		r.Get("/rankings/medals/{hole}/{lang}/{scoring}", rankingsMedalsGET)
+		r.Get("/rankings/misc/{type}", rankingsMiscGET)
+		r.Get("/rankings/recent-holes/{lang}/{scoring}", rankingsHolesGET)
+		r.Get("/recent/{lang}", recentGET)
+		r.Get("/recent/golfers", recentGolfersGET)
+		r.Get("/recent/solutions/{hole}/{lang}/{scoring}", recentSolutionsGET)
 		r.Get("/scores/{hole}/{lang}", scoresGET)
 		r.Get("/scores/{hole}/{lang}/all", scoresAllGET)
 		r.Get("/scores/{hole}/{lang}/{scoring}", scoresGET)
@@ -136,20 +145,6 @@ func Router(db *sqlx.DB) http.Handler {
 				"/{scoring:(?:bytes|chars)}", golferHolesGET)
 			r.Get("/{hole}/{lang}/{scoring}", golferSolutionGET)
 			r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
-		})
-
-		r.With(middleware.RedirHolesLangs).Group(func(r chi.Router) {
-			r.Get("/rankings/holes/{hole}/{lang}/{scoring}", rankingsHolesGET)
-			r.Get("/rankings/recent-holes/{lang}/{scoring}", rankingsHolesGET)
-
-			r.Get("/rankings/cheevos/{cheevo}", rankingsCheevosGET)
-			r.Get("/rankings/medals/{hole}/{lang}/{scoring}", rankingsMedalsGET)
-			r.Get("/rankings/langs/{lang}/{scoring}", rankingsLangsGET)
-			r.Get("/rankings/misc/{type}", rankingsMiscGET)
-
-			r.Get("/recent/{lang}", recentGET)
-			r.Get("/recent/golfers", recentGolfersGET)
-			r.Get("/recent/solutions/{hole}/{lang}/{scoring}", recentSolutionsGET)
 		})
 	})
 
