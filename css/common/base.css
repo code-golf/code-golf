@@ -626,6 +626,17 @@ nav + main .sticky th { top: calc(5.75rem + 1px) }
 .tabs {
     display: flex;
     flex-wrap: wrap;
+
+    > a {
+        color: var(--color);
+        padding: .375rem .5rem;
+
+        &:is(.on, :hover, :not([href])) {
+            background: var(--color) !important;
+            color: var(--background);
+            text-decoration: none;
+        }
+    }
 }
 
 /* Tabs outside <main> should be bold, sticky, & underlined. */
@@ -637,23 +648,11 @@ body > .tabs {
     position: sticky;
     top: 2.75rem;
     z-index: 2;
-}
 
-body > .tabs a {
-    margin-bottom: -2px;
-    padding: calc(.5rem - 1px) .5rem;
-}
-
-.tabs a {
-    color: var(--color);
-    padding: .375rem .5rem;
-}
-
-/* TODO .tabs a:is(.on, :hover, :not([href])) */
-.tabs .on, .tabs a:hover, .tabs a:not([href]) {
-    background: var(--color) !important;
-    color: var(--background);
-    text-decoration: none;
+    > a {
+        margin-bottom: -2px;
+        padding: calc(.5rem - 1px) .5rem;
+    }
 }
 
 .text-red { color: var(--red-text) }
