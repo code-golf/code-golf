@@ -1971,14 +1971,16 @@ for (a in Process.arguments) System.print(a)
 
 [Zig]
 args    = [ '/usr/bin/zig', '-' ]
-size    = '181 MiB'
-version = '0.14.1'
+size    = '189 MiB'
+version = '0.15.1'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
+    var stdout_buffer: [1024]u8 = undefined;
+    var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
+    const stdout = &stdout_writer.interface;
 
     // Printing
     try stdout.print("Hello, World!\n", .{});
@@ -1990,5 +1992,7 @@ pub fn main() !void {
     // Accessing arguments
     for (std.os.argv[1..]) |arg|
         try stdout.print("{s}\n", .{arg});
+
+    try stdout.flush();
 }
 '''
