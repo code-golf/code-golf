@@ -669,11 +669,6 @@ body > .tabs a {
     padding: 1rem;
 }
 
-#me {
-    position: relative;
-    top: -50vh;
-}
-
 #popups {
     align-items: flex-end;
     display: flex;
