@@ -42,6 +42,23 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/", homeGET)
 		r.Get("/{hole}", holeGET)
 		r.Get("/about", aboutGET)
+		r.Get("/callback", callbackGET)
+		r.Get("/feeds", feedsGET)
+		r.Get("/ideas", ideasGET)
+		r.Get("/scores/{hole}/{lang}", scoresGET)
+		r.Get("/scores/{hole}/{lang}/all", scoresAllGET)
+		r.Get("/scores/{hole}/{lang}/{scoring}", scoresGET)
+		r.Get("/scores/{hole}/{lang}/{scoring}/{page}", scoresGET)
+		r.Post("/solution", solutionPOST)
+		r.Get("/stats", statsGET)
+		r.Get("/stats/{page:cheevos}", statsCheevosGET)
+		r.Get("/stats/{page:countries}", statsCountriesGET)
+		r.Get("/stats/{page:golfers}", statsGolfersGET)
+		r.Get("/stats/{page:(?:holes|langs)}", statsTableGET)
+		r.Get("/stats/{page:unsolved-holes}", statsUnsolvedHolesGET)
+		r.Get("/wiki", wikiGET)
+		r.Get("/wiki/*", wikiGET)
+
 		r.With(middleware.AdminArea).Route("/admin", func(r chi.Router) {
 			r.Get("/", adminGET)
 			r.Get("/banners", adminBannersGET)
@@ -50,6 +67,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/solutions/run", adminSolutionsRunGET)
 			r.Get("/solutions/{hole}/{lang}/{golferID}", adminSolutionGET)
 		})
+
 		r.With(middleware.API).Route("/api", func(r chi.Router) {
 			r.Get("/", apiGET)
 			r.Get("/cheevos", apiCheevosGET)
@@ -79,8 +97,7 @@ func Router(db *sqlx.DB) http.Handler {
 				})
 			})
 		})
-		r.Get("/callback", callbackGET)
-		r.Get("/feeds", feedsGET)
+
 		r.With(middleware.GolferArea).Route("/golfer", func(r chi.Router) {
 			r.Post("/cancel-delete", golferCancelDeletePOST)
 			r.Get("/connect/{connection}", golferConnectGET)
@@ -97,6 +114,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Post("/settings/reset", golferSettingsResetPOST)
 			r.Post("/settings/save", golferSettingsSavePOST)
 		})
+
 		r.With(middleware.GolferInfo).Route("/golfers/{name}", func(r chi.Router) {
 			r.Get("/", golferGET)
 			r.Post("/{action:(?:follow|unfollow)}", golferActionPOST)
@@ -108,7 +126,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/{hole}/{lang}/{scoring}", golferSolutionGET)
 			r.Post("/{hole}/{lang}/{scoring}", golferSolutionPOST)
 		})
-		r.Get("/ideas", ideasGET)
+
 		r.Route("/rankings", func(r chi.Router) {
 			// Redirect some old URLs that got out.
 			r.Get("/", redir("/rankings/holes/all/all/bytes"))
@@ -130,6 +148,7 @@ func Router(db *sqlx.DB) http.Handler {
 				r.Get("/misc/{type}", rankingsMiscGET)
 			})
 		})
+
 		r.Route("/recent", func(r chi.Router) {
 			r.Get("/", redir("/recent/solutions/all/all/bytes"))
 			r.Get("/golfers", recentGolfersGET)
@@ -139,19 +158,6 @@ func Router(db *sqlx.DB) http.Handler {
 				r.Get("/solutions/{hole}/{lang}/{scoring}", recentSolutionsGET)
 			})
 		})
-		r.Get("/scores/{hole}/{lang}", scoresGET)
-		r.Get("/scores/{hole}/{lang}/all", scoresAllGET)
-		r.Get("/scores/{hole}/{lang}/{scoring}", scoresGET)
-		r.Get("/scores/{hole}/{lang}/{scoring}/{page}", scoresGET)
-		r.Post("/solution", solutionPOST)
-		r.Get("/stats", statsGET)
-		r.Get("/stats/{page:cheevos}", statsCheevosGET)
-		r.Get("/stats/{page:countries}", statsCountriesGET)
-		r.Get("/stats/{page:golfers}", statsGolfersGET)
-		r.Get("/stats/{page:(?:holes|langs)}", statsTableGET)
-		r.Get("/stats/{page:unsolved-holes}", statsUnsolvedHolesGET)
-		r.Get("/wiki", wikiGET)
-		r.Get("/wiki/*", wikiGET)
 	})
 
 	return r
