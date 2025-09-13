@@ -1589,6 +1589,35 @@ for arg in arguments
 end
 '''
 
+[Rocq]
+args       = [ '/usr/bin/rocq', '-' ]
+experiment = 1425
+size       = '18.8 MiB'
+version    = '9.0.0'
+website    = 'https://rocq-prover.org'
+example    = '''
+Require Import String Extraction.
+Import List ListNotations.
+
+(* Printing *)
+Definition print := Eval compute in "Hello, World!"%string.
+
+(* Looping *)
+Fixpoint range i :=
+  match i with
+  | O => [0]
+  | S i' => range i' ++ [S i']
+  end.
+
+Definition loop := Eval compute in range 9.
+
+(* Accessing arguments *)
+
+
+Extraction Language OCaml.
+Extraction "print_loop.ml" print loop.
+'''
+
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '33.2 MiB'
