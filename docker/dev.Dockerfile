@@ -90,6 +90,7 @@ COPY --from=codegolf/lang-berry        ["/", "/langs/berry/rootfs/"       ] #  9
 COPY --from=codegolf/lang-janet        ["/", "/langs/janet/rootfs/"       ] #  906 KiB
 COPY --from=codegolf/lang-knight       ["/", "/langs/knight/rootfs/"      ] #  734 KiB
 COPY --from=codegolf/lang-fennel       ["/", "/langs/fennel/rootfs/"      ] #  681 KiB
+COPY --from=codegolf/lang-nial         ["/", "/langs/nial/rootfs/"        ] #  616 KiB
 COPY --from=codegolf/lang-k            ["/", "/langs/k/rootfs/"           ] #  605 KiB
 COPY --from=codegolf/lang-forth        ["/", "/langs/forth/rootfs/"       ] #  590 KiB
 COPY --from=codegolf/lang-fish         ["/", "/langs/fish/rootfs/"        ] #  549 KiB
