@@ -589,6 +589,13 @@ function tokenNestedComment(depth) {
     }
 }
 
+export const llvm = clike({
+    keywords: words('acq_rel acquire add addrspace addrspacecast align alignstack alloca alwaysinline and any appending arcp ashr asm atomic atomicrmw attributes bitcast br c call callbr catchpad catchret catchswitch cleanuppad cleanupret cmpxchg coldcc comdat constant continue contract datalayout declare define distinct eq external extractelement extractvalue fadd false fcmp fdiv fence fmul fneg for fpext fptosi fptoui fptrunc freeze frem fsub gc getelementptr global icmp inbounds indirectbr initialexec insertelement insertvalue internal inttoptr invoke landingpad load lshr metadata module monotonic mul noalias noinline none nounwind null nuw optsize or phi poison preallocated prefix private ptrtoaddr ptrtoint reassoc releas resume ret return sdiv section select seq_cst sext sge shl shufflevector sideeffect signext sitofp slt srem store struct sub switch target thread_local to token triple true trunc type udiv uitofp ult undef unnamed_addr unordered unreachable urem va_arg void with x xor zeroext zext'),
+    types: words(''),
+    indentStatements: false,
+    indentSwitch: false,
+});
+
 export const scala = clike({
     keywords: words('abstract case catch class def do else extends final finally for forSome if' +
                   ' implicit import lazy match new null object override package private protected return' +

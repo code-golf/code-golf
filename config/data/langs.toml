@@ -1211,6 +1211,54 @@ for (arg in args)
     println(arg)
 '''
 
+['LLVM IR']
+args       = [ '/usr/bin/llvm-ir', '-' ]
+experiment = 1114
+size       = '30.4 MiB'
+version    = '21.1.1'
+website    = 'https://llvm.org'
+example    = '''
+@a = global [14 x i8] c"Hello, World!\00"
+@b = global [4 x i8] c"%d\0A\00"
+
+declare i8 @puts()
+declare i8 @printf()
+
+define i8 @main(i8, ptr) {
+; Printing
+  call i8 @puts(ptr @a)
+
+; Looping
+  %6 = alloca i8
+  br label %7
+  load i8, ptr %6
+  icmp slt i8 %8, 10
+  br i1 %9, label %10, label %16
+  load i8, ptr %6
+  call i8 @printf(ptr @b, i8 %11)
+  %14 = load i8, ptr %6
+  add i8 %14, 1
+  store i8 %15, ptr %6
+  br label %7
+
+; Accessing arguments
+  %19 = alloca ptr
+  br label %20
+  load ptr, ptr %19
+  getelementptr ptr, ptr %21, i8 1
+  store ptr %22, ptr %19
+  load ptr, ptr %22
+  icmp ne ptr %23, null
+  br i1 %24, label %25, label %29
+  load ptr, ptr %19
+  load ptr, ptr %26
+  call i8 @puts(ptr %27)
+  br label %20
+
+  ret i8 0
+}
+'''
+
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
 size    = '362 KiB'
