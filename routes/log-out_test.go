@@ -11,7 +11,7 @@ import (
 func TestLogOutGET(t *testing.T) {
 	w := httptest.NewRecorder()
 
-	logOutPost(w, httptest.NewRequest("POST", "/", nil))
+	logOutPOST(w, httptest.NewRequest("POST", "/", nil))
 
 	res := w.Result()
 	res.Body.Close()
