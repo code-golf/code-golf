@@ -1,4 +1,4 @@
-FROM node:24.7.0-alpine3.22 AS builder
+FROM node:24.8.0-alpine3.22 AS builder
 
 RUN apk add --no-cache binutils
 
