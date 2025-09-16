@@ -6,7 +6,7 @@ ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 RUN apk add --no-cache build-base curl git linux-headers tzdata \
  && GOBIN=/bin go install github.com/cespare/reflex@latest
 
-COPY --from=codegolf/lang-llvm-ir      ["/", "/langs/llvm-ir/rootfs/"     ] # 30.4 MiB
+COPY --from=codegolf/lang-llvm-ir      ["/", "/langs/llvm-ir/rootfs/"     ] # 48.2 MiB
 
 COPY cmd/hash-langs ./cmd/hash-langs
 
