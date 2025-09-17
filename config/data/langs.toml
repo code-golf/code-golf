@@ -1212,9 +1212,9 @@ for (arg in args)
 '''
 
 ['LLVM IR']
-args       = [ '/usr/bin/llvm-ir', '/proc/self/fd/0' ]
+args       = [ '/usr/bin/llvm-ir', '-' ]
 experiment = 1114
-size       = '48.2 MiB'
+size       = '34.1 MiB'
 version    = '21.1.1'
 website    = 'https://llvm.org'
 example    = '''
@@ -1240,33 +1240,33 @@ entry:
 ; Looping
 LLVM_LOOP_CONDITION:
   %1 = load i32, ptr %i, align 4
-  %slt = icmp slt i32 %1, 10
-  br i1 %slt, label %LLVM_LOOP_STATEMENT, label %LLVM_ARGV_CONDITION
+  %2 = icmp slt i32 %1, 10
+  br i1 %2, label %LLVM_LOOP_STATEMENT, label %LLVM_ARGV_CONDITION
 
 LLVM_LOOP_STATEMENT:
-  %2 = load i32, ptr %i, align 4
-  call i32 @printf(ptr @.ing, i32 %2)
+  %3 = load i32, ptr %i, align 4
+  call i32 @printf(ptr @.ing, i32 %3)
   br label %LLVM_LOOP_EXPRESSION
 
 LLVM_LOOP_EXPRESSION:
-  %4 = load i32, ptr %i, align 4
-  %nsw = add nsw i32 %4, 1
-  store i32 %nsw, ptr %i, align 4
+  %5 = load i32, ptr %i, align 4
+  %6 = add nsw i32 %5, 1
+  store i32 %6, ptr %i, align 4
   br label %LLVM_LOOP_CONDITION
 
 ; Accessing arguments
 LLVM_ARGV_CONDITION:
-  %5 = load ptr, ptr %argv.addr, align 8
-  %nuw = getelementptr inbounds nuw ptr, ptr %5, i32 1
-  store ptr %nuw, ptr %argv.addr, align 8
-  %6 = load ptr, ptr %nuw, align 8
-  %ne = icmp ne ptr %6, null
-  br i1 %ne, label %LLVM_ARGV_STATEMENT, label %end
+  %7 = load ptr, ptr %argv.addr, align 8
+  %8 = getelementptr inbounds nuw ptr, ptr %7, i32 1
+  store ptr %8, ptr %argv.addr, align 8
+  %9 = load ptr, ptr %8, align 8
+  %10 = icmp ne ptr %9, null
+  br i1 %10, label %LLVM_ARGV_STATEMENT, label %end
 
 LLVM_ARGV_STATEMENT:
-  %7 = load ptr, ptr %argv.addr, align 8
-  %8 = load ptr, ptr %7, align 8
-  call i32 @puts(ptr %8)
+  %11 = load ptr, ptr %argv.addr, align 8
+  %12 = load ptr, ptr %11, align 8
+  call i32 @puts(ptr %12)
   br label %LLVM_ARGV_CONDITION
 
 end:
