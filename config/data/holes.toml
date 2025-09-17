@@ -170,7 +170,7 @@ preamble = '''
 <p>The numbers range from 1 to 3999 inclusive.
 
 <div>
-    <table class=headless>
+    <table>
         <tr>
             <th>Arabic
             <td>1

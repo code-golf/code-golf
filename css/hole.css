@@ -252,6 +252,8 @@ main .info {
     text-align: right;
 }
 
+#scores { border: 0 }
+
 /* Shrink the padding compared to a normal table */
 #scores td               { padding: 0 .25rem }
 #scores td:first-child { padding-left: .5rem }
