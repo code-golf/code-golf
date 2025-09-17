@@ -1031,7 +1031,7 @@ example    = '''
 args       = [ '/usr/bin/io', '-' ]
 experiment = 182
 size       = '4.11 MiB'
-version    = '45a3705'
+version    = '9399ab3'
 website    = 'https://iolanguage.org'
 example    = '''
 # Printing

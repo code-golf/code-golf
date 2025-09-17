@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes cmake curl git
 
-ENV VER=45a3705
+ENV CFLAGS='-Wno-incompatible-pointer-types' VER=9399ab3
 
 RUN curl -#L https://github.com/IoLanguage/io/tarball/$VER \
   | tar xz --strip-components 1
