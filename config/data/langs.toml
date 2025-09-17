@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
-size       = '4.86 MiB'
-version    = 'Algol 68 Genie 3.9.4'
+size       = '4.87 MiB'
+version    = 'Algol 68 Genie 3.9.5'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -55,7 +55,7 @@ FOR i FROM 0 TO 9 DO
 OD;
 
 # Accessing arguments #
-FOR i FROM 2 TO a68g argc DO
+FOR i FROM 2 TO argc DO
     printf(($gl$, a68g argv(i)))
 OD
 '''
@@ -347,7 +347,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '108 MiB'
-version = 'C# 13.0 on .NET 9.0.8'
+version = 'C# 13.0 on .NET 9.0.9'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -654,8 +654,8 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '49.6 MiB'
-version    = 'OTP 28.0.4'
+size       = '49.7 MiB'
+version    = 'OTP 28.1'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -673,7 +673,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '110 MiB'
-version = 'F# 9.0 on .NET 9.0.8'
+version = 'F# 9.0 on .NET 9.0.9'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1394,7 +1394,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '136 MiB'
-version    = 'PowerShell 7.5.3 on .NET 9.0.8'
+version    = 'PowerShell 7.5.3 on .NET 9.0.9'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
