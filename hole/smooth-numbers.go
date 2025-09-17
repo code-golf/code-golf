@@ -27,7 +27,7 @@ var _ = answerFunc("smooth-numbers", func() []Answer {
 			x := i
 
 			for _, p := range primes {
-				for x % p == 0 {
+				for x%p == 0 {
 					x /= p
 				}
 			}
