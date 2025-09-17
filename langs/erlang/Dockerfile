@@ -1,11 +1,11 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc make perl
 
 # Also rebuild Elixir, Gleam.
-ENV VER=28.0.2
+ENV VER=28.0.4
 
 WORKDIR /erlang
 
