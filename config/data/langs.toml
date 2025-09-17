@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
-size       = '4.86 MiB'
-version    = 'Algol 68 Genie 3.9.4'
+size       = '4.87 MiB'
+version    = 'Algol 68 Genie 3.9.5'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -55,7 +55,7 @@ FOR i FROM 0 TO 9 DO
 OD;
 
 # Accessing arguments #
-FOR i FROM 2 TO a68g argc DO
+FOR i FROM 2 TO argc DO
     printf(($gl$, a68g argv(i)))
 OD
 '''
