@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.20 MiB'
-version    = '96f0774'
+version    = '51e8a5e'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -1234,8 +1234,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.09 MiB'
-version    = '0.690'
+size       = '5.10 MiB'
+version    = '0.691'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1886,8 +1886,8 @@ fn main() {
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '38.3 MiB'
-version = '0.4.11'
+size    = '33.5 MiB'
+version = '0.4.12'
 website = 'https://vlang.io'
 example = '''
 import os
@@ -1959,7 +1959,7 @@ w
 args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '83.1 MiB'
-version    = '3.10.0'
+version    = '3.10.1'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
