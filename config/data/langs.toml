@@ -1211,6 +1211,69 @@ for (arg in args)
     println(arg)
 '''
 
+['LLVM IR']
+args       = [ '/usr/bin/llvm-ir', '-' ]
+experiment = 1114
+size       = '34.1 MiB'
+version    = '21.1.1'
+website    = 'https://llvm.org'
+example    = '''
+@.str = private unnamed_addr constant [14 x i8] c"Hello, World!\00", align 1
+@.ing = private unnamed_addr constant [4 x i8] c"%d\0A\00", align 1
+
+declare i32 @puts(ptr)
+declare i32 @printf(ptr, ...)
+
+define i32 @main(i32 %argc, ptr %argv) {
+entry:
+  %i = alloca i32, align 4
+  store i32 0, ptr %i, align 4
+  %argc.addr = alloca i32, align 4
+  store i32 %argc, ptr %argc.addr, align 4
+  %argv.addr = alloca ptr, align 8
+  store ptr %argv, ptr %argv.addr, align 8
+
+; Printing
+  call i32 @puts(ptr @.str)
+  br label %LLVM_LOOP_CONDITION
+
+; Looping
+LLVM_LOOP_CONDITION:
+  %1 = load i32, ptr %i, align 4
+  %2 = icmp slt i32 %1, 10
+  br i1 %2, label %LLVM_LOOP_STATEMENT, label %LLVM_ARGV_CONDITION
+
+LLVM_LOOP_STATEMENT:
+  %3 = load i32, ptr %i, align 4
+  call i32 @printf(ptr @.ing, i32 %3)
+  br label %LLVM_LOOP_EXPRESSION
+
+LLVM_LOOP_EXPRESSION:
+  %5 = load i32, ptr %i, align 4
+  %6 = add nsw i32 %5, 1
+  store i32 %6, ptr %i, align 4
+  br label %LLVM_LOOP_CONDITION
+
+; Accessing arguments
+LLVM_ARGV_CONDITION:
+  %7 = load ptr, ptr %argv.addr, align 8
+  %8 = getelementptr inbounds nuw ptr, ptr %7, i32 1
+  store ptr %8, ptr %argv.addr, align 8
+  %9 = load ptr, ptr %8, align 8
+  %10 = icmp ne ptr %9, null
+  br i1 %10, label %LLVM_ARGV_STATEMENT, label %end
+
+LLVM_ARGV_STATEMENT:
+  %11 = load ptr, ptr %argv.addr, align 8
+  %12 = load ptr, ptr %11, align 8
+  call i32 @puts(ptr %12)
+  br label %LLVM_ARGV_CONDITION
+
+end:
+  ret i32 0
+}
+'''
+
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
 size    = '362 KiB'
