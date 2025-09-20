@@ -1,10 +1,10 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ make
 
-ENV VER=387
+ENV VER=39
 
 RUN curl -# https://picat-lang.org/download/picat${VER}_src.tar.gz | tar xz
 

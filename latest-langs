@@ -61,7 +61,7 @@ constant %paths = (
     'iogii'        => 'golfscript.com/iogii/source.html',
     'J'            => 'aplwiki.com/wiki/J',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
-    'Java'         => 'endoflife.date/api/java.json',
+    'Java'         => 'endoflife.date/api/eclipse-temurin.json',
     'JavaScript'   => 'chromium.googlesource.com/v8/v8.git/+/' ~ get(
         'chromiumdash.appspot.com/fetch_releases?platform=linux',
     ).&from-json.first(*<channel> eq 'Stable')<hashes><v8>,
@@ -71,6 +71,7 @@ constant %paths = (
     'Knight'       => 'github.com/synt7x/knightjit',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'github.com/lua/lua/releases/latest',
+    'Luau'         => 'github.com/luau-lang/luau/releases/latest',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
@@ -128,7 +129,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
         when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
-        when / 'endoflife'      / { $res.&from-json[0]<latest> }
+        when / 'endoflife'      / { $res.&from-json[0]<latest>.match(/<(<ver>)>/) }
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }

@@ -60,7 +60,7 @@ body {
     display: flex;
     flex-direction: column;
     font: 16px emoji, mahjong, system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
 
     &:has(dialog[open]) { overflow: hidden }
@@ -372,6 +372,8 @@ svg { fill: currentColor }
 table {
     border-spacing: 0;
     font-variant: tabular-nums;
+
+    &:not(:has(thead)) { border-top: 2px solid var(--color) }
 }
 
 tbody > :nth-child(even) { background: var(--light-grey) }
@@ -575,8 +577,6 @@ td .btn {
     gap: 1rem;
 }
 
-.headless { border-top: 2px solid var(--color) }
-
 .hide { display: none !important }
 
 .me { background: var(--light-green) !important }
@@ -626,6 +626,17 @@ nav + main .sticky th { top: calc(5.75rem + 1px) }
 .tabs {
     display: flex;
     flex-wrap: wrap;
+
+    > a {
+        color: var(--color);
+        padding: .375rem .5rem;
+
+        &:is(.on, :hover, :not([href])) {
+            background: var(--color) !important;
+            color: var(--background);
+            text-decoration: none;
+        }
+    }
 }
 
 /* Tabs outside <main> should be bold, sticky, & underlined. */
@@ -637,23 +648,11 @@ body > .tabs {
     position: sticky;
     top: 2.75rem;
     z-index: 2;
-}
 
-body > .tabs a {
-    margin-bottom: -2px;
-    padding: calc(.5rem - 1px) .5rem;
-}
-
-.tabs a {
-    color: var(--color);
-    padding: .375rem .5rem;
-}
-
-/* TODO .tabs a:is(.on, :hover, :not([href])) */
-.tabs .on, .tabs a:hover, .tabs a:not([href]) {
-    background: var(--color) !important;
-    color: var(--background);
-    text-decoration: none;
+    > a {
+        margin-bottom: -2px;
+        padding: calc(.5rem - 1px) .5rem;
+    }
 }
 
 .text-red { color: var(--red-text) }
@@ -667,11 +666,6 @@ body > .tabs a {
 #home > .grid {
     border: 2px solid var(--color);
     padding: 1rem;
-}
-
-#me {
-    position: relative;
-    top: -50vh;
 }
 
 #popups {
