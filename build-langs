@@ -96,6 +96,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
             when 'Haskell'     { $ver = "GHC $digits" }
             when 'Java'        { $ver = "OpenJDK $digits" }
             when 'JavaScript'  { $ver = "V8 $digits" }
+            when 'JSFuck'      { $ver = "Node.js $digits" }
             when 'Pascal'      { $ver = "FPC $digits" }
             when 'Prolog'      { $ver = "SWI-Prolog $digits" }
             when 'Raku'        {
