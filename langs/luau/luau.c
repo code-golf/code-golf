@@ -5,13 +5,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* zig = "/usr/local/zig", *code = "code.zig";
+const char* luau = "/usr/local/bin/luau", *code = "code.luau";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version")) {
-        execl(zig, zig, "version", NULL);
-        ERR_AND_EXIT("execl");
-    }
+    if (!strcmp(argv[1], "--version"))
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
@@ -31,19 +29,16 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int zargc = argc + 7;
-    char** zargv = malloc(zargc * sizeof(char*));
-    zargv[0] = (char*) zig;
-    zargv[1] = "run";
-    zargv[2] = "-freference-trace";
-    zargv[3] = "-fstrip";
-    zargv[4] = "--color";
-    zargv[5] = "on";
-    zargv[6] = (char*) code;
-    zargv[7] = "--";
-    memcpy(&zargv[8], &argv[2], (argc - 2) * sizeof(char*));
-    zargv[zargc - 1] = NULL;
+    int largc = argc + 4;
+    char** largv = malloc(largc * sizeof(char*));
+    largv[0] = (char*) luau;
+    largv[1] = "-O2";
+    largv[2] = "-g0";
+    largv[3] = (char*) code;
+    largv[4] = "-a";
+    memcpy(&largv[5], &argv[2], (argc - 2) * sizeof(char*));
+    largv[largc - 1] = NULL;
 
-    execv(zig, zargv);
+    execv(luau, largv);
     ERR_AND_EXIT("execv");
 }
