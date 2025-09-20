@@ -62,13 +62,13 @@ CREATE TYPE hole AS ENUM (
     'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
     'rot13', 'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set',
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
-    'snake', 'spelling-numbers', 'sphenic-numbers', 'star-wars-gpt',
-    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
-    'tic-tac-toe', 'time-distance', 'tongue-twisters', 'topological-sort',
-    'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
-    'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
-    '√2', '𝑒'
+    'smooth-numbers', 'snake', 'spelling-numbers', 'sphenic-numbers',
+    'star-wars-gpt', 'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
+    'ten-pin-bowling', 'tic-tac-toe', 'time-distance', 'tongue-twisters',
+    'topological-sort', 'transpose-sentence', 'trinomial-triangle', 'turtle',
+    'tutorial', 'united-states', 'vampire-numbers', 'van-eck-sequence',
+    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2',
+    '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -81,7 +81,7 @@ CREATE TYPE lang AS ENUM (
     'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go', 'golfscript',
     'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
     'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'knight',
-    'kotlin', 'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
+    'kotlin', 'lua', 'luau', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
     'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku',
     'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed',
     'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v',
