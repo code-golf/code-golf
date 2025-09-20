@@ -67,6 +67,7 @@ import { SQLite }                                   from '@codemirror/lang-sql';
 import { swift }                                    from '@codemirror/legacy-modes/mode/swift';
 import { tcl }                                      from '@codemirror/legacy-modes/mode/tcl';
 import { stex }                                     from '@codemirror/legacy-modes/mode/stex';
+import { wast }                                     from '@codemirror/legacy-modes/mode/wast';
 import { wrenLanguage }                             from '@exercism/codemirror-lang-wren';
 import { zig }                                      from 'codemirror-lang-zig';
 
@@ -226,6 +227,7 @@ export const extensions : { [key: string]: any } = {
     'vala':          StreamLanguage.define(csharp),
     // TODO viml
     // TODO vyxal
+    'webassembly':   StreamLanguage.define(wast),
     'wren':          wren,
     'zig':           zig(),
 };
