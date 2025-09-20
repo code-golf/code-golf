@@ -3843,6 +3843,33 @@ preamble = '''
     each on their own line.
 '''
 
+['Smooth Numbers']
+experiment = 2144
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000079', url = '//oeis.org/A000079' },
+    { name = 'OEIS A003586', url = '//oeis.org/A003586' },
+    { name = 'OEIS A051037', url = '//oeis.org/A051037' },
+    { name = 'OEIS A002473', url = '//oeis.org/A002473' },
+    { name = 'OEIS A051038', url = '//oeis.org/A051038' },
+    { name = 'OEIS A080197', url = '//oeis.org/A080197' },
+    { name = 'OEIS A080681', url = '//oeis.org/A080681' },
+    { name = 'OEIS A080682', url = '//oeis.org/A080682' },
+    { name = 'OEIS A080683', url = '//oeis.org/A080683' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-smooth_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Smooth_number' },
+]
+synopsis = 'Print all the n-smooth numbers from 1 to k inclusive.'
+preamble = '''
+<p>
+    An <i>n</i>-smooth number is a positive integer whose prime factors are all
+    less than or equal to <i>n</i>.
+
+<p>
+    For each argument <code>𝑛 𝑘</code>, print all the <i>n</i>-smooth numbers
+    from 1 to <i>k</i> inclusive, separated by spaces.
+'''
+
 [Snake]
 experiment = 1039
 category = 'Gaming'
