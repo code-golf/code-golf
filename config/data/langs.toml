@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
-size       = '4.86 MiB'
-version    = 'Algol 68 Genie 3.9.4'
+size       = '4.87 MiB'
+version    = 'Algol 68 Genie 3.9.5'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -55,7 +55,7 @@ FOR i FROM 0 TO 9 DO
 OD;
 
 # Accessing arguments #
-FOR i FROM 2 TO a68g argc DO
+FOR i FROM 2 TO argc DO
     printf(($gl$, a68g argv(i)))
 OD
 '''
@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.20 MiB'
-version    = '96f0774'
+version    = '51e8a5e'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -347,7 +347,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '108 MiB'
-version = 'C# 13.0 on .NET 9.0.8'
+version = 'C# 13.0 on .NET 9.0.9'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -654,8 +654,8 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '49.6 MiB'
-version    = 'OTP 28.0.4'
+size       = '49.7 MiB'
+version    = 'OTP 28.1'
 website    = 'https://www.erlang.org'
 example    = '''
 main(Args) ->
@@ -673,7 +673,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '110 MiB'
-version = 'F# 9.0 on .NET 9.0.8'
+version = 'F# 9.0 on .NET 9.0.9'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -779,7 +779,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '74.5 MiB'
+size    = '75.2 MiB'
 version = '1.12.0'
 website = 'https://gleam.run'
 example = '''
@@ -990,7 +990,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.32 MiB'
+size       = '2.30 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1136,8 +1136,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '300 MiB'
-version = '1.11.6'
+size    = '301 MiB'
+version = '1.11.7'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1228,6 +1228,27 @@ end
 -- Accessing arguments
 for i = 1, #arg do
     print(arg[i])
+end
+'''
+
+[Luau]
+args       = [ '/usr/bin/luau', '-' ]
+experiment = 1044
+size       = '5.10 MiB'
+version    = '0.691'
+website    = 'https://luau.org'
+example    = '''
+-- Printing
+print("Hello, World!")
+
+-- Looping
+for i = 0, 9 do
+    print(i)
+end
+
+-- Accessing arguments
+for _, arg in {...} do
+    print(arg)
 end
 '''
 
@@ -1394,7 +1415,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '136 MiB'
-version    = 'PowerShell 7.5.3 on .NET 9.0.8'
+version    = 'PowerShell 7.5.3 on .NET 9.0.9'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1611,8 +1632,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '396 MiB'
-version = '1.89.0'
+size    = '398 MiB'
+version = '1.90.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1759,8 +1780,8 @@ Lm
 
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
-size    = '543 MiB'
-version = '6.1.3'
+size    = '561 MiB'
+version = '6.2'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -1865,8 +1886,8 @@ fn main() {
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '38.3 MiB'
-version = '0.4.11'
+size    = '33.5 MiB'
+version = '0.4.12'
 website = 'https://vlang.io'
 example = '''
 import os
@@ -1938,7 +1959,7 @@ w
 args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '83.1 MiB'
-version    = '3.10.0'
+version    = '3.10.1'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
