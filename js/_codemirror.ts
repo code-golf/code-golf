@@ -192,6 +192,7 @@ export const extensions : { [key: string]: any } = {
     'kotlin':        StreamLanguage.define(kotlin),
     // TODO labyrinth
     'lua':           StreamLanguage.define(lua),
+    'luau':          StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
     // TODO odin
