@@ -10,7 +10,7 @@ ENV GMPVER=6.3.0 LDFLAGS='-static' MPCVER=1.3.1 MPFRVER=4.2.2
 
 WORKDIR /gmp
 
-RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/gmp-$GMPVER.tar.bz2 \
+RUN curl -#L https://ftpmirror.gnu.org/gnu/gmp/gmp-$GMPVER.tar.bz2 \
   | tar xj --strip-components 1
 
 RUN ./configure       \
@@ -20,7 +20,7 @@ RUN ./configure       \
 
 WORKDIR /mpfr
 
-RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpfr-$MPFRVER.tar.bz2 \
+RUN curl -#L https://ftpmirror.gnu.org/gnu/mpfr/mpfr-$MPFRVER.tar.bz2 \
   | tar xj --strip-components 1
 
 RUN ./configure         \
@@ -31,7 +31,7 @@ RUN ./configure         \
 
 WORKDIR /mpc
 
-RUN curl -#L ftp://gcc.gnu.org/pub/gcc/infrastructure/mpc-$MPCVER.tar.gz \
+RUN curl -#L https://ftpmirror.gnu.org/gnu/mpc/mpc-$MPCVER.tar.gz \
   | tar xz --strip-components 1
 
 RUN ./configure           \
@@ -43,7 +43,7 @@ RUN ./configure           \
 
 WORKDIR /fortran
 
-RUN curl -#L ftp://ftp.gnu.org/gnu/gcc/gcc-$VER/gcc-$VER.tar.xz \
+RUN curl -#L https://ftpmirror.gnu.org/gnu/gcc/gcc-$VER/gcc-$VER.tar.xz \
   | tar xJ --strip-components 1
 
 RUN ./configure                      \
