@@ -195,6 +195,7 @@ export const extensions : { [key: string]: any } = {
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
     // TODO odin
+    // TODO pari-gp
     'pascal':        StreamLanguage.define(pascal),
     'perl':          StreamLanguage.define(perl),
     'php':           php,

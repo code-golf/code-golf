@@ -60,6 +60,7 @@ COPY --from=codegolf/lang-uiua         ["/", "/langs/uiua/rootfs/"        ] # 19
 COPY --from=codegolf/lang-qore         ["/", "/langs/qore/rootfs/"        ] # 17.3 MiB
 COPY --from=codegolf/lang-nim          ["/", "/langs/nim/rootfs/"         ] # 14.9 MiB
 COPY --from=codegolf/lang-apl          ["/", "/langs/apl/rootfs/"         ] # 14.4 MiB
+COPY --from=codegolf/lang-pari-gp      ["/", "/langs/pari-gp/rootfs/"     ] # 13.0 MiB
 COPY --from=codegolf/lang-harbour      ["/", "/langs/harbour/rootfs/"     ] # 12.2 MiB
 COPY --from=codegolf/lang-picat        ["/", "/langs/picat/rootfs/"       ] # 11.7 MiB
 COPY --from=codegolf/lang-egel         ["/", "/langs/egel/rootfs/"        ] # 11.6 MiB
