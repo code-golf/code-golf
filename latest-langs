@@ -72,6 +72,7 @@ constant %paths = (
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'github.com/lua/lua/releases/latest',
     'Luau'         => 'github.com/luau-lang/luau/releases/latest',
+    'Nial'         => 'github.com/niallang/Nial_Development',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
