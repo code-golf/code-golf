@@ -1,11 +1,11 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc libssl-dev make openssl perl
 
 # Also rebuild 05AB1E, Elixir, Gleam.
-ENV VER=28.0.2
+ENV VER=28.1
 
 WORKDIR /erlang
 
