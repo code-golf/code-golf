@@ -36,6 +36,7 @@ COPY --from=codegolf/lang-stax         ["/", "/langs/stax/rootfs/"        ] # 76
 COPY --from=codegolf/lang-raku         ["/", "/langs/raku/rootfs/"        ] # 75.6 MiB
 COPY --from=codegolf/lang-gleam        ["/", "/langs/gleam/rootfs/"       ] # 75.2 MiB
 COPY --from=codegolf/lang-fortran      ["/", "/langs/fortran/rootfs/"     ] # 73.1 MiB
+COPY --from=codegolf/lang-idris        ["/", "/langs/idris/rootfs/"       ] # 68.8 MiB
 COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 67.9 MiB
 COPY --from=codegolf/lang-cjam         ["/", "/langs/cjam/rootfs/"        ] # 62.7 MiB
 COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 57.3 MiB
