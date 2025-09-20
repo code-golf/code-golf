@@ -79,6 +79,7 @@ constant %paths = (
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
     'Picat'        => 'picat-lang.org/download.html',
+    'Pip'          => 'github.com/dloscutoff/pip/releases/latest',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
