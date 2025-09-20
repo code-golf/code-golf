@@ -25,6 +25,8 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"0d7dc56", "2025-09-01 00:00:13", "hilbert-curve", true},
+		{"a258251", "2025-08-29 06:49:50", "groovy", false},
 		{"3c72c36", "2025-08-01 00:00:01", "topological-sort", true},
 		{"4caf324", "2025-07-01 00:00:04", "mandelbrot", true},
 		{"5920cfd", "2025-06-01 00:00:13", "scrambled-sort", true},

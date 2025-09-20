@@ -5,13 +5,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* java = "/opt/java/bin/java", *code = "code.java";
+const char* luau = "/usr/local/bin/luau", *code = "code.luau";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version")) {
-        execv(java, argv);
-        ERR_AND_EXIT("execv");
-    }
+    if (!strcmp(argv[1], "--version"))
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
@@ -31,13 +29,16 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int jargc = argc + 1;
-    char** jargv = malloc(jargc * sizeof(char*));
-    jargv[0] = (char*) java;
-    jargv[1] = (char*) code;
-    memcpy(&jargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    jargv[jargc - 1] = NULL;
+    int largc = argc + 4;
+    char** largv = malloc(largc * sizeof(char*));
+    largv[0] = (char*) luau;
+    largv[1] = "-O2";
+    largv[2] = "-g0";
+    largv[3] = (char*) code;
+    largv[4] = "-a";
+    memcpy(&largv[5], &argv[2], (argc - 2) * sizeof(char*));
+    largv[largc - 1] = NULL;
 
-    execv(java, jargv);
+    execv(luau, largv);
     ERR_AND_EXIT("execv");
 }
