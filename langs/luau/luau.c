@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* apl = "/usr/bin/dyalogscript", *code = "code.dyalog";
+const char* luau = "/usr/local/bin/luau", *code = "code.luau";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -29,13 +29,16 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int aargc = argc + 1;
-    char** aargv = malloc(aargc * sizeof(char*));
-    aargv[0] = (char*) apl;
-    aargv[1] = (char*) code;
-    memcpy(&aargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    aargv[aargc - 1] = NULL;
+    int largc = argc + 4;
+    char** largv = malloc(largc * sizeof(char*));
+    largv[0] = (char*) luau;
+    largv[1] = "-O2";
+    largv[2] = "-g0";
+    largv[3] = (char*) code;
+    largv[4] = "-a";
+    memcpy(&largv[5], &argv[2], (argc - 2) * sizeof(char*));
+    largv[largc - 1] = NULL;
 
-    execv(apl, aargv);
+    execv(luau, largv);
     ERR_AND_EXIT("execv");
 }
