@@ -492,7 +492,7 @@ function tokenKotlinString(tripleString){
     }
   }
   
-  export const kotlin = clike({
+export const kotlin = clike({
     name: "kotlin",
     keywords: words(
       /*keywords*/
