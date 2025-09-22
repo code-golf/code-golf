@@ -209,6 +209,7 @@ export const extensions : { [key: string]: any } = {
     // TODO rebol
     // TODO rexx
     // TODO rockstar
+    // TODO rocq
     'ruby':          StreamLanguage.define(ruby),
     'rust':          rust(),
     'scala':         StreamLanguage.define(scala),
