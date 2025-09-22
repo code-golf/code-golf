@@ -7,6 +7,8 @@ ENV VER=2.1.2
 RUN curl -#L https://github.com/qorelanguage/qore/releases/download/release-$VER/qore-$VER.tar.bz2 \
   | tar xj --strip-components 1
 
+RUN sed -i 's/exit(0);//' command-line.cpp
+
 RUN ./configure            \
     --disable-debug        \
     --prefix=/usr          \
