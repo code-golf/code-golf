@@ -1084,19 +1084,17 @@ size    = '58.4 MiB'
 version = 'OpenJDK 25.0'
 website = 'https://openjdk.java.net'
 example = '''
-class Main {
-    public static void main(String[] args) {
-        // Printing
-        System.out.println("Hello, World!");
+void main(String[] args) {
+    // Printing
+    IO.println("Hello, World!");
 
-        // Looping
-        for (int i = 0; i < 10; i++)
-            System.out.println(i);
+    // Looping
+    for (var i = 0; i < 10; i++)
+        IO.println(i);
 
-        // Accessing arguments
-        for (String arg : args)
-            System.out.println(arg);
-    }
+    // Accessing arguments
+    for (var arg : args)
+        IO.println(arg);
 }
 '''
 
