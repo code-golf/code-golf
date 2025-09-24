@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
-size       = '4.87 MiB'
-version    = 'Algol 68 Genie 3.9.5'
+size       = '5.33 MiB'
+version    = 'Algol 68 Genie 3.9.8'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
