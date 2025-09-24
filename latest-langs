@@ -113,7 +113,7 @@ constant %paths = (
 my %langs = from-toml 'config/data/langs.toml'.IO;
 
 # Dotted decimal, hyphenated date, or Git SHA.
-my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
+my regex ver { \d+ ( <[+.-]> \d+ )+ | <xdigit> ** 7..* }
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     # Catch exceptions and carry on to the next lang.
@@ -129,7 +129,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'codeberg'       / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'      / { $res.&from-json<crate><max_stable_version> }
         when / 'dyalog.com'     / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
-        when / 'endoflife'      / { $res.&from-json[0]<latest>.match(/<(<ver>)>/) }
+        when / 'endoflife'      / { $res.&from-json[0]<latest>.match(/<(<ver>)>/).subst(/\+.*/) }
         when / 'fennel-lang'    / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'    / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'     / { $res ~~ / 'Version' .+? <(<ver>)> / }
