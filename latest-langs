@@ -153,8 +153,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'      / {
-            .contains(any <C_Sharp TeX>)
-                ?? $res ~~ / < current stable > ' version' .+? <(<ver>)> /
+            .match('TeX')
+                ?? $res ~~ / 'current version' .+? <(<ver>)> /
                 !! $res ~~ /
                     < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
                     <(<ver>)>
