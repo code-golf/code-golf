@@ -1,15 +1,15 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes gcc sysv-rc-conf wget
+    apt-get install --yes adduser gcc sysv-rc-conf wget
 
 ENV VER=3.9.7
 
-RUN wget -O libregina.deb https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/libregina3_$VER-1-amd64-Debian-12.deb \
+RUN wget -qO libregina.deb https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/libregina3_$VER-1-amd64-Debian-12.deb \
  && dpkg -i libregina.deb
 
-RUN wget -O regina.deb https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/regina-rexx_$VER-1-amd64-Debian-12.deb \
+RUN wget -qO regina.deb https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/regina-rexx_$VER-1-amd64-Debian-12.deb \
  && dpkg -i regina.deb
 
 COPY rexx.c /
