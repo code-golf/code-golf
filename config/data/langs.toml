@@ -937,10 +937,10 @@ main = do
 '''
 
 [Haxe]
-args       = [ '/usr/bin/haxewrapper', '-' ]
-env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
+args       = [ '/usr/bin/haxe', '-' ]
+env        = [ 'HAXE_STD_PATH=/usr/local/lib/std' ]
 experiment = 1366
-size       = '41.1 MiB'
+size       = '41.2 MiB'
 version    = '4.3.7'
 website    = 'https://haxe.org'
 example    = '''
