@@ -693,8 +693,8 @@ let main args =
 '''
 
 [Factor]
-args    = [ '/factor/factor', '/proc/self/fd/0' ]
-size    = '173 MiB'
+args    = [ '/usr/bin/factor', '/proc/self/fd/0' ]
+size    = '174 MiB'
 version = '0.100'
 website = 'https://factorcode.org'
 example = '''
