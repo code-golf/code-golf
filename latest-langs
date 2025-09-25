@@ -111,7 +111,7 @@ constant %paths = (
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
     'Uiua'         => 'crates.io/api/v1/crates/uiua',
     'Umka'         => 'github.com/vtereshkov/umka-lang/releases/latest',
-    'V'            => 'en.wikipedia.org/wiki/V_(programming_language)',
+    'V'            => 'raw.githubusercontent.com/vlang/v/refs/heads/master/CHANGELOG.md',
     'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
@@ -122,7 +122,7 @@ constant %paths = (
 my %langs = from-toml 'config/data/langs.toml'.IO;
 
 # Dotted decimal, hyphenated date, or Git SHA.
-my regex ver { \d+ ( <[.-]> \d+ )+ | <xdigit> ** 7..* }
+my regex ver { \d+ ( <[+.-]> \d+ )+ | <xdigit> ** 7..* }
 
 for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     # Catch exceptions and carry on to the next lang.
@@ -138,10 +138,11 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'codeberg'          / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'         / { $res.&from-json<crate><max_stable_version> }
         when / 'dyalog.com'        / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
-        when / 'endoflife'         / { $res.&from-json[0]<latest>.match(/<(<ver>)>/) }
+        when / 'endoflife'         / { $res.&from-json[0]<latest>.match(/<(<ver>)>/).subst(/\+.*/) }
         when / 'fennel-lang'       / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftpmirror.gnu.org' / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'githubusercontent' / { $res ~~ / <(<ver>)> / }
         when / 'gnome.org'         / { $res ~~ / 'Release ' <(<ver>)> / }
         when / 'golfscript.com'    / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'          / { $res ~~ / 'algol68g-' <(<ver>)> / }
@@ -162,8 +163,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
                 !! $res ~~ / '"currentOid":"' <( <xdigit> ** 7 )> /;
         }
         when / 'wikipedia'         / {
-            .contains(any <C_Sharp TeX>)
-                ?? $res ~~ / < current stable > ' version' .+? <(<ver>)> /
+            .match('TeX')
+                ?? $res ~~ / 'current version' .+? <(<ver>)> /
                 !! $res ~~ /
                     < Stable Preview > ' release' .+? '>' ( '#' \d+ ' "' )?
                     <(<ver>)>
