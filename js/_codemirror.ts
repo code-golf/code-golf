@@ -185,6 +185,7 @@ export const extensions : { [key: string]: any } = {
     'janet':         janet(),
     'java':          java(),
     'javascript':    javascript,
+    // TODO joy
     'jq':            jq(),
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
