@@ -69,6 +69,7 @@ constant %paths = (
     'Julia'        => 'api.github.com/repos/JuliaLang/julia/releases',
     'K'            => 'codeberg.org/ngn/k',
     'Knight'       => 'github.com/synt7x/knightjit',
+    'Koka'         => 'github.com/koka-lang/koka/releases/latest',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'github.com/lua/lua/releases/latest',
     'Luau'         => 'github.com/luau-lang/luau/releases/latest',
