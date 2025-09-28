@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"fmt"
 	"net/http"
@@ -334,7 +335,8 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	if err := json.MarshalWrite(w, &out); err != nil {
+	// Solutions could produce invalid UTF-8, allow that through.
+	if err := json.MarshalWrite(w, &out, jsontext.AllowInvalidUTF8(true)); err != nil {
 		panic(err)
 	}
 }

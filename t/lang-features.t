@@ -31,4 +31,8 @@ my %res  = post-solution :hole<quine> :lang<tex> :$code;
 is-deeply %res<runs>[0]<answer pass stderr>:p,
     ( :answer($code) :!pass :stderr($err) ), 'Trivial Tex Quine is blocked';
 
+# Solutions can produce invalid UTF-8, it shouldn't error.
+is post-solution( :lang<tex> :code('foo{\char130}bar') )<runs>[0]<stdout>,
+    'foo�bar', 'Contains Unicode replacement character';
+
 done-testing;
