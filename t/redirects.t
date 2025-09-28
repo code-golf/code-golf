@@ -6,7 +6,7 @@ new-golfer;
 my constant $ua = HTTP::Tiny.new :!max-redirect;
 my constant $query = '?foo=bar';
 
-# Redirects.
+# Permanent.
 for <
     GET    /api/holes/billiard                   /api/holes/billiards
     GET    /api/langs/perl6                      /api/langs/raku
@@ -31,11 +31,12 @@ for <
     }
 }
 
-# Aliases.
+# Temporary.
 for <
-    GET /lambda /%ce%bb
-    GET /pi     /%cf%80
-    GET /tau    /%cf%84
+    GET /golfers/bob /golfers/Bob
+    GET /lambda      /%ce%bb
+    GET /pi          /%cf%80
+    GET /tau         /%cf%84
 > -> $method, $start, $end {
     my $res = $ua.request: $method, "https://app:443$start$query";
 
@@ -43,6 +44,15 @@ for <
         is $res<headers><location>, $end ~ $query, 'Location header';
         is $res<status>, 307, 'Status';
     }
+}
+
+# 404s.
+for <
+    GET /golfers/bill
+> -> $method, $path {
+    my $res = $ua.request: $method, "https://app:443$path";
+
+    is $res<status>, 404, "$method $path → 404";
 }
 
 done-testing;
