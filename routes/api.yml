@@ -402,6 +402,8 @@ components:
         category:
           type: string
           enum: [Art, Computing, Gaming, Mathematics, Sequence, Transform]
+        experiment:
+          type: integer
         id:
           type: string
         links:
@@ -424,6 +426,8 @@ components:
       properties:
         example:
           type: string
+        experiment:
+          type: integer
         id:
           type: string
         logo-url:

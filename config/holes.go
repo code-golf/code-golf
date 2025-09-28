@@ -58,7 +58,7 @@ type Hole struct {
 	CategoryColor, CategoryIcon string         `json:"-"`
 	Data                        template.JS    `json:"-"`
 	DataMap                     ordered.Map    `json:"-"`
-	Experiment                  int            `json:"-"`
+	Experiment                  int            `json:"experiment,omitempty"`
 	ID                          string         `json:"id"`
 	MultisetItemDelimiter       string         `json:"-" toml:"multiset-item-delimiter"`
 	OutputDelimiter             string         `json:"-" toml:"output-delimiter"`
