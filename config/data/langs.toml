@@ -1957,7 +1957,7 @@ w
 args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '84.2 MiB'
-version    = '3.10.1'
+version    = '3.10.2'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
