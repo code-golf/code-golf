@@ -1172,7 +1172,7 @@ example = '''
 args       = [ '/usr/bin/knight', '-e', '$code' ]
 experiment = 2360
 size       = '734 KiB'
-version    = '5a14466'
+version    = 'd118d76'
 website    = 'https://github.com/synt7x/knightjit'
 example    = '''
 # Printing
