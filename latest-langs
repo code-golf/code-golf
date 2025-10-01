@@ -7,14 +7,25 @@ use TOML::Thumb;
 # Pass "--all" to see all languages regardless of version status.
 unit sub MAIN(Bool :$all, *@langs);
 
-sub get($url, $gnu) {
+my $gnurl;
+
+sub get($url) {
     my $ua = HTTP::Tiny.new :throw-exceptions;
 
-    if $gnu {
-        loop {
-            my $link = $ua.get("https://$url");
-            return $ua.get($link<url> ~ "?C=M;O=D")<content>.decode
-                if $link<content>.decode.contains("Last modified");
+    if $url.ends-with(any <awk bash forth sed>) {
+        if $gnurl {
+            return $ua.get($gnurl.subst(/\/ <-[/]>+ \/ $/, $url.match(/ (\/ (<-[/]>+) $) /)) ~ "?C=M;O=D")<content>.decode;
+        }
+        else {
+            repeat while !$gnurl {
+                my $link = $ua.get("https://$url");
+
+                try {
+                    return $ua.get(($gnurl = $link<url>) ~ "?C=M;O=D")<content>.decode
+                        if $link<content>.decode.contains("Last modified");
+                }
+                CATCH { next }
+            }
         }
     }
 
@@ -72,7 +83,7 @@ constant %paths = (
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
     'Java'         => 'endoflife.date/api/eclipse-temurin.json',
     'JavaScript'   => 'chromium.googlesource.com/v8/v8.git/+/' ~ get(
-        'chromiumdash.appspot.com/fetch_releases?platform=linux', False,
+        'chromiumdash.appspot.com/fetch_releases?platform=linux',
     ).&from-json.first(*<channel> eq 'Stable')<hashes><v8>,
     'jq'           => 'github.com/jqlang/jq/releases/latest',
     'Julia'        => 'api.github.com/repos/JuliaLang/julia/releases',
@@ -130,7 +141,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
-        my $res = get($_, $name.lc ~~ any <awk bash forth sed>);
+        my $res = get($_);
 
         when / 'alpinelinux'       / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki'           / { $res ~~ / ' release' .+? <(<ver>)> / }
