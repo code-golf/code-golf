@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.20 MiB'
-version    = 'c97e434'
+version    = 'b5862e1'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -367,8 +367,8 @@ foreach (String arg in args)
 
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
-size    = '142 MiB'
-version = 'Clang 21.1.1'
+size    = '112 MiB'
+version = 'Clang 21.1.2'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -1362,7 +1362,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.39 MiB'
-version = '8.4.12'
+version = '8.4.13'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1473,7 +1473,7 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '17.3 MiB'
+size       = '17.4 MiB'
 version    = '2.1.2'
 website    = 'https://qore.org'
 example    = '''
@@ -1843,8 +1843,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.3 MiB'
-version    = '0.17.0'
+size       = '19.2 MiB'
+version    = '0.17.1'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing

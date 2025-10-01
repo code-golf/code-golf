@@ -18,11 +18,14 @@ COPY --from=0 /usr/lib/libacl.so.1              \
               /usr/lib/libreadline.so.8         \
               /usr/lib/libskarnet.so.2.14       \
               /usr/lib/libutmps.so.0.1          /usr/lib/
-COPY --from=0 /usr/local/bin/scala              /usr/local/bin/
+COPY --from=0 /usr/local/bin/scala              \
+              /usr/local/bin/scalac             /usr/local/bin/
 COPY --from=0 /usr/local/lib/scala-compiler.jar \
               /usr/local/lib/scala-library.jar  \
               /usr/local/lib/scala-reflect.jar  /usr/local/lib/
 
-ENTRYPOINT ["scala"]
+ENV JAVA_HOME='/opt/java'
+
+ENTRYPOINT ["scalac"]
 
 CMD ["--version"]
