@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 
     if (!(pid = fork())) {
         execl(
-            cpp, cpp, "-std=c++23", "-target", "x86_64-alpine-linux-musl",
+            cpp, cpp, "-std=c++23", "--target=x86_64-alpine-linux-musl",
             "-O2", "-lstdc++", "-fcolor-diagnostics", "-o", "code", code,
             "/unbuffered.cpp", NULL
         );
