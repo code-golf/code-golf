@@ -2834,10 +2834,10 @@ preamble = '''
 
 [['Pascal’s Triangle'.variants]]
 name = 'Trinomial Triangle'
-experiment = 1117
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
 ]
+released = 2025-10-01
 synopsis = 'Print the first 20 rows of the trinomial triangle.'
 preamble = '''
 <p>
