@@ -68,22 +68,22 @@ func apiGolferGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /api/holes
 func apiHolesGET(w http.ResponseWriter, _ *http.Request) {
-	encodeJSON(w, config.HoleList)
+	encodeJSON(w, config.AllHoleList)
 }
 
 // GET /api/langs/{lang}
 func apiHoleGET(w http.ResponseWriter, r *http.Request) {
-	encodeJSON(w, config.HoleByID[param(r, "hole")])
+	encodeJSON(w, config.AllHoleByID[param(r, "hole")])
 }
 
 // GET /api/langs
 func apiLangsGET(w http.ResponseWriter, _ *http.Request) {
-	encodeJSON(w, config.LangList)
+	encodeJSON(w, config.AllLangList)
 }
 
 // GET /api/langs/{lang}
 func apiLangGET(w http.ResponseWriter, r *http.Request) {
-	encodeJSON(w, config.LangByID[param(r, "lang")])
+	encodeJSON(w, config.AllLangByID[param(r, "lang")])
 }
 
 // GET /api/notes

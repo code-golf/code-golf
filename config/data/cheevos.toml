@@ -37,7 +37,7 @@ description = 'Solve <a href=/united-states>United States</a> on <a href=//www.w
 name        = 'Happy Birthday, Code Golf'
 emoji       = '🎂'
 dates       = [2000-10-02, 2000-10-03]
-description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.'
+description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b442>2 Oct</a>.'
 
 [['Date Specific']]
 name        = 'Vampire Byte'

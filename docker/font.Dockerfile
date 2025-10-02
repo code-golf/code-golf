@@ -1,4 +1,4 @@
-FROM node:24.8.0-bookworm-slim
+FROM node:24.9.0-bookworm-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
