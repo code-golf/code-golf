@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '5.33 MiB'
-version    = 'Algol 68 Genie 3.9.9'
+version    = 'Algol 68 Genie 3.9.10'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -430,8 +430,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
-size    = '67.9 MiB'
-version = 'Babashka 1.12.208'
+size    = '64.3 MiB'
+version = 'Babashka 1.12.209'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -566,7 +566,7 @@ end
 [D]
 args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]
-size    = '95.1 MiB'
+size    = '95.9 MiB'
 version = 'DMD 2.111.0'
 website = 'https://dlang.org'
 example = '''
@@ -937,10 +937,10 @@ main = do
 '''
 
 [Haxe]
-args       = [ '/usr/bin/haxewrapper', '-' ]
-env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
+args       = [ '/usr/bin/haxe', '-' ]
+env        = [ 'HAXE_STD_PATH=/usr/local/lib/std' ]
 experiment = 1366
-size       = '41.1 MiB'
+size       = '41.2 MiB'
 version    = '4.3.7'
 website    = 'https://haxe.org'
 example    = '''
@@ -1045,8 +1045,8 @@ $
 '''
 
 [J]
-args    = [ '/opt/j/bin/jconsole', '/proc/self/fd/0' ]
-size    = '11.3 MiB'
+args    = [ '/opt/j/bin/j', '/proc/self/fd/0' ]
+size    = '22.0 MiB'
 version = '9.6'
 website = 'https://www.jsoftware.com'
 example = '''
@@ -1569,7 +1569,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
-size       = '2.98 MiB'
+size       = '3.07 MiB'
 version    = 'Regina 3.9.7'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
