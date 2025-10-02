@@ -12,7 +12,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["hilbert-curve"]
+var nextHole = config.ExpHoleByID["trinomial-triangle"]
 
 type banner struct {
 	Body          template.HTML
