@@ -1843,8 +1843,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.2 MiB'
-version    = '0.17.1'
+size       = '19.3 MiB'
+version    = '0.17.2'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
