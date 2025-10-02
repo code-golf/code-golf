@@ -1045,8 +1045,8 @@ $
 '''
 
 [J]
-args    = [ '/opt/j/bin/jconsole', '/proc/self/fd/0' ]
-size    = '11.3 MiB'
+args    = [ '/opt/j/bin/j', '/proc/self/fd/0' ]
+size    = '22.0 MiB'
 version = '9.6'
 website = 'https://www.jsoftware.com'
 example = '''

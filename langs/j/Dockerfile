@@ -1,35 +1,29 @@
-ARG VER=9.6
-
-FROM debian:bookworm-slim AS builder
-
-ARG VER
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl
+    apt-get install --yes clang git make nasm
 
-RUN curl -# https://www.jsoftware.com/download/j$VER/install/j$VER.3_linux64.tar.gz \
-  | tar xz
+ENV CC='clang' CFLAGS='-Wno-error' VER=9.6
 
-# FIXME Don't run updatejs.sh as it tries to update to AVX512 because my build
-# laptop supports it. But prod servers do not. Is there an override flag?
-# RUN cd j$VER && ./updateje.sh
+RUN git clone --branch J$VER-beta3 --progress \
+    https://github.com/jsoftware/jsource
+
+WORKDIR /jsource/make2
+
+RUN jplatform=linux j64x=j64avx2 ./build_all.sh
 
 FROM codegolf/lang-base
 
-ARG VER
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6      \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1  \
+              /lib/x86_64-linux-gnu/libm.so.6      /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2          /lib64/
+COPY --from=0 /jsource/jlibrary/addons/dev         /opt/j/addons/dev
+COPY --from=0 /jsource/mpir/linux/x86_64/libgmp.so \
+              /jsource/bin/linux/j64avx2/libj.so   \
+              /jsource/jlibrary/bin/profile.ijs    /opt/j/bin/
+COPY --from=0 /jsource/bin/linux/j64avx2/jconsole  /opt/j/bin/j
+COPY --from=0 /jsource/jlibrary/system             /opt/j/system
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
-              /lib/x86_64-linux-gnu/libdl.so.2      \
-              /lib/x86_64-linux-gnu/libgcc_s.so.1   \
-              /lib/x86_64-linux-gnu/libm.so.6       \
-              /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /j$VER/addons/dev                     /opt/j/addons/dev
-COPY --from=0 /j$VER/bin/jconsole                   \
-              /j$VER/bin/libgmp.so                  \
-              /j$VER/bin/libj.so                    \
-              /j$VER/bin/profile.ijs                /opt/j/bin/
-COPY --from=0 /j$VER/system                         /opt/j/system
-
-ENTRYPOINT ["/opt/j/bin/jconsole"]
+ENTRYPOINT ["/opt/j/bin/j"]
