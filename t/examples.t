@@ -16,10 +16,8 @@ for 'config/data/langs.toml'.IO.&from-toml.map({
 
             $exp ~= "\n" if $hole eq 'quine';
 
-            # Some langs print noise to STDERR, so don't test for no output.
             is $got<stdout>, $exp, 'Stdout';
-            is $got<stderr>,   '', 'Stderr'
-                if $lang ne 'vyxal';
+            is $got<stderr>,   '', 'Stderr';
         }
     }
 }

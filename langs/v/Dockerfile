@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache dash gc-dev gcc git make musl-dev
 
-ENV VER=0.4.11
+ENV VER=0.4.12
 
 WORKDIR /usr/local
 
