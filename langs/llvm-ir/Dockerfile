@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache clang cmake curl ninja python3
 
-ENV VER=21.1.1
+ENV VER=21.1.2
 
 RUN curl -#L https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz \
   | tar xz --strip-components 1
@@ -19,7 +19,6 @@ RUN cmake -G Ninja                    \
     -DLLVM_INCLUDE_BENCHMARKS='OFF'   \
     -DLLVM_INCLUDE_EXAMPLES='OFF'     \
     -DLLVM_INCLUDE_TESTS='OFF'        \
-    -DLLVM_PARALLEL_LINK_JOBS='2'     \
     -DLLVM_TARGETS_TO_BUILD='Native' ..
 
 RUN ninja install-lli \
