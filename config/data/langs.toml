@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '5.33 MiB'
-version    = 'Algol 68 Genie 3.9.8'
+version    = 'Algol 68 Genie 3.9.9'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.20 MiB'
-version    = 'c97e434'
+version    = 'b5862e1'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -367,8 +367,8 @@ foreach (String arg in args)
 
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
-size    = '142 MiB'
-version = 'Clang 21.1.1'
+size    = '112 MiB'
+version = 'Clang 21.1.2'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -591,7 +591,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '175 MiB'
-version = '3.9.3'
+version = '3.9.4'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1101,7 +1101,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '45.5 MiB'
-version = 'V8 14.0.365.4'
+version = 'V8 14.1.146.11'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1172,7 +1172,7 @@ example = '''
 args       = [ '/usr/bin/knight', '-e', '$code' ]
 experiment = 2360
 size       = '734 KiB'
-version    = '5a14466'
+version    = 'd118d76'
 website    = 'https://github.com/synt7x/knightjit'
 example    = '''
 # Printing
@@ -1233,7 +1233,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.10 MiB'
-version    = '0.692'
+version    = '0.693'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1388,7 +1388,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.39 MiB'
-version = '8.4.12'
+version = '8.4.13'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1499,7 +1499,7 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '17.3 MiB'
+size       = '17.4 MiB'
 version    = '2.1.2'
 website    = 'https://qore.org'
 example    = '''
@@ -1680,8 +1680,8 @@ fn main() {
 args       = [ '/usr/local/bin/scala', '-opt:none', '-Xsource:3-cross', '-e', '$code', '--' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 235
-size       = '90.0 MiB'
-version    = '2.13.16'
+size       = '90.1 MiB'
+version    = '2.13.17'
 website    = 'https://www.scala-lang.org'
 example    = '''
 // Printing
@@ -1869,8 +1869,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.3 MiB'
-version    = '0.17.0'
+size       = '19.2 MiB'
+version    = '0.17.1'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
@@ -1983,7 +1983,7 @@ w
 args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '84.2 MiB'
-version    = '3.10.1'
+version    = '3.10.2'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
