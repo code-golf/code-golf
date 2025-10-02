@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.24
+	@go mod tidy -compat=1.25
 	@npm upgrade
 
 cert:
@@ -25,10 +25,10 @@ db-dev:
 	@docker compose exec db psql -U postgres code-golf
 
 db-diff:
-	@diff --color --label live --label dev --strip-trailing-cr -su   \
-	    <(ssh root@code.golf sudo -iu postgres pg_dump -Os code-golf \
-	    | sed -E 's/ \(Debian .+//')                                 \
-	    <(docker compose exec -T db pg_dump -OsU postgres code-golf)
+	@diff --color --label live --label dev --strip-trailing-cr -su                    \
+	    <(ssh root@code.golf sudo -iu postgres pg_dump --restrict-key=a -Os code-golf \
+	    | sed -E 's/ \(Debian .+//')                                                  \
+	    <(docker compose exec -T db pg_dump --restrict-key=a -OsU postgres code-golf)
 
 db-dump:
 	@rm -f sql/*.gz
@@ -79,7 +79,7 @@ mathjax-fonts:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app -e GOEXPERIMENT=jsonv2 \
-	    golangci/golangci-lint:v2.4.0 golangci-lint run
+	    golangci/golangci-lint:v2.5.0 golangci-lint run
 
 	@node_modules/.bin/eslint js
 
