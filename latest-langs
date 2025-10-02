@@ -7,25 +7,20 @@ use TOML::Thumb;
 # Pass "--all" to see all languages regardless of version status.
 unit sub MAIN(Bool :$all, *@langs);
 
-my $gnurl;
-
-sub get($url) {
+sub get {
     my $ua = HTTP::Tiny.new :throw-exceptions;
 
-    if $url.ends-with(any <awk bash forth sed>) {
-        if $gnurl {
-            return $ua.get($gnurl.subst(/\/ <-[/]>+ \/ $/, $url.match(/ (\/ (<-[/]>+) $) /)) ~ "?C=M;O=D")<content>.decode;
-        }
-        else {
-            repeat while !$gnurl {
-                my $link = $ua.get("https://$url");
+    state $gnurl;
 
-                try {
-                    return $ua.get(($gnurl = $link<url>) ~ "?C=M;O=D")<content>.decode
-                        if $link<content>.decode.contains("Last modified");
-                }
-                CATCH { next }
-            }
+    if $^url.ends-with(any <awk bash forth sed>) {
+        return $ua.get($gnurl.subst(/\/ <-[/]>+ \/ $/, $url.match(/ (\/ (<-[/]>+) $) /)) ~ "?C=M;O=D")<content>.decode
+            if $gnurl;
+
+        repeat while !$gnurl {
+            my $link = ($ua = HTTP::Tiny.new).get("https://$url");
+
+            return $ua.get(($gnurl = $link<url>) ~ "?C=M;O=D")<content>.decode
+                if $link<content>.decode.contains("Last modified");
         }
     }
 
