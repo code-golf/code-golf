@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* haxe = "/usr/bin/haxe", *code = "Main.hx";
+const char* haxe = "/usr/local/bin/haxe", *code = "Main.hx";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
