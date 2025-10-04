@@ -52,7 +52,12 @@
             <tbody>
             {{ range .Data.LastTested }}
                 <tr>
-                    <td>{{ .Day.Format "2006-01-02" }}
+                    <td>
+                    {{ with .Day.Format "2006-01-02" }}
+                        <a href="/admin/solutions?no-new-failures=on&tested-from={{ . }}&tested-to={{ . }}">
+                            <span>{{ . }}</span>
+                        </a>
+                    {{ end }}
                     <td>{{ comma .Solutions }}
             {{ end }}
         </table>

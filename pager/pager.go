@@ -11,7 +11,7 @@ const PerPage = 75
 
 type Pager struct {
 	lastPage, First, Last, Offset, Page, Total int
-	base, Prev, Next                           *url.URL
+	base, FirstPage, Prev, Next, LastPage      *url.URL
 }
 
 func New(r *http.Request) *Pager {
@@ -43,11 +43,13 @@ func (p *Pager) Calculate() bool {
 	}
 
 	if p.Page > 1 {
+		p.FirstPage = changePage(p.base, 1)
 		p.Prev = changePage(p.base, p.Page-1)
 	}
 
 	if p.Page < p.lastPage {
 		p.Next = changePage(p.base, p.Page+1)
+		p.LastPage = changePage(p.base, p.lastPage)
 	}
 
 	return false
