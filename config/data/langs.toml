@@ -1212,46 +1212,44 @@ for (arg in args)
 ['LLVM IR']
 args       = [ '/usr/bin/llvm-ir', '-' ]
 experiment = 1114
-size       = '34.1 MiB'
+size       = '30.4 MiB'
 version    = '21.1.2'
 website    = 'https://llvm.org'
 example    = '''
 @.str = global [14 x i8] c"Hello, World!\00"
 @.ing = global [4 x i8] c"%d\0A\00"
 
-declare i32 @puts(ptr)
-declare i32 @printf(ptr, ...)
+define i32 @main(i32 %argc, ptr %argv) {
+entry: ; Printing
+  call i32 @puts(ptr @.str)
+  br label %loops
 
-define i32 @main(i32 %0, ptr %1) {
-  %3 = call i32 @puts(ptr @.str)
-  br label %8
+loops: ; Looping
+  %i = phi i32 [ 0, %entry ], [ %5, %loops ]
+  call i32 @printf(ptr @.ing, i32 %i)
+  %5 = add i32 %i, 1
+  %6 = icmp eq i32 %5, 10
+  br i1 %6, label %stdin, label %loops
 
-4:
-  %5 = icmp sgt i32 %0, 1
-  br i1 %5, label %6, label %20
-
-6:
-  %7 = zext i32 %0 to i64
+stdin: ; Accessing arguments
+  %10 = icmp sgt i32 %argc, 1
+  br i1 %10, label %11, label %exit
+  %12 = zext i32 %argc to i64
   br label %13
-
-8:
-  %9 = phi i32 [ 0, %2 ], [ %11, %8 ]
-  %10 = call i32 @printf(ptr @.ing, i32 %9)
-  %11 = add i32 %9, 1
-  %12 = icmp eq i32 %11, 10
-  br i1 %12, label %4, label %8
-
-13:
-  %14 = phi i64 [ 1, %6 ], [ %18, %13 ]
-  %15 = getelementptr ptr, ptr %1, i64 %14
+  %14 = phi i64 [ 1, %11 ], [ %18, %13 ]
+  %15 = getelementptr ptr, ptr %argv, i64 %14
   %16 = load ptr, ptr %15
-  %17 = call i32 @puts(ptr %16)
+  call i32 @puts(ptr %16)
   %18 = add i64 %14, 1
-  %19 = icmp eq i64 %18, %7
-  br i1 %19, label %20, label %13
+  %19 = icmp eq i64 %18, %12
+  br i1 %19, label %exit, label %13
 
+exit:
   ret i32 0
 }
+
+declare i32 @puts(ptr)
+declare i32 @printf(ptr, ...)
 '''
 
 [Lua]
