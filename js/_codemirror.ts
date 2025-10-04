@@ -227,6 +227,7 @@ export const extensions : { [key: string]: any } = {
     // TODO viml
     // TODO vyxal
     'wren':          wren,
+    // TODO zeek
     'zig':           zig(),
 };
 
