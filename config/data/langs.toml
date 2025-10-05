@@ -1192,8 +1192,8 @@ example    = '''
 '''
 
 [Kotlin]
-args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '142 MiB'
+args    = [ '/opt/java/bin/java', '-XX:SharedArchiveFile=cds.jsa', '-Xlog:disable', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
+size    = '362 MiB'
 version = '2.2.20'
 website = 'https://kotlinlang.org'
 example = '''
