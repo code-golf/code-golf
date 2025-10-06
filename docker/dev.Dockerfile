@@ -8,12 +8,12 @@ RUN apk add --no-cache build-base curl git linux-headers tzdata \
 
 COPY --from=codegolf/lang-swift        ["/", "/langs/swift/rootfs/"       ] #  561 MiB
 COPY --from=codegolf/lang-rust         ["/", "/langs/rust/rootfs/"        ] #  398 MiB
-COPY --from=codegolf/lang-kotlin       ["/", "/langs/kotlin/rootfs/"      ] #  362 MiB
 COPY --from=codegolf/lang-haskell      ["/", "/langs/haskell/rootfs/"     ] #  339 MiB
 COPY --from=codegolf/lang-go           ["/", "/langs/go/rootfs/"          ] #  323 MiB
 COPY --from=codegolf/lang-julia        ["/", "/langs/julia/rootfs/"       ] #  301 MiB
 COPY --from=codegolf/lang-odin         ["/", "/langs/odin/rootfs/"        ] #  299 MiB
 COPY --from=codegolf/lang-crystal      ["/", "/langs/crystal/rootfs/"     ] #  271 MiB
+COPY --from=codegolf/lang-kotlin       ["/", "/langs/kotlin/rootfs/"      ] #  231 MiB
 COPY --from=codegolf/lang-basic        ["/", "/langs/basic/rootfs/"       ] #  200 MiB
 COPY --from=codegolf/lang-zig          ["/", "/langs/zig/rootfs/"         ] #  189 MiB
 COPY --from=codegolf/lang-dart         ["/", "/langs/dart/rootfs/"        ] #  175 MiB
@@ -36,9 +36,9 @@ COPY --from=codegolf/lang-stax         ["/", "/langs/stax/rootfs/"        ] # 76
 COPY --from=codegolf/lang-raku         ["/", "/langs/raku/rootfs/"        ] # 75.6 MiB
 COPY --from=codegolf/lang-gleam        ["/", "/langs/gleam/rootfs/"       ] # 75.2 MiB
 COPY --from=codegolf/lang-fortran      ["/", "/langs/fortran/rootfs/"     ] # 73.1 MiB
+COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 66.5 MiB
 COPY --from=codegolf/lang-clojure      ["/", "/langs/clojure/rootfs/"     ] # 64.3 MiB
 COPY --from=codegolf/lang-cjam         ["/", "/langs/cjam/rootfs/"        ] # 63.7 MiB
-COPY --from=codegolf/lang-java         ["/", "/langs/java/rootfs/"        ] # 58.4 MiB
 COPY --from=codegolf/lang-elixir       ["/", "/langs/elixir/rootfs/"      ] # 56.6 MiB
 COPY --from=codegolf/lang-erlang       ["/", "/langs/erlang/rootfs/"      ] # 49.7 MiB
 COPY --from=codegolf/lang-prolog       ["/", "/langs/prolog/rootfs/"      ] # 49.3 MiB

@@ -14,6 +14,7 @@ RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jd
 
 RUN bash configure                     \
     --enable-headless-only             \
+    --enable-jvm-feature-cds           \
     --enable-jvm-feature-link-time-opt \
     --enable-jvm-feature-management    \
     --enable-jvm-feature-opt-size      \
@@ -25,9 +26,14 @@ RUN bash configure                     \
 RUN /build/release/images/jdk/bin/jlink           \
     --add-modules java.base,java.se               \
     --add-modules jdk.compiler,jdk.unsupported    \
+    --add-options='                               \
+      --enable-native-access=ALL-UNNAMED          \
+      --sun-misc-unsafe-memory-access=allow'      \
     --compress zip-9                              \
+    --generate-cds-archive                        \
     --module-path /build/release/images/jdk/jmods \
-    --output /opt/java
+    --output /opt/java                            \
+    --strip-debug
 
 COPY java.c /
 
@@ -50,7 +56,8 @@ COPY --from=0 /opt/java/lib/jrt-fs.jar              \
               /opt/java/lib/libzip.so               \
               /opt/java/lib/modules                 \
               /opt/java/lib/tzdb.dat                /opt/java/lib/
-COPY --from=0 /opt/java/lib/server/libjvm.so        /opt/java/lib/server/
+COPY --from=0 /opt/java/lib/server/classes.jsa      \
+              /opt/java/lib/server/libjvm.so        /opt/java/lib/server/
 COPY --from=0 /usr/bin/java                         /usr/bin/
 COPY --from=0 /usr/lib/libz.so.1                    /usr/lib/
 
