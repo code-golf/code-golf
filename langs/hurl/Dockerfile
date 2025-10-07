@@ -1,0 +1,38 @@
+FROM rust:1.88.0-slim-bookworm AS builder
+
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl patch
+
+ENV CRT='x86_64-unknown-linux-musl' VER=0bcafce
+
+WORKDIR /hurl
+
+RUN curl -#L https://git.sr.ht/~ntietz/hurl-lang/archive/$VER.tar.gz \
+  | tar xz --strip-components 1
+
+COPY parser.patch .
+
+RUN rustup target add $CRT \
+ && sed -i '1d' src/lib.rs \
+ && patch -p0 < parser.patch
+
+RUN cargo install \
+    --path .      \
+    --root /usr   \
+    --target $CRT \
+ && strip /usr/bin/hurl
+
+COPY hurl.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/hurlwrapper -s -static /hurl.c
+
+FROM codegolf/lang-base
+
+COPY --from=0 /hurl/lib            /
+COPY --from=0 /usr/bin/hurl        \
+              /usr/bin/hurlwrapper /usr/bin/
+
+ENTRYPOINT ["hurlwrapper"]
+
+CMD ["--version"]
