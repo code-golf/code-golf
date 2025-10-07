@@ -26,6 +26,11 @@ COPY --from=0 /usr/lib/*.jar            \
               /usr/lib/libncursesw.so.6 \
               /usr/lib/libreadline.so.8 /usr/lib/
 
+SHELL ["/bin/bash", "-c"]
+
+RUN /opt/java/bin/java -XX:+AutoCreateSharedArchive -XX:SharedArchiveFile=/cds.jsa \
+    -jar /usr/lib/kotlin-compiler.jar -Xuse-fast-jar-file-system -e 'println(args)'
+
 ENV JAVA_HOME='/opt/java'
 
 ENTRYPOINT ["kotlin"]
