@@ -1192,7 +1192,7 @@ example    = '''
 '''
 
 [Kotlin]
-args    = [ '/opt/java/bin/java', '-XX:SharedArchiveFile=/cds.jsa', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
+args    = [ '/opt/java/bin/java', '-XX:+AutoCreateSharedArchive', '-XX:SharedArchiveFile=/cds.jsa', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '231 MiB'
 version = '2.2.20'
 website = 'https://kotlinlang.org'
