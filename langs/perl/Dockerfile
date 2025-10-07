@@ -32,7 +32,7 @@ RUN curl -#L https://cpan.metacpan.org/authors/id/P/PJ/PJACKLAM/Math-BigInt-2.00
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1             /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                  /lib/
 COPY --from=0 /usr/bin/perl                        /usr/bin/
 COPY --from=0 /usr/lib/perl/Carp.pm                \
               /usr/lib/perl/Config.pm              \
