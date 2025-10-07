@@ -188,6 +188,7 @@ export const extensions : { [key: string]: any } = {
     'jq':            jq(),
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
+    // TODO kamilalisp
     'knight':        knight(),
     'kotlin':        StreamLanguage.define(kotlin),
     'lua':           StreamLanguage.define(lua),
