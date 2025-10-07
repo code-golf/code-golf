@@ -62,13 +62,13 @@ CREATE TYPE hole AS ENUM (
     'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
     'rot13', 'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set',
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
-    'snake', 'spelling-numbers', 'sphenic-numbers', 'star-wars-gpt',
-    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
-    'tic-tac-toe', 'time-distance', 'tongue-twisters', 'topological-sort',
-    'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
-    'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
-    '√2', '𝑒'
+    'smooth-numbers', 'snake', 'spelling-numbers', 'sphenic-numbers',
+    'star-wars-gpt', 'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
+    'ten-pin-bowling', 'tic-tac-toe', 'time-distance', 'tongue-twisters',
+    'topological-sort', 'transpose-sentence', 'trinomial-triangle', 'turtle',
+    'tutorial', 'united-states', 'vampire-numbers', 'van-eck-sequence',
+    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2',
+    '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -81,7 +81,7 @@ CREATE TYPE lang AS ENUM (
     'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go', 'golfscript',
     'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
     'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'knight',
-    'kotlin', 'lua', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
+    'kotlin', 'lua', 'luau', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
     'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku',
     'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed',
     'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v',
@@ -144,6 +144,13 @@ CREATE TABLE authors (
     hole    hole NOT NULL,
     user_id int  REFERENCES users(id) ON DELETE CASCADE,
     PRIMARY KEY (hole, user_id)
+);
+
+CREATE TABLE cheevos (
+    earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    cheevo  cheevo    NOT NULL,
+    PRIMARY KEY (user_id, cheevo)
 );
 
 CREATE TABLE connections (
@@ -232,13 +239,6 @@ CREATE UNLOGGED TABLE wiki (
     section text,
     name    citext NOT NULL,
     html    text   NOT NULL
-);
-
-CREATE TABLE trophies (
-    earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    trophy  cheevo    NOT NULL,
-    PRIMARY KEY (user_id, trophy)
 );
 
 -- Hole/lang isn't experimental and solution isn't failing.
@@ -354,6 +354,7 @@ GRANT SELECT ON stable_passing_solutions TO "code-golf";
 
 -- Tables.
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE cheevos         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
@@ -365,6 +366,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";

@@ -26,6 +26,8 @@ COPY --from=0 /root/.cache/coursier/v1 /cache
 COPY --from=0 /usr/bin/scala           \
               /usr/bin/scala-cli       /usr/bin/
 
-ENTRYPOINT ["scala"]
+ENV JAVA_HOME='/opt/java'
+
+ENTRYPOINT ["scalac"]
 
 CMD ["--version"]

@@ -383,6 +383,7 @@ export interface ReadonlyPanelsData {
 
 export interface SubmitResponse {
     cheevos:      { emoji: string, name: string }[],
+    experimental: boolean,
     logged_in:    boolean,
     rank_updates: RankUpdate[],
     runs:         Run[]
@@ -490,7 +491,7 @@ const scorePopups = (updates: RankUpdate[]) => {
     return nodes.length > 1 ? [<div>{nodes}</div>] : [];
 };
 
-const diamondPopups = (updates: RankUpdate[]) => {
+const diamondPopups = (updates: RankUpdate[], experimental: boolean) => {
     const popups: Node[] = [];
 
     const newDiamonds: string[] = [];
@@ -516,15 +517,16 @@ const diamondPopups = (updates: RankUpdate[]) => {
     }
 
     if (newDiamonds.length) {
+        // There's a limit to the width of the popups, so the header is simplified for expermental diamonds.
         popups.push(<div>
-            <h3>Diamond Earned</h3>
+            <h3>{experimental ? 'Experimental Diamond' : 'Diamond Earned'}</h3>
             <p>New {newDiamonds.join('/')} 💎!</p>
         </div>);
     }
 
     if (matchedDiamonds.length) {
         popups.push(<div>
-            <h3>Diamond Matched</h3>
+            <h3>{experimental ? 'Experimental Diamond' : 'Diamond Matched'}</h3>
             <p>Matched {matchedDiamonds.join('/')} 💎!</p>
         </div>);
     }
@@ -689,7 +691,7 @@ export async function submit(
     // Show popups.
     $('#popups').replaceChildren(
         ...scorePopups(data.rank_updates),
-        ...diamondPopups(data.rank_updates),
+        ...diamondPopups(data.rank_updates, data.experimental),
         ...data.cheevos.map(c => <div>
             <h3>Achievement Earned!</h3>
             { c.emoji }<p>{ c.name }</p>

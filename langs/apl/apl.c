@@ -8,10 +8,8 @@
 const char* apl = "/usr/bin/dyalogscript", *code = "code.dyalog";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version")) {
-        execl(apl, apl, "apl.dws", NULL);
-        ERR_AND_EXIT("execl");
-    }
+    if (!strcmp(argv[1], "--version"))
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
