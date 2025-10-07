@@ -1,7 +1,7 @@
 -- earn() is called from earn_cheevos().
 CREATE FUNCTION earn(INOUT earned cheevo[], cheevo cheevo, user_id int) AS $$
 BEGIN
-    INSERT INTO trophies VALUES (DEFAULT, user_id, cheevo)
+    INSERT INTO cheevos VALUES (DEFAULT, user_id, cheevo)
              ON CONFLICT DO NOTHING;
 
     IF found THEN
