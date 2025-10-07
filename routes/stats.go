@@ -27,7 +27,7 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
 
 	if err := db.QueryRow(
-		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM trophies",
+		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM cheevos",
 	).Scan(&data.CheevosEarned, &data.Golfers); err != nil {
 		panic(err)
 	}
@@ -61,11 +61,11 @@ func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).Select(
 		&data,
 		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
-		         trophy                                           cheevo,
+		         cheevo                                           cheevo,
 		         COUNT(*)                                         golfers,
 		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
-		    FROM trophies
-		GROUP BY trophy`,
+		    FROM cheevos
+		GROUP BY cheevo`,
 	); err != nil {
 		panic(err)
 	}
@@ -125,7 +125,7 @@ func statsGolfersGET(w http.ResponseWriter, r *http.Request) {
 		&data,
 		`-- Only consider golfers that have a cheevo (i.e here to stay).
 		WITH earnt_golfers AS (
-		    SELECT DISTINCT id, started FROM users JOIN trophies ON id = user_id
+		    SELECT DISTINCT id, started FROM users JOIN cheevos ON id = user_id
 		), first_golfer AS (
 		    SELECT started date, 1 count, 1 sum
 		      FROM earnt_golfers

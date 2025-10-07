@@ -36,7 +36,7 @@ my $session = new-golfer :$dbh;
 $client.get: 'https://app/about',
     headers => { cookie => "__Host-session=$session" };
 
-is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
+is $dbh.execute('SELECT ARRAY(SELECT cheevo FROM cheevos)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
 for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
