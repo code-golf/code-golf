@@ -25,7 +25,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/odinwrapper -s /odin.c
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/dash                    /bin/sh
-COPY --from=0 /lib/ld-musl-x86_64.so.1         /lib/
+COPY --from=0 /lib/ld-musl-*.so.1              /lib/
 COPY --from=0 /usr/bin/clang                   \
               /usr/bin/ld                      \
               /usr/bin/odinwrapper             /usr/bin/
