@@ -13,8 +13,8 @@ RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jd
   | tar xz --strip-components 1
 
 RUN bash configure                     \
+    --enable-cds                       \
     --enable-headless-only             \
-    --enable-jvm-feature-cds           \
     --enable-jvm-feature-link-time-opt \
     --enable-jvm-feature-management    \
     --enable-jvm-feature-opt-size      \
