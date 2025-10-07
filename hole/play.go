@@ -195,6 +195,12 @@ func runCode(
 		}
 	case "php":
 		code = "<?php " + code + " ;"
+	case "pip":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) {
+			run.Stderr = `Quine in Pip must have at least one '"' character.`
+			return nil
+		}
 	case "racket":
 		if hole.ID == "quine" {
 			// Inserting `(current-print (λ (x) (void)))` before the code in the editor
