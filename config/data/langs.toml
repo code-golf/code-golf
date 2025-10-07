@@ -806,7 +806,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '323 MiB'
-version = '1.25.1'
+version = '1.25.2'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1611,7 +1611,7 @@ end
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '33.4 MiB'
-version = '3.4.6'
+version = '3.4.7'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing

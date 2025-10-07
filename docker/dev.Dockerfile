@@ -1,4 +1,4 @@
-FROM golang:1.25.1-alpine3.22
+FROM golang:1.25.2-alpine3.22
 
 ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 
