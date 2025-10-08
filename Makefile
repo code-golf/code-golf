@@ -25,9 +25,8 @@ db-dev:
 	@docker compose exec db psql -U postgres code-golf
 
 db-diff:
-	@diff --color --label live --label dev --strip-trailing-cr -su                    \
-	    <(ssh root@code.golf sudo -iu postgres pg_dump --restrict-key=a -Os code-golf \
-	    | sed -E 's/ \(Debian .+//')                                                  \
+	@diff --color --label live --label dev --strip-trailing-cr -su                     \
+	    <(ssh root@code.golf sudo -iu postgres pg_dump --restrict-key=a -Os code-golf) \
 	    <(docker compose exec -T db pg_dump --restrict-key=a -OsU postgres code-golf)
 
 db-dump:

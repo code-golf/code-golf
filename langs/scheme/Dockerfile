@@ -21,13 +21,13 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/schemewrapper -s scheme.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /boot/pb/petite.boot     \
-              /boot/pb/scheme.boot     /boot/pb/
-COPY --from=0 /boot/ta6le/petite.boot  \
-              /boot/ta6le/scheme.boot  /boot/ta6le/
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/scheme          \
-              /usr/bin/schemewrapper   /usr/bin/
+COPY --from=0 /boot/pb/petite.boot    \
+              /boot/pb/scheme.boot    /boot/pb/
+COPY --from=0 /boot/ta6le/petite.boot \
+              /boot/ta6le/scheme.boot /boot/ta6le/
+COPY --from=0 /lib/ld-musl-*.so.1     /lib/
+COPY --from=0 /usr/bin/scheme         \
+              /usr/bin/schemewrapper  /usr/bin/
 
 ENTRYPOINT ["schemewrapper"]
 

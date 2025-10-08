@@ -20,7 +20,7 @@ RUN rm libcurl.so* \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
+COPY --from=0 /lib/ld-musl-*.so.1           /lib/
 COPY --from=0 /usr/bin/julia                /usr/bin/
 COPY --from=0 /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libbrotlidec.so.1    \
