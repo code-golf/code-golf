@@ -6,7 +6,7 @@ RUN apt-get update                   \
 
 ENV CC='clang' CFLAGS='-Wno-error' VER=9.6
 
-RUN git clone --branch J$VER-beta3 --progress \
+RUN git clone --branch $VER --progress \
     https://github.com/jsoftware/jsource
 
 WORKDIR /jsource/make2
