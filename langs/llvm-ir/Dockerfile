@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache cmake curl g++ ninja python3
 
-ENV VER=21.1.2
+ENV VER=21.1.3
 
 RUN curl -#L https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz \
   | tar xz --strip-components 1
@@ -14,9 +14,7 @@ RUN cmake -G Ninja                    \
     -DCMAKE_C_COMPILER='gcc'          \
     -DCMAKE_CXX_COMPILER='g++'        \
     -DCMAKE_INSTALL_PREFIX='/usr'     \
-    -DLLVM_BUILD_STATIC='ON'          \
     -DLLVM_ENABLE_BINDINGS='OFF'      \
-    -DLLVM_ENABLE_FFI='ON'            \
     -DLLVM_ENABLE_UNWIND_TABLES='OFF' \
     -DLLVM_INCLUDE_BENCHMARKS='OFF'   \
     -DLLVM_INCLUDE_EXAMPLES='OFF'     \
@@ -27,14 +25,12 @@ RUN cmake -G Ninja                    \
 RUN ninja install-lli \
  && strip /usr/bin/lli
 
-# RUN ldd /usr/bin/lli && false
-
 FROM codegolf/lang-base
 
-# COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/lli /usr/bin/llvm-ir
-# COPY --from=0 /usr/lib/libgcc_s.so.1   \
-#               /usr/lib/libstdc++.so.6  /usr/lib/
+COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /usr/bin/lli             /usr/bin/llvm-ir
+COPY --from=0 /usr/lib/libgcc_s.so.1   \
+              /usr/lib/libstdc++.so.6  /usr/lib/
 
 ENTRYPOINT ["llvm-ir"]
 

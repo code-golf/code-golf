@@ -61,9 +61,6 @@ export function clike(parserConfig) {
     let curPunc, isDefKeyword;
 
     function tokenBase(stream, state) {
-        if (stream.match(/^[A-Za-z0-9_\.\$]+:/)) {
-            return 'operator';
-        }
         const ch = stream.next();
         if (hooks[ch]) {
             const result = hooks[ch](stream, state);
@@ -95,6 +92,9 @@ export function clike(parserConfig) {
         if (isOperatorChar.test(ch)) {
             while (!stream.match(/^\/[\/*]/, false) && stream.eat(isOperatorChar)) {}
             return 'operator';
+        }
+        if (parserConfig.name == 'llvm') {
+            if (stream.match(/^[A-Za-z0-9_\.\$]+:/)) return 'operator';
         }
         stream.eatWhile(isIdentifierChar);
         if (namespaceSeparator) while (stream.match(namespaceSeparator))
@@ -594,6 +594,7 @@ function tokenNestedComment(depth) {
 }
 
 export const llvm = clike({
+    name: 'llvm',
     keywords: words('acq_rel acquire add addrspace addrspacecast align alignstack alloca alwaysinline and any appending arcp ' +
                     'ashr asm async atomic atomicrmw attributes bitcast br byval c call callbr caller catch catchpad catchret ' +
                     'catchswitch cleanup cleanuppad cleanupret cmpxchg coldcc comdat constant continue contract datalayout ' +
@@ -641,9 +642,6 @@ export const llvm = clike({
             stream.skipToEnd();
             return 'comment';
         },
-        '=': function() {
-            return null;
-        },
         '@': function(stream) {
             stream.eatWhile(/[\w.\d_]/);
             return 'variable';
@@ -652,7 +650,7 @@ export const llvm = clike({
     multiLineStrings: true,
     indentStatements: false,
     indentSwitch: false,
-    isPunctuationChar: /[()*,.<>\[\]{}]/,
+    isPunctuationChar: /[()*,.<=>\[\]{}]/,
 });
 
 export const scala = clike({
