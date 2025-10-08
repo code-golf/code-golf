@@ -3,7 +3,7 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache cmake curl g++ linux-headers ninja python3
 
 # Also bump LLVM IR.
-ENV VER=21.1.2
+ENV VER=21.1.3
 
 RUN curl -#L https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz \
   | tar xz --strip-components 1
@@ -35,7 +35,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/cpp -s -static /cpp.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1          /lib/
+COPY --from=0 /lib/ld-musl-*.so.1               /lib/
 COPY --from=0 /usr/bin/clang                    \
               /usr/bin/clang++                  \
               /usr/bin/cpp                      \

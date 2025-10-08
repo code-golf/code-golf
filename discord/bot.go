@@ -232,8 +232,8 @@ func AwardRoles(db *sqlx.DB) error {
 	if err := awardRoles(
 		db, contributors, roleContribID,
 		`SELECT id
-		   FROM connections JOIN trophies USING(user_id)
-		  WHERE connection = 'discord' AND trophy = 'patches-welcome'`,
+		   FROM connections JOIN cheevos USING(user_id)
+		  WHERE connection = 'discord' AND cheevo = 'patches-welcome'`,
 	); err != nil {
 		return err
 	}

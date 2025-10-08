@@ -73,7 +73,7 @@ FROM codegolf/lang-base
 
 ARG VER
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1          /lib/
+COPY --from=0 /lib/ld-musl-*.so.1               /lib/
 COPY --from=0 /usr/bin/as                       \
               /usr/bin/fortran                  \
               /usr/bin/ld                       /usr/bin/

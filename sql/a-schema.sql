@@ -146,6 +146,13 @@ CREATE TABLE authors (
     PRIMARY KEY (hole, user_id)
 );
 
+CREATE TABLE cheevos (
+    earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    cheevo  cheevo    NOT NULL,
+    PRIMARY KEY (user_id, cheevo)
+);
+
 CREATE TABLE connections (
     id            bigint     NOT NULL,
     connection    connection NOT NULL,
@@ -232,13 +239,6 @@ CREATE UNLOGGED TABLE wiki (
     section text,
     name    citext NOT NULL,
     html    text   NOT NULL
-);
-
-CREATE TABLE trophies (
-    earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    trophy  cheevo    NOT NULL,
-    PRIMARY KEY (user_id, trophy)
 );
 
 -- Hole/lang isn't experimental and solution isn't failing.
@@ -354,6 +354,7 @@ GRANT SELECT ON stable_passing_solutions TO "code-golf";
 
 -- Tables.
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE cheevos         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
@@ -365,6 +366,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE trophies        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";
