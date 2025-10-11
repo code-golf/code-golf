@@ -144,6 +144,11 @@ emoji       = '🏞️'
 description = 'Solve any hole in both Go and Forth.'
 
 [['Hole/Lang Specific']]
+name        = 'Going Postal'
+emoji       = '📫'
+description = 'Solve <a href=/united-states#pascal>United States in PA-SC-AL</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Happy-Go-Lucky'
 emoji       = '🍀'
 description = 'Solve <a href=/happy-numbers#go>Happy Numbers</a> and <a href=/lucky-numbers#go>Lucky Numbers</a> in Go.'
@@ -153,6 +158,11 @@ target      = 2
 name        = 'Hextreme Agony'
 emoji       = '🍯'
 description = 'Solve <a href=/hexdump#hexagony>Hexdump in Hexagony</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Horse of a Different Color'
+emoji       = '🐎'
+description = 'Solve <a href=/css-colors#basic>CSS Colors in BASIC</a>.'
 
 [['Hole/Lang Specific']]
 name        = 'Inception'
@@ -203,6 +213,11 @@ emoji       = '🎮'
 description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'
 
 [['Hole/Lang Specific']]
+name        = 'Simon Sed'
+emoji       = '💬'
+description = 'Solve <a href=/look-and-say#sed>Look and Say in sed</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Solve Quine'
 emoji       = '🪞'
 description = 'Solve <a href=/quine>Quine</a>'
@@ -214,14 +229,29 @@ description = 'Solve <a href=/musical-chords>Musical Chords</a> in any three of 
 target      = 3
 
 [['Hole/Lang Specific']]
+name        = 'TeXnical Know-how'
+emoji       = '🧑‍💻'
+description = 'Solve any hole in TeX.'
+
+[['Hole/Lang Specific']]
 name        = 'Tim Toady'
 emoji       = '🐪'
 description = 'Solve any hole in both Perl and Raku.'
 
 [['Hole/Lang Specific']]
+name        = 'Typesetter'
+emoji       = '⌨️'
+description = 'Solve <a href=/star-wars-opening-crawl#tex>Star Wars Opening Crawl in TeX</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Under Pressure'
 emoji       = '🗜'
 description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pascal</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Watt Are You Doing?'
+emoji       = '💡'
+description = 'Solve <a href=/si-units#powershell>Solve SI Units in PowerShell</a>.'
 
 [['Hole/Lang Specific']]
 name        = 'X-Factor'

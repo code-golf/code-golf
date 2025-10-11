@@ -9,20 +9,22 @@ CREATE TYPE cheevo AS ENUM (
     'cunning-linguist', 'dammit-janet', 'different-strokes',
     'disappearing-act', 'dont-panic', 'double-slit-experiment',
     'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
-    'five', 'fore', 'forty-winks', 'go-forth', 'gone-in-60-holes',
-    'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
-    'hextreme-agony', 'how-about-second-pi', 'hugs-and-kisses', 'inception',
-    'independence-day', 'interview-ready', 'into-space', 'its-over-9000',
-    'jeweler', 'just-kidding', 'like-comment-subscribe', 'marathon-runner',
+    'five', 'fore', 'forty-winks', 'go-forth', 'going-postal',
+    'gone-in-60-holes', 'happy-birthday-code-golf', 'happy-go-lucky',
+    'hello-world', 'hextreme-agony', 'horse-of-a-different-color',
+    'how-about-second-pi', 'hugs-and-kisses', 'inception', 'independence-day',
+    'interview-ready', 'into-space', 'its-over-9000', 'jeweler',
+    'just-kidding', 'like-comment-subscribe', 'marathon-runner',
     'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
     'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
     'patches-welcome', 'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot',
     'polyglutton', 'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34',
-    's-box-360', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'twelvetide', 'twenty-kiloleagues', 'under-pressure', 'up-to-eleven',
-    'vampire-byte', 'x-factor', 'x86'
+    's-box-360', 'simon-sed', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'sounds-quite-nice', 'takeout', 'texnical-know-how', 'the-watering-hole',
+    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
+    'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
+    'x-factor', 'x86'
 );
 
 CREATE TYPE connection AS ENUM (
