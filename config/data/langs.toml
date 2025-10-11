@@ -1566,9 +1566,9 @@ foreach arg system/options/args [
 '''
 
 [Rexx]
-args       = [ '/usr/bin/rexx', '-' ]
+args       = [ '/usr/bin/rexx', '--args', '/proc/self/fd/0' ]
 experiment = 873
-size       = '3.07 MiB'
+size       = '1.17 MiB'
 version    = 'Regina 3.9.7'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
