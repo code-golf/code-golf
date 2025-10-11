@@ -251,7 +251,7 @@ description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pas
 [['Hole/Lang Specific']]
 name        = 'Watt Are You Doing?'
 emoji       = '💡'
-description = 'Solve <a href=/si-units#powershell>Solve SI Units in PowerShell</a>.'
+description = 'Solve <a href=/si-units#powershell>SI Units in PowerShell</a>.'
 
 [['Hole/Lang Specific']]
 name        = 'X-Factor'
