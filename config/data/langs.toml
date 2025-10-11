@@ -630,8 +630,7 @@ def main =
 
     # Accessing arguments
     map [ ARG -> print ARG "\n" ] (drop 2 args);
-
-    print
+none
 '''
 
 [Elixir]
