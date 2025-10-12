@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '5.33 MiB'
-version    = 'Algol 68 Genie 3.10.1'
+version    = 'Algol 68 Genie 3.10.2'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -216,7 +216,7 @@ done
 
 [BASIC]
 args    = [ '/usr/bin/basic', '-' ]
-size    = '200 MiB'
+size    = '68.0 MiB'
 version = 'FreeBASIC 1.10.1'
 website = 'https://freebasic.net'
 example = '''
@@ -238,7 +238,7 @@ Next
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
 size       = '303 KiB'
-version    = 'b7bf640'
+version    = '29e4cfa'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
 v Printing
@@ -613,7 +613,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egel', '-' ]
 experiment = 1434
-size       = '11.6 MiB'
+size       = '7.41 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -630,8 +630,7 @@ def main =
 
     # Accessing arguments
     map [ ARG -> print ARG "\n" ] (drop 2 args);
-
-    print
+none
 '''
 
 [Elixir]
@@ -1134,8 +1133,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '301 MiB'
-version = '1.11.7'
+size    = '359 MiB'
+version = '1.12.0'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1233,7 +1232,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.10 MiB'
-version    = '0.694'
+version    = '0.695'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1272,8 +1271,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '83.3 MiB'
-version = '5.3.0'
+size    = '86.8 MiB'
+version = '5.4.0'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -1473,8 +1472,8 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '17.4 MiB'
-version    = '2.1.2'
+size       = '17.5 MiB'
+version    = '2.2.0'
 website    = 'https://qore.org'
 example    = '''
 # Printing
