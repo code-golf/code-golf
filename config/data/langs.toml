@@ -590,7 +590,7 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '175 MiB'
+size    = '113 MiB'
 version = '3.9.4'
 website = 'https://dart.dev'
 example = '''
