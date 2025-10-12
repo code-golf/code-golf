@@ -17,7 +17,8 @@ COPY --from=0 /usr/bin/dirname                         \
               /usr/bin/env                             \
               /usr/bin/kotlin                          \
               /usr/bin/kotlinc                         /usr/bin/
-COPY --from=0 /usr/lib/kotlin-compiler.jar             \
+COPY --from=0 /usr/lib/annotations-13.0.jar            \
+              /usr/lib/kotlin-compiler.jar             \
               /usr/lib/kotlin-reflect.jar              \
               /usr/lib/kotlin-runner.jar               \
               /usr/lib/kotlin-script-runtime.jar       \
