@@ -4,7 +4,7 @@ FROM debian:trixie-slim
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl gcc patch
+    apt-get install --yes curl gcc
 
 ENV LANG='C.UTF-8' VER=c31668b
 
@@ -15,9 +15,7 @@ WORKDIR /usr/local
 RUN curl -#L https://github.com/Adriandmen/05AB1E/tarball/$VER \
   | tar xz --strip-components 1
 
-COPY interp.patch /
-
-RUN patch -p1 < /interp.patch
+RUN sed -i 's/-2/-2\/\/1/g' lib/interp/interpreter.ex
 
 RUN mix local.hex --force          \
  && mix local.rebar                \
