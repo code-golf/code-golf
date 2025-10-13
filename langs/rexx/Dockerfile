@@ -1,16 +1,19 @@
-FROM debian:trixie-slim AS builder
+FROM alpine:3.22 AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes adduser gcc sysv-rc-conf wget
+RUN apk add --no-cache curl gcc make musl-dev
 
 ENV VER=3.9.7
 
-RUN wget -qO libregina.deb https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/libregina3_$VER-1-amd64-Debian-12.deb \
- && dpkg -i libregina.deb
+RUN curl -#L https://downloads.sourceforge.net/regina-rexx/regina-rexx-$VER.tar.gz \
+  | tar xz --strip-components 1
 
-RUN wget -qO regina.deb https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/regina-rexx_$VER-1-amd64-Debian-12.deb \
- && dpkg -i regina.deb
+RUN ./configure      \
+    --disable-flists \
+    --disable-gci    \
+    --disable-screen \
+    --enable-64bit   \
+    --prefix=/usr    \
+ && make install
 
 COPY rexx.c /
 
@@ -18,13 +21,10 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/rexx -s rexx.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6          \
-              /lib/x86_64-linux-gnu/libcrypt.so.1      \
-              /lib/x86_64-linux-gnu/libdl.so.2         \
-              /lib/x86_64-linux-gnu/libpthread.so.0    /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2              /lib64/
-COPY --from=0 /usr/bin/regina /usr/bin/rexx            /usr/bin/
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libregina.so.3 /usr/lib/
+COPY --from=0 /lib/ld-musl-*.so.1     /lib/
+COPY --from=0 /usr/bin/regina         \
+              /usr/bin/rexx           /usr/bin/
+COPY --from=0 /usr/lib/libregina.so.3 /usr/lib/
 
 ENTRYPOINT ["rexx"]
 

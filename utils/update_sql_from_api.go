@@ -138,7 +138,7 @@ func main() {
 		panic(err)
 	}
 
-	// Sort by submitted time so that trophies are awarded at the earliest submission times.
+	// Sort by submitted time so that cheevos are awarded at the earliest submission times.
 	sort.Slice(infoList, func(i, j int) bool {
 		return infoList[i].Submitted < infoList[j].Submitted
 	})
@@ -161,8 +161,8 @@ func main() {
 				panic(err)
 			}
 
-			// Users need trophies to avoid being superfluous.
-			if _, err := tx.Exec("INSERT INTO trophies (earned, user_id, trophy) VALUES ($1, $2, $3)",
+			// Users need cheevos to avoid being superfluous.
+			if _, err := tx.Exec("INSERT INTO cheevos (earned, user_id, cheevo) VALUES ($1, $2, $3)",
 				info.Submitted, userID, "hello-world",
 			); err != nil {
 				panic(err)
