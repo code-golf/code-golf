@@ -13,7 +13,7 @@ RUN npm install --global coffeescript
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1              /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /usr/package.json                     /usr/
 COPY --from=0 /usr/bin/coffee                       \
               /usr/bin/env                          \

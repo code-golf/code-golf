@@ -2835,7 +2835,8 @@ preamble = '''
 [['Pascal’s Triangle'.variants]]
 name = 'Trinomial Triangle'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
+    { name = 'OEIS A027907', url = '//oeis.org/A027907' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
 ]
 released = 2025-10-01
 synopsis = 'Print the first 20 rows of the trinomial triangle.'

@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
-size       = '5.33 MiB'
-version    = 'Algol 68 Genie 3.9.9'
+size       = '1.22 MiB'
+version    = 'Algol 68 Genie 3.10.2'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -238,7 +238,7 @@ Next
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
 size       = '303 KiB'
-version    = 'b7bf640'
+version    = '29e4cfa'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
 v Printing
@@ -368,7 +368,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.2'
+version = 'Clang 21.1.3'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -430,8 +430,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
-size    = '67.9 MiB'
-version = 'Babashka 1.12.208'
+size    = '64.3 MiB'
+version = 'Babashka 1.12.209'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -566,7 +566,7 @@ end
 [D]
 args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]
-size    = '95.1 MiB'
+size    = '95.9 MiB'
 version = 'DMD 2.111.0'
 website = 'https://dlang.org'
 example = '''
@@ -590,7 +590,7 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '175 MiB'
+size    = '113 MiB'
 version = '3.9.4'
 website = 'https://dart.dev'
 example = '''
@@ -613,7 +613,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egel', '-' ]
 experiment = 1434
-size       = '11.6 MiB'
+size       = '7.41 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -630,8 +630,7 @@ def main =
 
     # Accessing arguments
     map [ ARG -> print ARG "\n" ] (drop 2 args);
-
-    print
+none
 '''
 
 [Elixir]
@@ -693,8 +692,8 @@ let main args =
 '''
 
 [Factor]
-args    = [ '/factor/factor', '/proc/self/fd/0' ]
-size    = '173 MiB'
+args    = [ '/usr/bin/factor', '/proc/self/fd/0' ]
+size    = '174 MiB'
 version = '0.100'
 website = 'https://factorcode.org'
 example = '''
@@ -806,7 +805,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '323 MiB'
-version = '1.25.1'
+version = '1.25.2'
 website = 'https://go.dev'
 example = '''
 package main
@@ -937,10 +936,10 @@ main = do
 '''
 
 [Haxe]
-args       = [ '/usr/bin/haxewrapper', '-' ]
-env        = [ 'HAXE_STD_PATH=/usr/lib/std' ]
+args       = [ '/usr/bin/haxe', '-' ]
+env        = [ 'HAXE_STD_PATH=/usr/local/lib/std' ]
 experiment = 1366
-size       = '41.1 MiB'
+size       = '41.2 MiB'
 version    = '4.3.7'
 website    = 'https://haxe.org'
 example    = '''
@@ -1045,8 +1044,8 @@ $
 '''
 
 [J]
-args    = [ '/opt/j/bin/jconsole', '/proc/self/fd/0' ]
-size    = '11.3 MiB'
+args    = [ '/opt/j/bin/j', '/proc/self/fd/0' ]
+size    = '22.0 MiB'
 version = '9.6'
 website = 'https://www.jsoftware.com'
 example = '''
@@ -1134,8 +1133,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '301 MiB'
-version = '1.11.7'
+size    = '359 MiB'
+version = '1.12.0'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1233,7 +1232,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.10 MiB'
-version    = '0.693'
+version    = '0.695'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1272,8 +1271,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '83.3 MiB'
-version = '5.3.0'
+size    = '86.8 MiB'
+version = '5.4.0'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -1295,7 +1294,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '299 MiB'
-version    = '2025-09'
+version    = '2025-10'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1452,8 +1451,8 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '29.2 MiB'
-version = '3.13.7'
+size    = '30.5 MiB'
+version = '3.14.0'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1473,8 +1472,8 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '17.4 MiB'
-version    = '2.1.2'
+size       = '17.5 MiB'
+version    = '2.2.0'
 website    = 'https://qore.org'
 example    = '''
 # Printing
@@ -1569,7 +1568,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
-size       = '2.98 MiB'
+size       = '1.18 MiB'
 version    = 'Regina 3.9.7'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
@@ -1611,7 +1610,7 @@ end
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '33.4 MiB'
-version = '3.4.6'
+version = '3.4.7'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -1843,8 +1842,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.2 MiB'
-version    = '0.17.1'
+size       = '19.3 MiB'
+version    = '0.17.3'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing

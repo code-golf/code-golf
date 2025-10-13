@@ -23,7 +23,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/squirrel -s /squirrel.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1        /lib/
+COPY --from=0 /lib/ld-musl-*.so.1             /lib/
 COPY --from=0 /usr/bin/squirrel               \
               /usr/local/bin/sq               /usr/bin/
 COPY --from=0 /usr/lib/libgcc_s.so.1          \

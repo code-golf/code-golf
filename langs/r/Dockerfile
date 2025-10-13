@@ -36,7 +36,7 @@ RUN make install
 FROM codegolf/lang-base
 
 COPY --from=0 /busybox/_install/bin        /bin
-COPY --from=0 /lib/ld-musl-x86_64.so.1     /lib/
+COPY --from=0 /lib/ld-musl-*.so.1          /lib/
 COPY --from=0 /busybox/_install/usr/bin    /usr/bin
 COPY --from=0 /usr/bin/printf              /usr/bin/
 COPY --from=0 /usr/bin/Rscript             /usr/bin/R

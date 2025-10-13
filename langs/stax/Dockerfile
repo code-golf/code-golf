@@ -19,7 +19,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/staxwrapper -s -static /stax.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /lib/ld-musl-*.so.1      /lib/
 COPY --from=0 /out/*.dll               \
               /out/libSystem.Native.so \
               /out/libclrjit.so        \
