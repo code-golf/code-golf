@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
-size       = '5.33 MiB'
-version    = 'Algol 68 Genie 3.10.1'
+size       = '1.22 MiB'
+version    = 'Algol 68 Genie 3.10.2'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -238,7 +238,7 @@ Next
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
 size       = '303 KiB'
-version    = 'b7bf640'
+version    = '29e4cfa'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
 v Printing
@@ -590,7 +590,7 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '175 MiB'
+size    = '113 MiB'
 version = '3.9.4'
 website = 'https://dart.dev'
 example = '''
@@ -613,7 +613,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egel', '-' ]
 experiment = 1434
-size       = '11.6 MiB'
+size       = '7.41 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -630,8 +630,7 @@ def main =
 
     # Accessing arguments
     map [ ARG -> print ARG "\n" ] (drop 2 args);
-
-    print
+none
 '''
 
 [Elixir]
@@ -1233,7 +1232,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.10 MiB'
-version    = '0.694'
+version    = '0.695'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1272,8 +1271,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '83.3 MiB'
-version = '5.3.0'
+size    = '86.8 MiB'
+version = '5.4.0'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -1473,8 +1472,8 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '17.4 MiB'
-version    = '2.1.2'
+size       = '17.5 MiB'
+version    = '2.2.0'
 website    = 'https://qore.org'
 example    = '''
 # Printing
@@ -1569,7 +1568,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
-size       = '3.07 MiB'
+size       = '1.18 MiB'
 version    = 'Regina 3.9.7'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
