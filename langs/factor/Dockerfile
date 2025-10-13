@@ -2,32 +2,32 @@ FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl gcc
+    apt-get install --yes curl g++ git make unzip
 
 ENV VER=0.100
 
-RUN curl -#L https://downloads.factorcode.org/releases/$VER/factor-linux-x86-64-$VER.tar.gz \
-  | tar xz --directory /usr/local/bin --strip-components 1
+RUN git clone --depth 1 --branch $VER --progress https://github.com/factor/factor
 
-COPY factor.c /
+RUN curl -#o factor.zip https://downloads.factorcode.org/releases/$VER/factor-src-$VER.zip \
+ && unzip -n factor
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/factor -s factor.c
+WORKDIR /factor
+
+RUN sed -i '/^\[/,/al/d' basis/vocabs/prettyprint/prettyprint.factor
+
+RUN ./build.sh compile \
+ && ./build.sh bootstrap
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
-              /lib/x86_64-linux-gnu/libdl.so.2      \
-              /lib/x86_64-linux-gnu/libgcc_s.so.1   \
-              /lib/x86_64-linux-gnu/libm.so.6       \
-              /lib/x86_64-linux-gnu/libpthread.so.0 \
-              /lib/x86_64-linux-gnu/librt.so.1      \
-              /lib/x86_64-linux-gnu/libstdc++.so.6  /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /usr/bin/factor                       /usr/bin/
-COPY --from=0 /usr/local/bin/factor                 \
-              /usr/local/bin/factor.image           /usr/local/bin/
-COPY --from=0 /usr/local/bin/basis                  /usr/local/bin/basis
-COPY --from=0 /usr/local/bin/core                   /usr/local/bin/core
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6      \
+              /lib/x86_64-linux-gnu/libgcc_s.so.1  \
+              /lib/x86_64-linux-gnu/libm.so.6      \
+              /lib/x86_64-linux-gnu/libstdc++.so.6 /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2          /lib64/
+COPY --from=0 /factor/factor /factor/factor.image  /usr/bin/
+COPY --from=0 /factor/basis                        /usr/bin/basis
+COPY --from=0 /factor/core                         /usr/bin/core
 
 ENTRYPOINT ["factor"]
 
