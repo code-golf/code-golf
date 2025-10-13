@@ -42,7 +42,7 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
-size       = '5.33 MiB'
+size       = '1.22 MiB'
 version    = 'Algol 68 Genie 3.10.2'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
@@ -216,7 +216,7 @@ done
 
 [BASIC]
 args    = [ '/usr/bin/basic', '-' ]
-size    = '68.0 MiB'
+size    = '200 MiB'
 version = 'FreeBASIC 1.10.1'
 website = 'https://freebasic.net'
 example = '''
@@ -590,7 +590,7 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '175 MiB'
+size    = '113 MiB'
 version = '3.9.4'
 website = 'https://dart.dev'
 example = '''
@@ -1568,7 +1568,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '-' ]
 experiment = 873
-size       = '3.07 MiB'
+size       = '1.18 MiB'
 version    = 'Regina 3.9.7'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
