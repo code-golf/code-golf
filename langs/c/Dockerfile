@@ -20,7 +20,7 @@ RUN ./configure      \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1   /lib/
+COPY --from=0 /lib/ld-musl-*.so.1        /lib/
 COPY --from=0 /usr/bin/tcc               /usr/bin/c
 COPY --from=0 /usr/include/alloca.h      \
               /usr/include/assert.h      \

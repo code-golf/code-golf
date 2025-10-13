@@ -23,11 +23,11 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
 	rows, err := db.Query(
 		`WITH count AS (
-		    SELECT trophy, COUNT(*) FROM trophies GROUP BY trophy
+		    SELECT cheevo, COUNT(*) FROM cheevos GROUP BY cheevo
 		), earned AS (
-		    SELECT trophy, earned FROM trophies WHERE user_id = $1
+		    SELECT cheevo, earned FROM cheevos WHERE user_id = $1
 		) SELECT *, count * 100 / (SELECT COUNT(*) FROM users)
-		    FROM count LEFT JOIN earned USING(trophy)`,
+		    FROM count LEFT JOIN earned USING(cheevo)`,
 		golfer.ID,
 	)
 	if err != nil {

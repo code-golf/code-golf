@@ -11,9 +11,9 @@ RUN make bc -j`nproc` PKGS='' RACKETBC_SUFFIX=''
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /racket/bin/racket       /usr/bin/
-COPY --from=0 /racket/collects         /usr/collects
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /racket/bin/racket  /usr/bin/
+COPY --from=0 /racket/collects    /usr/collects
 
 ENTRYPOINT ["racket"]
 
