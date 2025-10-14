@@ -1116,9 +1116,9 @@ for (let arg of arguments)
 '''
 
 [Joy]
-args       = [ '/usr/bin/joywrapper', '-' ]
+args       = [ '/usr/bin/joy', '/proc/self/fd/0' ]
 experiment = 1766
-size       = '427 KiB'
+size       = '400 KiB'
 version    = 'Moy a68b339'
 website    = 'https://github.com/Wodan58/Moy'
 example    = '''

@@ -15,12 +15,8 @@ RUN cmake ../..     \
  && cmake --build . \
  && strip joy
 
-COPY joy.c /
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/joywrapper -s -static /joy.c
-
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/joy /usr/bin/joywrapper /usr/bin/
+COPY --from=0 /usr/bin/joy /usr/bin/
 
-ENTRYPOINT ["joywrapper"]
+ENTRYPOINT ["joy"]
