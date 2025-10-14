@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* yuescript = "/usr/bin/yue", *lua = "/usr/bin/lua", *code = "code.yue";
+const char* yuescript = "/usr/local/bin/yue", *lua = "/usr/bin/lua", *code = "code.yue";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {

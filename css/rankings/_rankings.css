@@ -19,13 +19,17 @@ h1 nav {
 
 h1 span { flex: 1 }
 
-#pagination { display: flex }
-
-#pagination > :first-child { text-align: right }
-
-#pagination > :not(:nth-child(2)) { flex: 1 }
-
-#pagination > :nth-child(2) {
+#pagination {
+    display: flex;
     font-variant: tabular-nums;
-    margin: 0 .5rem;
+    gap: .5rem;
+
+    > span {
+        display: flex;
+        gap: .5rem;
+
+        &:first-child { justify-content: flex-end }
+
+        &:not(:nth-child(2)) { flex: 1 }
+    }
 }

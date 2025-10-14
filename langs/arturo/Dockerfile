@@ -2,7 +2,7 @@ FROM nimlang/nim:2.2.4-alpine-slim AS builder
 
 RUN apk add --no-cache pcre
 
-ENV VER=96f0774
+ENV VER=b5862e1
 
 RUN curl -#L https://github.com/arturo-lang/arturo/tarball/$VER \
   | tar xz --strip-components 1
@@ -15,7 +15,7 @@ RUN ./build.nims --install --mode mini --release
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /lib/ld-musl-*.so.1      /lib/
 COPY --from=0 /root/.arturo/bin/arturo /usr/bin/
 COPY --from=0 /usr/lib/libpcre.so.1    /usr/lib/
 

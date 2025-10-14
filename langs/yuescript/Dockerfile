@@ -18,7 +18,8 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/yuescript -s -static yuescript.c
 
 FROM codegolf/lang-lua
 
-COPY --from=0 /usr/bin/yuescript /usr/local/bin/yue /usr/bin/
+COPY --from=0 /usr/bin/yuescript /usr/bin/
+COPY --from=0 /usr/local/bin/yue /usr/local/bin/
 
 ENTRYPOINT ["yuescript"]
 
