@@ -1168,7 +1168,7 @@ example = '''
 '''
 
 [KamilaLisp]
-args       = [ '/usr/bin/kamilalisp', '-' ]
+args       = [ '/opt/java/bin/java', '-jar', '/usr/lib/kamilalisp.jar', '/proc/self/fd/0' ]
 experiment = 1738
 size       = '79.6 MiB'
 version    = '0.3.0.1'
