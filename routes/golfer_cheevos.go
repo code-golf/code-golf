@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -13,9 +14,15 @@ import (
 func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 
+	type Step struct {
+		Complete   bool
+		Name, Path string
+	}
+
 	type Progress struct {
 		Count, Percent, Progress int
 		Earned                   *time.Time
+		Steps                    []Step
 	}
 
 	data := map[string]Progress{}
@@ -127,16 +134,64 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 			langs:  []any{"c", "c-sharp", "d", "f-sharp"},
 		},
 	} {
-		cheevoProgress(
-			`SELECT COUNT(DISTINCT(hole, lang))
+		progress := data[cheevo.cheevo]
+
+		// No need to calculate progress if they've already earnt it.
+		if progress.Earned != nil {
+			continue
+		}
+
+		var completedSteps []struct{ Hole, Lang string }
+		if err := db.Select(
+			&completedSteps,
+			`SELECT DISTINCT hole, lang
 			   FROM stable_passing_solutions
 			  WHERE hole    = ANY($1)
 			    AND lang    = ANY($2)
 			    AND user_id = $3`,
-			[]string{cheevo.cheevo},
 			pq.Array(cheevo.holes),
 			pq.Array(cheevo.langs),
-		)
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for _, holeID := range cheevo.holes {
+			for _, langID := range cheevo.langs {
+				hole := config.HoleByID[holeID.(string)]
+				lang := config.LangByID[langID.(string)]
+
+				step := Step{Path: "/" + hole.ID + "#" + lang.ID}
+
+				step.Name = hole.Name
+				if len(cheevo.langs) > len(cheevo.holes) {
+					step.Name = lang.Name
+				}
+
+				for _, c := range completedSteps {
+					if c.Hole == hole.ID && c.Lang == lang.ID {
+						step.Complete = true
+						break
+					}
+				}
+
+				progress.Steps = append(progress.Steps, step)
+			}
+		}
+
+		// Replace incomplete steps with "???" for "hidden" step cheevos.
+		if cheevo.cheevo == "archivist" {
+			progress.Steps = slices.DeleteFunc(progress.Steps,
+				func(s Step) bool { return !s.Complete })
+
+			progress.Steps = append(progress.Steps, slices.Repeat(
+				[]Step{{Name: "???"}},
+				config.CheevoByID[cheevo.cheevo].Target-len(progress.Steps),
+			)...)
+		}
+
+		progress.Progress = len(completedSteps)
+		data[cheevo.cheevo] = progress
 	}
 
 	cheevoProgress(

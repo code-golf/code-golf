@@ -16,15 +16,31 @@
                 {{ continue }}
             {{ end }}
 
-            <section class="cheevo {{ if $progress.Earned }} earned {{ end }}">
+            <section id="cheevo-{{ .ID }}"
+                  class="cheevo {{ if $progress.Earned }} earned {{ end }}">
                 <div class=emoji>{{ .Emoji }}</div>
                 <h3>{{ .Name }}</h3>
                 <p>{{ .Description }}
                 <footer>
-                {{ if and (not $progress.Earned) .Target }}
+            {{ if and (not $progress.Earned) .Target }}
+                {{ with $progress.Steps }}
+                    <fieldset disabled>
+                    {{ range $progress.Steps }}
+                        <label>
+                            <input type=checkbox
+                                {{ if .Complete }}checked{{ end }}>
+                        {{ if and .Path (not .Complete) }}
+                            <a href="{{ .Path }}">{{ .Name }}</a>
+                        {{ else }}
+                            <span>{{ .Name }}<span>
+                        {{ end }}
+                        </label>
+                    {{ end }}
+                    </fieldset>
+                {{ end }}
                     <progress max="{{ .Target }}"
                             value="{{ $progress.Progress }}"></progress>
-                {{ end }}
+            {{ end }}
                     <span>
                     {{ if $progress.Earned }}
                         {{ $i = inc $i }}

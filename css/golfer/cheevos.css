@@ -43,6 +43,13 @@ summary {
 }
 
 .cheevo {
+    --step-width: 6rem;
+
+    /* Some steps look better in different sizes */
+    &:is(#cheevo-alphabet-soup, #cheevo-sounds-quite-nice) {
+        --step-width: 2.5rem;
+    }
+
     display: grid;
     gap: .5rem 1rem;
     grid-template: auto 1fr auto / auto 1fr;
@@ -51,6 +58,29 @@ summary {
     .emoji {
         font-size: 4rem;
         grid-row: span 3;
+    }
+
+    fieldset {
+        border: 0;
+        display: grid;
+        font-weight: normal;
+        gap: .25rem;
+        grid-column: span 2;
+        grid-template-columns: repeat(auto-fit, minmax(var(--step-width), 1fr));
+        padding: 0 0 .25rem 0;
+
+        > label {
+            display: flex;
+            font-size: .75rem;
+            gap: .375rem;
+
+            > :is(a, span) {
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-wrap: nowrap;
+            }
+        }
     }
 
     footer {
@@ -69,6 +99,6 @@ summary {
             text-shadow: 0 0 var(--cheevo-not-earned);
         }
 
-        footer { color: var(--red-text) }
+        footer > span { color: var(--red-text) }
     }
 }
