@@ -16,11 +16,11 @@
                 {{ continue }}
             {{ end }}
 
-            <div class="cheevo {{ if $progress.Earned }} earned {{ end }}">
-                <div>{{ .Emoji }}</div>
+            <section class="cheevo {{ if $progress.Earned }} earned {{ end }}">
+                <div class=emoji>{{ .Emoji }}</div>
                 <h3>{{ .Name }}</h3>
                 <p>{{ .Description }}
-                <p>
+                <footer>
                 {{ if and (not $progress.Earned) .Target }}
                     <progress max="{{ .Target }}"
                             value="{{ $progress.Progress }}"></progress>
@@ -39,7 +39,8 @@
                         {{ amount $progress.Count "golfer" }}
                         ({{ $progress.Percent }}%)
                     </a>
-            </div>
+                </footer>
+            </section>
         {{ end }}
         </div>
         <summary>

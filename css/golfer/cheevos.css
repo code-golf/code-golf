@@ -38,34 +38,37 @@ summary {
     position: sticky;
     top: calc(5.75rem + 2px);
     z-index: 1;
-}
 
-summary:hover { background: var(--background) !important }
+    &:hover { background: var(--background) !important }
+}
 
 .cheevo {
     display: grid;
     gap: .5rem 1rem;
     grid-template: auto 1fr auto / auto 1fr;
     padding: 1rem;
+
+    .emoji {
+        font-size: 4rem;
+        grid-row: span 3;
+    }
+
+    footer {
+        display: grid;
+        font-size: .75rem;
+        font-weight: bold;
+        gap: .25rem;
+        grid-template-columns: 1fr auto;
+    }
+
+    &:not(.earned) {
+        background: var(--light-grey);
+
+        .emoji {
+            color: transparent;
+            text-shadow: 0 0 var(--cheevo-not-earned);
+        }
+
+        footer { color: var(--red-text) }
+    }
 }
-
-.cheevo > div { grid-row: span 3 }
-
-.cheevo > div:first-of-type { font-size: 4rem }
-
-.cheevo > p:last-of-type {
-    display: grid;
-    font-size: .75rem;
-    font-weight: bold;
-    gap: .25rem;
-    grid-template-columns: 1fr auto;
-}
-
-.cheevo:not(.earned) { background: var(--light-grey) }
-
-.cheevo:not(.earned) > div:first-of-type {
-    color: transparent;
-    text-shadow: 0 0 var(--cheevo-not-earned);
-}
-
-.cheevo:not(.earned) span { color: var(--red-text) }
