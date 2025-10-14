@@ -1,20 +1,19 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache curl clang musl-dev make git
+RUN apk add --no-cache clang curl git make
 
-ENV VER=73e9219 COMPILER=clang STANDARD=EXTENSION
+ENV CFLAGS='-O3 -march=x86-64-v3 -DJIT_OFF' VER=d118d76
 
-WORKDIR /usr/bin
+WORKDIR /knight
 
 RUN curl -#L https://github.com/synt7x/knightjit/tarball/$VER \
   | tar xz --strip-components 1
 
-RUN sed -i 's/-march=native -mtune=native/-march=x86-64-v3/' Makefile \
- && make && strip -s /usr/bin/target/knight
+RUN make
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/target/knight /usr/bin/
+COPY --from=0 /lib/ld-musl-*.so.1   /lib/
+COPY --from=0 /knight/target/knight /usr/bin/
 
 ENTRYPOINT ["knight"]

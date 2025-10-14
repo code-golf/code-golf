@@ -70,7 +70,7 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 	if hole.Experiment != 0 || lang.Experiment != 0 {
 		return chanWildID
 	}
-	if hole.ID == "hilbert-curve" || lang.ID == "groovy" {
+	if hole.ID == "trinomial-triangle" || lang.ID == "groovy" {
 		return chanFreshID
 	}
 	return chanSourID
@@ -232,8 +232,8 @@ func AwardRoles(db *sqlx.DB) error {
 	if err := awardRoles(
 		db, contributors, roleContribID,
 		`SELECT id
-		   FROM connections JOIN trophies USING(user_id)
-		  WHERE connection = 'discord' AND trophy = 'patches-welcome'`,
+		   FROM connections JOIN cheevos USING(user_id)
+		  WHERE connection = 'discord' AND cheevo = 'patches-welcome'`,
 	); err != nil {
 		return err
 	}

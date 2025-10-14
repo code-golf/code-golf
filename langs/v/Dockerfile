@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache dash gc-dev gcc git make musl-dev
 
-ENV VER=0.4.11
+ENV VER=0.4.12
 
 WORKDIR /usr/local
 
@@ -19,7 +19,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/V -s -static /v.c
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/dash             /bin/sh
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
+COPY --from=0 /lib/ld-musl-*.so.1       /lib/
 COPY --from=0 /usr/bin/V                /usr/bin/
 COPY --from=0 /usr/include              /usr/include
 COPY --from=0 /usr/lib/crt1.o           \
