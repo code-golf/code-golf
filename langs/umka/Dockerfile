@@ -15,8 +15,8 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/umka -s umka.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/umka            /usr/bin/
-COPY --from=0 /usr/local/bin/umka      /usr/local/bin/
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/umka       /usr/bin/
+COPY --from=0 /usr/local/bin/umka /usr/local/bin/
 
 ENTRYPOINT ["umka"]

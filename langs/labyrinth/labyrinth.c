@@ -66,4 +66,7 @@ int main(int argc, char* argv[]) {
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
+
+    if (remove(code))
+        ERR_AND_EXIT("remove");
 }

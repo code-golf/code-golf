@@ -13,11 +13,11 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/labyrinth -s labyrinth.c
 
 FROM codegolf/lang-ruby
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/labyrinth       /usr/bin/
-COPY --from=0 /usr/lib/direction.rb    \
-              /usr/lib/interpreter.rb  \
-              /usr/lib/labyrinth.rb    \
-              /usr/lib/point2d.rb      /usr/lib/
+COPY --from=0 /lib/ld-musl-*.so.1     /lib/
+COPY --from=0 /usr/bin/labyrinth      /usr/bin/
+COPY --from=0 /usr/lib/direction.rb   \
+              /usr/lib/interpreter.rb \
+              /usr/lib/labyrinth.rb   \
+              /usr/lib/point2d.rb     /usr/lib/
 
 ENTRYPOINT ["labyrinth"]
