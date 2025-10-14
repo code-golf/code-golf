@@ -36,8 +36,7 @@
                     {{ end }}
                     </span>
                     <a href="/rankings/cheevos/{{ .ID }}">
-                        {{ comma $progress.Count }}
-                        golfer{{ if ne $progress.Count 1 }}s{{ end }}
+                        {{ amount $progress.Count "golfer" }}
                         ({{ $progress.Percent }}%)
                     </a>
             </div>

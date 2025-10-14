@@ -33,6 +33,13 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"title":     pretty.Title,
 	"time":      pretty.Time,
 
+	"amount": func(i int, term string) string {
+		if i != 1 {
+			term += "s"
+		}
+		return pretty.Comma(i) + " " + term
+	},
+
 	"param": func(r *http.Request, key string) string {
 		value, _ := url.QueryUnescape(r.PathValue(key))
 		return value
