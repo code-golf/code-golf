@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     char** kargv = malloc(kargc * sizeof(char*));
     kargv[0] = (char*) kamilalisp;
     kargv[1] = "-jar";
-    kargv[2] = "/kamilalisp.jar";
+    kargv[2] = "/usr/lib/kamilalisp.jar";
     kargv[3] = (char*) code;
     memcpy(&kargv[4], &argv[2], (argc - 2) * sizeof(char*));
     kargv[kargc - 1] = NULL;

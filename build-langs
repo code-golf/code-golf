@@ -119,11 +119,9 @@ spurt 'config/data/langs.toml', to-toml %langs;
 
 # Reorder Dockerfiles: largest first to speed-up partial deploys.
 my $layers;
-my $max = %langs.keys».&id».chars.max;
-
 $layers ~= sprintf(
-    qq[COPY --from=codegolf/lang-%s%s ["/", "/langs/%1\$s/rootfs/"%2\$s] # %8s\n],
-    id(.key), ' ' x $max - id(.key).chars, .value<size>,
+    q:b[COPY --from=codegolf/lang-%-*s / /langs/%2$s/rootfs/\n],
+    $ //= %langs.keys».&id».chars.max, id(.key),
 ) for %langs.sort: { so .value<size> ~~ /K/, -.value<size>.split(" ")[0], id(.key) };
 
 .spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers
