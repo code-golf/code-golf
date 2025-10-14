@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.22 MiB'
-version    = 'Algol 68 Genie 3.10.2'
+version    = 'Algol 68 Genie 3.10.4'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -546,7 +546,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '271 MiB'
-version = '1.17.1'
+version = '1.18.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -710,8 +710,8 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '681 KiB'
-version    = '1.5.3'
+size       = '695 KiB'
+version    = '1.6.0'
 website    = 'https://fennel-lang.org'
 example    = '''
 ;; Printing
@@ -805,7 +805,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '323 MiB'
-version = '1.25.2'
+version = '1.25.3'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1956,7 +1956,7 @@ w
 args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '84.2 MiB'
-version    = '3.10.2'
+version    = '3.10.3'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing
