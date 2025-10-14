@@ -1045,7 +1045,7 @@ $
 
 [J]
 args    = [ '/opt/j/bin/j', '/proc/self/fd/0' ]
-size    = '22.0 MiB'
+size    = '11.5 MiB'
 version = '9.6'
 website = 'https://www.jsoftware.com'
 example = '''
