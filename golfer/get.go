@@ -40,10 +40,10 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		          u.sponsor                                 sponsor,
 		          u.theme                                   theme,
 		          u.time_zone                               time_zone,
-		          ARRAY(SELECT trophy
-		                  FROM trophies
+		          ARRAY(SELECT cheevo
+		                  FROM cheevos
 		                 WHERE user_id = u.id
-		              ORDER BY trophy)                      cheevos,
+		              ORDER BY cheevo)                      cheevos,
 		          (SELECT COALESCE(json_agg(failing), '[]')
 		             FROM failing)                          failing_solutions,
 		          ARRAY(SELECT followee_id
@@ -106,10 +106,10 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          admin,
 		          COALESCE(bronze, 0)                   bronze,
 		          ARRAY(
-		            SELECT trophy
-		              FROM trophies
+		            SELECT cheevo
+		              FROM cheevos
 		             WHERE user_id = users.id
-		          ORDER BY trophy
+		          ORDER BY cheevo
 		          )                                     cheevos,
 		          country_flag                          country,
 		          COALESCE(diamond, 0)                  diamond,

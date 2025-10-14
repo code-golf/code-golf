@@ -12,7 +12,7 @@ RUN npm install \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1                                   /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                                        /lib/
 COPY --from=0 /usr/bin/env /usr/bin/node                                 /usr/bin/
 COPY --from=0 /usr/lib/libada.so.2                                       \
               /usr/lib/libbrotlicommon.so.1                              \

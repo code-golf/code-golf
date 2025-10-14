@@ -36,7 +36,7 @@ my $session = new-golfer :$dbh;
 $client.get: 'https://app/about',
     headers => { cookie => "__Host-session=$session" };
 
-is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
+is $dbh.execute('SELECT ARRAY(SELECT cheevo FROM cheevos)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
 for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
@@ -53,21 +53,27 @@ for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
 }
 
 for <
-    brainfuck                        brainfuck {inception}
-    divisors                         php       {elephpant-in-the-room}
-    evil-numbers                     scheme    {evil-scheme}
-    factorial-factorisation          factor    {x-factor}
-    game-of-life                     elixir    {alchemist}
-    hexdump                          hexagony  {hextreme-agony}
-    pascals-triangle                 pascal    {under-pressure}
-    poker                            fish      {fish-n-chips}
-    quine                            python    {ouroboros}
-    rijndael-s-box                   c-sharp   {s-box-360}
-    rock-paper-scissors-spock-lizard janet     {dammit-janet}
-    seven-segment                    assembly  {assembly-required}
-    sudoku                           hexagony  {off-the-grid}
-    ten-pin-bowling                  cobol     {cobowl}
-    𝑒                                r         {emergency-room}
+    24-game                          tex        {texnical-know-how}
+    brainfuck                        brainfuck  {inception}
+    divisors                         php        {elephpant-in-the-room}
+    css-colors                       basic      {horse-of-a-different-color}
+    evil-numbers                     scheme     {evil-scheme}
+    factorial-factorisation          factor     {x-factor}
+    game-of-life                     elixir     {alchemist}
+    hexdump                          hexagony   {hextreme-agony}
+    look-and-say                     sed        {simon-sed}
+    pascals-triangle                 pascal     {under-pressure}
+    poker                            fish       {fish-n-chips}
+    quine                            python     {ouroboros}
+    rijndael-s-box                   c-sharp    {s-box-360}
+    rock-paper-scissors-spock-lizard janet      {dammit-janet}
+    seven-segment                    assembly   {assembly-required}
+    si-units                         powershell {watt-are-you-doing}
+    star-wars-opening-crawl          tex        {typesetter}
+    sudoku                           hexagony   {off-the-grid}
+    ten-pin-bowling                  cobol      {cobowl}
+    united-states                    pascal     {going-postal}
+    𝑒                                r          {emergency-room}
 > -> $hole, $lang, $cheevos {
     is $dbh.execute(
         "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",
