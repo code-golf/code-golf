@@ -156,12 +156,28 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		data[cheevo.ID] = progress
 	}
 
-	cheevoProgress(
-		`SELECT pangramglot(array_agg(DISTINCT lang))
-		   FROM stable_passing_solutions
-		  WHERE hole = 'pangram-grep' AND user_id = $1`,
-		[]string{"pangramglot"},
-	)
+	if progress := data["pangramglot"]; progress.Earned == nil {
+		var completedSteps []string
+		if err := db.Select(
+			&completedSteps,
+			`SELECT unnest(letters(array_agg(DISTINCT lang)))
+			   FROM stable_passing_solutions
+			  WHERE hole = 'pangram-grep' AND user_id = $1`,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for c := 'A'; c <= 'Z'; c++ {
+			progress.Steps = append(progress.Steps, Step{
+				Name:     string(c),
+				Complete: slices.Contains(completedSteps, string(c)),
+			})
+		}
+
+		progress.Progress = len(completedSteps)
+		data["pangramglot"] = progress
+	}
 
 	cheevoProgress(
 		`SELECT COALESCE(EXTRACT(days FROM TIMEZONE('UTC', NOW()) - MIN(submitted)), 0)

@@ -47,12 +47,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE FUNCTION pangramglot(langs lang[]) RETURNS int IMMUTABLE RETURN (
+-- TODO Simplify this function by using the langs table.
+CREATE FUNCTION letters(langs lang[]) RETURNS text[] IMMUTABLE RETURN (
     WITH letters AS (
         SELECT DISTINCT unnest(regexp_split_to_array(nullif(regexp_replace(
                lang::text, '-sharp$|pp$|^fish$|[^a-z]', '', 'g'), ''), ''))
           FROM unnest(langs) lang
-    ) SELECT COUNT(*) FROM letters
+    ) SELECT array_agg(upper(unnest)) FROM letters
+);
+
+CREATE FUNCTION pangramglot(langs lang[]) RETURNS int IMMUTABLE RETURN (
+    SELECT coalesce(cardinality(letters(langs)), 0)
 );
 
 CREATE TYPE save_solution_ret AS (
