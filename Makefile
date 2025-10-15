@@ -35,8 +35,6 @@ db-dump:
 	@ssh root@code.golf sudo -iu postgres pg_dump -aZ9 code-golf \
 	    > sql/code-golf-$(DATE).sql.gz
 
-	@zcat sql/*.gz | zstd -fqo ~/Dropbox/code-golf/code-golf-$(DATE).sql.zst
-
 dev:
 	@touch docker/.env
 	@docker compose rm -f
