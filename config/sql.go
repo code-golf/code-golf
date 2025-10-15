@@ -57,7 +57,8 @@ func init() {
 	initHoles()
 	initLangs()
 
-	// Cheevos and Nav reference Holes & Langs so must init after.
+	// Cheevos, Nav, and Settings reference Holes & Langs so must init after.
 	initCheevos()
 	initNav()
+	initSettings()
 }
