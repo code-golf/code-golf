@@ -94,47 +94,12 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		return ids
 	}
 
-	for _, cheevo := range []struct {
-		cheevo       string
-		holes, langs []any
-	}{
-		{
-			cheevo: "alphabet-soup",
-			holes:  []any{"scrambled-sort"},
-			langs:  []any{"c", "d", "j", "k", "r", "v"},
-		},
-		{
-			cheevo: "archivist",
-			holes:  []any{"isbn"},
-			langs:  []any{"basic", "cobol", "common-lisp", "forth", "fortran"},
-		},
-		{
-			cheevo: "bird-is-the-word",
-			holes:  []any{"levenshtein-distance"},
-			langs:  []any{"awk", "prolog", "sql", "swift", "tcl", "wren"},
-		},
-		{
-			cheevo: "happy-go-lucky",
-			holes:  []any{"happy-numbers", "lucky-numbers"},
-			langs:  []any{"go"},
-		},
-		{
-			cheevo: "jeweler",
-			holes:  []any{"diamonds"},
-			langs:  []any{"crystal", "ruby"},
-		},
-		{
-			cheevo: "mary-had-a-little-lambda",
-			holes:  []any{"λ"},
-			langs:  []any{"clojure", "coconut", "common-lisp", "haskell", "scheme"},
-		},
-		{
-			cheevo: "sounds-quite-nice",
-			holes:  []any{"musical-chords"},
-			langs:  []any{"c", "c-sharp", "d", "f-sharp"},
-		},
-	} {
-		progress := data[cheevo.cheevo]
+	for _, cheevo := range config.CheevoTree["Hole/Lang Specific"] {
+		if len(cheevo.Holes) == 0 || len(cheevo.Langs) == 0 {
+			continue
+		}
+
+		progress := data[cheevo.ID]
 
 		// No need to calculate progress if they've already earnt it.
 		if progress.Earned != nil {
@@ -149,22 +114,19 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 			  WHERE hole    = ANY($1)
 			    AND lang    = ANY($2)
 			    AND user_id = $3`,
-			pq.Array(cheevo.holes),
-			pq.Array(cheevo.langs),
+			pq.Array(cheevo.Holes),
+			pq.Array(cheevo.Langs),
 			golfer.ID,
 		); err != nil {
 			panic(err)
 		}
 
-		for _, holeID := range cheevo.holes {
-			for _, langID := range cheevo.langs {
-				hole := config.HoleByID[holeID.(string)]
-				lang := config.LangByID[langID.(string)]
-
+		for _, hole := range cheevo.Holes {
+			for _, lang := range cheevo.Langs {
 				step := Step{Path: "/" + hole.ID + "#" + lang.ID}
 
 				step.Name = hole.Name
-				if len(cheevo.langs) > len(cheevo.holes) {
+				if len(cheevo.Langs) > len(cheevo.Holes) {
 					step.Name = lang.Name
 				}
 
@@ -180,18 +142,18 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Replace incomplete steps with "???" for "hidden" step cheevos.
-		if cheevo.cheevo == "archivist" {
+		if cheevo.ID == "archivist" {
 			progress.Steps = slices.DeleteFunc(progress.Steps,
 				func(s Step) bool { return !s.Complete })
 
 			progress.Steps = append(progress.Steps, slices.Repeat(
 				[]Step{{Name: "???"}},
-				config.CheevoByID[cheevo.cheevo].Target-len(progress.Steps),
+				cheevo.Target-len(progress.Steps),
 			)...)
 		}
 
 		progress.Progress = len(completedSteps)
-		data[cheevo.cheevo] = progress
+		data[cheevo.ID] = progress
 	}
 
 	cheevoProgress(

@@ -42,7 +42,7 @@ type Lang struct {
 	Website              string   `json:"website"`
 }
 
-func init() {
+func initLangs() {
 	// Digests.
 	var digests map[string]string
 	if !testing.Testing() {
