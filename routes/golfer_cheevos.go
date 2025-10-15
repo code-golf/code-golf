@@ -180,15 +180,33 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		[]string{"polyglot", "polyglutton", "omniglot", "omniglutton"},
 	)
 
-	cheevoProgress(
-		`WITH distinct_holes AS (
-		    SELECT DISTINCT hole
-		      FROM stable_passing_solutions
-		     WHERE user_id = $2
-		) SELECT COUNT(DISTINCT $1::hstore->hole::text) FROM distinct_holes`,
-		[]string{"smörgåsbord"},
-		config.HoleCategoryHstore,
-	)
+	if progress := data["smörgåsbord"]; progress.Earned == nil {
+		var completedSteps []string
+		if err := db.Select(
+			&completedSteps,
+			`WITH distinct_holes AS (
+			    SELECT DISTINCT hole
+			      FROM stable_passing_solutions
+			     WHERE user_id = $2
+			) SELECT DISTINCT $1::hstore->hole::text FROM distinct_holes`,
+			config.HoleCategoryHstore,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for _, category := range []string{
+			"Art", "Computing", "Gaming", "Mathematics", "Sequence", "Transform",
+		} {
+			progress.Steps = append(progress.Steps, Step{
+				Name:     category,
+				Complete: slices.Contains(completedSteps, category),
+			})
+		}
+
+		progress.Progress = len(completedSteps)
+		data["smörgåsbord"] = progress
+	}
 
 	cheevoProgress(
 		`SELECT COUNT(DISTINCT hole)
