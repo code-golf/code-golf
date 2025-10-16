@@ -295,7 +295,7 @@ example    = '''
 [brainfuck]
 args    = [ '/usr/bin/brainfuck', '-xc', '$code' ]
 size    = '51.1 KiB'
-version = '077cc7f'
+version = '103be5b'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
 >>Printing
