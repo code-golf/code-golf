@@ -36,4 +36,4 @@ ENV GLIBC_TUNABLES='glibc.rtld.execstack=2'
 
 ENTRYPOINT ["j"]
 
-CMD ["-js", "echo JVERSION"]
+CMD ["-js", "exit echo JVERSION"]
