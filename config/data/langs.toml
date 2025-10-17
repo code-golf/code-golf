@@ -295,7 +295,7 @@ example    = '''
 [brainfuck]
 args    = [ '/usr/bin/brainfuck', '-xc', '$code' ]
 size    = '51.1 KiB'
-version = '077cc7f'
+version = '103be5b'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
 >>Printing
@@ -636,8 +636,8 @@ none
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '56.6 MiB'
-version = '1.18.4'
+size    = '57.1 MiB'
+version = '1.19.0'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
