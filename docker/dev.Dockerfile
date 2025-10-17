@@ -31,6 +31,7 @@ COPY --from=codegolf/lang-vyxal        / /langs/vyxal/rootfs/
 COPY --from=codegolf/lang-coconut      / /langs/coconut/rootfs/
 COPY --from=codegolf/lang-civet        / /langs/civet/rootfs/
 COPY --from=codegolf/lang-coffeescript / /langs/coffeescript/rootfs/
+COPY --from=codegolf/lang-kamilalisp   / /langs/kamilalisp/rootfs/
 COPY --from=codegolf/lang-groovy       / /langs/groovy/rootfs/
 COPY --from=codegolf/lang-stax         / /langs/stax/rootfs/
 COPY --from=codegolf/lang-raku         / /langs/raku/rootfs/
