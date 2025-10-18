@@ -546,7 +546,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '271 MiB'
-version = '1.18.0'
+version = '1.18.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
