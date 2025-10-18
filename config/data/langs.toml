@@ -1044,9 +1044,10 @@ $
 '''
 
 [J]
-args    = [ '/opt/j/bin/j', '/proc/self/fd/0' ]
-size    = '22.0 MiB'
-version = '9.6'
+args    = [ '/usr/bin/j', '/proc/self/fd/0' ]
+env     = [ 'GLIBC_TUNABLES=glibc.rtld.execstack=2' ]
+size    = '11.5 MiB'
+version = '9.6.3'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
