@@ -546,7 +546,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '271 MiB'
-version = '1.18.0'
+version = '1.18.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -891,11 +891,11 @@ NEXT
 '''
 
 [Hare]
-args       = [ '/usr/bin/hare', '-' ]
+args       = [ '/usr/bin/harewrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1323
-size       = '11.5 MiB'
-version    = '0.24.2'
+size       = '10.9 MiB'
+version    = '0.25.2'
 website    = 'https://harelang.org'
 example    = '''
 use fmt;
