@@ -625,13 +625,17 @@ nav + main .sticky th { top: calc(5.75rem + 1px) }
 
 .tabs {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
+    gap: 0;
 
-    > a {
+    > :is(a, button) {
+        background: none;
+        border: 0;
         color: var(--color);
         padding: .375rem .5rem;
 
-        &:is(.on, :hover, :not([href])) {
+        &:is(.on, :hover, a:not([href]), [disabled]) {
             background: var(--color) !important;
             color: var(--background);
             text-decoration: none;

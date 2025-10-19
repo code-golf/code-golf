@@ -1,9 +1,27 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-{{ $show := setting .Golfer "golfer/cheevos" "show-cheevos" }}
+{{ $show := setting .Golfer .Name "show-cheevos" }}
 
 <main>
+{{ if .Golfer }}
+    <form action=/golfer/settings/save class=tabs method=post>
+        <input name=page type=hidden value="{{ .Name }}">
+        <input name=path type=hidden value="{{ .Path }}">
+
+{{ range $i, $setting := .Settings }}
+    {{ if ne .ID "show-cheevos" }}{{ continue }}{{ end }}
+
+    {{ range $setting.Options }}
+        <button name="{{ $setting.ID }}" value="{{ .ID }}"
+            {{ if eq $show .ID }} disabled {{ end }} >
+            {{ .Name }}
+        </button>
+    {{ end }}
+{{ end }}
+    </form>
+{{ end }}
+
 {{ range $category, $cheevos := .Cheevos }}
     <details open>
         <div>

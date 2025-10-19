@@ -10,6 +10,8 @@ details:not(:has(.cheevo)) { display: none }
 main {
     gap: 0;
     padding: 0;
+
+    .tabs { margin: 1rem 1rem 0 }
 }
 
 progress {
