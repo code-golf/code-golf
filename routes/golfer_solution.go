@@ -28,6 +28,7 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 		Rank, RankOverall, Row, RowOverall *int
 		Scoring                            string
 		Tested                             time.Time
+		Time                               *time.Duration
 	}{
 		Hole:    config.AllHoleByID[param(r, "hole")],
 		Lang:    config.AllLangByID[param(r, "lang")],
@@ -43,7 +44,8 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 	if err := session.Database(r).Get(
 		&data,
-		`  SELECT failing, rank, rank_overall, row, row_overall, tested
+		`  SELECT failing, rank, rank_overall, row, row_overall, tested,
+		          solutions.time_ms * 1e6 time
 		     FROM solutions
 		LEFT JOIN rankings USING (hole, lang, scoring, user_id)
 		    WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4`,

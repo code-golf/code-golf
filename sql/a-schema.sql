@@ -277,7 +277,7 @@ GROUP BY hole, lang, scoring
    WHERE count = 1;
 
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
-    select hole, lang, scoring, user_id, submitted,
+    select hole, lang, scoring, user_id, submitted, time_ms,
            holes.experiment != 0                          experimental_hole,
            langs.experiment != 0                          experimental_lang,
            holes.experiment != 0 OR langs.experiment != 0 experimental,
@@ -304,7 +304,7 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       join min_per_lang using(hole, scoring)
 ), points as (
     select hole, lang, scoring, user_id, strokes, other_strokes, submitted,
-           experimental_hole, experimental_lang, experimental,
+           experimental_hole, experimental_lang, experimental, time_ms,
            coalesce(round(Sb / strokes * 1000), 0) points,
            coalesce(round(S  / strokes * 1000), 0) points_for_lang
       from strokes

@@ -24,6 +24,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"bytes":     pretty.Bytes,
 	"comma":     pretty.Comma,
 	"dec":       func(i int) int { return i - 1 },
+	"duration":  pretty.Duration,
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
 	"html":      func(html string) template.HTML { return template.HTML(html) },
