@@ -1,10 +1,12 @@
 package routes
 
 import (
+	"cmp"
 	"database/sql"
 	"encoding/json"
 	"errors"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -131,12 +133,21 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	longestRun := slices.MaxFunc(runs, func(a, b h.Run) int {
+		return cmp.Compare(a.Time, b.Time)
+	})
+
 	// Update the lang_digest & tested values if we can.
 	if overallPass || previouslyFailing {
 		if _, err := db.ExecContext(
 			ctx,
 			`UPDATE solutions
-			    SET lang_digest = $1, tested = DEFAULT
+			    SET lang_digest = $1,
+			        tested      = DEFAULT,
+			        time_ms     = CASE WHEN $1 = lang_digest
+			                           THEN LEAST($8, time_ms)
+			                           ELSE $8
+			                           END
 			  WHERE code    = $2
 			    AND failing = $3
 			    AND hole    = $4
@@ -144,6 +155,7 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 			    AND scoring = $6
 			    AND user_id = $7`,
 			lang.DigestTrunc, code, previouslyFailing, hole.ID, lang.ID, scoring, golfer.ID,
+			longestRun.Time.Round(time.Millisecond)/time.Millisecond,
 		); err != nil {
 			panic(err)
 		}

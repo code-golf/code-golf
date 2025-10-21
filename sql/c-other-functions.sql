@@ -91,7 +91,7 @@ CREATE TYPE save_solution_ret AS (
 );
 
 CREATE FUNCTION save_solution(
-    bytes int, chars int, code text, hole hole, lang lang, user_id int
+    bytes int, chars int, code text, hole hole, lang lang, time_ms smallint, user_id int
 ) RETURNS save_solution_ret AS $$
 #variable_conflict use_variable
 DECLARE
@@ -205,8 +205,10 @@ BEGIN
         -- No existing solution, or it was failing, or the new one is shorter.
         -- Insert or update everything. Also add a history entry.
         IF NOT FOUND OR strokes < old_strokes THEN
-            INSERT INTO solutions (bytes, chars, code, hole, lang, lang_digest, scoring, user_id)
-                 VALUES           (bytes, chars, code, hole, lang, lang_digest, scoring, user_id)
+            INSERT INTO solutions (bytes, chars, code, hole, lang,
+                                   lang_digest, scoring, time_ms, user_id)
+                 VALUES           (bytes, chars, code, hole, lang,
+                                   lang_digest, scoring, time_ms, user_id)
             ON CONFLICT ON CONSTRAINT solutions_pkey
               DO UPDATE SET bytes       = excluded.bytes,
                             chars       = excluded.chars,
@@ -214,20 +216,26 @@ BEGIN
                             failing     = false,
                             lang_digest = excluded.lang_digest,
                             submitted   = excluded.submitted,
-                            tested      = excluded.tested;
+                            tested      = excluded.tested,
+                            time_ms     = excluded.time_ms;
 
             INSERT INTO solutions_log (bytes, chars, hole, lang, scoring, user_id)
                  VALUES               (bytes, chars, hole, lang, scoring, user_id);
 
         -- The new solution is the same length. Keep old submitted, this stops
         -- a user moving down the leaderboard by matching their personal best.
+        -- We keep the lowest runtime iff the lang digest hasn't changed.
         ELSIF strokes = old_strokes THEN
             UPDATE solutions
                SET bytes       = bytes,
                    chars       = chars,
                    code        = code,
                    lang_digest = lang_digest,
-                   tested      = DEFAULT
+                   tested      = DEFAULT,
+                   time_ms     = CASE WHEN lang_digest = solutions.lang_digest
+                                      THEN LEAST(time_ms, solutions.time_ms)
+                                      ELSE time_ms
+                                      END
              WHERE solutions.hole    = hole
                AND solutions.lang    = lang
                AND solutions.scoring = scoring

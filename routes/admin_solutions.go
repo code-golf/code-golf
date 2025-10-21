@@ -1,10 +1,12 @@
 package routes
 
 import (
+	"cmp"
 	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
+	"slices"
 	"strconv"
 	"sync"
 	"time"
@@ -94,7 +96,15 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 					}
 
 					s.Stderr = run.Stderr
-					s.Took = run.Time
+
+					longestRun := slices.MaxFunc(runs, func(a, b hole.Run) int {
+						return cmp.Compare(a.Time, b.Time)
+					})
+
+					s.Took = min(s.Took, longestRun.Time)
+					if s.Took == 0 {
+						s.Took = longestRun.Time
+					}
 
 					if run.Pass {
 						s.Pass = true
@@ -103,11 +113,18 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				}
 
 				// If we passed, or we're okay saving failures, or we used to
-				// fail then save to at least update lang_digest & tested.
-				if s.Pass || !noNewFailures || s.Failing {
+				// fail then save to at least update lang_digest & tested. If
+				// a zero took, we errored, not the solution, so don't update.
+				if s.Took != 0 && (s.Pass || !noNewFailures || s.Failing) {
 					db.MustExec(
 						`UPDATE solutions
-						    SET failing = $1, lang_digest = $2, tested = DEFAULT
+						    SET failing     = $1,
+						        lang_digest = $2,
+						        tested      = DEFAULT,
+						        time_ms     = CASE WHEN $2 = lang_digest
+						                           THEN LEAST($7, time_ms)
+						                           ELSE $7
+						                           END
 						  WHERE code    = $3
 						    AND hole    = $4
 						    AND lang    = $5
@@ -118,6 +135,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
+						s.Took.Round(time.Millisecond)/time.Millisecond,
 					)
 				}
 
