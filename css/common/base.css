@@ -665,7 +665,10 @@ body > .tabs {
 
 #home { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
-#home > .tabs { justify-content: flex-end }
+#home > nav {
+    display: flex;
+    justify-content: flex-end;
+}
 
 #home > .grid {
     border: 2px solid var(--color);
