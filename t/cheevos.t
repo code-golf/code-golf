@@ -48,7 +48,7 @@ for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     $cheevos.=subst: ',}', '}';
 
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', ?, 'c', 1)", $_,
+        "SELECT earned FROM save_solution(2, 2, 'ab', ?, 'c', 1::smallint, 1)", $_,
     ).row, $cheevos, "$_/c earns $cheevos";
 }
 
@@ -76,7 +76,7 @@ for <
     𝑒                                r          {emergency-room}
 > -> $hole, $lang, $cheevos {
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",
+        "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1::smallint, 1)",
         $lang eq 'assembly' ?? Nil !! 2, $hole, $lang,
     ).row, $cheevos, "$hole/$lang earns $cheevos";
 }
@@ -85,13 +85,13 @@ for <brainfuck d hexagony javascript nim swift sql zig> {
     my $cheevos = $_ eq 'zig' ?? '{pangramglot}' !! '{}';
 
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', 'pangram-grep', ?, 1)",
+        "SELECT earned FROM save_solution(2, 2, 'ab', 'pangram-grep', ?, 1::smallint, 1)",
         $_,
     ).row, $cheevos, "pangram-grep/$_ earns $cheevos";
 }
 
 is $dbh.execute(
-    "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
+    "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1::smallint, 1)",
 ).row, '{different-strokes}', 'Earns {different-strokes}';
 
 for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
@@ -107,7 +107,7 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     $earns.=subst: ',}', '}';
 
     is $dbh.execute(
-        "SELECT earned FROM save_solution(2, ?, 'ab', 'musical-chords', ?, 1)",
+        "SELECT earned FROM save_solution(2, ?, 'ab', 'musical-chords', ?, 1::smallint, 1)",
         $_ eq 'assembly' ?? Nil !! 2, $_,
     ).row, $earns, "Lang $i ($_) earns $earns";
 }
