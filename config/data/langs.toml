@@ -368,7 +368,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.3'
+version = 'Clang 21.1.4'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -546,7 +546,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '271 MiB'
-version = '1.18.1'
+version = '1.18.2'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
