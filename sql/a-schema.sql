@@ -178,8 +178,9 @@ CREATE TABLE follows (
 -- This table is a shadow copy, updated on startup, used in DB queries.
 -- TODO Move category here, remove config.HoleCategoryHstore.
 CREATE UNLOGGED TABLE holes (
-    id         hole NOT NULL PRIMARY KEY,
-    experiment int  NOT NULL
+    id         hole   NOT NULL PRIMARY KEY,
+    experiment int    NOT NULL,
+    name       citext NOT NULL
 );
 
 -- Ditto for config/data/langs.toml.

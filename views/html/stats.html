@@ -123,8 +123,6 @@
     <div id=unsolved>
     {{ $hole := "" }}
     {{ range .Data }}
-        {{ if .Hole.Experiment }}{{ continue }}{{ end }}
-
         {{ if ne $hole .Hole.Name }}
             <h2>{{ .Hole.Name }}</h2>
             {{ $hole = .Hole.Name }}
