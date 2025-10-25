@@ -852,7 +852,7 @@ n*
 args    = [ '/usr/bin/groovy', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
 size    = '77.9 MiB'
-version = '5.0.1'
+version = '5.0.2'
 website = 'https://groovy-lang.org'
 example = '''
 // Printing
@@ -1081,7 +1081,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '58.4 MiB'
-version = 'OpenJDK 25.0'
+version = 'OpenJDK 25.0.1'
 website = 'https://openjdk.java.net'
 example = '''
 void main(String[] args) {
@@ -1194,7 +1194,7 @@ example    = '''
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '142 MiB'
-version = '2.2.20'
+version = '2.2.21'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
