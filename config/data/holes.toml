@@ -2206,7 +2206,8 @@ preamble = '''
 experiment = 1025
 category = 'Gaming'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Minesweeper_game' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
 ]
 synopsis = 'Print solved boards in Minesweeper games.'
 preamble = '''
