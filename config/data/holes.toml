@@ -2209,7 +2209,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Minesweeper_game' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
 ]
-synopsis = 'Print solved boards in Minesweeper games.'
+synopsis = 'Print solved Minesweeper boards.'
 preamble = '''
 <p>
     Minesweeper is a video game in which the player must clear a board without
@@ -2218,12 +2218,13 @@ preamble = '''
 
 <p>
     Each argument represents a ten-by-ten board with thirteen mine tiles,
-    denoted by <code><b>M</b></code>. Replace the safe tiles, denoted by
-    <code><b>X</b></code>, with the number of adjacent mines.
+    denoted by <code><b>X</b></code>, and the rest being safe tiles, denoted
+    by <code><b>_</b></code>.
 
 <p>
-    Print a solved Minesweeper board for each argument, separated by newlines,
-    and replace each mine with <code><b>X</b></code> as if it weren't detonated.
+    Print a solved Minesweeper board for each argument, separated by blank
+    lines. Replace each mine with <code><b>F</b></code> as if it were flagged.
+    And replace each safe tile with the number of adjacent mines.
 '''
 
 ['Morse Decoder']
