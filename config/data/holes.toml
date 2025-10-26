@@ -2205,6 +2205,7 @@ preamble = '''
 [Minesweeper]
 experiment = 1025
 category = 'Gaming'
+released = 2025-11-01
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Minesweeper_game' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
