@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.20 MiB'
-version    = 'b5862e1'
+version    = 'd8bbea1'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -1233,7 +1233,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.05 MiB'
-version    = '0.696'
+version    = '0.697'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1362,7 +1362,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '8.39 MiB'
-version = '8.4.13'
+version = '8.4.14'
 website = 'https://www.php.net'
 example = '''
 # Printing
