@@ -145,6 +145,14 @@ emoji       = '🐟'
 description = 'Solve <a href=/poker#fish>Poker in &gt;&lt;&gt;</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Flag Those Mines'
+emoji       = '🚩'
+description = 'Solve <a href=/minesweeper>Minesweeper</a> in any three languages beginning with the letter "F".'
+holes       = ['minesweeper']
+langs       = ['f-sharp', 'factor', 'forth', 'fortran']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Go Forth!'
 emoji       = '🏞️'
 description = 'Solve any hole in both Go and Forth.'

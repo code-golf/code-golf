@@ -112,6 +112,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f680.svg'            `# Rocket`                       \
     '*/1f697.svg'            `# Automobile`                   \
     '*/1f6a2.svg'            `# Ship`                         \
+    '*/1f6a9.svg'            `# Triangular Flag on Post`      \
     '*/1f910.svg'            `# Zipper-Mouth Face`            \
     '*/1f947.svg'            `# 1st Place Medal`              \
     '*/1f948.svg'            `# 2nd Place Medal`              \
