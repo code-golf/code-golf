@@ -156,6 +156,7 @@ func statsTableGET(w http.ResponseWriter, r *http.Request) {
 	var data struct {
 		Fact string
 		Rows []struct {
+			AvgTime              time.Duration
 			Count, Golfers, Rank int
 			PerGolfer            string
 			Hole                 *config.Hole
@@ -179,7 +180,8 @@ func statsTableGET(w http.ResponseWriter, r *http.Request) {
 		         `+column+`,
 		         COUNT(*),
 		         COUNT(DISTINCT user_id) golfers,
-		         ROUND(COUNT(*)::decimal / COUNT(DISTINCT user_id), 2) per_golfer
+		         ROUND(COUNT(*)::decimal / COUNT(DISTINCT user_id), 2) per_golfer,
+		         SUM(time_ms) / COUNT(*) * 1e6 avg_time
 		    FROM solutions
 		   WHERE NOT failing
 		GROUP BY `+column,
