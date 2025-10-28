@@ -27,7 +27,8 @@ RUN /build/release/images/jdk/bin/jlink           \
     --add-modules jdk.compiler,jdk.unsupported    \
     --compress zip-9                              \
     --module-path /build/release/images/jdk/jmods \
-    --output /opt/java
+    --output /opt/java                            \
+    --strip-debug
 
 COPY java.c /
 
