@@ -1,6 +1,6 @@
 @import "./_golfer.css";
 
-details::details-content {
+details > div {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(21rem, 1fr));
 }

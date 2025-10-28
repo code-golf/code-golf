@@ -42,19 +42,19 @@
 {{ with .Data.Holes }}
     <details open>
         <summary>Experimental Holes ({{ len . }})</summary>
-        {{ template "ideaGrid" . }}
+        <div>{{ template "ideaGrid" . }}</div>
     </details>
 {{ end }}
 {{ with .Data.Langs }}
     <details open>
         <summary>Experimental Languages ({{ len . }})</summary>
-        {{ template "ideaGrid" . }}
+        <div>{{ template "ideaGrid" . }}</div>
     </details>
 {{ end }}
 {{ with .Data.Ideas }}
     <details open>
         <summary>Other Ideas ({{ len . }})</summary>
-        {{ template "ideaGrid" . }}
+        <div>{{ template "ideaGrid" . }}</div>
     </details>
 {{ end }}
 </main>

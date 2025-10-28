@@ -24,56 +24,59 @@
 
 {{ range $category, $cheevos := .Cheevos }}
     <details open>
-    {{ $i := 0 }}
-    {{ range $cheevos }}
-        {{ $progress := index $.Data .ID }}
+        <div>
+        {{ $i := 0 }}
+        {{ range $cheevos }}
+            {{ $progress := index $.Data .ID }}
 
-        {{ if or (and      $progress.Earned  (eq $show "unearned"))
-                 (and (not $progress.Earned) (eq $show "earned")) }}
-            {{ continue }}
-        {{ end }}
-
-        <section id="cheevo-{{ .ID }}"
-                class="cheevo {{ if $progress.Earned }} earned {{ end }}">
-            <div class=emoji>{{ .Emoji }}</div>
-            <h3>{{ .Name }}</h3>
-            <p>{{ .Description }}
-            <footer>
-        {{ if and (not $progress.Earned) .Target }}
-            {{ with $progress.Steps }}
-                <fieldset disabled>
-                {{ range $progress.Steps }}
-                    <label>
-                        <input type=checkbox {{ if .Complete }}checked{{ end }}>
-                    {{ if and .Path (not .Complete) }}
-                        <a href="{{ .Path }}">{{ .Name }}</a>
-                    {{ else }}
-                        <span>{{ .Name }}<span>
-                    {{ end }}
-                    </label>
-                {{ end }}
-                </fieldset>
+            {{ if or (and      $progress.Earned  (eq $show "unearned"))
+                     (and (not $progress.Earned) (eq $show "earned")) }}
+                {{ continue }}
             {{ end }}
-                <progress max="{{ .Target }}"
-                        value="{{ $progress.Progress }}"></progress>
-        {{ end }}
-                <span>
-                {{ if $progress.Earned }}
-                    {{ $i = inc $i }}
-                    Earned {{ time ($progress.Earned.In $.Location) }}
-                {{ else if .Target }}
-                    {{ comma $progress.Progress }} / {{ comma .Target }}
-                {{ else }}
-                    Not yet earned
+
+            <section id="cheevo-{{ .ID }}"
+                  class="cheevo {{ if $progress.Earned }} earned {{ end }}">
+                <div class=emoji>{{ .Emoji }}</div>
+                <h3>{{ .Name }}</h3>
+                <p>{{ .Description }}
+                <footer>
+            {{ if and (not $progress.Earned) .Target }}
+                {{ with $progress.Steps }}
+                    <fieldset disabled>
+                    {{ range $progress.Steps }}
+                        <label>
+                            <input type=checkbox
+                                {{ if .Complete }}checked{{ end }}>
+                        {{ if and .Path (not .Complete) }}
+                            <a href="{{ .Path }}">{{ .Name }}</a>
+                        {{ else }}
+                            <span>{{ .Name }}<span>
+                        {{ end }}
+                        </label>
+                    {{ end }}
+                    </fieldset>
                 {{ end }}
-                </span>
-                <a href="/rankings/cheevos/{{ .ID }}">
-                    {{ amount $progress.Count "golfer" }}
-                    ({{ $progress.Percent }}%)
-                </a>
-            </footer>
-        </section>
-    {{ end }}
+                    <progress max="{{ .Target }}"
+                            value="{{ $progress.Progress }}"></progress>
+            {{ end }}
+                    <span>
+                    {{ if $progress.Earned }}
+                        {{ $i = inc $i }}
+                        Earned {{ time ($progress.Earned.In $.Location) }}
+                    {{ else if .Target }}
+                        {{ comma $progress.Progress }} / {{ comma .Target }}
+                    {{ else }}
+                        Not yet earned
+                    {{ end }}
+                    </span>
+                    <a href="/rankings/cheevos/{{ .ID }}">
+                        {{ amount $progress.Count "golfer" }}
+                        ({{ $progress.Percent }}%)
+                    </a>
+                </footer>
+            </section>
+        {{ end }}
+        </div>
         <summary>
             {{ if eq $show "all" }}[ {{ $i }} / {{ len $cheevos }} ]{{ end }}
             {{ $category }}
