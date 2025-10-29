@@ -261,13 +261,13 @@ if (matchMedia(JSON.parse($('#dark-mode-media-query').innerText)).matches)
         syntaxHighlighting(oneDarkHighlightStyle),
     );
 
-import aspp from '../../wasm/aspp.wasm';
-import risc_v_as from '../../wasm/riscv64-linux-gnu-as.wasm';
-import risc_v_ld from '../../wasm/riscv64-linux-gnu-ld.wasm';
-import risc_v_objdump from '../../wasm/riscv64-linux-gnu-objdump.wasm';
-import arm64_as from '../../wasm/aarch64-linux-gnu-as.wasm';
-import arm64_ld from '../../wasm/aarch64-linux-gnu-ld.wasm';
-import arm64_objdump from '../../wasm/aarch64-linux-gnu-objdump.wasm';
+import aspp from '../wasm/aspp.wasm';
+import risc_v_as from '../wasm/riscv64-linux-gnu-as.wasm';
+import risc_v_ld from '../wasm/riscv64-linux-gnu-ld.wasm';
+import risc_v_objdump from '../wasm/riscv64-linux-gnu-objdump.wasm';
+import arm64_as from '../wasm/aarch64-linux-gnu-as.wasm';
+import arm64_ld from '../wasm/aarch64-linux-gnu-ld.wasm';
+import arm64_objdump from '../wasm/aarch64-linux-gnu-objdump.wasm';
 import { wasmCompileUrl } from './assembly/wasm-program';
 
 const linkerScript = `

@@ -12,9 +12,6 @@ services:
       - --watch=forever
     stop_signal: SIGKILL
     user: 1000:1000
-    volumes:
-      - ..:/code-golf
-    working_dir: /code-golf
   db:
     ports:
       - 5432:5432
