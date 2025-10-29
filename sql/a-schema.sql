@@ -220,8 +220,8 @@ CREATE TABLE solutions (
     lang_digest bytea     NOT NULL,
     time_ms     smallint, -- TODO make NOT NULL once everything re-tested.
     -- Assembly can only be scored on bytes, and they are compiled bytes.
-    CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
-        OR (lang != 'assembly' AND bytes = octet_length(code)
+    CHECK (((lang  = 'assembly' OR  lang  = 'arm64' OR  lang  = 'risc-v') AND chars IS NULL AND scoring = 'bytes')
+        OR ((lang != 'assembly' AND lang != 'arm64' AND lang != 'risc-v') AND bytes = octet_length(code)
                                AND chars = char_length(code))),
     -- Solutions are limited to 400 KiB, TODO < 128 KiB (not <=).
     CHECK (octet_length(code) <= 409600),

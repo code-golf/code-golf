@@ -125,10 +125,8 @@ function determineLineRanges(text: string): Range[] {
       }
     }
 
-    // Add the last part if it's not empty or doesn't end with a delimiter
-    if (currentStart < text.length) {
-      ranges.push(new Range(currentStart, text.length - currentStart));
-    }
+    // Add the last part
+    ranges.push(new Range(currentStart, text.length - currentStart));
 
     return ranges;
 }

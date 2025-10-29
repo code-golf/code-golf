@@ -1,4 +1,4 @@
-FROM emscripten/emsdk:4.0.4 AS builder
+FROM emscripten/emsdk:4.0.18 AS builder
 
 WORKDIR /root/src/aspp
 COPY aspp.c .

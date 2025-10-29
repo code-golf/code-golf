@@ -348,18 +348,6 @@ void transform_assembly(in_t *in, out_t *out, bool big_endian) {
 	uint64_t in_newlines = 0;
 
 	while ((ch = in_getc(in)) != EOF) {
-		if (ch == '#') {
-			while((ch = in_getc(in)) != EOF) {
-				if(ch == '\n') {
-					break;
-				}
-			}
-
-			if(ch == EOF)
-				break;
-			// process '\n'
-		}
-
 		if (ch == '\'') {
 			char buf[32];
 			size_t total_bytes = 0;

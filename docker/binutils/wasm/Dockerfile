@@ -1,4 +1,4 @@
-FROM emscripten/emsdk:4.0.4 AS builder
+FROM emscripten/emsdk:4.0.18 AS builder
 #FROM ghcr.io/webassembly/wasi-sdk AS builder
 
 RUN apt-get update && \
@@ -9,7 +9,7 @@ RUN apt-get update && \
 WORKDIR /root/src
 ARG VER
 
-RUN curl https://ftp.gnu.org/gnu/binutils/binutils-$VER.tar.xz -o binutils.tar.xz
+RUN curl -#L https://ftpmirror.gnu.org/gnu/binutils/binutils-$VER.tar.xz -o binutils.tar.xz
 
 RUN tar xJf binutils.tar.xz
 WORKDIR /root/src/binutils-$VER
@@ -32,6 +32,8 @@ RUN patch -p1 < multiple-debug-info-per-line.patch
 
 COPY debug-info-for-directives.patch .
 RUN patch -p1 < debug-info-for-directives.patch
+
+RUN sed -i 's/#ifndef DWARF2_LINE_MIN_INSN_LENGTH/#if 1\n#undef DWARF2_LINE_MIN_INSN_LENGTH/' gas/dwarf2dbg.c
 
 RUN for target in ${TARGETS}; do cd /root/build/$target; emmake make -j`nproc`; done
 

@@ -4,7 +4,9 @@ services:
       - 80:80
       - 443:443
   assets:
-    image: node:25.0.0-alpine3.22
+    build:
+      context: ..
+      dockerfile: docker/assets.Dockerfile
     command:
       - ./esbuild
       - --watch=forever
