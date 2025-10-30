@@ -4268,19 +4268,24 @@ preamble = '''
 experiment = 2275
 category = 'Art'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
 ]
-synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle consisting of nine disks.'
+synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle.'
 preamble = '''
 <p>
-    Tower of Hanoi is a puzzle consisting of three poles, and a set amount of disks on the very left pole stacked from biggest diameter on the bottom, to smallest on the top.
-    The goal is to move all of the disks from the left pole to the right pole with the restrictions of only moving the top disk of a pole, and being forbidden to stack a bigger disk onto a smaller disk.
+    Tower of Hanoi is a puzzle consisting of three poles, and a set amount of
+    disks on the very left pole stacked from biggest diameter on the bottom,
+    to smallest on the top. The goal is to move all of the disks from the left
+    pole to the right pole with the restrictions of only moving the top disk
+    of a pole, and being forbidden to stack a bigger disk onto a smaller disk.
     With N disks, there's always a unique optimal solution with 2**N - 1 steps.
 
 <p>
-    Print out all the steps of the optimal solution to solve a Tower of Hanoi puzzle consisting of nine disks.
-    Each step describes the number of the starting pole and the pole it goes to. (i.e: 1 -> 3 would mean put top disk from Pole 1 onto Pole 3.)
+    Print out all the steps of the optimal solution to solve a Tower of Hanoi
+    puzzle consisting of nine disks. Each step describes the number of the
+    starting pole and the pole it goes to. (i.e: 1 -> 3 would mean put top
+    disk from Pole 1 onto Pole 3.)
 '''
 
 ['Transpose Sentence']
