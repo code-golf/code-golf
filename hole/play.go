@@ -20,6 +20,9 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+// Limit how many runs can run at once.
+var runSemaphore = make(chan struct{}, 8)
+
 var timeout = 5 * time.Second
 
 // Increase the timeout under e2e as the hardware is less powerful than live.
@@ -88,7 +91,12 @@ func Play(
 	for i, answer := range answers {
 		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
 
-		g.Go(func() error { return play(ctx, hole, lang, code, &runs[i]) })
+		g.Go(func() error {
+			runSemaphore <- struct{}{}
+			defer func() { <-runSemaphore }()
+
+			return play(ctx, hole, lang, code, &runs[i])
+		})
 	}
 
 	return runs, g.Wait()

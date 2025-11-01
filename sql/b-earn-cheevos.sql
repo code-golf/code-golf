@@ -101,6 +101,12 @@ BEGIN
     IF hole = 'poker' AND lang = 'fish' THEN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
 
+    -- 🚩 Flag Those Mines
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('f-sharp', 'factor', 'forth', 'fortran');
+    IF hole = 'minesweeper' AND found THEN
+        earned := earn(earned, 'flag-those-mines', user_id); END IF;
+
     -- 🏞️ Go Forth!
     IF langs_for_hole @> '{go,forth}' THEN
         earned := earn(earned, 'go-forth', user_id); END IF;
