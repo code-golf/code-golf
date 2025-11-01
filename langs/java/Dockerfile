@@ -41,6 +41,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/java -s -static java.c
 
 FROM codegolf/lang-base
 
+COPY --from=0 /bin/rm                               /bin/
 COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /opt/java/bin/java                    /opt/java/bin/
 COPY --from=0 /opt/java/conf/security/java.security /opt/java/conf/security/
