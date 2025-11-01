@@ -2203,7 +2203,6 @@ preamble = '''
 '''
 
 [Minesweeper]
-experiment = 1025
 category = 'Gaming'
 released = 2025-11-01
 links = [
