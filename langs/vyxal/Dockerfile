@@ -2,12 +2,22 @@ FROM alpine:3.22 AS builder
 
 ENV VER=3.10.3
 
-RUN wget -qO vyxal.jar https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar
+RUN wget -qO /usr/lib/vyxal.jar https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar
 
 FROM codegolf/lang-java
 
-COPY --from=0 /vyxal.jar /
+COPY --from=0 /bin/sh            /bin/
+COPY --from=0 /usr/lib/vyxal.jar /usr/lib/
+
+# Delete base archive used for AppCDS by Kotlin.
+RUN rm /opt/java/lib/server/classes.jsa
+
+FROM codegolf/lang-base
+
+COPY --from=1 /lib /lib
+COPY --from=1 /opt /opt
+COPY --from=1 /usr /usr
 
 ENTRYPOINT ["/opt/java/bin/java"]
 
-CMD ["-jar", "vyxal.jar", "-h"]
+CMD ["-jar", "/usr/lib/vyxal.jar", "-h"]
