@@ -1154,9 +1154,9 @@ end
 
 [K]
 args    = [ '/usr/bin/k', '/proc/self/fd/0' ]
-size    = '605 KiB'
-version = '544d014afd'
-website = 'https://codeberg.org/ngn/k'
+size    = '668 KiB'
+version = '13a5a5afeb'
+website = 'https://codeberg.org/growler/k'
 example = '''
 /Printing
 `0:"Hello, World!"
