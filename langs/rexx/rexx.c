@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* rexx = "/usr/bin/regina", *code = "code.rexx";
+const char* rexx = "/usr/local/bin/rexx", *code = "code.rexx";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -32,30 +31,12 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    pid_t pid;
-
-    if (!(pid = fork())) {
-        execl(rexx, rexx, "--compile", "code", code, NULL);
-        ERR_AND_EXIT("execl");
-    }
-
-    int status;
-
-    waitpid(pid, &status, 0);
-
-    if (!WIFEXITED(status))
-        exit(EXIT_FAILURE);
-
-    if (WEXITSTATUS(status))
-        return WEXITSTATUS(status);
-
-    int rargc = argc + 3;
+    int rargc = argc + 2;
     char** rargv = malloc(rargc * sizeof(char*));
     rargv[0] = (char*) rexx;
-    rargv[1] = "--execute";
-    rargv[2] = "--args";
-    rargv[3] = "code";
-    memcpy(&rargv[4], &argv[2], (argc - 2) * sizeof(char*));
+    rargv[1] = "--args";
+    rargv[2] = (char*) code;
+    memcpy(&rargv[3], &argv[2], (argc - 2) * sizeof(char*));
     rargv[rargc - 1] = NULL;
 
     execv(rexx, rargv);
