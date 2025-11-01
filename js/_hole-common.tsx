@@ -1,8 +1,13 @@
-import { ASMStateField }                       from '@defasm/codemirror';
+import { ASMStateField }                       from './assembly/codemirror';
 import { $, $$, byteLen, charLen, comma, ord } from './_util';
 import { Vim }                                 from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions } from './_codemirror';
+import { asyncExtensions, EditorState, EditorView, extensions } from './_codemirror';
 import LZString                                from 'lz-string';
+import { Compartment }                         from '@codemirror/state';
+
+function isAssembly(lang: string): boolean {
+    return lang == 'assembly' || lang == 'arm64' || lang == 'risc-v';
+}
 
 let tabLayout: boolean = false;
 
@@ -64,7 +69,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         lang = hashLang && langs[hashLang] ? hashLang : 'python';
 
         // Assembly only has bytes.
-        if (lang == 'assembly')
+        if (isAssembly(lang))
             setSolution(0);
 
         localStorage.setItem('lang', lang);
@@ -188,8 +193,25 @@ export function getSolution() {
     return solution;
 }
 
+let setStateGeneration = new WeakMap<EditorView, {generation: number}>();
+
 export function setState(code: string, editor: EditorView) {
     if (!editor) return;
+
+    let generationHolder = setStateGeneration.get(editor);
+    if(!generationHolder) {
+        generationHolder = {generation: 0};
+        setStateGeneration.set(editor, generationHolder);
+    }
+
+    // make sure that any async extensions that are still loading for previous setState calls are ignored once the promise resolves
+    ++generationHolder.generation;
+
+    const usedAsyncExtensions = [];
+    if(lang in asyncExtensions) {
+        usedAsyncExtensions.push(asyncExtensions[lang]);
+    }
+    const asyncExtensionCompartments = usedAsyncExtensions.map(_ => new Compartment());
     editor.setState(
         EditorState.create({
             doc: code,
@@ -200,12 +222,30 @@ export function setState(code: string, editor: EditorView) {
                 ['fish', 'hexagony'].includes(lang)
                     ? extensions.zeroIndexedLineNumbers : [extensions.lineNumbers, extensions.bracketMatching],
                 // These languages shouldn't wrap lines.
-                ['assembly', 'fish', 'hexagony'].includes(lang)
+                isAssembly(lang) || ['fish', 'hexagony'].includes(lang)
                     ? [] : EditorView.lineWrapping,
+                asyncExtensionCompartments.map(compartment => compartment.of([]))
             ],
         }),
     );
     editor.dispatch();  // Dispatch to update strokes.
+
+    const generation = generationHolder.generation;
+    const weakEditor = new WeakRef(editor);
+
+    for(let i = 0; i < usedAsyncExtensions.length; ++i) {
+        const compartment = asyncExtensionCompartments[i]
+        usedAsyncExtensions[i]().then(extension => {
+            const editor = weakEditor.deref();
+            if(editor && generation === generationHolder.generation) {
+                editor.dispatch({effects: compartment.reconfigure(extension)});
+            }
+        }).catch(e => {
+            if(generation === generationHolder.generation) {
+                console.error("Failed to load editor extension", e);
+            }
+        });
+    }
 }
 
 export function setCode(code: string, editor: EditorView | null) {
@@ -745,10 +785,10 @@ export function setCodeForLangAndSolution(editor: any) {
     setState(localStorage.getItem(getAutoSaveKey(lang, solution)) ||
         getSolutionCode(lang, solution) || langs[lang].example, editor);
 
-    if (lang == 'assembly') scoring = 0;
+    if (isAssembly(lang)) scoring = 0;
     const charsTab = $('#scoringTabs a:last-child');
     if (charsTab)
-        charsTab.classList.toggle('hide', lang == 'assembly');
+        charsTab.classList.toggle('hide', isAssembly(lang));
 
     refreshScores(editor);
 
@@ -764,7 +804,7 @@ export async function populateScores(editor: any) {
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
     const res       = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
     const rows      = res.ok ? await res.json() : [];
-    const colspan   = lang == 'assembly' ? 3 : 4;
+    const colspan   = isAssembly(lang) ? 3 : 4;
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
@@ -784,7 +824,7 @@ export async function populateScores(editor: any) {
                         <span>{comma(r.bytes)}</span>
                     </a>}
             </td>
-            {lang == 'assembly' ? '' : <td title={tooltip(r, 'Chars')}>
+            {isAssembly(lang) ? '' : <td title={tooltip(r, 'Chars')}>
                 {scoringID != 'chars' ? comma(r.chars) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
                         <span>{comma(r.chars)}</span>
@@ -817,14 +857,18 @@ export async function populateScores(editor: any) {
     });
 }
 
-export function getScorings(tr: any, editor: any) {
+export function getScorings(tr: any, editor: EditorView) {
     const code = tr.state.doc.toString();
     const total: {byte?: number, char?: number} = {};
     const selection: {byte?: number, char?: number} = {};
 
-    if (getLang() == 'assembly')
-        total.byte = (editor.state.field(ASMStateField) as any).head.length();
-    else {
+    if (isAssembly(getLang())) {
+        const stateField = (editor.state.field(ASMStateField, false) as any);
+        // not present if the extension is still loading
+        if(stateField) {
+            total.byte = stateField.head.length();
+        }
+    } else {
         total.byte = byteLen(code);
         total.char = charLen(code);
 

@@ -15,11 +15,13 @@ COPY fonts        ./fonts
 COPY css          ./css
 COPY js           ./js
 COPY svg          ./svg
+COPY --from=codegolf/aspp-wasm /wasm/* ./wasm/
+COPY --from=codegolf/binutils-wasm /wasm/* ./wasm/
 
 COPY esbuild package-lock.json package.json ./
 
 RUN ./esbuild \
- && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' \) \
+ && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' -or -name '*.wasm' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
 # Build lang hasher.
@@ -85,6 +87,8 @@ COPY --from=codegolf/lang-racket       / /langs/racket/rootfs/
 COPY --from=codegolf/lang-05ab1e       / /langs/05ab1e/rootfs/
 COPY --from=codegolf/lang-pascal       / /langs/pascal/rootfs/
 COPY --from=codegolf/lang-viml         / /langs/viml/rootfs/
+COPY --from=codegolf/lang-risc-v       / /langs/risc-v/rootfs/
+COPY --from=codegolf/lang-arm64        / /langs/arm64/rootfs/
 COPY --from=codegolf/lang-uiua         / /langs/uiua/rootfs/
 COPY --from=codegolf/lang-qore         / /langs/qore/rootfs/
 COPY --from=codegolf/lang-nim          / /langs/nim/rootfs/

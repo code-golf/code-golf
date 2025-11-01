@@ -160,11 +160,11 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_best_chars,
 			        old_best_chars_submitted
 			   FROM save_solution(
-			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			            bytes   := CASE WHEN $5 >= 0
 			                            THEN $5
 			                            ELSE octet_length($1)
 			                            END,
-			            chars   := CASE WHEN $3 = 'assembly'::lang
+			            chars   := CASE WHEN $5 >= 0
 			                            THEN NULL
 			                            ELSE char_length($1)
 			                            END,

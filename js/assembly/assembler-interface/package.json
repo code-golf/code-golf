@@ -1,0 +1,13 @@
+{
+    "name": "assembler-interface",
+    "version": "0.1.0",
+    "description": "Interface definitions for assemblers",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
+    }
+}

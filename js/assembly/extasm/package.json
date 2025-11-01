@@ -1,0 +1,13 @@
+{
+  "name": "extasm",
+  "version": "0.1.0",
+  "description": "Provides a DefAsm-compatible interface for an assembler-interface assembler",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
+    }
+}

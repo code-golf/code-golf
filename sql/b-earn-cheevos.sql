@@ -62,7 +62,7 @@ BEGIN
         earned := earn(earned, 'archivist', user_id); END IF;
 
     -- 🪛 Assembly Required
-    IF hole = 'seven-segment' AND lang = 'assembly' THEN
+    IF hole = 'seven-segment' AND (lang = 'assembly' OR lang = 'risc-v' OR lang = 'arm64') THEN
         earned := earn(earned, 'assembly-required', user_id); END IF;
 
     -- 🐦 Bird Is the Word
