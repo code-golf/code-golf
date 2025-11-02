@@ -1,12 +1,10 @@
-FROM debian:bullseye-slim AS builder
+FROM alpine:3.22 AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl gcc make
+RUN apk add --no-cache curl gcc make musl-dev
 
-ENV HB_BUILD_CONTRIBS='no' HB_BUILD_STRIP='all' HB_USER_LDFLAGS='-static' VER=3.0.0
+ENV HB_BUILD_CONTRIBS='no' HB_BUILD_STRIP='bin' HB_USER_LDFLAGS='-static' VER=53f3d24
 
-RUN curl -#L https://downloads.sourceforge.net/harbour-project/harbour-$VER.tar.gz \
+RUN curl -#L https://github.com/harbour/core/tarball/$VER \
   | tar xz --strip-components 1
 
 RUN make -j`nproc` install
@@ -17,9 +15,8 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/harbour -s -static harbour.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/harbour     /usr/bin/
-COPY --from=0 /usr/local/bin/hbmk2 /usr/local/bin/
+COPY --from=0 /usr/bin/harbour           /usr/bin/
+COPY --from=0 /usr/local/bin/hbmk2       /usr/local/bin/
+COPY --from=0 /usr/local/include/harbour /usr/local/include/harbour
 
 ENTRYPOINT ["harbour"]
-
-CMD ["--version"]
