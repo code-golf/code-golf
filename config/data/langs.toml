@@ -1253,7 +1253,7 @@ end
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
 size    = '14.9 MiB'
-version = '2.2.4'
+version = '2.2.6'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1492,8 +1492,8 @@ foreach string arg in (ARGV)
 [R]
 args       = [ '/usr/bin/R', '-' ]
 args-quine = [ '/usr/bin/R', '-e', "source('stdin')" ]
-size       = '30.5 MiB'
-version    = '4.5.1'
+size       = '30.6 MiB'
+version    = '4.5.2'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
