@@ -12,7 +12,7 @@ sub get {
 
     state $gnurl;
 
-    if $^url.ends-with(any <awk bash forth sed>) {
+    if $^url.ends-with(any <awk bash cobol forth sed>) {
         return $ua.get($gnurl.subst(/\/ <-[/]>+ \/ $/, $url.match(/ (\/ (<-[/]>+) $) /)) ~ "?C=M;O=D")<content>.decode
             if $gnurl;
 
@@ -47,7 +47,7 @@ constant %paths = (
     'Civet'        => 'registry.npmjs.org/@danielx/civet/latest',
     'CJam'         => 'sourceforge.net/projects/cjam/files',
     'Clojure'      => 'github.com/babashka/babashka/releases/latest',
-    'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
+    'COBOL'        => 'ftpmirror.gnu.org/gnu/gnucobol',
     'Coconut'      => 'pypi.org/pypi/coconut/json',
     'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
     'Common Lisp'  => 'en.wikipedia.org/wiki/CLISP',
