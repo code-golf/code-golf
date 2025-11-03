@@ -33,7 +33,7 @@ type Lang struct {
 	Digest               string   `json:"digest"`
 	DigestTrunc          []byte   `json:"-"`
 	Example              string   `json:"example"`
-	Experiment           int      `json:"experiment,omitempty"`
+	Experiment           int      `json:"experiment,omitzero"`
 	ID                   string   `json:"id"`
 	LogoURL              string   `json:"logo-url"`
 	Name                 string   `json:"name"`
