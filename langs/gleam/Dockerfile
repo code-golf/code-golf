@@ -1,12 +1,12 @@
 FROM codegolf/lang-erlang
 
-FROM rust:1.90.0-slim-trixie AS builder
+FROM rust:1.91.0-slim-trixie AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV VER=1.12.0
+ENV VER=1.13.0
 
 WORKDIR /gleam
 

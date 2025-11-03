@@ -77,7 +77,7 @@ type HoleAnswer struct {
 
 type HoleAnswerFunc func() []HoleAnswer
 
-func init() {
+func initHoles() {
 	var holes map[string]*Hole
 	unmarshal("data/holes.toml", &holes)
 

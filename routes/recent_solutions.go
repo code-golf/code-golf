@@ -20,6 +20,7 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		Lang                             *config.Lang
 		Golfers, Rank, Strokes, TieCount int
 		Submitted                        time.Time
+		Time                             *time.Duration
 	}
 
 	data := struct {
@@ -48,7 +49,8 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Select(
 		&data.Rows,
-		` SELECT experimental, golfers, hole, lang, login name, strokes, rank, submitted, tie_count
+		` SELECT experimental, golfers, hole, lang, login name, strokes, rank,
+		         submitted, tie_count, time_ms * 1e6 time
 		    FROM rankings
 		    JOIN users ON user_id = id
 		   WHERE (hole = $1 OR $1 IS NULL)

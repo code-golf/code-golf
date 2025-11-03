@@ -1,4 +1,4 @@
-FROM rust:1.90.0-slim-trixie AS builder
+FROM rust:1.91.0-slim-trixie AS builder
 
 ENV CRT='x86_64-unknown-linux-musl' VER=0.1.4
 

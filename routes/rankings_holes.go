@@ -31,6 +31,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			Name                                     string
 			OtherStrokes                             *int
 			Submitted                                time.Time
+			Time                                     *time.Duration
 		}
 	}{
 		HoleID:  param(r, "hole"),
@@ -136,6 +137,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          row_overall      row,
 			          strokes          strokes,
 			          submitted        submitted,
+			          time_ms * 1e6    time,
 			          COUNT(*) OVER()  total
 			     FROM rankings
 			     JOIN users ON user_id = id
@@ -154,6 +156,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          row              row,
 			          strokes          strokes,
 			          submitted        submitted,
+			          time_ms * 1e6    time,
 			          COUNT(*) OVER()  total
 			     FROM rankings
 			     JOIN users ON user_id = id
