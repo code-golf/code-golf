@@ -9,7 +9,7 @@ FROM codegolf/lang-java
 COPY --from=0 /bin/sh            /bin/
 COPY --from=0 /usr/lib/vyxal.jar /usr/lib/
 
-# Delete base archive used for AppCDS by Kotlin.
+# Delete default CDS archive used for AppCDS by Kotlin.
 RUN rm /opt/java/lib/server/classes.jsa
 
 FROM codegolf/lang-base
@@ -18,6 +18,4 @@ COPY --from=1 /lib /lib
 COPY --from=1 /opt /opt
 COPY --from=1 /usr /usr
 
-ENTRYPOINT ["/opt/java/bin/java"]
-
-CMD ["-jar", "/usr/lib/vyxal.jar", "-h"]
+CMD ["/opt/java/bin/java", "-jar", "/usr/lib/vyxal.jar", "--version"]

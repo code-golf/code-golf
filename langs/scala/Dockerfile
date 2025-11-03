@@ -25,7 +25,7 @@ COPY --from=0 /usr/local/lib/scala-compiler.jar \
 
 SHELL ["/bin/bash", "-c"]
 
-# Delete base archive used for AppCDS by Kotlin.
+# Delete default CDS archive used for AppCDS by Kotlin.
 RUN rm /opt/java/lib/server/classes.jsa
 
 FROM codegolf/lang-base
