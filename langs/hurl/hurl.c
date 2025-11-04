@@ -5,13 +5,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* hurl = "/usr/bin/hurl", *code = "code.hurl", *input = "argv.txt";
+const char* hurl = "/usr/local/bin/hurl", *code = "code.hurl", *input = "argv.txt";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version")) {
-        execv(hurl, argv);
-        ERR_AND_EXIT("execv");
-    }
+    if (!strcmp(argv[1], "--version"))
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");

@@ -987,9 +987,9 @@ example = '''
 '''
 
 [Hurl]
-args       = [ '/usr/bin/hurlwrapper', '-' ]
+args       = [ '/usr/bin/hurl', '-' ]
 experiment = 1890
-size       = '2.09 MiB'
+size       = '2.11 MiB'
 version    = '0bcafce'
 website    = 'https://hurl.wtf'
 example    = '''
