@@ -62,7 +62,7 @@ func Run(db *sqlx.DB, hourly bool) {
 
 func awardCheevos(db *sqlx.DB, earnedUsers map[int]time.Time, cheevoID string) {
 	rows, err := db.Query(
-		"SELECT earned, user_id FROM trophies WHERE trophy = $1",
+		"SELECT earned, user_id FROM cheevos WHERE cheevo = $1",
 		cheevoID,
 	)
 	if err != nil {
@@ -83,9 +83,9 @@ func awardCheevos(db *sqlx.DB, earnedUsers map[int]time.Time, cheevoID string) {
 
 			if earned != newEarned {
 				if _, err := db.Exec(
-					`UPDATE trophies
+					`UPDATE cheevos
 					    SET earned  = $1
-					  WHERE trophy  = $2
+					  WHERE cheevo  = $2
 					    AND user_id = $3`,
 					newEarned,
 					cheevoID,
@@ -95,7 +95,7 @@ func awardCheevos(db *sqlx.DB, earnedUsers map[int]time.Time, cheevoID string) {
 				}
 			}
 		} else if _, err := db.Exec(
-			"DELETE FROM trophies WHERE trophy = $1 AND user_id = $2",
+			"DELETE FROM cheevos WHERE cheevo = $1 AND user_id = $2",
 			cheevoID,
 			userID,
 		); err != nil {
@@ -109,7 +109,8 @@ func awardCheevos(db *sqlx.DB, earnedUsers map[int]time.Time, cheevoID string) {
 
 	for userID, earned := range earnedUsers {
 		if _, err := db.Exec(
-			`INSERT INTO trophies SELECT $1, $2, $3
+			`INSERT INTO cheevos (earned, user_id, cheevo)
+			      SELECT              $1,      $2,     $3
 			WHERE EXISTS (SELECT * FROM users WHERE id = $2)`,
 			earned,
 			userID,

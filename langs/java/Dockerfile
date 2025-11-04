@@ -4,12 +4,12 @@ RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontc
                        libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
 
 # Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
-ENV VER=24.0.2 BUILD=12
+ENV VER=25.0.1 BUILD=8
 
-RUN curl -#L https://github.com/adoptium/temurin24-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK24U-jdk_x64_alpine-linux_hotspot_${VER}_$BUILD.tar.gz \
+RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk_x64_alpine-linux_hotspot_${VER}_$BUILD.tar.gz \
   | tar xz --directory /tmp --strip-components 1
 
-RUN curl -#L https://github.com/adoptium/temurin24-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK24U-jdk-sources_${VER}_$BUILD.tar.gz \
+RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk-sources_${VER}_$BUILD.tar.gz \
   | tar xz --strip-components 1
 
 RUN bash configure                     \
@@ -27,7 +27,8 @@ RUN /build/release/images/jdk/bin/jlink           \
     --add-modules jdk.compiler,jdk.unsupported    \
     --compress zip-9                              \
     --module-path /build/release/images/jdk/jmods \
-    --output /opt/java
+    --output /opt/java                            \
+    --strip-debug
 
 COPY java.c /
 
@@ -35,7 +36,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/java -s -static java.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1              /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /opt/java/bin/java                    /opt/java/bin/
 COPY --from=0 /opt/java/conf/security/java.security /opt/java/conf/security/
 COPY --from=0 /opt/java/lib/jrt-fs.jar              \

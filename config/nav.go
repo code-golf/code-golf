@@ -28,7 +28,7 @@ var Nav map[string]*Navigaton
 
 // TODO OnePerRow needs a better name because it also means a single dropdown,
 // maybe something like unified/single namespace.
-func init() {
+func initNav() {
 	Nav = map[string]*Navigaton{
 		"golfer/settings": {
 			OnePerRow: true,
