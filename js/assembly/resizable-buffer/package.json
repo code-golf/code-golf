@@ -1,0 +1,13 @@
+{
+    "name": "resizable-buffer",
+    "version": "1.0.0",
+    "description": "Provides a resizable Uint8Array",
+    "main": "index.js",
+    "types": "index.d.ts",
+    "scripts": {
+        "build": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "^5.0.0"
+    }
+  }

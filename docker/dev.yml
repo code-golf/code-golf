@@ -4,15 +4,14 @@ services:
       - 80:80
       - 443:443
   assets:
-    image: node:25.0.0-alpine3.22
+    build:
+      context: ..
+      dockerfile: docker/assets.Dockerfile
     command:
       - ./esbuild
       - --watch=forever
     stop_signal: SIGKILL
     user: 1000:1000
-    volumes:
-      - ..:/code-golf
-    working_dir: /code-golf
   db:
     ports:
       - 5432:5432

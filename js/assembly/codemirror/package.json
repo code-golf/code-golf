@@ -1,0 +1,39 @@
+{
+  "name": "assembly-codemirror",
+  "version": "2.0.0",
+  "description": "CodeMirror 6 extension utilizing a DefAssembler-compatible assembler",
+  "main": "assembly.js",
+  "types": "assembly.d.ts",
+  "scripts": {
+    "build": "lezer-generator assembly.grammar --output parser",
+    "prepare": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewDefectus/defasm.git"
+  },
+  "keywords": [
+    "assembly",
+    "x86",
+    "x64",
+    "codemirror"
+  ],
+  "author": "Defectus",
+  "type": "module",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NewDefectus/defasm/issues"
+  },
+  "homepage": "https://github.com/NewDefectus/defasm/tree/master/codemirror#readme",
+  "dependencies": {
+    "@codemirror/language": "",
+    "@codemirror/state": "",
+    "@codemirror/view": "",
+    "@lezer/common": "",
+    "@lezer/highlight": "",
+    "@lezer/lr": ""
+  },
+  "devDependencies": {
+    "@lezer/generator": ""
+  }
+}
