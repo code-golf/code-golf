@@ -30,6 +30,7 @@ var (
 type Lang struct {
 	Args, Redirects, Env []string `json:"-"`
 	ArgsQuine            []string `json:"-" toml:"args-quine"`
+	Assembly             bool     `json:"-"`
 	Digest               string   `json:"digest"`
 	DigestTrunc          []byte   `json:"-"`
 	Example              string   `json:"example"`
