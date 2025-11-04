@@ -24,6 +24,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"bytes":     pretty.Bytes,
 	"comma":     pretty.Comma,
 	"dec":       func(i int) int { return i - 1 },
+	"duration":  pretty.Duration,
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
 	"html":      func(html string) template.HTML { return template.HTML(html) },
@@ -32,6 +33,13 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"page":      func(i int) int { return i/pager.PerPage + 1 },
 	"title":     pretty.Title,
 	"time":      pretty.Time,
+
+	"amount": func(i int, term string) string {
+		if i != 1 {
+			term += "s"
+		}
+		return pretty.Comma(i) + " " + term
+	},
 
 	"param": func(r *http.Request, key string) string {
 		value, _ := url.QueryUnescape(r.PathValue(key))

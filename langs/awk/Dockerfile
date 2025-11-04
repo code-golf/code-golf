@@ -15,9 +15,9 @@ RUN ./configure    \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/gawk            /usr/bin/awk
-COPY --from=0 /usr/lib/gawk            /usr/lib/gawk
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/gawk       /usr/bin/awk
+COPY --from=0 /usr/lib/gawk       /usr/lib/gawk
 
 ENTRYPOINT ["awk"]
 

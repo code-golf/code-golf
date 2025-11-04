@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.305-alpine3.22-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.306-alpine3.22-amd64 AS builder
 
 RUN apk add --no-cache build-base zlib-dev
 
@@ -13,9 +13,9 @@ RUN curl -L https://github.com/SirBogman/Hexagony/tarball/$VERSION | tar xz \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/lib/libgcc_s.so.1   \
-              /usr/lib/libstdc++.so.6  /usr/lib/
-COPY --from=0 /Hexagony                /usr/bin/hexagony
+COPY --from=0 /lib/ld-musl-*.so.1     /lib/
+COPY --from=0 /usr/lib/libgcc_s.so.1  \
+              /usr/lib/libstdc++.so.6 /usr/lib/
+COPY --from=0 /Hexagony               /usr/bin/hexagony
 
 ENTRYPOINT ["hexagony"]

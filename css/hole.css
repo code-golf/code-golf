@@ -366,6 +366,12 @@ h2 {
 
 .show-whitespace :is(.cm-highlightSpace, .cm-highlightTab) { opacity: .5 }
 
+.cm-highlightSpace {
+    /* The default whitespace circle is too big.
+       The built in styling has a higher specificity, since it also uses an internal class `.ͼ1`. */
+    background-image: radial-gradient(circle 0.5rem at 50% 55%, #aaa 20%, transparent 5%) !important;
+}
+
 #diffKindSettings {
     margin: 0.5rem;
 }

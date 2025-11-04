@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"cmp"
 	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"fmt"
@@ -107,13 +108,15 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	out := struct {
-		Cheevos     []config.Cheevo     `json:"cheevos"`
-		LoggedIn    bool                `json:"logged_in"`
-		RankUpdates []Golfer.RankUpdate `json:"rank_updates"`
-		Runs        []hole.Run          `json:"runs"`
+		Cheevos      []config.Cheevo     `json:"cheevos"`
+		Experimental bool                `json:"experimental"`
+		LoggedIn     bool                `json:"logged_in"`
+		RankUpdates  []Golfer.RankUpdate `json:"rank_updates"`
+		Runs         []hole.Run          `json:"runs"`
 	}{
-		LoggedIn: golfer != nil,
-		Runs:     runs,
+		Experimental: experimental,
+		LoggedIn:     golfer != nil,
+		Runs:         runs,
 	}
 
 	if golfer != nil && slices.ContainsFunc(
@@ -130,6 +133,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	if pass && golfer != nil {
 		out.RankUpdates =
 			[]Golfer.RankUpdate{{Scoring: "bytes"}, {Scoring: "chars"}}
+
+		longestRun := slices.MaxFunc(runs, func(a, b hole.Run) int {
+			return cmp.Compare(a.Time, b.Time)
+		})
 
 		if err := db.QueryRowContext(
 			r.Context(),
@@ -164,9 +171,11 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			            code    := $1,
 			            hole    := $2,
 			            lang    := $3,
+			            time_ms := $6,
 			            user_id := $4
 			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
+			longestRun.Time.Round(time.Millisecond)/time.Millisecond,
 		).Scan(
 			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].FailingStrokes,
@@ -218,11 +227,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
 			go discord.LogNewRecord(golfer, holeObj, langObj, recordUpdates, db)
-		}
-
-		// For now don't show any popups for experimental solutions.
-		if experimental {
-			out.RankUpdates = []Golfer.RankUpdate{}
 		}
 
 		// Cheevos.
