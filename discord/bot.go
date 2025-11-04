@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -23,6 +24,10 @@ var (
 	bot                 *discordgo.Session
 	lastAnnouncementMap = make(map[string]*RecAnnouncement)
 	mux                 sync.Mutex
+
+	// TODO Make this dynamic based on hole/lang age.
+	freshHole = config.HoleByID["minesweeper"]
+	freshLang = config.LangByID["groovy"]
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
@@ -58,19 +63,39 @@ func init() {
 		var err error
 		if bot, err = discordgo.New("Bot " + botToken); err != nil {
 			log.Println(err)
+			return
 		} else if err = bot.Open(); err != nil {
 			log.Println(err)
 			bot = nil
+			return
+		}
+
+		// Set the topic of the fresh-grapes channel.
+		var freshNames []string
+		if freshHole != nil {
+			freshNames = append(freshNames, freshHole.Name)
+		}
+		if freshLang != nil {
+			freshNames = append(freshNames, freshLang.Name)
+		}
+		topic := "Currently nothing."
+		if len(freshNames) > 0 {
+			topic = "Currently " + strings.Join(freshNames, " and ") + "."
+		}
+		if _, err = bot.ChannelEdit(
+			chanFreshID, &discordgo.ChannelEdit{Topic: topic},
+		); err != nil {
+			log.Println(err)
+			return
 		}
 	}()
 }
 
-// TODO Make this dynamic based on hole/lang age.
 func channel(hole *config.Hole, lang *config.Lang) string {
 	if hole.Experiment != 0 || lang.Experiment != 0 {
 		return chanWildID
 	}
-	if hole.ID == "trinomial-triangle" || lang.ID == "groovy" {
+	if freshHole == hole || freshLang == lang {
 		return chanFreshID
 	}
 	return chanSourID

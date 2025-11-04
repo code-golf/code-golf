@@ -3,7 +3,7 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache curl dash gcc musl-dev pcre tcc tcc-libs-static
 
 # Also bump Arturo.
-ENV VER=2.2.4
+ENV VER=2.2.6
 
 RUN curl -#L https://nim-lang.org/download/nim-$VER.tar.xz \
   | tar xJ --strip-components 1

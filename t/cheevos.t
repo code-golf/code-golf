@@ -47,9 +47,7 @@ for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     $cheevos.=subst: '{', '{solve-quine,'     if $_ eq 'quine';
     $cheevos.=subst: ',}', '}';
 
-    is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', ?, 'c', 1)", $_,
-    ).row, $cheevos, "$_/c earns $cheevos";
+    is save-solution(:hole($_) :lang<c>), $cheevos, "$_/c earns $cheevos";
 }
 
 for <
@@ -75,24 +73,18 @@ for <
     united-states                    pascal     {going-postal}
     𝑒                                r          {emergency-room}
 > -> $hole, $lang, $cheevos {
-    is $dbh.execute(
-        "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",
-        $lang eq 'assembly' ?? Nil !! 2, $hole, $lang,
-    ).row, $cheevos, "$hole/$lang earns $cheevos";
+    is save-solution(:$hole :$lang), $cheevos, "$hole/$lang earns $cheevos";
 }
 
 for <brainfuck d hexagony javascript nim swift sql zig> {
     my $cheevos = $_ eq 'zig' ?? '{pangramglot}' !! '{}';
 
-    is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', 'pangram-grep', ?, 1)",
-        $_,
-    ).row, $cheevos, "pangram-grep/$_ earns $cheevos";
+    is save-solution(:hole<pangram-grep> :lang($_)), $cheevos,
+        "pangram-grep/$_ earns $cheevos";
 }
 
-is $dbh.execute(
-    "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
-).row, '{different-strokes}', 'Earns {different-strokes}';
+is save-solution(:code<⛳> :hole<π> :lang<c>), '{different-strokes}',
+    'Earns {different-strokes}';
 
 for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     my $earns = %langs{ my $i = ++$ } // '{}';
@@ -106,10 +98,18 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';
     $earns.=subst: ',}', '}';
 
-    is $dbh.execute(
-        "SELECT earned FROM save_solution(2, ?, 'ab', 'musical-chords', ?, 1)",
-        $_ eq 'assembly' ?? Nil !! 2, $_,
-    ).row, $earns, "Lang $i ($_) earns $earns";
+    is save-solution(:hole<musical-chords> :lang($_)), $earns,
+        "Lang $i ($_) earns $earns";
 }
 
 done-testing;
+
+sub save-solution(:$code = 'ab', :$hole, :$lang) {
+    return $dbh.execute(
+        'SELECT earned FROM save_solution(
+            bytes := ?, chars := ?, code := ?, hole := ?,
+            lang  := ?, time_ms := 1::smallint, user_id := 1)',
+        $code.encode('UTF-8').bytes, $lang eq 'assembly' ?? Nil !! $code.chars,
+        $code, $hole, $lang,
+    ).row;
+}

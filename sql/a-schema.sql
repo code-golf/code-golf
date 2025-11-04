@@ -9,13 +9,13 @@ CREATE TYPE cheevo AS ENUM (
     'cunning-linguist', 'dammit-janet', 'different-strokes',
     'disappearing-act', 'dont-panic', 'double-slit-experiment',
     'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
-    'five', 'fore', 'forty-winks', 'go-forth', 'going-postal',
-    'gone-in-60-holes', 'happy-birthday-code-golf', 'happy-go-lucky',
-    'hello-world', 'hextreme-agony', 'horse-of-a-different-color',
-    'how-about-second-pi', 'hugs-and-kisses', 'inception', 'independence-day',
-    'interview-ready', 'into-space', 'its-over-9000', 'jeweler',
-    'just-kidding', 'like-comment-subscribe', 'marathon-runner',
-    'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
+    'five', 'flag-those-mines', 'fore', 'forty-winks', 'go-forth',
+    'going-postal', 'gone-in-60-holes', 'happy-birthday-code-golf',
+    'happy-go-lucky', 'hello-world', 'hextreme-agony',
+    'horse-of-a-different-color', 'how-about-second-pi', 'hugs-and-kisses',
+    'inception', 'independence-day', 'interview-ready', 'into-space',
+    'its-over-9000', 'jeweler', 'just-kidding', 'like-comment-subscribe',
+    'marathon-runner', 'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
     'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
     'patches-welcome', 'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot',
@@ -67,10 +67,10 @@ CREATE TYPE hole AS ENUM (
     'smooth-numbers', 'snake', 'spelling-numbers', 'sphenic-numbers',
     'star-wars-gpt', 'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
     'ten-pin-bowling', 'tic-tac-toe', 'time-distance', 'tongue-twisters',
-    'topological-sort', 'transpose-sentence', 'trinomial-triangle', 'turtle',
-    'tutorial', 'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2',
-    '𝑒'
+    'topological-sort', 'tower-of-hanoi', 'transpose-sentence',
+    'trinomial-triangle', 'turtle', 'tutorial', 'united-states',
+    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
+    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -178,8 +178,9 @@ CREATE TABLE follows (
 -- This table is a shadow copy, updated on startup, used in DB queries.
 -- TODO Move category here, remove config.HoleCategoryHstore.
 CREATE UNLOGGED TABLE holes (
-    id         hole NOT NULL PRIMARY KEY,
-    experiment int  NOT NULL
+    id         hole   NOT NULL PRIMARY KEY,
+    experiment int    NOT NULL,
+    name       citext NOT NULL
 );
 
 -- Ditto for config/data/langs.toml.
@@ -217,6 +218,7 @@ CREATE TABLE solutions (
     code        text      NOT NULL,
     tested      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     lang_digest bytea     NOT NULL,
+    time_ms     smallint, -- TODO make NOT NULL once everything re-tested.
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)
@@ -276,7 +278,7 @@ GROUP BY hole, lang, scoring
    WHERE count = 1;
 
 CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
-    select hole, lang, scoring, user_id, submitted,
+    select hole, lang, scoring, user_id, submitted, time_ms,
            holes.experiment != 0                          experimental_hole,
            langs.experiment != 0                          experimental_lang,
            holes.experiment != 0 OR langs.experiment != 0 experimental,
@@ -303,7 +305,7 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
       join min_per_lang using(hole, scoring)
 ), points as (
     select hole, lang, scoring, user_id, strokes, other_strokes, submitted,
-           experimental_hole, experimental_lang, experimental,
+           experimental_hole, experimental_lang, experimental, time_ms,
            coalesce(round(Sb / strokes * 1000), 0) points,
            coalesce(round(S  / strokes * 1000), 0) points_for_lang
       from strokes

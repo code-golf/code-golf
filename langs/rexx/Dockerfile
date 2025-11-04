@@ -12,7 +12,6 @@ RUN ./configure      \
     --disable-gci    \
     --disable-screen \
     --enable-64bit   \
-    --prefix=/usr    \
  && make install
 
 COPY rexx.c /
@@ -21,10 +20,9 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/rexx -s rexx.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1     /lib/
-COPY --from=0 /usr/bin/regina         \
-              /usr/bin/rexx           /usr/bin/
-COPY --from=0 /usr/lib/libregina.so.3 /usr/lib/
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/rexx       /usr/bin/
+COPY --from=0 /usr/local/bin/rexx /usr/local/bin/
 
 ENTRYPOINT ["rexx"]
 
