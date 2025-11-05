@@ -79,10 +79,10 @@ example    = '''
 '''
 
 [Arturo]
-args       = [ '/usr/bin/arturo', '-' ]
+args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '5.20 MiB'
-version    = 'e27286a'
+size       = '5.22 MiB'
+version    = 'b217bf3'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
