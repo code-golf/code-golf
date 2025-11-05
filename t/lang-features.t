@@ -11,7 +11,7 @@ is post-solution(|.value)<runs>[0]<stderr>, '', .key for
     raku-exp    => \(:lang<raku>       :code('use experimental')),
     tcl-min     => \(:lang<tcl>        :code('puts [expr min(5,6)]'));
 
-# AVX 512 wouldn't work on live, yet.
+# AVX 512 wouldn't work on the CI.
 like post-solution(:lang<j> :code('echo JVERSION'))<runs>[0]<stdout>,
     / '/j64/linux' /, 'J engine is baseline AMD 64 (no AVX 512)';
 

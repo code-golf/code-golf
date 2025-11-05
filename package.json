@@ -38,7 +38,6 @@
     "style-mod": ""
   },
   "devDependencies": {
-    "@types/diff": "",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "",
     "eslint": "",
