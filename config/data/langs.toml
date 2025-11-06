@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.23 MiB'
-version    = 'Algol 68 Genie 3.10.5'
+version    = 'Algol 68 Genie 3.10.6'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.4'
+version = 'Clang 21.1.5'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -1296,7 +1296,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '299 MiB'
-version    = '2025-10'
+version    = '2025-11'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1718,7 +1718,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.22 MiB'
-version = 'SQLite 3.50.4'
+version = 'SQLite 3.51.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1780,7 +1780,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '561 MiB'
-version = '6.2'
+version = '6.2.1'
 website = 'https://swift.org'
 example = '''
 // Printing
