@@ -41,7 +41,5 @@ var _ = answerFunc("binary-lambda-calculus", func() []Answer {
 	out := blcNum(outn)
 	tests = append(tests, test{in, out})
 
-	shuffle(tests)
-
-	return outputTests(tests)
+	return outputTests(shuffle(tests))
 })
