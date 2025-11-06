@@ -338,6 +338,30 @@ preamble = '''
 '''
 redirects = ["billiard"]
 
+['Binary Lambda Calculus']
+category = 'Computing'
+experiment = 1567
+links = [
+    { name = "Esolang Wiki", url = '//esolangs.org/wiki/Binary_lambda_calculus' },
+]
+synopsis = 'Normalize a binary lambda calculus expression.'
+preamble = '''
+<p>
+    Binary lambda calculus is a compact representation for expressions in lambda
+    calculus.
+
+<p>
+    <code>00</code> denotes a lambda, <code>01</code> denotes application, and
+    <code>1...10</code> with x 1s denotes the argument of the xth-innermost
+    lambda containing it. For example, <code>00000110110</code> denotes
+    <code>λx.λy.y x</code>.
+
+<p>
+    Given a list of binary lambda calculus expressions, output their normal forms.
+    You can assume that there are no infinite loops in the inputs.
+'''
+
+
 [brainfuck]
 category = 'Computing'
 links = [
