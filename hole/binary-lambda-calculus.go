@@ -29,7 +29,7 @@ var _ = answerFunc("binary-lambda-calculus", func() []Answer {
 		out := blcNum(i * j)
 		tests = append(tests, test{in, out})
 	}
-	
+
 	// Exponentiation
 	i := randInt(2, 3)
 	j := randInt(2, 3)
