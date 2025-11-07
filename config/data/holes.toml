@@ -343,6 +343,7 @@ category = 'Computing'
 experiment = 1567
 links = [
     { name = 'Esolang Wiki', url = '//esolangs.org/wiki/Binary_lambda_calculus' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Universal_Lambda_Machine' },
 ]
 synopsis = 'Normalize a binary lambda calculus expression.'
 preamble = '''
