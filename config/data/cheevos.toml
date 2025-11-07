@@ -280,6 +280,14 @@ name        = 'X-Factor'
 emoji       = '❌'
 description = 'Solve <a href=/factorial-factorisation#factor>Factorial Factorisation in Factor</a>.'
 
+[['Hole/Lang Specific']]
+name        = 'Zoodiac Signs'
+emoji       = '🌠'
+description = 'Solve <a href=/zodiac-signs>Zodiac Signs</a> in any three languages whose logo depicts an animal.'
+holes       = ['zodiac-signs']
+langs       = ['awk', 'basic', 'civet', 'factor', 'ocaml', 'perl', 'prolog', 'python', 'raku', 'swift', 'wren']
+target      = 3
+
 # Miscellaneous
 
 [[Miscellaneous]]
