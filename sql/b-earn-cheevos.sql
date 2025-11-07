@@ -145,6 +145,12 @@ BEGIN
     IF hole = 'λ' AND found THEN
         earned := earn(earned, 'mary-had-a-little-lambda', user_id); END IF;
 
+    -- 🧭 Never Eat Shredded Wheat
+    SELECT COUNT(DISTINCT SUBSTR(unnest::text, 1, 1)) = 4 INTO found
+      FROM UNNEST(langs_for_hole) WHERE unnest::text similar to '[nesw]%';
+    IF hole = 'arrows' AND found THEN
+        earned := earn(earned, 'never-eat-shredded-wheat', user_id); END IF;
+
     -- 📴 Off-the-grid
     IF hole IN ('sudoku', 'sudoku-fill-in') AND lang = 'hexagony' THEN
         earned := earn(earned, 'off-the-grid', user_id); END IF;
@@ -198,6 +204,12 @@ BEGIN
     -- 💡 Watt Are You Doing?
     IF hole = 'si-units' AND lang = 'powershell' THEN
         earned := earn(earned, 'watt-are-you-doing', user_id); END IF;
+
+    -- 🏛️ When in Rome
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('c', 'd', 'v', 'viml');
+    IF hole = 'roman-to-arabic' AND found THEN
+        earned := earn(earned, 'when-in-rome', user_id); END IF;
 
     -- ❌ X-Factor
     IF hole = 'factorial-factorisation' AND lang = 'factor' THEN

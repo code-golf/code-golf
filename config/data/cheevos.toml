@@ -207,6 +207,12 @@ langs       = ['clojure', 'coconut', 'common-lisp', 'haskell', 'scheme']
 target      = 3
 
 [['Hole/Lang Specific']]
+name        = 'Never Eat Shredded Wheat'
+emoji       = '🧭'
+description = 'Solve <a href=/arrows>Arrows</a> in languages beginning with the letters "N", "E", "S", and "W".'
+target      = 4
+
+[['Hole/Lang Specific']]
 name        = 'Off-the-grid'
 emoji       = '📴'
 description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-fill-in#hexagony>Sudoku (Fill-in)</a> in Hexagony.'
@@ -274,6 +280,14 @@ description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pas
 name        = 'Watt Are You Doing?'
 emoji       = '💡'
 description = 'Solve <a href=/si-units#powershell>SI Units in PowerShell</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'When in Rome'
+emoji       = '🏛️'
+description = 'Solve <a href=/roman-to-arabic>Roman to Arabic</a> in any three of <a href=/roman-to-arabic#c>C</a>, <a href=/roman-to-arabic#d>D</a>, <a href=/roman-to-arabic#v>V</a>, or <a href=/roman-to-arabic#viml>VimL</a>.'
+holes       = ['roman-to-arabic']
+langs       = ['c', 'd', 'v', 'viml']
+target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'X-Factor'

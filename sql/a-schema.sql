@@ -16,15 +16,16 @@ CREATE TYPE cheevo AS ENUM (
     'inception', 'independence-day', 'interview-ready', 'into-space',
     'its-over-9000', 'jeweler', 'just-kidding', 'like-comment-subscribe',
     'marathon-runner', 'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
-    'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
-    'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
-    'patches-welcome', 'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot',
-    'polyglutton', 'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34',
-    's-box-360', 'simon-sed', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'my-god-its-full-of-stars', 'neunundneunzig-luftballons',
+    'never-eat-shredded-wheat', 'off-the-grid', 'omniglot', 'omniglutton',
+    'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
+    'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
+    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
+    'simon-sed', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'texnical-know-how', 'the-watering-hole',
     'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
     'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
-    'x-factor', 'x86', 'zoodiac-signs'
+    'when-in-rome', 'x-factor', 'x86', 'zoodiac-signs'
 );
 
 CREATE TYPE connection AS ENUM (

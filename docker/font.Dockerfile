@@ -42,6 +42,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f3c3.svg'            `# Person Running`               \
     '*/1f3c6.svg'            `# Trophy`                       \
     '*/1f3cc.svg'            `# Person Golfing`               \
+    '*/1f3db.svg'            `# Classical Building`           \
     '*/1f3de.svg'            `# National Park`                \
     '*/1f3e5.svg'            `# Hospital`                     \
     '*/1f409.svg'            `# Dragon`                       \
@@ -133,6 +134,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f9db.svg'            `# Vampire`                      \
     '*/1f9e0.svg'            `# Brain`                        \
     '*/1f9ea.svg'            `# Test Tube`                    \
+    '*/1f9ed.svg'            `# Compass`                      \
     '*/1f9f6.svg'            `# Yarn`                         \
     '*/1fa84.svg'            `# Magic Wand`                   \
     '*/1fa9b.svg'            `# Screwdriver`                  \

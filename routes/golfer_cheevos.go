@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -154,6 +155,41 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 
 		progress.Progress = len(completedSteps)
 		data[cheevo.ID] = progress
+	}
+
+	if progress := data["never-eat-shredded-wheat"]; progress.Earned == nil {
+		var completedLangs []*config.Lang
+		if err := db.Select(
+			&completedLangs,
+			`WITH letters AS (
+			    SELECT substr(lang::text, 1, 1) lang_letter, lang
+			      FROM stable_passing_solutions
+			     WHERE hole = 'arrows' AND user_id = $1
+			) SELECT DISTINCT ON (lang_letter) lang
+			    FROM letters
+			   WHERE lang_letter IN ('n', 'e', 's', 'w')
+			ORDER BY lang_letter, lang`,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for _, c := range []string{"N", "E", "S", "W"} {
+			step := Step{Name: c + "..."}
+
+			for _, lang := range completedLangs {
+				if strings.ToUpper(lang.Name[:1]) == c {
+					step.Complete = true
+					step.Name = lang.Name
+					break
+				}
+			}
+
+			progress.Steps = append(progress.Steps, step)
+		}
+
+		progress.Progress = len(completedLangs)
+		data["never-eat-shredded-wheat"] = progress
 	}
 
 	if progress := data["pangramglot"]; progress.Earned == nil {

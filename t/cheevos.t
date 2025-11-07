@@ -76,11 +76,25 @@ for <
     is save-solution(:$hole :$lang), $cheevos, "$hole/$lang earns $cheevos";
 }
 
+for <nim elixir sed wren> {
+    my $cheevos = $_ eq 'wren' ?? '{never-eat-shredded-wheat}' !! '{}';
+
+    is save-solution(:hole<arrows> :lang($_)), $cheevos,
+        "arrows/$_ earns $cheevos";
+}
+
 for <brainfuck d hexagony javascript nim swift sql zig> {
     my $cheevos = $_ eq 'zig' ?? '{pangramglot}' !! '{}';
 
     is save-solution(:hole<pangram-grep> :lang($_)), $cheevos,
         "pangram-grep/$_ earns $cheevos";
+}
+
+for <c d v> {
+    my $cheevos = $_ eq 'v' ?? '{when-in-rome}' !! '{}';
+
+    is save-solution(:hole<roman-to-arabic> :lang($_)), $cheevos,
+        "roman-to-arabic/$_ earns $cheevos";
 }
 
 is save-solution(:code<⛳> :hole<π> :lang<c>), '{different-strokes}',
