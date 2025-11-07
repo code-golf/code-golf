@@ -202,6 +202,13 @@ BEGIN
     -- ❌ X-Factor
     IF hole = 'factorial-factorisation' AND lang = 'factor' THEN
         earned := earn(earned, 'x-factor', user_id); END IF;
+    
+    -- 🌠 Zoodiac Signs
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('awk', 'basic', 'civet', 'factor', 'ocaml', 'perl',
+      'prolog', 'python', 'raku', 'swift', 'wren');
+    IF hole = 'zodiac-signs' AND found THEN
+        earned := earn(earned, 'zoodiac-signs', user_id); END IF;
 
     -------------------
     -- Miscellaneous --

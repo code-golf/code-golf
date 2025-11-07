@@ -1,4 +1,4 @@
-FROM node:25.0.0-bookworm-slim
+FROM node:25.1.0-bookworm-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
@@ -21,6 +21,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f0cf.svg'            `# Joker`                        \
     '*/1f308.svg'            `# Rainbow`                      \
     '*/1f30c.svg'            `# Milky Way`                    \
+    '*/1f320.svg'            `# Shooting Star`                \
     '*/1f340.svg'            `# Four Leaf Clover`             \
     '*/1f355.svg'            `# Pizza`                        \
     '*/1f356.svg'            `# Meat on Bone`                 \
