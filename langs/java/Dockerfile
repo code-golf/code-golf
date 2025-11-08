@@ -13,6 +13,7 @@ RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jd
   | tar xz --strip-components 1
 
 RUN bash configure                     \
+    --enable-cds                       \
     --enable-headless-only             \
     --enable-jvm-feature-link-time-opt \
     --enable-jvm-feature-management    \
@@ -20,14 +21,18 @@ RUN bash configure                     \
     --with-boot-jdk=/tmp               \
     --with-conf-name=release           \
     --with-jobs=`nproc`                \
+    --without-test-jobs                \
  && make images
 
-RUN /build/release/images/jdk/bin/jlink           \
-    --add-modules java.base,java.se               \
-    --add-modules jdk.compiler,jdk.unsupported    \
-    --compress zip-9                              \
-    --module-path /build/release/images/jdk/jmods \
-    --output /opt/java                            \
+RUN /build/release/images/jdk/bin/jlink        \
+    --add-modules java.base,java.se            \
+    --add-modules jdk.compiler,jdk.unsupported \
+    --add-options='                            \
+      --enable-native-access=ALL-UNNAMED       \
+      --sun-misc-unsafe-memory-access=allow'   \
+    --compress zip-9                           \
+    --generate-cds-archive                     \
+    --output /opt/java                         \
     --strip-debug
 
 COPY java.c /
@@ -36,6 +41,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/java -s -static java.c
 
 FROM codegolf/lang-base
 
+COPY --from=0 /bin/rm                               /bin/
 COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /opt/java/bin/java                    /opt/java/bin/
 COPY --from=0 /opt/java/conf/security/java.security /opt/java/conf/security/
@@ -51,7 +57,8 @@ COPY --from=0 /opt/java/lib/jrt-fs.jar              \
               /opt/java/lib/libzip.so               \
               /opt/java/lib/modules                 \
               /opt/java/lib/tzdb.dat                /opt/java/lib/
-COPY --from=0 /opt/java/lib/server/libjvm.so        /opt/java/lib/server/
+COPY --from=0 /opt/java/lib/server/classes.jsa      \
+              /opt/java/lib/server/libjvm.so        /opt/java/lib/server/
 COPY --from=0 /usr/bin/java                         /usr/bin/
 COPY --from=0 /usr/lib/libz.so.1                    /usr/lib/
 

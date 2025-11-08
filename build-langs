@@ -66,7 +66,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     else {
         # Some langs output their version number over stderr so merge out/err.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
-            :in, :out, :merge(so $id eq 'forth' | 'scheme');
+            :in, :out, :merge(so $id ~~ any <forth scala scheme>);
 
         $proc.in.say: 'puts [info patchlevel]' if $id eq 'tcl';
         $proc.in.close;
