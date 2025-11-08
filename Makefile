@@ -83,10 +83,10 @@ lint:
 # Calls "make logs" at the end to make sure we didn't break the site.
 live:
 	@docker buildx build --pull --push \
-	    --file docker/live.Dockerfile --tag codegolf/code-golf .
+	    --file docker/live.Dockerfile --tag ghcr.io/code-golf/code-golf .
 
 	@ssh root@code.golf "                                        \
-	    docker pull codegolf/code-golf &&                        \
+	    docker pull ghcr.io/code-golf/code-golf &&               \
 	    docker stop code-golf;                                   \
 	    docker rm code-golf;                                     \
 	    docker run                                               \
@@ -100,7 +100,7 @@ live:
 	        --read-only                                          \
 	        --restart    always                                  \
 	        --volume     /var/run/postgresql:/var/run/postgresql \
-	    codegolf/code-golf &&                                    \
+	    ghcr.io/code-golf/code-golf &&                           \
 	    docker system prune -f"
 
 	@make logs
