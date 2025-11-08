@@ -2,13 +2,17 @@ FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl g++ make
+    apt-get install --yes curl g++ make patch
 
 ENV VER=39
 
 RUN curl -# https://picat-lang.org/download/picat${VER}_src.tar.gz | tar xz
 
 WORKDIR /Picat/emu
+
+COPY init.patch .
+
+RUN patch -p0 < init.patch
 
 RUN make -fMakefile.linux64 -j`nproc` \
  && strip picat

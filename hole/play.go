@@ -275,6 +275,15 @@ func runCode(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
+	case "picat":
+		args := run.Args
+		if hole.ID == "proximity-grid" || hole.ID == "ten-pin-bowling" {
+			args = nil
+			for _, arg := range run.Args {
+				args = append(args, strings.ReplaceAll(arg, "--", "+--"))
+			}
+		}
+		cmd.Args = append(cmd.Args, args...)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"
