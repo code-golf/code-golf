@@ -1992,7 +1992,7 @@ for (a in Process.arguments) System.print(a)
 [Zig]
 args    = [ '/usr/bin/zig', '-' ]
 size    = '189 MiB'
-version = '0.15.1'
+version = '0.15.2'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
