@@ -64,9 +64,24 @@ body {
     overflow-x: hidden;
 
     &:has(dialog[open]) { overflow: hidden }
+
+    > footer {
+        background: var(--light-grey);
+        border-top: 1px solid var(--color);
+        margin: 0 calc(50% - 50vw);
+
+        > nav {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            justify-content: center;
+            padding: .5rem;
+        }
+    }
 }
 
-body, footer nav, #site-header nav, #popups {
+body, body > footer > nav, #site-header nav, #popups {
     margin: auto;
     max-width: 80rem;
 }
@@ -74,21 +89,6 @@ body, footer nav, #site-header nav, #popups {
 .hide { display: none }
 
 details .grid { padding-top: 1rem }
-
-footer {
-    background: var(--light-grey);
-    border-top: 1px solid var(--color);
-    margin: 0 calc(50% - 50vw);
-}
-
-footer nav {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
-    justify-content: center;
-    padding: .5rem;
-}
 
 h1 { font-size: 1.75rem }
 h2 { font-size: 1.50rem }
@@ -625,13 +625,17 @@ nav + main .sticky th { top: calc(5.75rem + 1px) }
 
 .tabs {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
+    gap: 0;
 
-    > a {
+    > :is(a, button) {
+        background: none;
+        border: 0;
         color: var(--color);
         padding: .375rem .5rem;
 
-        &:is(.on, :hover, :not([href])) {
+        &:is(.on, :hover, a:not([href]), [disabled]) {
             background: var(--color) !important;
             color: var(--background);
             text-decoration: none;
@@ -661,7 +665,10 @@ body > .tabs {
 
 #home { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
-#home > .tabs { justify-content: flex-end }
+#home > nav {
+    display: flex;
+    justify-content: flex-end;
+}
 
 #home > .grid {
     border: 2px solid var(--color);
