@@ -6,8 +6,9 @@ RUN wget -qO /usr/lib/vyxal.jar https://github.com/Vyxal/Vyxal/releases/download
 
 FROM codegolf/lang-java
 
-COPY --from=0 /bin/sh            /bin/
 COPY --from=0 /usr/lib/vyxal.jar /usr/lib/
+
+SHELL ["/bin/bash", "-c"]
 
 # Delete default CDS archive to save space.
 RUN rm /opt/java/lib/server/classes.jsa

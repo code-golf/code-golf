@@ -16,15 +16,13 @@ RUN rm -f lib/android*.* \
 
 FROM codegolf/lang-java
 
-COPY --from=0 /bin/bash /bin/uname      /bin/
-COPY --from=0 /usr/build.txt            /usr/
-COPY --from=0 /usr/bin/dirname          \
-              /usr/bin/env              \
-              /usr/bin/kotlin           \
-              /usr/bin/kotlinc          /usr/bin/
-COPY --from=0 /usr/lib/*.jar            \
-              /usr/lib/libncursesw.so.6 \
-              /usr/lib/libreadline.so.8 /usr/lib/
+COPY --from=0 /bin/uname       /bin/
+COPY --from=0 /usr/build.txt   /usr/
+COPY --from=0 /usr/bin/dirname \
+              /usr/bin/env     \
+              /usr/bin/kotlin  \
+              /usr/bin/kotlinc /usr/bin/
+COPY --from=0 /usr/lib/*.jar   /usr/lib/
 
 SHELL ["/bin/bash", "-c"]
 

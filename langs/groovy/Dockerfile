@@ -31,6 +31,8 @@ COPY --from=0 /groovy-$VER.jar            \
               /usr/lib/libskarnet.so.2.14 \
               /usr/lib/libutmps.so.0.1    /usr/lib/
 
+SHELL ["/bin/bash", "-c"]
+
 # Delete default CDS archive to save space.
 RUN rm /opt/java/lib/server/classes.jsa
 

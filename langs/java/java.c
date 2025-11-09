@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
     jargv[2] = "-Xlog:disable";
     jargv[3] = "-XX:+UseParallelGC";
     jargv[4] = "-XX:+AutoCreateSharedArchive";
-    jargv[5] = "-XX:SharedArchiveFile=/bin/cds.jsa";
+    jargv[5] = "-XX:SharedArchiveFile=/cds.jsa";
     jargv[6] = (char*) code;
     memcpy(&jargv[7], &argv[2], (argc - 2) * sizeof(char*));
     jargv[jargc - 1] = NULL;

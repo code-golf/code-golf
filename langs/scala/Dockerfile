@@ -9,13 +9,11 @@ RUN curl -#L https://github.com/scala/scala/releases/download/v$VER/scala-$VER.t
 
 FROM codegolf/lang-java
 
-COPY --from=0 /bin/bash /bin/grep /bin/uname    /bin/
+COPY --from=0 /bin/grep /bin/uname              /bin/
 COPY --from=0 /usr/bin/dirname /usr/bin/env     /usr/bin/
 COPY --from=0 /usr/lib/libacl.so.1              \
               /usr/lib/libattr.so.1             \
               /usr/lib/libcrypto.so.3           \
-              /usr/lib/libncursesw.so.6         \
-              /usr/lib/libreadline.so.8         \
               /usr/lib/libskarnet.so.2.14       \
               /usr/lib/libutmps.so.0.1          /usr/lib/
 COPY --from=0 /usr/local/bin/scala              /usr/local/bin/

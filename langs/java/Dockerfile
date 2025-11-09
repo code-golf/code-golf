@@ -41,8 +41,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/java -s -static java.c
 
 FROM codegolf/lang-base
 
-COPY --chown=nobody                                 \
-     --from=0 /bin/rm                               /bin/
+COPY --from=0 /bin/bash /bin/rm                     /bin/
 COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /opt/java/bin/java                    /opt/java/bin/
 COPY --from=0 /opt/java/conf/security/java.security /opt/java/conf/security/
@@ -61,7 +60,25 @@ COPY --from=0 /opt/java/lib/jrt-fs.jar              \
 COPY --from=0 /opt/java/lib/server/classes.jsa      \
               /opt/java/lib/server/libjvm.so        /opt/java/lib/server/
 COPY --from=0 /usr/bin/java                         /usr/bin/
-COPY --from=0 /usr/lib/libz.so.1                    /usr/lib/
+COPY --from=0 /usr/lib/libncursesw.so.6             \
+              /usr/lib/libreadline.so.8             \
+              /usr/lib/libz.so.1                    /usr/lib/
+
+SHELL ["/bin/bash", "-c"]
+
+COPY <<EOF code.java
+void main(String[] args) {
+    IO.println("Hello, World!");
+
+    for (var i = 0; i < 10; i++)
+        IO.println(i);
+
+    for (var arg : args)
+        IO.println(arg);
+}
+EOF
+
+RUN /opt/java/bin/java -server -Xlog:disable -XX:+UseParallelGC -XX:+AutoCreateSharedArchive -XX:SharedArchiveFile=/cds.jsa code.java cds
 
 ENTRYPOINT ["java"]
 

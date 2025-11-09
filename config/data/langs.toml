@@ -415,7 +415,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/opt/java/bin/java', '-jar', '/usr/lib/cjam.jar', '/proc/self/fd/0' ]
 experiment = 1493
-size       = '57.5 MiB'
+size       = '58.2 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
@@ -852,7 +852,7 @@ n*
 [Groovy]
 args    = [ '/usr/bin/groovy', '-e', '$code' ]
 env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '72.5 MiB'
+size    = '73.9 MiB'
 version = '5.0.2'
 website = 'https://groovy-lang.org'
 example = '''
@@ -1081,7 +1081,7 @@ example = '''
 
 [Java]
 args    = [ '/usr/bin/java', '-' ]
-size    = '67.4 MiB'
+size    = '78.6 MiB'
 version = 'OpenJDK 25.0.1'
 website = 'https://openjdk.java.net'
 example = '''
@@ -1957,7 +1957,7 @@ w
 [Vyxal]
 args       = [ '/opt/java/bin/java', '-jar', '/usr/lib/vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
-size       = '78.0 MiB'
+size       = '78.6 MiB'
 version    = '3.10.3'
 website    = 'https://vyxal.github.io'
 example    = '''
