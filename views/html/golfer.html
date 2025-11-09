@@ -78,14 +78,14 @@
     {{ with len .HolesAuthored }}
         <button data-dialog=holes-authored-dialog>
             <p>📚
-            <p class=purple>{{ . }} Hole{{ if gt . 1 }}s{{ end }} Authored
+            <p class=purple>{{ amount . "Hole" }} Authored
         </button>
     {{ end }}
 
     {{ with len .Referrals }}
         <button data-dialog=referrals-dialog>
             <p>📣
-            <p class=purple>{{ . }} Referral{{ if gt . 1 }}s{{ end }}
+            <p class=purple>{{ amount . "Referral" }}
         </button>
     {{ end }}
 
@@ -135,7 +135,7 @@
     {{ with .HolesAuthored }}
         <dialog id=holes-authored-dialog>
             <div>
-                <h1>{{ len . }} Hole{{ if gt (len .) 1 }}s{{ end }} Authored</h1>
+                <h1>{{ amount (len .) "Hole" }} Authored</h1>
                 <ul>
                 {{ range . }}
                     <li>
@@ -152,7 +152,7 @@
     {{ with .Referrals }}
         <dialog id=referrals-dialog>
             <div>
-                <h1>{{ len . }} Referral{{ if gt (len .) 1 }}s{{ end }}</h1>
+                <h1>{{ amount (len .) "Referral" }}</h1>
                 <ul>
                 {{ range . }}
                     <li>

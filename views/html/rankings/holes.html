@@ -19,7 +19,7 @@
                     {{- end -}}
                 ]}</script>
                 <tr>
-                    <th colspan="5"><div id=chart-container><canvas></canvas></div>
+                    <th colspan=6><div id=chart-container><canvas></canvas></div>
                 {{ end }}
             {{ end }}
             <tr>
@@ -28,7 +28,8 @@
                 {{ if eq .Data.HoleID "all" }}<th class=right>Holes{{ end }}
                 <th class="right {{ if $hidePoints }}hide{{ end }}">Points
                 <th class=right>{{ title .Data.Scoring }}
-                <th class=right>Time
+                {{ if ne .Data.HoleID "all" }}<th class=right>Time{{ end }}
+                <th class=right>Submitted
         <tbody>
     {{ $name := "" }}
     {{ with .Golfer }}{{ $name = .Name }}{{ end }}
@@ -41,10 +42,10 @@
             <td>{{ template "golfer-link" . }}
             {{ if eq $.Data.HoleID "all" }}<td class=right>{{ .Holes }}{{ end }}
             <td class="right {{ if $hidePoints }}hide{{ end }}">{{ comma .Points }}
+        {{ if eq $.Data.HoleID "all" }}
+            <td class=right>{{ comma .Strokes }}
+        {{ else }}
             <td class=right>
-            {{ if eq $.Data.HoleID "all" }}
-                {{ comma .Strokes }}
-            {{ else }}
                 <a href="/golfers/{{ .Name }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}"
                 {{ if .OtherStrokes }}
                     data-tooltip="{{ .Lang.Name }} {{ $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
@@ -52,7 +53,8 @@
                     <span>{{ comma .Strokes }}</span>
                     {{ svg .Lang.ID }}
                 </a>
-            {{ end }}
+            <td class=right>{{ with .Time }}{{ duration . }}{{ end }}
+        {{ end }}
             <td class=right>{{ time (.Submitted.In $.Location) }}
     {{ end }}
     </table>
