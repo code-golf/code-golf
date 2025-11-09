@@ -7,5 +7,3 @@ RUN wget -qO /usr/lib/kamilalisp.jar https://github.com/kspalaiologos/kamilalisp
 FROM codegolf/lang-java
 
 COPY --from=0 /usr/lib/kamilalisp.jar /usr/lib/
-
-ENTRYPOINT ["kamilalisp"]
