@@ -13,7 +13,7 @@ RUN make
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /knight/target/knight    /usr/bin/
+COPY --from=0 /lib/ld-musl-*.so.1   /lib/
+COPY --from=0 /knight/target/knight /usr/bin/
 
 ENTRYPOINT ["knight"]

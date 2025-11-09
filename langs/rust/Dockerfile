@@ -1,5 +1,5 @@
 # Also bump Gleam, Hush, Uiua.
-ARG VER=1.90.0
+ARG VER=1.91.0
 
 FROM rust:$VER-alpine3.22 AS builder
 
@@ -24,7 +24,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/rust -s -static /rust.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1                 /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                      /lib/
 COPY --from=0 /usr/bin/ld /usr/bin/rust                /usr/bin/
 COPY --from=0 /usr/lib/libbfd-2.44.so                  \
               /usr/lib/libctf.so.0                     \
