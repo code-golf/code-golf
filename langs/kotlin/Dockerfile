@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bash curl
 
-ENV VER=2.2.20
+ENV VER=2.2.21
 
 RUN curl -#Lo kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip \
  && unzip kotlin

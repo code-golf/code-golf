@@ -1,6 +1,6 @@
 FROM alpine:3.22 AS builder
 
-ENV BIN='/usr/bin/fennel' VER=1.5.3
+ENV BIN='/usr/bin/fennel' VER=1.6.0
 
 RUN wget -qO $BIN https://fennel-lang.org/downloads/fennel-$VER \
  && chmod +x $BIN

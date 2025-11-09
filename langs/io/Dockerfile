@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes cmake curl git
 
-ENV CFLAGS='-Wno-incompatible-pointer-types' VER=9399ab3
+ENV CFLAGS='-Wno-incompatible-pointer-types' VER=8db0702
 
 RUN curl -#L https://github.com/IoLanguage/io/tarball/$VER \
   | tar xz --strip-components 1
@@ -39,5 +39,3 @@ COPY --from=0 /usr/local/lib/libbasekit.so          \
 COPY --from=0 /usr/local/bin/io                     /usr/local/bin/
 
 ENTRYPOINT ["io"]
-
-CMD ["--version"]
