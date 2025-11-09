@@ -3,7 +3,7 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache build-base bzip2-dev curl curl-dev gettext-dev \
                        gfortran pcre2-dev perl tzdata xz-dev zlib-dev
 
-ENV VER=4.5.1
+ENV VER=4.5.2
 
 RUN curl -#L https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz \
   | tar xJ --strip-components 1

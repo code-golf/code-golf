@@ -1,4 +1,4 @@
-FROM node:24.9.0-bookworm-slim
+FROM node:25.1.0-bookworm-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
@@ -21,6 +21,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f0cf.svg'            `# Joker`                        \
     '*/1f308.svg'            `# Rainbow`                      \
     '*/1f30c.svg'            `# Milky Way`                    \
+    '*/1f320.svg'            `# Shooting Star`                \
     '*/1f340.svg'            `# Four Leaf Clover`             \
     '*/1f355.svg'            `# Pizza`                        \
     '*/1f356.svg'            `# Meat on Bone`                 \
@@ -41,6 +42,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f3c3.svg'            `# Person Running`               \
     '*/1f3c6.svg'            `# Trophy`                       \
     '*/1f3cc.svg'            `# Person Golfing`               \
+    '*/1f3db.svg'            `# Classical Building`           \
     '*/1f3de.svg'            `# National Park`                \
     '*/1f3e5.svg'            `# Hospital`                     \
     '*/1f409.svg'            `# Dragon`                       \
@@ -112,6 +114,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f680.svg'            `# Rocket`                       \
     '*/1f697.svg'            `# Automobile`                   \
     '*/1f6a2.svg'            `# Ship`                         \
+    '*/1f6a9.svg'            `# Triangular Flag on Post`      \
     '*/1f910.svg'            `# Zipper-Mouth Face`            \
     '*/1f947.svg'            `# 1st Place Medal`              \
     '*/1f948.svg'            `# 2nd Place Medal`              \
@@ -131,6 +134,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f9db.svg'            `# Vampire`                      \
     '*/1f9e0.svg'            `# Brain`                        \
     '*/1f9ea.svg'            `# Test Tube`                    \
+    '*/1f9ed.svg'            `# Compass`                      \
     '*/1f9f6.svg'            `# Yarn`                         \
     '*/1fa84.svg'            `# Magic Wand`                   \
     '*/1fa9b.svg'            `# Screwdriver`                  \

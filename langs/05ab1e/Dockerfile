@@ -33,5 +33,3 @@ COPY --from=1 /usr/bin/05ab1e   /usr/bin/
 COPY --from=1 /usr/local/osabie /usr/local/bin/
 
 ENTRYPOINT ["05ab1e"]
-
-CMD ["--version"]
