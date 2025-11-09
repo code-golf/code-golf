@@ -26,6 +26,18 @@ COPY --from=0 /usr/lib/*.jar            \
               /usr/lib/libncursesw.so.6 \
               /usr/lib/libreadline.so.8 /usr/lib/
 
+SHELL ["/bin/bash", "-c"]
+
+# Delete default CDS archive to save space.
+RUN rm /opt/java/lib/server/classes.jsa
+
+FROM codegolf/lang-base
+
+COPY --from=1 /bin /bin
+COPY --from=1 /lib /lib
+COPY --from=1 /opt /opt
+COPY --from=1 /usr /usr
+
 ENV JAVA_HOME='/opt/java'
 
 ENTRYPOINT ["kotlin"]
