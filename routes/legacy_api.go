@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"cmp"
 	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"fmt"
@@ -133,6 +134,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		out.RankUpdates =
 			[]Golfer.RankUpdate{{Scoring: "bytes"}, {Scoring: "chars"}}
 
+		longestRun := slices.MaxFunc(runs, func(a, b hole.Run) int {
+			return cmp.Compare(a.Time, b.Time)
+		})
+
 		if err := db.QueryRowContext(
 			r.Context(),
 			`SELECT earned,
@@ -155,20 +160,23 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_best_chars,
 			        old_best_chars_submitted
 			   FROM save_solution(
-			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			            bytes   := CASE WHEN $7
 			                            THEN $5
 			                            ELSE octet_length($1)
 			                            END,
-			            chars   := CASE WHEN $3 = 'assembly'::lang
+			            chars   := CASE WHEN $7
 			                            THEN NULL
 			                            ELSE char_length($1)
 			                            END,
 			            code    := $1,
 			            hole    := $2,
 			            lang    := $3,
+			            time_ms := $6,
 			            user_id := $4
 			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
+			longestRun.Time.Round(time.Millisecond)/time.Millisecond,
+			langObj.Assembly,
 		).Scan(
 			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].FailingStrokes,
