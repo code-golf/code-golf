@@ -3992,10 +3992,16 @@ synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
 preamble = '''
 <p>
     You are given a series of inputs. Each input contains a text <b>corpus</b>
-    and a dozen <b>prompts</b> on subsequent lines. For each prompt, output the
-    most likely next word in the corpus by frequency (aka <b>mode</b>). If
-    there is more than one mode, output the first encountered in the corpus. In
-    this problem, each corpus is formed by concatenating two
+    and 12 <b>prompt</b> words on subsequent lines.
+    For each prompt, output the word which most frequently follows it in the corpus.
+    In case of a tie, print the one whose follow-on occurrence comes first.
+<p>
+    For example, suppose the corpus is <code>code golf and golf and code</code>
+    and the prompt is <code>and</code>.
+    Both "golf" and "code" follow the word "and" maximally frequently (once), but "golf"
+    <em>does so first</em>, and so the output is <pre>golf</pre>.
+<p>
+    In this problem, each corpus is formed by concatenating two
     <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
     (separated by one space).
 '''
