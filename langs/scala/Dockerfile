@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl gcc musl-dev
 
-ENV VER=1.9.0
+ENV VER=1.10.0
 
 RUN curl -#Lo scala-cli.gz https://github.com/VirtusLab/scala-cli/releases/download/v$VER/scala-cli-x86_64-pc-linux-static.gz
 
@@ -26,8 +26,6 @@ COPY --from=0 /root/.cache/coursier/v1 /cache
 COPY --from=0 /usr/bin/scala           \
               /usr/bin/scala-cli       /usr/bin/
 
-ENV JAVA_HOME='/opt/java'
-
-ENTRYPOINT ["scalac"]
+ENTRYPOINT ["scala"]
 
 CMD ["--version"]
