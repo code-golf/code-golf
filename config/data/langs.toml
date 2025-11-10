@@ -1156,7 +1156,7 @@ end
 [K]
 args    = [ '/usr/bin/k', '/proc/self/fd/0' ]
 size    = '605 KiB'
-version = '544d014afd'
+version = '319fcaa609'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
