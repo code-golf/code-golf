@@ -45,6 +45,7 @@ const renamedHoles: Record<string, string> = {
     'grid-packing':                  'css-grid',
     'placeholder':                   'tutorial',
     'sudoku-v2':                     'sudoku-fill-in',
+    'star-wars-gpt':                 'text-prediction',
 };
 
 const renamedLangs: Record<string, string> = {

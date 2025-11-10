@@ -19,7 +19,7 @@ func init() {
 	}
 }
 
-func solveSWGPT(corpusSanitized string, promptWords map[string]bool) map[string]string {
+func solveTextPrediction(corpusSanitized string, promptWords map[string]bool) map[string]string {
 	markovFirst := map[string][]string{}
 	markovCount := map[string]map[string]int{}
 
@@ -50,7 +50,7 @@ func solveSWGPT(corpusSanitized string, promptWords map[string]bool) map[string]
 	return answer
 }
 
-var _ = answerFunc("star-wars-gpt", func() []Answer {
+var _ = answerFunc("text-prediction", func() []Answer {
 	corpora := shuffle(slices.Clone(crawls))
 
 	tests := make([]test, 15)
@@ -74,7 +74,7 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 		inputSWGPT.WriteByte('\n')
 
 		counter := 0
-		for solveInputWord, solveOutputWord := range solveSWGPT(corpusSanitized, chosenWords) {
+		for solveInputWord, solveOutputWord := range solveTextPrediction(corpusSanitized, chosenWords) {
 			inputSWGPT.WriteString(solveInputWord)
 			if counter < testWordCount-1 {
 				inputSWGPT.WriteByte('\n')

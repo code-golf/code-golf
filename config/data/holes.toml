@@ -3982,13 +3982,13 @@ preamble = '''
     each on their own line.
 '''
 
-['Star Wars GPT']
+['Text Prediction']
 category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
 ]
 released = 2025-05-01
-synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
+synopsis = 'Print the next most likely word in the based on the given corpus.'
 preamble = '''
 <p>
     You are given a series of inputs. Each input contains a text <b>corpus</b>
