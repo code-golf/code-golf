@@ -1101,8 +1101,8 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '45.5 MiB'
-version = 'V8 14.1.146.11'
+size    = '45.6 MiB'
+version = 'V8 14.2.231.17'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1156,7 +1156,7 @@ end
 [K]
 args    = [ '/usr/bin/k', '/proc/self/fd/0' ]
 size    = '605 KiB'
-version = '544d014afd'
+version = '319fcaa609'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -1234,7 +1234,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.09 MiB'
-version    = '0.698'
+version    = '0.699'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
