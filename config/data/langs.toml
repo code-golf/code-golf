@@ -850,12 +850,13 @@ n*
 '''
 
 [Groovy]
-args    = [ '/usr/bin/groovy', '-e', '$code' ]
-env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '71.9 MiB'
-version = '5.0.2'
-website = 'https://groovy-lang.org'
-example = '''
+args     = [ '/usr/bin/groovy', '-e', '$code' ]
+env      = [ 'JAVA_HOME=/opt/java' ]
+released = 2025-08-29
+size     = '71.9 MiB'
+version  = '5.0.2'
+website  = 'https://groovy-lang.org'
+example  = '''
 // Printing
 println "Hello, World!"
 
