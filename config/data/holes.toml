@@ -3999,7 +3999,7 @@ preamble = '''
     For example, suppose the corpus is <code>code golf and golf and code</code>
     and the prompt is <code>and</code>.
     Both "golf" and "code" follow the word "and" maximally frequently (once), but "golf"
-    <em>does so first</em>, and so the output is <pre>golf</pre>.
+    <em>does so first</em>, and so the output is <code>golf</code>.
 <p>
     In this problem, each corpus is formed by concatenating two
     <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
