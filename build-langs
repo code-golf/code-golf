@@ -53,7 +53,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     }
 
     # Version.
-    if $id ~~ any <05ab1e apl arturo assembly befunge brainfuck cjam erlang fish golfscript hare hexagony j k knight luau qore scala stax umka vyxal> {
+    if $id ~~ any <05ab1e apl arturo assembly befunge brainfuck cjam erlang fish golfscript hexagony k knight luau stax umka> {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
 
         %lang<version> = do given $id {
@@ -94,7 +94,10 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
             when 'Common Lisp' { $ver = "GNU CLISP $digits" }
             when 'D'           { $ver = "DMD $digits" }
             when 'Haskell'     { $ver = "GHC $digits" }
-            when 'Java'        { $ver = "OpenJDK $digits" }
+            when 'Java'        {
+                $ver = $ver.match(/ \d+ ( \. \d+ )* ( \+ \d+ )? /);
+                $ver = "OpenJDK $ver" ~ ( ".0" if $ver ne $digits );
+            }
             when 'JavaScript'  { $ver = "V8 $digits" }
             when 'Pascal'      { $ver = "FPC $digits" }
             when 'Prolog'      { $ver = "SWI-Prolog $digits" }
@@ -119,11 +122,9 @@ spurt 'config/data/langs.toml', to-toml %langs;
 
 # Reorder Dockerfiles: largest first to speed-up partial deploys.
 my $layers;
-my $max = %langs.keys».&id».chars.max;
-
 $layers ~= sprintf(
-    qq[COPY --from=codegolf/lang-%s%s ["/", "/langs/%1\$s/rootfs/"%2\$s] # %8s\n],
-    id(.key), ' ' x $max - id(.key).chars, .value<size>,
+    q:b[COPY --from=codegolf/lang-%-*s / /langs/%2$s/rootfs/\n],
+    $ //= %langs.keys».&id».chars.max, id(.key),
 ) for %langs.sort: { so .value<size> ~~ /K/, -.value<size>.split(" ")[0], id(.key) };
 
 .spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers

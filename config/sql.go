@@ -20,6 +20,9 @@ func (c *Cheevos) Scan(src any) error { return scanIDs(c, src, CheevoByID) }
 func (h *Holes) Scan(src any) error   { return scanIDs(h, src, AllHoleByID) }
 func (l *Langs) Scan(src any) error   { return scanIDs(l, src, AllLangByID) }
 
+func (h *Hole) UnmarshalText(b []byte) error { return scanID(h, b, AllHoleByID) }
+func (l *Lang) UnmarshalText(b []byte) error { return scanID(l, b, AllLangByID) }
+
 func (c Cheevo) Value() (driver.Value, error) { return c.ID, nil }
 func (h Hole) Value() (driver.Value, error)   { return h.ID, nil }
 func (l Lang) Value() (driver.Value, error)   { return l.ID, nil }
@@ -48,4 +51,14 @@ func scanIDs[E any, S ~[]*E](things *S, src any, lookup map[string]*E) error {
 		}
 	}
 	return nil
+}
+
+func init() {
+	initHoles()
+	initLangs()
+
+	// Cheevos, Nav, and Settings reference Holes & Langs so must init after.
+	initCheevos()
+	initNav()
+	initSettings()
 }

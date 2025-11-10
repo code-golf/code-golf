@@ -1,10 +1,10 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes gcc wget
 
-ENV VER=25.5.0
+ENV VER=25.6.0
 
 RUN wget -qO- https://pixi.sh/install.sh \
   | PIXI_ARCH='x86_64' PIXI_HOME='/usr' sh
@@ -31,7 +31,8 @@ COPY --from=0 /.pixi/envs/default/etc/conda/activate.d/10-activate-max.sh /.pixi
 COPY --from=0 /.pixi/envs/default/lib/libAsyncRTMojoBindings.so           \
               /.pixi/envs/default/lib/libAsyncRTRuntimeGlobals.so         \
               /.pixi/envs/default/lib/libKGENCompilerRTShared.so          \
-              /.pixi/envs/default/lib/libMSupportGlobals.so               /.pixi/envs/default/lib/
+              /.pixi/envs/default/lib/libMSupportGlobals.so               \
+              /.pixi/envs/default/lib/libNVPTX.so                         /.pixi/envs/default/lib/
 COPY --from=0 /.pixi/envs/default/lib/mojo/stdlib.mojopkg                 /.pixi/envs/default/lib/mojo/
 COPY --chown=nobody                                                       \
      --from=0 /.pixi/envs/default/share/max/modular.cfg                   /.pixi/envs/default/share/max/

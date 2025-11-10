@@ -18,7 +18,11 @@ func GolferInfo(next http.Handler) http.Handler {
 			w.WriteHeader(http.StatusNotFound)
 		case info.Name != name:
 			// TODO Handle /holes suffix.
-			http.Redirect(w, r, "/golfers/"+info.Name, http.StatusPermanentRedirect)
+			path := "/golfers/" + info.Name
+			if r.URL.RawQuery != "" {
+				path += "?" + r.URL.RawQuery
+			}
+			http.Redirect(w, r, path, http.StatusTemporaryRedirect)
 		default:
 			session.Get(r).GolferInfo = info
 			next.ServeHTTP(w, r)

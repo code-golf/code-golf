@@ -88,7 +88,7 @@ func (f *FailingSolutions) Scan(src any) error {
 // Earn the given cheevo, no-op if already earned.
 func (g *Golfer) Earn(db db.Queryable, cheevoID string) (earned *config.Cheevo) {
 	if rowsAffected, _ := db.MustExec(
-		"INSERT INTO trophies VALUES (DEFAULT, $1, $2) ON CONFLICT DO NOTHING",
+		"INSERT INTO cheevos (user_id, cheevo) VALUES ($1, $2) ON CONFLICT DO NOTHING",
 		g.ID,
 		cheevoID,
 	).RowsAffected(); rowsAffected == 1 {

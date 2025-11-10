@@ -123,8 +123,6 @@
     <div id=unsolved>
     {{ $hole := "" }}
     {{ range .Data }}
-        {{ if .Hole.Experiment }}{{ continue }}{{ end }}
-
         {{ if ne $hole .Hole.Name }}
             <h2>{{ .Hole.Name }}</h2>
             {{ $hole = .Hole.Name }}
@@ -144,6 +142,7 @@
                 <th class=right>Solutions
                 <th class=right>Golfers
                 <th class="right wide">Per Golfer
+                <th class="right wide">Avg Time
         <tbody>
         {{ range .Data.Rows }}
             <tr>
@@ -165,6 +164,7 @@
                 <td class=right>{{ comma .Count }}
                 <td class=right>{{ comma .Golfers }}
                 <td class="right wide">{{ .PerGolfer }}
+                <td class="right wide">{{ duration .AvgTime }}
         {{ end }}
     </table>
 {{ end }}
