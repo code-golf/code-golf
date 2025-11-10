@@ -26,6 +26,7 @@ type Connection struct {
 
 var Providers = map[string]*Config{
 	// https://discord.com/developers/applications
+	// https://discord.com/developers/docs/resources/user
 	"discord": {
 		Name:         "Discord",
 		UserEndpoint: discordgo.EndpointUser("@me"),
@@ -36,12 +37,14 @@ var Providers = map[string]*Config{
 	},
 
 	// https://github.com/settings/developers
+	// https://docs.github.com/en/rest/users/users
 	"github": {
 		Name:   "GitHub",
 		Config: oauth2.Config{Endpoint: endpoints.GitHub},
 	},
 
 	// https://gitlab.com/-/profile/applications
+	// https://docs.gitlab.com/integration/openid_connect_provider/
 	"gitlab": {
 		Name:         "GitLab",
 		UserEndpoint: "https://gitlab.com/oauth/userinfo",
@@ -52,6 +55,7 @@ var Providers = map[string]*Config{
 	},
 
 	// https://stackapps.com/apps/oauth
+	// https://api.stackexchange.com/docs/me
 	"stack-overflow": {
 		Name:         "Stack Overflow",
 		Config:       oauth2.Config{Endpoint: endpoints.StackOverflow},
