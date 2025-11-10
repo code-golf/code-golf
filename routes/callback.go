@@ -7,17 +7,12 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/null"
+	"github.com/code-golf/code-golf/oauth"
 	"github.com/code-golf/code-golf/session"
 	"github.com/code-golf/code-golf/zone"
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/github"
 )
 
-var oauthConfig = oauth2.Config{
-	ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
-	ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-	Endpoint:     github.Endpoint,
-}
+var oauthConfig = oauth.Providers["github"]
 
 // GET /callback/dev, exists because GitHub doesn't support multiple URLs.
 func callbackDevGET(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +68,7 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 		}
 
 		req, err := http.NewRequestWithContext(
-			r.Context(), "GET", "https://api.github.com/user", nil)
+			r.Context(), "GET", oauthConfig.UserEndpoint, nil)
 		if err != nil {
 			panic(err)
 		}
