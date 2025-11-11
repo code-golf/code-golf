@@ -364,16 +364,16 @@ preamble = '''
 
 
 [Boggle]
-experiment = 1306
 category = 'Gaming'
+experiment = 1306
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Boggle' },
 ]
-synopsis = 'Print valid words in the word game Boggle.'
+synopsis = 'Print valid Boggle words.'
 preamble = '''
 <p>
-    Boggle is a word game in which players try to find as many words as they can
-    from a four-by-four grid of random letters in the English alphabet.
+    Boggle is a word game in which players try to find as many words as they
+    can from a four-by-four grid of random letters in the English alphabet.
 
 <p>
     Each word, in order to be valid, must adhere to specific criteria defined
@@ -381,10 +381,10 @@ preamble = '''
 
 <ul>
     <li>Any given word must consist of at least three letters.
-    <li>Each letter after the first must be directly adjacent to the previous
-        letter, either horizontally, vertically, or diagonally.
-    <li>Wrapping around any of the edges is not allowed.
+    <li>Each letter after the first must be adjacent to the previous letter,
+        either horizontally, vertically, or diagonally.
     <li>Individual letters from the grid may be used once in any given word.
+    <li>Wrapping around any of the edges is not allowed.
 </ul>
 
 <p>
@@ -411,8 +411,8 @@ T D N I
 </pre>
 
 <p>
-    In ascending order, each digit after the first digit is directly adjacent to
-    the previous digit in one of the directions mentioned above. Therefore, and
+    In ascending order, each digit after the first digit is adjacent to the
+    previous digit in one of the directions mentioned above. Therefore, and
     because it adheres to all remaining validation criteria equally, the word
     <code><b>code</b></code> is valid.
 
