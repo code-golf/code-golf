@@ -28,19 +28,19 @@ var _ = answerFunc("boggle", func() []Answer {
 			argument.WriteString(word)
 
 			if i < count {
-				argument.WriteRune(' ')
+				argument.WriteByte(' ')
 			}
 		}
 
 		for _, word := range strings.Fields(argument.String()) {
 			if validate(board, strings.ToUpper(word)) {
 				expected.WriteString(word)
-				expected.WriteRune(' ')
+				expected.WriteByte(' ')
 			}
 		}
 
 		if len(expected.String()) == 0 {
-			expected.WriteRune('-')
+			expected.WriteByte('-')
 		}
 
 		argument.WriteString("\n" + stringify(board))
@@ -56,17 +56,17 @@ var _ = answerFunc("boggle", func() []Answer {
 	return outputTests(tests[:argc], tests[len(tests)-argc:])
 })
 
-func stringify(board [4][4]rune) string {
+func stringify(board [4][4]byte) string {
 	var grid strings.Builder
 
 	for i := range 4 {
 		for j := range 4 {
-			grid.WriteRune(board[i][j])
+			grid.WriteByte(board[i][j])
 
 			if j < 3 {
-				grid.WriteRune(' ')
+				grid.WriteByte(' ')
 			} else {
-				grid.WriteRune('\n')
+				grid.WriteByte('\n')
 			}
 		}
 	}
@@ -74,12 +74,12 @@ func stringify(board [4][4]rune) string {
 	return grid.String()
 }
 
-func scramble() [4][4]rune {
-	var dice = [16][]rune{
-		[]rune("RIFOBX"), []rune("IFEHEY"), []rune("DENOWS"), []rune("UTOKND"),
-		[]rune("HMSRAO"), []rune("LUPETS"), []rune("ACITOA"), []rune("YLGKUE"),
-		[]rune("QBMJOA"), []rune("EHISPN"), []rune("VETIGN"), []rune("BALIYT"),
-		[]rune("EZAVND"), []rune("RALESC"), []rune("UWILRG"), []rune("PACEMD"),
+func scramble() [4][4]byte {
+	var dice = [16][]byte{
+		[]byte("RIFOBX"), []byte("IFEHEY"), []byte("DENOWS"), []byte("UTOKND"),
+		[]byte("HMSRAO"), []byte("LUPETS"), []byte("ACITOA"), []byte("YLGKUE"),
+		[]byte("QBMJOA"), []byte("EHISPN"), []byte("VETIGN"), []byte("BALIYT"),
+		[]byte("EZAVND"), []byte("RALESC"), []byte("UWILRG"), []byte("PACEMD"),
 	}
 
 	for _, die := range dice {
@@ -94,7 +94,7 @@ func scramble() [4][4]rune {
 		})
 	}
 
-	var board [4][4]rune
+	var board [4][4]byte
 
 	for i := range 4 {
 		for j := range 4 {
@@ -105,12 +105,12 @@ func scramble() [4][4]rune {
 	return board
 }
 
-func validate(board [4][4]rune, word string) bool {
+func validate(board [4][4]byte, word string) bool {
 	if len(word) < 3 || len(word) > 16 {
 		return false
 	}
 
-	letters, used := []rune(word), [4][4]bool{}
+	letters, used := []byte(word), [4][4]bool{}
 
 	for i := range 4 {
 		for j := range 4 {
@@ -123,7 +123,7 @@ func validate(board [4][4]rune, word string) bool {
 	return false
 }
 
-func dfs(board [4][4]rune, used [4][4]bool, word []rune, index, i, j int) bool {
+func dfs(board [4][4]byte, used [4][4]bool, word []byte, index, i, j int) bool {
 	if index == len(word) {
 		return true
 	}
