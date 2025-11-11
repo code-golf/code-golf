@@ -17,7 +17,7 @@ type Setting struct {
 
 var Settings map[string][]*Setting
 
-func init() {
+func initSettings() {
 	unmarshal("data/settings.toml", &Settings)
 
 	for _, settings := range Settings {

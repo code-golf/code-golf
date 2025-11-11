@@ -60,11 +60,11 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		`WITH data AS (
 		 -- Cheevos
 		    SELECT earned     date,
-		           trophy     cheevo,
+		           cheevo     cheevo,
 		           NULL::hole hole,
 		           NULL::lang lang,
 		           user_id
-		      FROM trophies
+		      FROM cheevos
 		     WHERE CASE WHEN $1 THEN user_id = ANY(following($2, $3))
 		                        ELSE user_id = $2
 		           END

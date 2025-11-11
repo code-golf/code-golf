@@ -1,6 +1,6 @@
 ARG VER=3.2.2
 
-FROM node:24.4.1-bookworm-slim AS builder
+FROM node:25.1.0-trixie-slim AS builder
 
 ARG VER
 
@@ -13,13 +13,14 @@ RUN curl -#L https://github.com/koka-lang/koka/releases/download/v$VER/koka-v$VE
 
 COPY koka.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/koka -s -static koka.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/koka -s koka.c
 
 FROM codegolf/lang-base
 
 ARG VER
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
+COPY --from=0 /lib/x86_64-linux-gnu/libatomic.so.1  \
+              /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libdl.so.2      \
               /lib/x86_64-linux-gnu/libgcc_s.so.1   \
               /lib/x86_64-linux-gnu/libgmp.so.10    \

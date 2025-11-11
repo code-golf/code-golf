@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
+	"strings"
 	"sync"
 	"time"
 
@@ -21,6 +23,8 @@ const minElapsedTimeToShowDate = 30 * 24 * time.Hour
 
 var (
 	bot                 *discordgo.Session
+	freshHole           *config.Hole
+	freshLang           *config.Lang
 	lastAnnouncementMap = make(map[string]*RecAnnouncement)
 	mux                 sync.Mutex
 
@@ -46,6 +50,19 @@ type RecAnnouncement struct {
 }
 
 func init() {
+	freshHole = slices.MaxFunc(config.HoleList, func(a, b *config.Hole) int {
+		return strings.Compare(a.Released.String(), b.Released.String())
+	})
+
+	freshLang = slices.MaxFunc(config.LangList, func(a, b *config.Lang) int {
+		return strings.Compare(a.Released.String(), b.Released.String())
+	})
+
+	// Is the latest lang still that fresh?
+	if time.Since(freshLang.Released.AsTime(time.UTC)) > 1000*time.Hour {
+		freshLang = nil
+	}
+
 	// Ensure we have all our config.
 	switch "" {
 	case botToken, chanFreshID, chanSourID, chanWildID, guildID,
@@ -58,19 +75,39 @@ func init() {
 		var err error
 		if bot, err = discordgo.New("Bot " + botToken); err != nil {
 			log.Println(err)
+			return
 		} else if err = bot.Open(); err != nil {
 			log.Println(err)
 			bot = nil
+			return
+		}
+
+		// Set the topic of the fresh-grapes channel.
+		var freshNames []string
+		if freshHole != nil {
+			freshNames = append(freshNames, freshHole.Name)
+		}
+		if freshLang != nil {
+			freshNames = append(freshNames, freshLang.Name)
+		}
+		topic := "Currently nothing."
+		if len(freshNames) > 0 {
+			topic = "Currently " + strings.Join(freshNames, " and ") + "."
+		}
+		if _, err = bot.ChannelEdit(
+			chanFreshID, &discordgo.ChannelEdit{Topic: topic},
+		); err != nil {
+			log.Println(err)
+			return
 		}
 	}()
 }
 
-// TODO Make this dynamic based on hole/lang age.
 func channel(hole *config.Hole, lang *config.Lang) string {
 	if hole.Experiment != 0 || lang.Experiment != 0 {
 		return chanWildID
 	}
-	if hole.ID == "hilbert-curve" || lang.ID == "groovy" {
+	if freshHole == hole || freshLang == lang {
 		return chanFreshID
 	}
 	return chanSourID
@@ -232,8 +269,8 @@ func AwardRoles(db *sqlx.DB) error {
 	if err := awardRoles(
 		db, contributors, roleContribID,
 		`SELECT id
-		   FROM connections JOIN trophies USING(user_id)
-		  WHERE connection = 'discord' AND trophy = 'patches-welcome'`,
+		   FROM connections JOIN cheevos USING(user_id)
+		  WHERE connection = 'discord' AND cheevo = 'patches-welcome'`,
 	); err != nil {
 		return err
 	}

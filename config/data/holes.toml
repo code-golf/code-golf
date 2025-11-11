@@ -338,6 +338,31 @@ preamble = '''
 '''
 redirects = ["billiard"]
 
+['Binary Lambda Calculus']
+category = 'Computing'
+experiment = 1567
+links = [
+    { name = 'Esolang Wiki', url = '//esolangs.org/wiki/Binary_lambda_calculus' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Universal_Lambda_Machine' },
+]
+synopsis = 'Normalize a binary lambda calculus expression.'
+preamble = '''
+<p>
+    Binary lambda calculus is a compact representation for expressions in
+    lambda calculus.
+
+<p>
+    <code>00</code> denotes a lambda, <code>01</code> denotes application, and
+    <code>1...10</code> with x 1s denotes the argument of the xth-innermost
+    lambda containing it. For example, <code>00000110110</code> denotes
+    <code>λx.λy.y x</code>.
+
+<p>
+    Given a list of binary lambda calculus expressions, output their normal
+    forms. You can assume that there are no infinite loops in the inputs.
+'''
+
+
 [brainfuck]
 category = 'Computing'
 links = [
@@ -2203,12 +2228,13 @@ preamble = '''
 '''
 
 [Minesweeper]
-experiment = 1025
 category = 'Gaming'
+released = 2025-11-01
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Minesweeper_game' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
 ]
-synopsis = 'Print solved boards in Minesweeper games.'
+synopsis = 'Print solved Minesweeper boards.'
 preamble = '''
 <p>
     Minesweeper is a video game in which the player must clear a board without
@@ -2217,12 +2243,13 @@ preamble = '''
 
 <p>
     Each argument represents a ten-by-ten board with thirteen mine tiles,
-    denoted by <code><b>M</b></code>. Replace the safe tiles, denoted by
-    <code><b>X</b></code>, with the number of adjacent mines.
+    denoted by <code><b>X</b></code>, and the rest being safe tiles, denoted
+    by <code><b>_</b></code>.
 
 <p>
-    Print a solved Minesweeper board for each argument, separated by newlines,
-    and replace each mine with <code><b>X</b></code> as if it weren't detonated.
+    Print a solved Minesweeper board for each argument, separated by blank
+    lines. Replace each mine with <code><b>F</b></code> as if it were flagged.
+    And replace each safe tile with the number of adjacent mines.
 '''
 
 ['Morse Decoder']
@@ -2834,10 +2861,11 @@ preamble = '''
 
 [['Pascal’s Triangle'.variants]]
 name = 'Trinomial Triangle'
-experiment = 1117
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
+    { name = 'OEIS A027907', url = '//oeis.org/A027907' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
 ]
+released = 2025-10-01
 synopsis = 'Print the first 20 rows of the trinomial triangle.'
 preamble = '''
 <p>
@@ -3964,10 +3992,16 @@ synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
 preamble = '''
 <p>
     You are given a series of inputs. Each input contains a text <b>corpus</b>
-    and a dozen <b>prompts</b> on subsequent lines. For each prompt, output the
-    most likely next word in the corpus by frequency (aka <b>mode</b>). If
-    there is more than one mode, output the first encountered in the corpus. In
-    this problem, each corpus is formed by concatenating two
+    and 12 <b>prompt</b> words on subsequent lines.
+    For each prompt, output the word which most frequently follows it in the corpus.
+    In case of a tie, print the one whose follow-on occurrence comes first.
+<p>
+    For example, suppose the corpus is <code>code golf and golf and code</code>
+    and the prompt is <code>and</code>.
+    Both "golf" and "code" follow the word "and" maximally frequently (once), but "golf"
+    <em>does so first</em>, and so the output is <code>golf</code>.
+<p>
+    In this problem, each corpus is formed by concatenating two
     <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
     (separated by one space).
 '''
@@ -4258,6 +4292,30 @@ preamble = '''
 <p>
     This is similar to the <code>tsort</code> utility, except that output nodes
     are separated with spaces instead of newlines.
+'''
+
+['Tower of Hanoi']
+experiment = 2275
+category = 'Art'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
+]
+synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle.'
+preamble = '''
+<p>
+    Tower of Hanoi is a puzzle consisting of three poles, and a set amount of
+    disks on the very left pole stacked from biggest diameter on the bottom,
+    to smallest on the top. The goal is to move all of the disks from the left
+    pole to the right pole with the restrictions of only moving the top disk
+    of a pole, and being forbidden to stack a bigger disk onto a smaller disk.
+    With N disks, there's always a unique optimal solution with 2**N - 1 steps.
+
+<p>
+    Print out all the steps of the optimal solution to solve a Tower of Hanoi
+    puzzle consisting of nine disks. Each step describes the number of the
+    starting pole and the pole it goes to. (i.e: 1 -> 3 would mean put top
+    disk from Pole 1 onto Pole 3.)
 '''
 
 ['Transpose Sentence']

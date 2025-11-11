@@ -10,6 +10,8 @@ details:not(:has(.cheevo)) { display: none }
 main {
     gap: 0;
     padding: 0;
+
+    .tabs { margin: 1rem 1rem 0 }
 }
 
 progress {
@@ -38,34 +40,67 @@ summary {
     position: sticky;
     top: calc(5.75rem + 2px);
     z-index: 1;
+
+    &:hover { background: var(--background) !important }
 }
 
-summary:hover { background: var(--background) !important }
-
 .cheevo {
+    --step-width: 6rem;
+
+    /* Some steps look better in different sizes */
+    &#cheevo-alphabet-soup, &#cheevo-pangramglot, &#cheevo-sounds-quite-nice {
+        --step-width: 2.375rem;
+    }
+
     display: grid;
     gap: .5rem 1rem;
     grid-template: auto 1fr auto / auto 1fr;
     padding: 1rem;
+
+    .emoji {
+        font-size: 4rem;
+        grid-row: span 3;
+    }
+
+    fieldset {
+        border: 0;
+        display: grid;
+        font-weight: normal;
+        gap: .25rem;
+        grid-column: span 2;
+        grid-template-columns: repeat(auto-fit, minmax(var(--step-width), 1fr));
+        padding: 0 0 .25rem 0;
+
+        > label {
+            display: flex;
+            font-size: .75rem;
+            gap: .375rem;
+
+            > :is(a, span) {
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-wrap: nowrap;
+            }
+        }
+    }
+
+    footer {
+        display: grid;
+        font-size: .75rem;
+        font-weight: bold;
+        gap: .25rem;
+        grid-template-columns: 1fr auto;
+    }
+
+    &:not(.earned) {
+        background: var(--light-grey);
+
+        .emoji {
+            color: transparent;
+            text-shadow: 0 0 var(--cheevo-not-earned);
+        }
+
+        footer > span { color: var(--red-text) }
+    }
 }
-
-.cheevo > div { grid-row: span 3 }
-
-.cheevo > div:first-of-type { font-size: 4rem }
-
-.cheevo > p:last-of-type {
-    display: grid;
-    font-size: .75rem;
-    font-weight: bold;
-    gap: .25rem;
-    grid-template-columns: 1fr auto;
-}
-
-.cheevo:not(.earned) { background: var(--light-grey) }
-
-.cheevo:not(.earned) > div:first-of-type {
-    color: transparent;
-    text-shadow: 0 0 var(--cheevo-not-earned);
-}
-
-.cheevo:not(.earned) span { color: var(--red-text) }
