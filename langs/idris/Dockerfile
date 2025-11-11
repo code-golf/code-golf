@@ -32,7 +32,7 @@ COPY --from=1 /bin/uname                                      /bin/
 COPY --from=1 /usr/bin/dash                                   /bin/sh
 COPY --from=1 /boot/ta6le/petite.boot                         \
               /boot/ta6le/scheme.boot                         /boot/ta6le/
-COPY --from=1 /lib/ld-musl-x86_64.so.1                        /lib/
+COPY --from=1 /lib/ld-musl-*.so.1                             /lib/
 COPY --from=1 /usr/bin/dirname                                \
               /usr/bin/idris                                  \
               /usr/bin/readlink                               \
