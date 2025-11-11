@@ -20,7 +20,7 @@ FROM codegolf/lang-base
 
 COPY --from=0 /usr/lib/ocaml                        /root/.opam/default/lib/ocaml
 COPY --from=1 /usr/bin/dash                         /bin/sh
-COPY --from=1 /lib/ld-musl-x86_64.so.1              /lib/
+COPY --from=1 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=1 /usr/bin/as                           \
               /usr/bin/gcc                          \
               /usr/bin/ld                           \
