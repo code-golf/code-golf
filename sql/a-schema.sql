@@ -66,13 +66,13 @@ CREATE TYPE hole AS ENUM (
     'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rot13',
     'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set', 'seven-segment',
     'si-units', 'sierpiński-triangle', 'smith-numbers', 'smooth-numbers',
-    'snake', 'spelling-numbers', 'sphenic-numbers',  'star-wars-opening-crawl',
+    'snake', 'spelling-numbers', 'sphenic-numbers', 'star-wars-opening-crawl',
     'sudoku', 'sudoku-fill-in', 'ten-pin-bowling', 'text-prediction',
     'tic-tac-toe', 'time-distance', 'tongue-twisters', 'topological-sort',
     'tower-of-hanoi', 'transpose-sentence', 'trinomial-triangle', 'turtle',
     'tutorial', 'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2',
-    '𝑒'
+    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
+    '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
