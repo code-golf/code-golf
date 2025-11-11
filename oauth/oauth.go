@@ -39,9 +39,8 @@ var Providers = map[string]*Config{
 	// https://github.com/settings/developers
 	// https://docs.github.com/en/rest/users/users
 	"github": {
-		Name:         "GitHub",
-		UserEndpoint: "https://api.github.com/user",
-		Config:       oauth2.Config{Endpoint: endpoints.GitHub},
+		Name:   "GitHub",
+		Config: oauth2.Config{Endpoint: endpoints.GitHub},
 	},
 
 	// https://gitlab.com/-/profile/applications
