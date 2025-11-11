@@ -55,5 +55,3 @@ COPY --from=1 /root/.opam/default/bin/dune          \
               /root/.opam/default/bin/refmt         /usr/local/bin/
 
 ENTRYPOINT ["reason"]
-
-CMD ["--version"]

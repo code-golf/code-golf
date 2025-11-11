@@ -52,7 +52,7 @@ constant %paths = (
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'endoflife.date/api/apache-groovy.json',
     'Harbour'      => 'sourceforge.net/projects/harbour-project/files',
-    'Hare'         => 'lists.sr.ht/~sircmpwn/hare-announce?search=release',
+    'Hare'         => 'git.sr.ht/~sircmpwn/hare',
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
@@ -101,7 +101,7 @@ constant %paths = (
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
-    'Uiua'         => 'crates.io/api/v1/crates/uiua',
+    'Uiua'         => 'api.github.com/repos/uiua-lang/uiua/releases',
     'Umka'         => 'github.com/vtereshkov/umka-lang/releases/latest',
     'V'            => 'raw.githubusercontent.com/vlang/v/refs/heads/master/CHANGELOG.md',
     'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
@@ -134,11 +134,11 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'fennel-lang'       / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'       / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'git.sr.ht'         / { $res ~~ / 'refs/' <(<ver>)> / }
         when / 'githubusercontent' / { $res ~~ / <(<ver>)> / }
         when / 'gnome.org'         / { $res ~~ / 'Release ' <(<ver>)> / }
         when / 'golfscript.com'    / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'          / { $res ~~ / 'algol68g-' <(<ver>)> / }
-        when / 'lists.sr.ht'       / { $res ~~ / 'Hare ' <(<ver>)> ' release' / }
         when / 'npmjs.org'         / { $res.&from-json[0]<version> }
         when / 'picat-lang.org'    / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'          / { $res.&from-json<info><version> }

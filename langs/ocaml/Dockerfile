@@ -3,7 +3,7 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache curl gcc make musl-dev
 
 # Also rebuild Reason.
-ENV VER=5.3.0
+ENV VER=5.4.0
 
 RUN curl -#L https://github.com/ocaml/ocaml/archive/refs/tags/$VER.tar.gz \
   | tar xz --strip-components 1
@@ -23,11 +23,11 @@ RUN rm -rf compiler-libs ocamldoc \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/ocaml           \
-              /usr/bin/ocamlc          \
-              /usr/bin/ocamlrun        /usr/bin/
-COPY --from=0 /usr/lib/ocaml           /usr/lib/ocaml
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/ocaml      \
+              /usr/bin/ocamlc     \
+              /usr/bin/ocamlrun   /usr/bin/
+COPY --from=0 /usr/lib/ocaml      /usr/lib/ocaml
 
 ENTRYPOINT ["ocaml"]
 

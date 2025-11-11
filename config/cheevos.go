@@ -20,13 +20,15 @@ type Cheevo struct {
 	Dates       []toml.LocalDate `json:"-"`
 	Description template.HTML    `json:"description"`
 	Emoji       string           `json:"emoji"`
+	Holes       []*Hole          `json:"-"`
 	ID          string           `json:"id"`
+	Langs       []*Lang          `json:"-"`
 	Name        string           `json:"name"`
 	Target      int              `json:"-"`
 	Times       []time.Time      `json:"-"`
 }
 
-func init() {
+func initCheevos() {
 	unmarshal("data/cheevos.toml", &CheevoTree)
 
 	for _, categories := range CheevoTree {
