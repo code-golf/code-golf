@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 var _removeSet = new HashSet<string>();
 var _removeCount = 0;
 
-var listPath = "ExtraTrimmingList.txt";
+var listPath = "trimmer.txt";
 var lines = File.ReadAllLines(listPath);
 
 foreach (var filename in lines)

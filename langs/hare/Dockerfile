@@ -1,33 +1,40 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl qbe scdoc
+RUN apk add --no-cache curl gcc make musl-dev qbe scdoc
 
-ENV VER=0.24.2
+ENV VER=0.25.2
 
-RUN curl https://git.sr.ht/~sircmpwn/harec/archive/$VER.tar.gz | tar xz
+WORKDIR /harec
 
-RUN cd harec-$VER                 \
- && mv configs/linux.mk config.mk \
+RUN curl -#L https://git.sr.ht/~sircmpwn/harec/archive/$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN mv configs/linux.mk config.mk \
  && make install
 
-RUN curl https://git.sr.ht/~sircmpwn/hare/archive/$VER.tar.gz | tar xz
+WORKDIR /hare
 
-RUN cd hare-$VER                  \
- && mv configs/linux.mk config.mk \
+RUN curl -# https://git.sr.ht/~sircmpwn/hare/archive/$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN mv configs/linux.mk config.mk \
  && make && make install
 
-COPY harewrapper.c /
+RUN strip /usr/local/bin/hare \
+          /usr/local/bin/harec
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/harewrapper -s -static harewrapper.c
+COPY hare.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/harewrapper -s /hare.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1   /lib/
+COPY --from=0 /lib/ld-musl-*.so.1        /lib/
 COPY --from=0 /usr/bin/as                \
               /usr/bin/harewrapper       \
               /usr/bin/ld                \
               /usr/bin/qbe               /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.43.1.so  \
+COPY --from=0 /usr/lib/libbfd-2.44.so    \
               /usr/lib/libctf.so.0       \
               /usr/lib/libjansson.so.4   \
               /usr/lib/libsframe.so.1    \

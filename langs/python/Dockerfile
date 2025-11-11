@@ -1,25 +1,25 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl libffi-dev zlib-dev
+RUN apk add --no-cache clang curl libffi-dev llvm make zlib-dev
 
 # Also bump Coconut, Hy.
-ENV VER=3.13.2
+ENV VER=3.14.0
 
-RUN curl -# https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz | tar xJ
+RUN curl -#L https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz \
+  | tar xJ --strip-components 1
 
-WORKDIR /Python-$VER
-
-RUN ./configure                \
+RUN CC=clang ./configure       \
     --disable-test-modules     \
     --prefix=/usr              \
-    --with-lto                 \
+    --with-lto=thin            \
+    --with-tail-call-interp    \
     --without-ensurepip        \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.13  \
-          /usr/lib/python3.13/lib-dynload/*.so
+ && strip /usr/bin/python3.14  \
+          /usr/lib/python3.14/lib-dynload/*.so
 
-WORKDIR /usr/lib/python3.13
+WORKDIR /usr/lib/python3.14
 
 # Remove some unneeded libraries.
 RUN find . -name '*.opt-[12].pyc' -delete \
@@ -37,9 +37,9 @@ RUN find . -name '*.opt-[12].pyc' -delete \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/python3.13      /usr/bin/python
-COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/python3.14 /usr/bin/python
+COPY --from=0 /usr/lib/python3.14 /usr/lib/python3.14
 
 ENTRYPOINT ["python"]
 

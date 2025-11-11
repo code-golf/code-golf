@@ -40,7 +40,7 @@ func expand(node *Node) {
 			left = randChoice(factors)
 			right = val / left
 		}
-		if rand.IntN(2) == 1 {
+		if randBool() {
 			left, right = right, left
 		}
 	case '/':

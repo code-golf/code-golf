@@ -1,4 +1,4 @@
-import { $ } from './_util';
+import { $, amount } from './_util';
 
 import { Chart, BarController,
     LinearScale, PointElement, Tooltip, CategoryScale,
@@ -74,7 +74,7 @@ if (dataElement) {
                                 let otherGolfers = Number(items[0].raw);
                                 if (golfer == strokes) otherGolfers--;
                                 return otherGolfers === 0 ? `${strokes} ${scoring}: just you` :
-                                    `${strokes} ${scoring}: ${golfer == strokes ? 'you and ' : ''}${otherGolfers} golfer${otherGolfers > 1 ? 's' : ''}`;
+                                    `${strokes} ${scoring}: ${golfer == strokes ? 'you and ' : ''}${amount(otherGolfers, 'golfer')}`;
                             },
                         },
                         filter(item) {

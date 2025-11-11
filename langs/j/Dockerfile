@@ -1,34 +1,39 @@
-FROM debian:bookworm-slim AS builder
+ARG VER=9.6 PATCH=3
 
-RUN apt-get update && apt-get install -y curl gcc
+FROM debian:trixie-slim AS builder
 
-RUN curl https://www.jsoftware.com/download/j9.6/install/j9.6.1_linux64.tar.gz \
-  | tar xz
+ARG VER PATCH
 
-# FIXME Don't run updatejs.sh as it tries to update to AVX512 because my build
-# laptop supports it. But prod servers do not. Is there an override flag?
-# RUN cd j9.6 && ./updateje.sh
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl
 
-COPY j.c /
+WORKDIR /j$VER
 
-RUN gcc -s -o j j.c
+RUN curl -#L https://www.jsoftware.com/download/j$VER/install/j$VER.${PATCH}_linux64.tar.gz \
+  | tar xz --exclude updateje.sh --strip-components 1
+
+RUN ./bin/install-usr.sh
 
 FROM codegolf/lang-base
 
+ARG VER
+
+COPY --from=0 /etc/j/$VER/profile.ijs               /etc/j/$VER/
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libdl.so.2      \
               /lib/x86_64-linux-gnu/libgcc_s.so.1   \
+              /lib/x86_64-linux-gnu/libgmp.so.10    \
+              /lib/x86_64-linux-gnu/libj.so.$VER    \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /j                                    /usr/bin/
-COPY --from=0 /j9.6/addons/dev                      /opt/j/addons/dev
-COPY --from=0 /j9.6/bin/jconsole                    \
-              /j9.6/bin/libgmp.so                   \
-              /j9.6/bin/libj.so                     \
-              /j9.6/bin/profile.ijs                 /opt/j/bin/
-COPY --from=0 /j9.6/system                          /opt/j/system
+COPY --from=0 /usr/bin/ijconsole                    /usr/bin/j
+COPY --from=0 /usr/share/j/$VER/addons/dev          /usr/share/j/$VER/addons/dev
+COPY --from=0 /usr/share/j/$VER/system              /usr/share/j/$VER/system
+
+ENV GLIBC_TUNABLES='glibc.rtld.execstack=2'
 
 ENTRYPOINT ["j"]
 
-CMD ["-v"]
+CMD ["-js", "exit echo JVERSION"]

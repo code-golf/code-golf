@@ -5,12 +5,12 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* coffeescript = "/usr/bin/coffee", *code = "code.coffee";
+const char* hare = "/usr/local/bin/hare", *code = "code.ha";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(coffeescript, argv);
-        ERR_AND_EXIT("execv");
+        execl(hare, hare, "version", NULL);
+        ERR_AND_EXIT("execl");
     }
 
     if (chdir("/tmp"))
@@ -31,13 +31,15 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int cargc = argc + 1;
-    char** cargv = malloc(cargc * sizeof(char*));
-    cargv[0] = (char*) coffeescript;
-    cargv[1] = (char*) code;
-    memcpy(&cargv[2], &argv[2], (argc - 2) * sizeof(char*));
-    cargv[cargc - 1] = NULL;
+    int hargc = argc + 3;
+    char** hargv = malloc(hargc * sizeof(char*));
+    hargv[0] = (char*) hare;
+    hargv[1] = "run";
+    hargv[2] = "-R";
+    hargv[3] = (char*) code;
+    memcpy(&hargv[4], &argv[2], (argc - 2) * sizeof(char*));
+    hargv[hargc - 1] = NULL;
 
-    execv(coffeescript, cargv);
+    execv(hare, hargv);
     ERR_AND_EXIT("execv");
 }

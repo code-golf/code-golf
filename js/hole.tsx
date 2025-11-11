@@ -1,6 +1,6 @@
-import { EditorView }   from './_codemirror';
-import diffView         from './_diff';
-import { $, $$, comma } from './_util';
+import { EditorView }    from './_codemirror';
+import diffView          from './_diff';
+import { $, $$, amount } from './_util';
 import {
     init, langs, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
@@ -25,7 +25,7 @@ const editor = new EditorView({
         function formatScore(scoring: any) {
             return scoringKeys
                 .filter(s => s in scoring)
-                .map(s => `${comma(scoring[s])} ${s}${scoring[s] != 1 ? 's' : ''}`)
+                .map(s => amount(scoring[s], s))
                 .join(', ');
         }
 
@@ -88,7 +88,7 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     $('#out div').replaceChildren(UnprintableElement.escape(data.Out));
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
-    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.MultisetDelimiter, data.ItemDelimiter);
+    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.OutputDelimiter, data.MultisetItemDelimiter);
     $('#diff-content').replaceChildren(diff);
     $('#diff').classList.toggle('hide', !diff);
 }

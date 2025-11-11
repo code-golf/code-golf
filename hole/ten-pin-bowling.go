@@ -54,7 +54,7 @@ func randReplacements(gFrames []rune) []rune {
 			continue
 		}
 
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			frames[i] = replacement
 		}
 	}

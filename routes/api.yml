@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.1.1
 
 info:
   title: Code Golf API
@@ -402,6 +402,8 @@ components:
         category:
           type: string
           enum: [Art, Computing, Gaming, Mathematics, Sequence, Transform]
+        experiment:
+          type: integer
         id:
           type: string
         links:
@@ -424,6 +426,8 @@ components:
       properties:
         example:
           type: string
+        experiment:
+          type: integer
         id:
           type: string
         logo-url:

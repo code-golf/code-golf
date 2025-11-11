@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.200-alpine3.21 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.306-alpine3.22-amd64 AS builder
 
-WORKDIR /work
+WORKDIR /powershell
 
 COPY powershell.cs powershell.csproj ./
 
@@ -8,7 +8,7 @@ RUN dotnet publish -c Release -o /out
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /lib/ld-musl-*.so.1      /lib/
 COPY --from=0 /out/*.dll               \
               /out/libSystem.Native.so \
               /out/libclrjit.so        \

@@ -5,11 +5,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* dmd = "/usr/bin/dmd";
+const char* D = "/usr/bin/dmd", *code = "code.d";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(dmd, argv);
+        execv(D, argv);
         ERR_AND_EXIT("execv");
     }
 
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen("code.d", "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -33,13 +33,13 @@ int main(int argc, char* argv[]) {
 
     int dargc = argc + 3;
     char** dargv = malloc(dargc * sizeof(char*));
-    dargv[0] = (char*) dmd;
+    dargv[0] = (char*) D;
     dargv[1] = "-color=on";
     dargv[2] = "-run";
-    dargv[3] = "code.d";
+    dargv[3] = (char*) code;
     memcpy(&dargv[4], &argv[2], (argc - 2) * sizeof(char*));
     dargv[dargc - 1] = NULL;
 
-    execv(dmd, dargv);
+    execv(D, dargv);
     ERR_AND_EXIT("execv");
 }

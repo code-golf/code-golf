@@ -118,7 +118,7 @@ export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
             navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
-export const langs = JSON.parse($('#langs').innerText);
+export const langs = JSON.parse($('#languages').innerText);
 const sortedLangs  =
     Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
 let lang: string = '';
@@ -198,7 +198,7 @@ export function setState(code: string, editor: EditorView) {
                 extensions[lang as keyof typeof extensions] ?? [],
                 // These languages shouldn't match brackets.
                 ['fish', 'hexagony'].includes(lang)
-                    ? [] : extensions.bracketMatching,
+                    ? extensions.zeroIndexedLineNumbers : [extensions.lineNumbers, extensions.bracketMatching],
                 // These languages shouldn't wrap lines.
                 ['assembly', 'fish', 'hexagony'].includes(lang)
                     ? [] : EditorView.lineWrapping,
@@ -360,8 +360,8 @@ export interface RankUpdate {
 
 export interface Run {
     answer: string,
-    multiset_delimiter: string,
-    item_delimiter: string,
+    output_delimiter: string,
+    multiset_item_delimiter: string,
     args: string[],
     exit_code: number,
     pass: boolean,
@@ -377,12 +377,13 @@ export interface ReadonlyPanelsData {
     Exp: string,
     Err: string,
     Argv: string[],
-    MultisetDelimiter: string,
-    ItemDelimiter: string
+    OutputDelimiter: string,
+    MultisetItemDelimiter: string
 }
 
 export interface SubmitResponse {
     cheevos:      { emoji: string, name: string }[],
+    experimental: boolean,
     logged_in:    boolean,
     rank_updates: RankUpdate[],
     runs:         Run[]
@@ -490,7 +491,7 @@ const scorePopups = (updates: RankUpdate[]) => {
     return nodes.length > 1 ? [<div>{nodes}</div>] : [];
 };
 
-const diamondPopups = (updates: RankUpdate[]) => {
+const diamondPopups = (updates: RankUpdate[], experimental: boolean) => {
     const popups: Node[] = [];
 
     const newDiamonds: string[] = [];
@@ -516,15 +517,16 @@ const diamondPopups = (updates: RankUpdate[]) => {
     }
 
     if (newDiamonds.length) {
+        // There's a limit to the width of the popups, so the header is simplified for expermental diamonds.
         popups.push(<div>
-            <h3>Diamond Earned</h3>
+            <h3>{experimental ? 'Experimental Diamond' : 'Diamond Earned'}</h3>
             <p>New {newDiamonds.join('/')} 💎!</p>
         </div>);
     }
 
     if (matchedDiamonds.length) {
         popups.push(<div>
-            <h3>Diamond Matched</h3>
+            <h3>{experimental ? 'Experimental Diamond' : 'Diamond Matched'}</h3>
             <p>Matched {matchedDiamonds.join('/')} 💎!</p>
         </div>);
     }
@@ -629,8 +631,8 @@ export async function submit(
             Exp: run.answer,
             Err: run.stderr,
             Out: run.stdout,
-            MultisetDelimiter: run.multiset_delimiter,
-            ItemDelimiter: run.item_delimiter,
+            OutputDelimiter: run.output_delimiter,
+            MultisetItemDelimiter: run.multiset_item_delimiter,
         });
 
         const ms = Math.round(run.time_ns / 10**6);
@@ -689,7 +691,7 @@ export async function submit(
     // Show popups.
     $('#popups').replaceChildren(
         ...scorePopups(data.rank_updates),
-        ...diamondPopups(data.rank_updates),
+        ...diamondPopups(data.rank_updates, data.experimental),
         ...data.cheevos.map(c => <div>
             <h3>Achievement Earned!</h3>
             { c.emoji }<p>{ c.name }</p>
@@ -776,31 +778,27 @@ export async function populateScores(editor: any) {
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>
+            <td title={tooltip(r, 'Bytes')}>
                 {scoringID != 'bytes' ? comma(r.bytes) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
                         <span>{comma(r.bytes)}</span>
                     </a>}
             </td>
-            {lang == 'assembly' ? '' : <td data-tooltip={tooltip(r, 'Chars')}>
+            {lang == 'assembly' ? '' : <td title={tooltip(r, 'Chars')}>
                 {scoringID != 'chars' ? comma(r.chars) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
                         <span>{comma(r.chars)}</span>
                     </a>}
             </td>}
         </tr>): <tr><td colspan={colspan}>(Empty)</td></tr>
-    }{
-        // Padding.
-        tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan={colspan}>&nbsp;</td></tr>)
     }</tbody>);
 
-    if (tabLayout) {
-        if (view === 'me')
-            $('.me')?.scrollIntoView({block: 'center'});
-        else
-            $('#scores-wrapper').scrollTop = 0;
-    }
+    // Scroll the rankings to the top or the "me" row if applicable.
+    const me            = $('.me');
+    const scoresWrapper = $('#scores-wrapper');
+    scoresWrapper.scrollTop = (view === 'me' && me)
+        ? me.offsetTop + (me.offsetHeight / 2) - (scoresWrapper.offsetHeight / 2)
+        : 0;
 
     $$<HTMLAnchorElement>('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {

@@ -15,15 +15,17 @@
 {{ if .Data.Rank }}
     <p>
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring -}}
-            ?page={{ page .Data.Row }}">
+            ?page={{ page .Data.Row }}&row={{ .Data.Row }}">
             {{ comma .Data.Rank }}<sup>{{ ord .Data.Rank }}</sup> in {{ .Data.Lang.Name }}</a>
         and
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/all/{{ .Data.Scoring -}}
-            ?page={{ page .Data.RowOverall }}">
+            ?page={{ page .Data.RowOverall }}&row={{ .Data.RowOverall }}">
             {{ comma .Data.RankOverall }}<sup>{{ ord .Data.RankOverall }}</sup> overall</a>.
 {{ end }}
 
     <p>Last tested {{ time (.Data.Tested.In $.Location) }}.
+
+    {{ with .Data.Time }}<p>Runtime of {{ duration . }}.{{ end }}
 
     <div><button class=btn id=test-solution>Test Solution</button></div>
 

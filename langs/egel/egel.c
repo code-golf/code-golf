@@ -5,12 +5,12 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* hare = "/usr/local/bin/hare", *code = "code.ha";
+const char* egel = "/usr/local/bin/egel", *code = "code.eg";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execl(hare, hare, "version", NULL);
-        ERR_AND_EXIT("execl");
+        execv(egel, argv);
+        ERR_AND_EXIT("execv");
     }
 
     if (chdir("/tmp"))
@@ -31,14 +31,13 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int hargc = argc + 2;
-    char** hargv = malloc(hargc * sizeof(char*));
-    hargv[0] = (char*) hare;
-    hargv[1] = "run";
-    hargv[2] = (char*) code;
-    memcpy(&hargv[3], &argv[2], (argc - 2) * sizeof(char*));
-    hargv[hargc - 1] = NULL;
+    int eargc = argc + 1;
+    char** eargv = malloc(eargc * sizeof(char*));
+    eargv[0] = (char*) egel;
+    eargv[1] = (char*) code;
+    memcpy(&eargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    eargv[eargc - 1] = NULL;
 
-    execv(hare, hargv);
+    execv(egel, eargv);
     ERR_AND_EXIT("execv");
 }

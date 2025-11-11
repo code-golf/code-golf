@@ -4,7 +4,6 @@ import (
 	"cmp"
 	"net/http"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -27,7 +26,7 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
 
 	if err := db.QueryRow(
-		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM trophies",
+		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM cheevos",
 	).Scan(&data.CheevosEarned, &data.Golfers); err != nil {
 		panic(err)
 	}
@@ -47,6 +46,30 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	render(w, r, "stats", data, "Statistics")
+}
+
+// GET /stats/{page:cheevos}
+func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
+	type row struct {
+		Cheevo        *config.Cheevo
+		Golfers, Rank int
+		Percent       string
+	}
+
+	var data []row
+	if err := session.Database(r).Select(
+		&data,
+		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
+		         cheevo                                           cheevo,
+		         COUNT(*)                                         golfers,
+		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
+		    FROM cheevos
+		GROUP BY cheevo`,
+	); err != nil {
+		panic(err)
+	}
+
+	render(w, r, "stats", data, "Statistics: Achievements")
 }
 
 // GET /stats/{page:countries}
@@ -94,13 +117,14 @@ func statsGolfersGET(w http.ResponseWriter, r *http.Request) {
 	var data []struct {
 		Count, Sum int
 		Date       time.Time
+		PerDay     string
 	}
 
 	if err := session.Database(r).Select(
 		&data,
 		`-- Only consider golfers that have a cheevo (i.e here to stay).
 		WITH earnt_golfers AS (
-		    SELECT DISTINCT id, started FROM users JOIN trophies ON id = user_id
+		    SELECT DISTINCT id, started FROM users JOIN cheevos ON id = user_id
 		), first_golfer AS (
 		    SELECT started date, 1 count, 1 sum
 		      FROM earnt_golfers
@@ -115,9 +139,11 @@ func statsGolfersGET(w http.ResponseWriter, r *http.Request) {
 		           COUNT(*)
 		      FROM earnt_golfers
 		  GROUP BY date
-		) SELECT * FROM first_golfer
+		) SELECT *, 0 per_day FROM first_golfer
 		   UNION ALL
-		  SELECT *, SUM(count) OVER (ORDER BY date) FROM counts`,
+		  SELECT *, SUM(count) OVER (ORDER BY date),
+		         ROUND(count / EXTRACT(doy FROM date), 2) per_day
+		    FROM counts`,
 	); err != nil {
 		panic(err)
 	}
@@ -130,6 +156,7 @@ func statsTableGET(w http.ResponseWriter, r *http.Request) {
 	var data struct {
 		Fact string
 		Rows []struct {
+			AvgTime              time.Duration
 			Count, Golfers, Rank int
 			PerGolfer            string
 			Hole                 *config.Hole
@@ -153,7 +180,8 @@ func statsTableGET(w http.ResponseWriter, r *http.Request) {
 		         `+column+`,
 		         COUNT(*),
 		         COUNT(DISTINCT user_id) golfers,
-		         ROUND(COUNT(*)::decimal / COUNT(DISTINCT user_id), 2) per_golfer
+		         ROUND(COUNT(*)::decimal / COUNT(DISTINCT user_id), 2) per_golfer,
+		         SUM(time_ms) / COUNT(*) * 1e6 avg_time
 		    FROM solutions
 		   WHERE NOT failing
 		GROUP BY `+column,
@@ -166,34 +194,26 @@ func statsTableGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /stats/{page:unsolved-holes}
 func statsUnsolvedHolesGET(w http.ResponseWriter, r *http.Request) {
-	type holeLang struct {
+	var data []struct {
 		Hole *config.Hole
 		Lang *config.Lang
 	}
 
-	var data []holeLang
 	if err := session.Database(r).Select(
 		&data,
 		`WITH solves AS (
 		    SELECT DISTINCT hole, lang FROM stable_passing_solutions
-		),
-		holes AS (SELECT id hole FROM holes WHERE experiment = 0),
-		langs AS (SELECT id lang FROM langs WHERE experiment = 0),
-		combo AS (SELECT hole, lang FROM holes CROSS JOIN langs)
-		   SELECT hole, lang
-		     FROM combo
-		LEFT JOIN solves USING (hole, lang)
-		    WHERE solves.hole IS NULL`,
+		)   SELECT holes.id hole, langs.id lang
+		      FROM holes
+		CROSS JOIN langs
+		 LEFT JOIN solves ON hole = holes.id AND lang = langs.id
+		     WHERE holes.experiment = 0
+		       AND langs.experiment = 0
+		       AND solves.* IS NULL
+		  ORDER BY holes.name, langs.name`,
 	); err != nil {
 		panic(err)
 	}
-
-	slices.SortFunc(data, func(a, b holeLang) int {
-		return cmp.Or(
-			cmp.Compare(strings.ToLower(a.Hole.Name), strings.ToLower(b.Hole.Name)),
-			cmp.Compare(strings.ToLower(a.Lang.Name), strings.ToLower(b.Lang.Name)),
-		)
-	})
 
 	render(w, r, "stats", data, "Statistics: Unsolved Holes")
 }

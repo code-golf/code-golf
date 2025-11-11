@@ -9,10 +9,11 @@
             <tr>
                 <th>#
                 <th>Golfer
-                <th class=right title="Gold medals">🥇
-                <th class=right title="Diamonds (uncontested gold medals)">💎
-                <th class=right title="Silver medals">🥈
-                <th class=right title="Bronze medals">🥉
+                <th class="right wide" title="Unicorns (uncontested solves)">🦄
+                <th class="right wide" title="Diamonds (uncontested gold medals)">💎
+                <th class=right        title="Gold medals">🥇
+                <th class=right        title="Silver medals">🥈
+                <th class=right        title="Bronze medals">🥉
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
@@ -21,10 +22,11 @@
             <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>{{ template "golfer-link" . }}
-                <td class=right> {{ comma .Gold    }}
-                <td class=right>({{ comma .Diamond }})
-                <td class=right> {{ comma .Silver  }}
-                <td class=right> {{ comma .Bronze  }}
+                <td class="right wide">{{ comma .Unicorn }}
+                <td class="right wide">{{ comma .Diamond }}
+                <td class=right       >{{ comma .Gold    }}
+                <td class=right       >{{ comma .Silver  }}
+                <td class=right       >{{ comma .Bronze  }}
         {{ end }}
     </table>
 

@@ -6,11 +6,11 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* rexx = "/usr/bin/regina", *code = "code.rexx";
+const char* vala = "/usr/bin/valac", *code = "code.vala";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
-        execv(rexx, argv);
+        execv(vala, argv);
         ERR_AND_EXIT("execv");
     }
 
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     pid_t pid;
 
     if (!(pid = fork())) {
-        execl(rexx, rexx, "--compile", "code", code, NULL);
+        execl(vala, vala, "--color=always", "--quiet", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -49,15 +49,15 @@ int main(int argc, char* argv[]) {
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    int rargc = argc + 3;
-    char** rargv = malloc(rargc * sizeof(char*));
-    rargv[0] = (char*) rexx;
-    rargv[1] = "--execute";
-    rargv[2] = "--args";
-    rargv[3] = "code";
-    memcpy(&rargv[4], &argv[2], (argc - 2) * sizeof(char*));
-    rargv[rargc - 1] = NULL;
+    if (remove(code))
+        ERR_AND_EXIT("remove");
 
-    execv(rexx, rargv);
+    int vargc = argc;
+    char** vargv = malloc(vargc * sizeof(char*));
+    vargv[0] = "code";
+    memcpy(&vargv[1], &argv[2], (argc - 2) * sizeof(char*));
+    vargv[vargc - 1] = NULL;
+
+    execv("code", vargv);
     ERR_AND_EXIT("execv");
 }

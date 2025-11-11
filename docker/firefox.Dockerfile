@@ -1,4 +1,4 @@
-FROM alpine:3.21
+FROM alpine:3.22
 
 ENV VER=0.36.0
 

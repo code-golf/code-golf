@@ -1,10 +1,12 @@
 package routes
 
 import (
+	"cmp"
 	"context"
-	"encoding/json"
+	"encoding/json/v2"
 	"errors"
 	"net/http"
+	"slices"
 	"strconv"
 	"sync"
 	"time"
@@ -25,7 +27,7 @@ type solution struct {
 	Pass     bool          `json:"pass"`
 	Stderr   string        `json:"stderr"`
 	Tested   time.Time     `json:"tested"`
-	Took     time.Duration `json:"took"`
+	Took     time.Duration `json:"took,format:nano"`
 	Total    int           `json:"total"`
 }
 
@@ -71,14 +73,22 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 			for s := range solutions {
 				// Run each solution up to three times.
 				for range 3 {
-					// Get the first failing (or last overall) run.
-					var run hole.Run
-					for _, r := range hole.Play(
+					runs, err := hole.Play(
 						r.Context(),
 						config.AllHoleByID[s.HoleID],
 						config.AllLangByID[s.LangID],
 						s.Code,
-					) {
+					)
+					if err != nil {
+						s.Failing = true
+						s.Stderr = err.Error()
+						s.Took = 0
+						continue
+					}
+
+					// Get the first failing (or last overall) run.
+					var run hole.Run
+					for _, r := range runs {
 						run = r
 						if !r.Pass {
 							break
@@ -86,7 +96,15 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 					}
 
 					s.Stderr = run.Stderr
-					s.Took = run.Time
+
+					longestRun := slices.MaxFunc(runs, func(a, b hole.Run) int {
+						return cmp.Compare(a.Time, b.Time)
+					})
+
+					s.Took = min(s.Took, longestRun.Time)
+					if s.Took == 0 {
+						s.Took = longestRun.Time
+					}
 
 					if run.Pass {
 						s.Pass = true
@@ -99,7 +117,13 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				if s.Pass || !noNewFailures || s.Failing {
 					db.MustExec(
 						`UPDATE solutions
-						    SET failing = $1, lang_digest = $2, tested = DEFAULT
+						    SET failing     = $1,
+						        lang_digest = $2,
+						        tested      = DEFAULT,
+						        time_ms     = CASE WHEN $2 = lang_digest
+						                           THEN LEAST($7, time_ms)
+						                           ELSE $7
+						                           END
 						  WHERE code    = $3
 						    AND hole    = $4
 						    AND lang    = $5
@@ -110,6 +134,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
+						s.Took.Round(time.Millisecond)/time.Millisecond,
 					)
 				}
 

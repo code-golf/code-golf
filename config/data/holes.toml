@@ -170,7 +170,7 @@ preamble = '''
 <p>The numbers range from 1 to 3999 inclusive.
 
 <div>
-    <table class=headless>
+    <table>
         <tr>
             <th>Arabic
             <td>1
@@ -215,7 +215,7 @@ preamble = '''
 <p>
     An arithmetic number is a number for which the average of its divisors is
     an integer. For example, number <b>6</b> is arithmetic because its divisors
-    (<b>1</b>, <b>2</b>, <b>3</b> and <b>6</b>) average <b>3</b>.
+    (<b>1</b>, <b>2</b>, <b>3</b>, and <b>6</b>) average <b>3</b>.
 
 <p>
     Print all the arithmetic numbers from <b>1</b> to <b>10,000</b> inclusive,
@@ -337,6 +337,31 @@ preamble = '''
 <p>Separate each size with empty lines.
 '''
 redirects = ["billiard"]
+
+['Binary Lambda Calculus']
+category = 'Computing'
+experiment = 1567
+links = [
+    { name = 'Esolang Wiki', url = '//esolangs.org/wiki/Binary_lambda_calculus' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Universal_Lambda_Machine' },
+]
+synopsis = 'Normalize a binary lambda calculus expression.'
+preamble = '''
+<p>
+    Binary lambda calculus is a compact representation for expressions in
+    lambda calculus.
+
+<p>
+    <code>00</code> denotes a lambda, <code>01</code> denotes application, and
+    <code>1...10</code> with x 1s denotes the argument of the xth-innermost
+    lambda containing it. For example, <code>00000110110</code> denotes
+    <code>λx.λy.y x</code>.
+
+<p>
+    Given a list of binary lambda calculus expressions, output their normal
+    forms. You can assume that there are no infinite loops in the inputs.
+'''
+
 
 [Boggle]
 experiment = 1306
@@ -728,8 +753,13 @@ released = 2020-06-21
 synopsis = 'Convert CSS color keywords to their hex values.'
 preamble = '''
 <p>
+{{ if eq .Name "CSS Colors" }}
     Given a list of all the CSS color keywords print the hex values in the
     corresponding order. The full mapping is as follows:
+{{ else }}
+    For each given color hex code print one of the corresponding css keywords.
+    The full mapping is as follows:
+{{ end }}
 
 <div id=colors class="tables-4col">
 {{ range .DataMap }}
@@ -754,6 +784,12 @@ preamble = '''
 {{ end }}
 </div>
 '''
+
+[['CSS Colors'.variants]]
+name             = 'CSS Colors (Inverse)'
+experiment       = 1353
+output-delimiter = "\n"
+synopsis         = 'Convert color hex values to their CSS keywords.'
 
 ['CSS Grid']
 category = 'Art'
@@ -871,6 +907,9 @@ preamble = '''
 ['Day of Week']
 category = 'Transform'
 released = 2023-04-16
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Determination_of_the_day_of_the_week' },
+]
 synopsis = 'Given a date, output the day of the week.'
 preamble = '''
 <p>
@@ -1741,7 +1780,7 @@ experiment = 1449
 category   = 'Sequence'
 links = [
     { name = 'OEIS A002182', url = '//oeis.org/A002182' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Highly_composite_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Highly_composite_number' },
 ]
 synopsis = 'Print all the highly composite numbers from 1 to 250,000,000.'
 preamble = '''
@@ -1760,11 +1799,12 @@ preamble = '''
 '''
 
 ['Hilbert Curve']
-experiment = 1448
-category   = 'Art'
+category = 'Art'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Hilbert_curve' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hilbert_curve' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Hilbert_curve' },
 ]
+released = 2025-09-01
 synopsis = 'Print five iterations of the Hilbert curve.'
 preamble = '''
 <p>
@@ -2185,11 +2225,11 @@ preamble = '''
 
 [Mandelbrot]
 category = 'Art'
-experiment = 813
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Mandelbrot_set' },
 ]
+released = 2025-07-01
 synopsis = 'Draw the Mandelbrot set.'
 preamble = '''
 <p>
@@ -2247,12 +2287,13 @@ preamble = '''
 '''
 
 [Minesweeper]
-experiment = 1025
 category = 'Gaming'
+released = 2025-11-01
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Minesweeper_game' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
 ]
-synopsis = 'Print solved boards in Minesweeper games.'
+synopsis = 'Print solved Minesweeper boards.'
 preamble = '''
 <p>
     Minesweeper is a video game in which the player must clear a board without
@@ -2261,12 +2302,13 @@ preamble = '''
 
 <p>
     Each argument represents a ten-by-ten board with thirteen mine tiles,
-    denoted by <code><b>M</b></code>. Replace the safe tiles, denoted by
-    <code><b>X</b></code>, with the number of adjacent mines.
+    denoted by <code><b>X</b></code>, and the rest being safe tiles, denoted
+    by <code><b>_</b></code>.
 
 <p>
-    Print a solved Minesweeper board for each argument, separated by newlines,
-    and replace each mine with <code><b>X</b></code> as if it weren't detonated.
+    Print a solved Minesweeper board for each argument, separated by blank
+    lines. Replace each mine with <code><b>F</b></code> as if it were flagged.
+    And replace each safe tile with the number of adjacent mines.
 '''
 
 ['Morse Decoder']
@@ -2536,9 +2578,9 @@ preamble = '''
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Eight_queens_puzzle' },
 ]
-item-delimiter = "\n"
+multiset-item-delimiter = "\n"
 released = 2024-05-01
 synopsis = 'Print all solutions to the N queens problem.'
 preamble = '''
@@ -2876,6 +2918,29 @@ preamble = '''
 <p>Print the first <b>20</b> rows of Pascal’s triangle.
 '''
 
+[['Pascal’s Triangle'.variants]]
+name = 'Trinomial Triangle'
+links = [
+    { name = 'OEIS A027907', url = '//oeis.org/A027907' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
+]
+released = 2025-10-01
+synopsis = 'Print the first 20 rows of the trinomial triangle.'
+preamble = '''
+<p>
+    The trinomial triangle is a triangular array of numbers similar to
+    Pascal's triangle. The top row consists of a single 1, and each subsequent
+    row contains 2 more numbers than the last. Each number is the sum of the 3
+    numbers above it, i.e.
+
+<pre>
+1 2 3
+  6
+</pre>
+
+<p>Print the first <b>20</b> rows of the trinomial triangle.
+'''
+
 ['Pernicious Numbers']
 category = 'Sequence'
 released = 2017-10-18
@@ -2972,9 +3037,26 @@ preamble = '''
 </div>
 '''
 
+['Polygon Triangulations']
+category       = 'Computing'
+multiset-item-delimiter = "\n"
+synopsis       = 'Print all triangulations of polygons with 3-8 sides.'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Polygon_triangulation' },
+]
+experiment = 2181
+preamble = '''
+<p>
+    Print all possible triangulations of a regular polygon with 3-8 sides.
+    The vertices of the polygon are labeled alphabetically, starting with A and going clockwise.
+    Each triangle should have its vertices listed in order.
+    The triangles in a triangulation should be listed lexicographically and separated by spaces.
+    The triangulations may be printed in any order.
+'''
+
 [Polyominoes]
 category       = 'Computing'
-item-delimiter = "\n\n"
+multiset-item-delimiter = "\n\n"
 released       = 2024-08-01
 synopsis       = 'Print all polyominoes of sizes 1 to 6.'
 links = [
@@ -3501,11 +3583,12 @@ preamble = '''
 </pre>
 '''
 
-['Scrambled Alphabetization']
-experiment = 1324
-category = 'Transform'
-synopsis = 'Alphabetize words according to scrambled alphabets.'
-preamble = '''
+['Scrambled Sort']
+category  = 'Transform'
+redirects = ['scrambled-alphabetization']
+released  = 2025-06-01
+synopsis  = 'Sort words according to scrambled alphabets.'
+preamble  = '''
 <p>
     Given a scrambled alphabet and a set of words, print the words in
     alphabetical order according to the given alphabet. Separate the
@@ -3517,7 +3600,7 @@ experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A001358', url = '//oeis.org/A001358' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Semiprime' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Semiprime' },
 ]
 synopsis = 'Print all the semiprime numbers from 1 to 10,000.'
 preamble = '''
@@ -3847,6 +3930,33 @@ preamble = '''
     each on their own line.
 '''
 
+['Smooth Numbers']
+experiment = 2144
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000079', url = '//oeis.org/A000079' },
+    { name = 'OEIS A003586', url = '//oeis.org/A003586' },
+    { name = 'OEIS A051037', url = '//oeis.org/A051037' },
+    { name = 'OEIS A002473', url = '//oeis.org/A002473' },
+    { name = 'OEIS A051038', url = '//oeis.org/A051038' },
+    { name = 'OEIS A080197', url = '//oeis.org/A080197' },
+    { name = 'OEIS A080681', url = '//oeis.org/A080681' },
+    { name = 'OEIS A080682', url = '//oeis.org/A080682' },
+    { name = 'OEIS A080683', url = '//oeis.org/A080683' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-smooth_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Smooth_number' },
+]
+synopsis = 'Print all the n-smooth numbers from 1 to k inclusive.'
+preamble = '''
+<p>
+    An <i>n</i>-smooth number is a positive integer whose prime factors are all
+    less than or equal to <i>n</i>.
+
+<p>
+    For each argument <code>𝑛 𝑘</code>, print all the <i>n</i>-smooth numbers
+    from 1 to <i>k</i> inclusive, separated by spaces.
+'''
+
 [Snake]
 experiment = 1039
 category = 'Gaming'
@@ -3918,7 +4028,7 @@ experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A007304', url = '//oeis.org/A007304' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Sphenic_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Sphenic_number' },
 ]
 synopsis = 'Print all the sphenic numbers from 1 to 10,000.'
 preamble = '''
@@ -3932,19 +4042,27 @@ preamble = '''
 '''
 
 ['Star Wars GPT']
-experiment = 1463
 category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
 ]
-synopsis = 'Output the most likely next word to occur given word frequency in the Star Wars opening crawl.'
+released = 2025-05-01
+synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
 preamble = '''
 <p>
-    You are given input of a text *corpus* and several *prompts* on subsequent
-    lines. For each prompt, output the most likely next word in the corpus by
-    frequency (aka *mode*). If there is more than one mode, output the first
-    encountered in the corpus. In this problem, the corpus is fixed to be the
-    Star Wars opening crawl texts.
+    You are given a series of inputs. Each input contains a text <b>corpus</b>
+    and 12 <b>prompt</b> words on subsequent lines.
+    For each prompt, output the word which most frequently follows it in the corpus.
+    In case of a tie, print the one whose follow-on occurrence comes first.
+<p>
+    For example, suppose the corpus is <code>code golf and golf and code</code>
+    and the prompt is <code>and</code>.
+    Both "golf" and "code" follow the word "and" maximally frequently (once), but "golf"
+    <em>does so first</em>, and so the output is <code>golf</code>.
+<p>
+    In this problem, each corpus is formed by concatenating two
+    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
+    (separated by one space).
 '''
 
 ['Star Wars Opening Crawl']
@@ -4218,6 +4336,47 @@ preamble = '''
 <pre>{{ .Answer }}</pre>
 '''
 
+['Topological Sort']
+category = 'Computing'
+released = 2025-08-01
+synopsis = 'Perform topological sort.'
+preamble = '''
+<p>
+    Given the set of edges of a directed graph, print the linear order of its
+    nodes. The order is always unique. Each edge is given on a separate line;
+    an edge from node <b>u</b> to node <b>v</b> is given as <code>u v</code>.
+    The nodes are numbered from <b>0</b> to <b>N - 1</b>, where <b>2 ≤ N ≤
+    10</b> is the number of nodes in the graph.
+
+<p>
+    This is similar to the <code>tsort</code> utility, except that output nodes
+    are separated with spaces instead of newlines.
+'''
+
+['Tower of Hanoi']
+experiment = 2275
+category = 'Art'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
+]
+synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle.'
+preamble = '''
+<p>
+    Tower of Hanoi is a puzzle consisting of three poles, and a set amount of
+    disks on the very left pole stacked from biggest diameter on the bottom,
+    to smallest on the top. The goal is to move all of the disks from the left
+    pole to the right pole with the restrictions of only moving the top disk
+    of a pole, and being forbidden to stack a bigger disk onto a smaller disk.
+    With N disks, there's always a unique optimal solution with 2**N - 1 steps.
+
+<p>
+    Print out all the steps of the optimal solution to solve a Tower of Hanoi
+    puzzle consisting of nine disks. Each step describes the number of the
+    starting pole and the pole it goes to. (i.e: 1 -> 3 would mean put top
+    disk from Pole 1 onto Pole 3.)
+'''
+
 ['Transpose Sentence']
 category = 'Transform'
 released = 2024-07-25
@@ -4251,28 +4410,6 @@ boy
     space after the last letter of each column, which yields:
 
 <p><b>awanpmjadb lonolaauo lrdakcly kyekl s</b>.
-'''
-
-['Trinomial Triangle']
-experiment = 1117
-category = 'Sequence'
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
-]
-synopsis = 'Print the first 20 rows of the trinomial triangle.'
-preamble = '''
-<p>
-    The trinomial triangle is a triangular array of numbers similar to
-    Pascal's triangle. The top row consists of a single 1, and each subsequent
-    row contains 2 more numbers than the last. Each number is the sum of the 3
-    numbers above it, i.e.
-
-<pre>
-1 2 3
-  6
-</pre>
-
-<p>Print the first <b>20</b> rows of the trinomial triangle.
 '''
 
 [Turtle]

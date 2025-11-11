@@ -32,7 +32,7 @@ sub new-golfer(:$dbh = dbh, :$id = 1, :$name = 'Bob') is export {
 sub post-solution(:$code, :$hole = 'fizz-buzz', :$lang = 'raku', :$session = '') is export {
     $client.post(
         'https://app/solution',
-        content => to-json({ Code => $code, Hole => $hole, Lang => $lang }),
+        content => to-json({ :$code, :$hole, :$lang }),
         headers => { cookie => "__Host-session=$session" },
     )<content>.decode.&from-json;
 }

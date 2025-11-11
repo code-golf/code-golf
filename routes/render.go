@@ -39,7 +39,9 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		LogInURL, Name, Nonce, Path, Theme string
 		Golfer                             *golfer.Golfer
 		GolferInfo                         *golfer.GolferInfo
+		Holes                              map[string][]string
 		JS                                 []string
+		Langs                              map[string][]string
 		Location                           *time.Location
 		Nav                                *config.Navigaton
 		Request                            *http.Request
@@ -52,7 +54,9 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
 		Golfer:      theGolfer,
 		GolferInfo:  session.GolferInfo(r),
+		Holes:       make(map[string][]string),
 		JS:          []string{config.Assets["js/base.tsx"]},
+		Langs:       make(map[string][]string),
 		Name:        name,
 		Nonce:       rand.Text(),
 		Path:        r.URL.Path,
@@ -60,6 +64,14 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Settings:    config.Settings[strings.TrimSuffix(name, "-tabs")],
 		Theme:       theme,
 		Title:       "Code Golf",
+	}
+
+	// Mapping lang & hole IDs to a list of known names (the first is the primary one)
+	for k, v := range config.AllLangByID {
+		args.Langs[k] = []string{v.Name, k}
+	}
+	for k, v := range config.AllHoleByID {
+		args.Holes[k] = append([]string{v.Name, k}, v.Aliases...)
 	}
 
 	if g := args.GolferInfo; g != nil && g.About != "" {

@@ -1,8 +1,8 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-ENV BIN='/usr/bin/fennel' VER=1.5.3
+ENV BIN='/usr/bin/fennel' VER=1.6.0
 
-RUN wget -cO $BIN https://fennel-lang.org/downloads/fennel-$VER \
+RUN wget -qO $BIN https://fennel-lang.org/downloads/fennel-$VER \
  && chmod +x $BIN
 
 # Rewrite shebang to bypass /usr/bin/env and go directly to /usr/bin/lua.

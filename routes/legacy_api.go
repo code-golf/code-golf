@@ -1,7 +1,9 @@
 package routes
 
 import (
-	"encoding/json"
+	"cmp"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"fmt"
 	"net/http"
 	"slices"
@@ -66,9 +68,13 @@ func scoresGET(w http.ResponseWriter, r *http.Request) {
 
 // POST /solution
 func solutionPOST(w http.ResponseWriter, r *http.Request) {
-	var in struct{ Code, Hole, Lang string }
+	var in struct {
+		Code string `json:"code"`
+		Hole string `json:"hole"`
+		Lang string `json:"lang"`
+	}
 
-	if err := json.NewDecoder(r.Body).Decode(&in); err != nil {
+	if err := json.UnmarshalRead(r.Body, &in); err != nil {
 		panic(err)
 	}
 	defer r.Body.Close()
@@ -96,16 +102,21 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	runs := hole.Play(r.Context(), holeObj, langObj, in.Code)
+	runs, err := hole.Play(r.Context(), holeObj, langObj, in.Code)
+	if err != nil {
+		panic(err)
+	}
 
 	out := struct {
-		Cheevos     []config.Cheevo     `json:"cheevos"`
-		LoggedIn    bool                `json:"logged_in"`
-		RankUpdates []Golfer.RankUpdate `json:"rank_updates"`
-		Runs        []hole.Run          `json:"runs"`
+		Cheevos      []config.Cheevo     `json:"cheevos"`
+		Experimental bool                `json:"experimental"`
+		LoggedIn     bool                `json:"logged_in"`
+		RankUpdates  []Golfer.RankUpdate `json:"rank_updates"`
+		Runs         []hole.Run          `json:"runs"`
 	}{
-		LoggedIn: golfer != nil,
-		Runs:     runs,
+		Experimental: experimental,
+		LoggedIn:     golfer != nil,
+		Runs:         runs,
 	}
 
 	if golfer != nil && slices.ContainsFunc(
@@ -122,6 +133,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	if pass && golfer != nil {
 		out.RankUpdates =
 			[]Golfer.RankUpdate{{Scoring: "bytes"}, {Scoring: "chars"}}
+
+		longestRun := slices.MaxFunc(runs, func(a, b hole.Run) int {
+			return cmp.Compare(a.Time, b.Time)
+		})
 
 		if err := db.QueryRowContext(
 			r.Context(),
@@ -145,20 +160,23 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_best_chars,
 			        old_best_chars_submitted
 			   FROM save_solution(
-			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			            bytes   := CASE WHEN $7
 			                            THEN $5
 			                            ELSE octet_length($1)
 			                            END,
-			            chars   := CASE WHEN $3 = 'assembly'::lang
+			            chars   := CASE WHEN $7
 			                            THEN NULL
 			                            ELSE char_length($1)
 			                            END,
 			            code    := $1,
 			            hole    := $2,
 			            lang    := $3,
+			            time_ms := $6,
 			            user_id := $4
 			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
+			longestRun.Time.Round(time.Millisecond)/time.Millisecond,
+			langObj.Assembly,
 		).Scan(
 			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].FailingStrokes,
@@ -189,11 +207,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			&out.RankUpdates[1].OldBestSubmitted,
 		); err != nil {
 			panic(err)
-		}
-
-		// For now don't show any popups for experimental solutions.
-		if experimental {
-			out.RankUpdates = []Golfer.RankUpdate{}
 		}
 
 		recordUpdates := make([]Golfer.RankUpdate, 0, 2)
@@ -251,7 +264,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
-			case "star-wars-opening-crawl":
+			case "star-wars-gpt", "star-wars-opening-crawl":
 				if month == time.May && day == 4 {
 					if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
 						out.Cheevos = append(out.Cheevos, *c)
@@ -278,6 +291,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			case "π":
 				if month == time.March && day == 14 {
 					if c := golfer.Earn(db, "pi-day"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "τ":
+				if month == time.June && day == 28 {
+					if c := golfer.Earn(db, "how-about-second-pi"); c != nil {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
@@ -321,26 +340,15 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	enc := json.NewEncoder(w)
-	enc.SetEscapeHTML(false)
-
-	// Avoid returning "null" arrays. Eventually fix with json/v2.
-	// See https://github.com/golang/go/issues/37711#issuecomment-1750018405
-	if out.Cheevos == nil {
-		out.Cheevos = []config.Cheevo{}
-	}
-	if out.RankUpdates == nil {
-		out.RankUpdates = []Golfer.RankUpdate{}
-	}
-
-	if err := enc.Encode(&out); err != nil {
+	// Solutions could produce invalid UTF-8, allow that through.
+	if err := json.MarshalWrite(w, &out, jsontext.AllowInvalidUTF8(true)); err != nil {
 		panic(err)
 	}
 }
 
 // GET /mini-rankings/{hole}/{lang}/{scoring:bytes|chars}/{view:top|me|following}
 func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
-	limit := 7
+	limit := 50
 	if r.FormValue("long") == "1" {
 		limit = 99
 	}

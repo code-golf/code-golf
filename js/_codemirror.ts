@@ -48,6 +48,7 @@ import { javascriptLanguage }                       from '@codemirror/lang-javas
 import { jq }                                       from 'codemirror-lang-jq';
 import { julia }                                    from '@codemirror/legacy-modes/mode/julia';
 import { k }                                        from 'codemirror-lang-k';
+import { knight }                                   from 'codemirror-lang-knight';
 import { lua }                                      from '@codemirror/legacy-modes/mode/lua';
 import { nim }                                      from 'nim-codemirror-mode';
 import { pascal }                                   from '@codemirror/legacy-modes/mode/pascal';
@@ -120,8 +121,15 @@ export const extensions : { [key: string]: any } = {
             { key: 'Mod-/', run: toggleComment },
         ]),
         highlightWhitespace(),
-        lineNumbers(),
     ],
+    'lineNumbers': lineNumbers(),
+    'zeroIndexedLineNumbers': lineNumbers(
+        {
+            formatNumber(num: number) {
+                return `${num - 1}`;
+            },
+        },
+    ),
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
 
@@ -180,8 +188,10 @@ export const extensions : { [key: string]: any } = {
     'jq':            jq(),
     'julia':         StreamLanguage.define(julia),
     'k':             k(),
+    'knight':        knight(),
     'kotlin':        StreamLanguage.define(kotlin),
     'lua':           StreamLanguage.define(lua),
+    'luau':          StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
     'ocaml':         StreamLanguage.define(oCaml),
     // TODO odin
@@ -211,7 +221,9 @@ export const extensions : { [key: string]: any } = {
     'tcl':           StreamLanguage.define(tcl),
     'tex':           StreamLanguage.define(stex),
     // TODO uiua
+    // TODO umka
     // TODO v
+    'vala':          StreamLanguage.define(csharp),
     // TODO viml
     // TODO vyxal
     'wren':          wren,

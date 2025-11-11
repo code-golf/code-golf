@@ -9,29 +9,34 @@
     </details>
     <nav class=tabs id=picker data-style='{{ setting .Golfer "hole" "lang-picker-style" }}'></nav>
     <nav class=tabs id=solutionPicker></nav>
-    <section>
-        <header>
-            <div id=strokes>0 bytes, 0 chars</div>
-            <a class=hide href id=restoreLink>Restore solution</a>
-        </header>
-        <header class=wide>
-            <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
-            <a href id=allLink>All</a>
-        </header>
-        <div id=editor></div>
-        <table class="nowrap-second wide" id=scores><tr><td></table>
-        <nav class="tabs wide" id=rankingsView>
-            <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
-                {{ svg "trophy-fill" }} Top
-            </a>
-            <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
-                {{ svg "person-fill" }} Me
-            </a>
-            <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
-                {{ svg "people-fill" }} Following
-            </a>
-        </nav>
-    </section>
+    <div id=editor-and-rankings>
+        <div id=editor>
+            <header>
+                <div id=strokes>0 bytes, 0 chars</div>
+                <a class=hide href id=restoreLink>Restore solution</a>
+            </header>
+        </div>
+        <div id=rankings class=wide>
+            <header>
+                <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
+                <a href id=allLink>All</a>
+            </header>
+            <div id=scores-wrapper>
+                <table class=nowrap-second id=scores><tr><td></table>
+            </div>
+            <nav class=tabs id=rankingsView>
+                <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
+                    {{ svg "trophy-fill" }} Top
+                </a>
+                <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
+                    {{ svg "person-fill" }} Me
+                </a>
+                <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
+                    {{ svg "people-fill" }} Following
+                </a>
+            </nav>
+        </div>
+    </div>
     {{ template "hole-info" . }}
     <div id=run>
     {{ if .Golfer }}

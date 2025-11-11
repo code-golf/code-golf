@@ -8,7 +8,7 @@ var _ = answerFunc("tutorial", func() []Answer {
 	for r := range runs {
 		var tests []test
 
-		for range randInt(1, 100) {
+		for range randInt(1, 99) {
 			word := randWord()
 			tests = append(tests, test{word, word})
 		}

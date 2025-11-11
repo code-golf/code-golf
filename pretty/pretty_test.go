@@ -16,6 +16,7 @@ func TestBytes(t *testing.T) {
 		{"1.0 B", 1},
 		{"1.0 KiB", 1024},
 		{"1.0 MiB", 1024 * 1024},
+		{"1.0 GiB", 1024 * 1024 * 1024},
 	} {
 		assert.Equal(t, tt.want, Bytes(tt.b))
 	}

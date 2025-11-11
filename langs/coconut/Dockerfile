@@ -1,17 +1,16 @@
-FROM alpine:3.21 AS builder
+FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
+RUN apk add --no-cache curl gcc libffi-dev make musl-dev openssl-dev zlib-dev
 
-ENV PYVER=3.13.2 VER=3.1.2
+ENV PYVER=3.13.7 VER=3.1.2
 
-RUN curl -# https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
+RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
+  | tar xJ --strip-components 1
 
-WORKDIR /Python-$PYVER
-
-RUN ./configure                \
+RUN CC='cc' ./configure        \
     --disable-test-modules     \
     --prefix=/usr              \
-    --with-lto                 \
+    --with-lto=thin            \
     --without-static-libpython \
  && make -j`nproc` install     \
  && strip /usr/bin/python3.13  \
@@ -36,11 +35,11 @@ RUN find . -name '*.opt-[12].pyc' -delete \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/coconut         \
-              /usr/bin/python3.13      /usr/bin/
-COPY --from=0 /usr/lib/libz.so.1       /usr/lib/
-COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/coconut    \
+              /usr/bin/python3.13 /usr/bin/
+COPY --from=0 /usr/lib/libz.so.1  /usr/lib/
+COPY --from=0 /usr/lib/python3.13 /usr/lib/python3.13
 
 ENTRYPOINT ["coconut"]
 

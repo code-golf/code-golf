@@ -1,18 +1,24 @@
 @import "./_golfer.css";
 
 #search {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
+    display: grid;
+    gap: .75rem;
+    grid-template-columns: 2fr 1fr;
 
-    label {
-        margin-left: .25rem;
+    fieldset {
+        flex-direction: row;
+        min-width: 0;
+
+        input, select {
+            flex: 1;
+            min-width: 0;
+        }
+
+        label { flex-direction: row }
     }
 }
 
-#searchInput {
-    flex-grow: 1;
-}
+@media (max-width: 50rem) { #search { grid-template-columns: 1fr } }
 
 #results {
     display: flex;

@@ -30,6 +30,9 @@
 <meta property=og:title        content="{{ .Title }}">
 <meta property=og:url          content="https://code.golf{{ with .Path }}{{ . }}{{ end }}">
 
+<script id=langs type=application/json>{{ .Langs }}</script>
+<script id=holes type=application/json>{{ .Holes }}</script>
+
 {{ range .CSS -}}
     <link rel=stylesheet href="{{ .Path }}" {{- with .Media }} media="{{ . }}" {{- end }}>
 {{ end }}
@@ -62,6 +65,16 @@
     "(prefers-color-scheme: dark)"
 {{- end -}}
 </script>
+
+<dialog id=search-nav-dialog>
+    <form id=search-nav-form >
+        <div>
+            <input placeholder="Search holes, #langs, @golfers..." id=search-nav-input autocomplete=off />
+            <ul id=search-nav-results></ul>
+        </div>
+        <div class=hint>Ctrl+P again to print, arrows/tab to navigate results, enter to confirm</div>
+    </form>
+</dialog>
 
 <header id=site-header>
     <nav>

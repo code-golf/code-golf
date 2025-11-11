@@ -1,12 +1,7 @@
 # Categories in alpha order, cheevos in difficulty then alpha order.
+# Date specific cheevos are in order of starting date.
 
 # Date Specific
-
-[['Date Specific']]
-name        = 'Happy Birthday, Code Golf'
-emoji       = '🎂'
-dates       = [2000-10-02, 2000-10-03]
-description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b44>2 Oct</a>.'
 
 [['Date Specific']]
 name        = 'Hugs and Kisses'
@@ -15,34 +10,46 @@ dates       = [2000-02-14, 2000-02-15]
 description = 'Solve <a href=/tic-tac-toe>Tic-tac-toe</a> on <a href=//www.wikipedia.org/wiki/Valentine%27s_Day>14 Feb</a>.'
 
 [['Date Specific']]
-name        = 'Independence Day'
-emoji       = '🇺🇸'
-dates       = [2000-07-04, 2000-07-05]
-description = 'Solve <a href=/united-states>United States</a> on <a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.'
-
-[['Date Specific']]
-name        = 'May the 4ᵗʰ Be with You'
-emoji       = '🌌'
-dates       = [2000-05-04, 2000-05-05]
-description = 'Solve <a href=/star-wars-opening-crawl>Star Wars Opening Crawl</a> on <a href=//www.wikipedia.org/wiki/Star_Wars_Day>4 May</a>.'
-
-[['Date Specific']]
 name        = 'Pi Day'
 emoji       = '🥧'
 dates       = [2000-03-14, 2000-03-15]
 description = 'Solve <a href=/π>π</a> on <a href=//www.wikipedia.org/wiki/Pi_Day>14 Mar</a>.'
 
 [['Date Specific']]
-name        = 'Twelvetide'
-emoji       = '🎅'
-dates       = [1999-12-25, 2000-01-06, 2000-12-25, 2001-01-06]
-description = 'Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.'
+name        = 'May the 4ᵗʰ Be with You'
+emoji       = '🌌'
+dates       = [2000-05-04, 2000-05-05]
+description = 'Solve <a href=/star-wars-gpt>Star Wars GPT</a> or <a href=/star-wars-opening-crawl>Star Wars Opening Crawl</a> on <a href=//www.wikipedia.org/wiki/Star_Wars_Day>4 May</a>.'
+
+[['Date Specific']]
+name        = 'How about Second Pi?'
+emoji       = '🍕'
+dates       = [2000-06-28, 2000-06-29]
+description = 'Solve <a href=/τ>τ</a> on <a href=//www.wikipedia.org/wiki/Pi_Day#Alternative_dates>28 Jun</a>.'
+
+[['Date Specific']]
+name        = 'Independence Day'
+emoji       = '🇺🇸'
+dates       = [2000-07-04, 2000-07-05]
+description = 'Solve <a href=/united-states>United States</a> on <a href=//www.wikipedia.org/wiki/Independence_Day_(United_States)>4 Jul</a>.'
+
+[['Date Specific']]
+name        = 'Happy Birthday, Code Golf'
+emoji       = '🎂'
+dates       = [2000-10-02, 2000-10-03]
+description = 'Solve any hole on <a href=//github.com/code-golf/code-golf/commit/4b442>2 Oct</a>.'
 
 [['Date Specific']]
 name        = 'Vampire Byte'
 emoji       = '🧛'
 dates       = [2000-10-31, 2000-11-01]
 description = 'Solve <a href=/vampire-numbers>Vampire Numbers</a> on <a href=//www.wikipedia.org/wiki/Halloween>31 Oct</a>.'
+
+[['Date Specific']]
+name        = 'Twelvetide'
+emoji       = '🎅'
+dates       = [1999-12-25, 2000-01-06, 2000-12-25, 2001-01-06]
+description = 'Solve <a href=/12-days-of-christmas>12 Days of Christmas</a> during <a href=//www.wikipedia.org/wiki/Twelvetide>25 Dec – 5 Jan</a>.'
 
 # GitHub
 
@@ -74,9 +81,19 @@ emoji       = '🧙'
 description = 'Solve <a href=/game-of-life#elixir>Game of Life in Elixir</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Alphabet Soup'
+emoji       = '🥣'
+description = 'Solve <a href=/scrambled-sort>Scrambled Sort</a> in any three of <a href=/scrambled-sort#c>C</a>, <a href=/scrambled-sort#d>D</a>, <a href=/scrambled-sort#j>J</a>, <a href=/scrambled-sort#k>K</a>, <a href=/scrambled-sort#r>R</a>, or <a href=/scrambled-sort#v>V</a>.'
+holes       = ['scrambled-sort']
+langs       = ['c', 'd', 'j', 'k', 'r', 'v']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Archivist'
 emoji       = '📚'
 description = 'Solve <a href=/isbn>ISBN</a> in any three languages that predate ISBN.'
+holes       = ['isbn']
+langs       = ['basic', 'cobol', 'common-lisp', 'forth', 'fortran']
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -88,6 +105,8 @@ description = 'Solve <a href=/seven-segment#assembly>Seven Segment in Assembly</
 name        = 'Bird Is the Word'
 emoji       = '🐦'
 description = 'Solve <a href=/levenshtein-distance>Levenshtein Distance</a> in any three of <a href=/levenshtein-distance#awk>AWK</a>, <a href=/levenshtein-distance#prolog>Prolog</a>, <a href=/levenshtein-distance#sql>SQL</a>, <a href=/levenshtein-distance#swift>Swift</a>, <a href=/levenshtein-distance#tcl>Tcl</a>, or <a href=/levenshtein-distance#wren>Wren</a>.'
+holes       = ['levenshtein-distance']
+langs       = ['awk', 'prolog', 'sql', 'swift', 'tcl', 'wren']
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -126,20 +145,40 @@ emoji       = '🐟'
 description = 'Solve <a href=/poker#fish>Poker in &gt;&lt;&gt;</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Flag Those Mines'
+emoji       = '🚩'
+description = 'Solve <a href=/minesweeper>Minesweeper</a> in any three languages beginning with the letter "F".'
+holes       = ['minesweeper']
+langs       = ['f-sharp', 'factor', 'forth', 'fortran']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Go Forth!'
 emoji       = '🏞️'
 description = 'Solve any hole in both Go and Forth.'
 
 [['Hole/Lang Specific']]
+name        = 'Going Postal'
+emoji       = '📫'
+description = 'Solve <a href=/united-states#pascal>United States in PA-SC-AL</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Happy-Go-Lucky'
 emoji       = '🍀'
 description = 'Solve <a href=/happy-numbers#go>Happy Numbers</a> and <a href=/lucky-numbers#go>Lucky Numbers</a> in Go.'
+holes       = ['happy-numbers', 'lucky-numbers']
+langs       = ['go']
 target      = 2
 
 [['Hole/Lang Specific']]
 name        = 'Hextreme Agony'
 emoji       = '🍯'
 description = 'Solve <a href=/hexdump#hexagony>Hexdump in Hexagony</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Horse of a Different Color'
+emoji       = '🐎'
+description = 'Solve <a href=/css-colors#basic>CSS Colors in BASIC</a>.'
 
 [['Hole/Lang Specific']]
 name        = 'Inception'
@@ -150,6 +189,8 @@ description = 'Solve <a href=/brainfuck#brainfuck>brainfuck in brainfuck</a>.'
 name        = 'Jeweler'
 emoji       = '💍'
 description = 'Solve <a href=/diamonds>Diamonds</a> in <a href=/diamonds#crystal>Crystal</a> and <a href=/diamonds#ruby>Ruby</a>.'
+holes       = ['diamonds']
+langs       = ['crystal', 'ruby']
 target      = 2
 
 [['Hole/Lang Specific']]
@@ -161,7 +202,15 @@ description = 'Solve any hole in both J and K.'
 name        = 'Mary Had a Little Lambda'
 emoji       = '🐑'
 description = 'Solve <a href=/λ>λ</a> in any three of <a href=/λ#clojure>Clojure</a>, <a href=/λ#coconut>Coconut</a>, <a href=/λ#common-lisp>Common Lisp</a>, <a href=/λ#haskell>Haskell</a>, or <a href=/λ#scheme>Scheme</a>.'
+holes       = ['λ']
+langs       = ['clojure', 'coconut', 'common-lisp', 'haskell', 'scheme']
 target      = 3
+
+[['Hole/Lang Specific']]
+name        = 'Never Eat Shredded Wheat'
+emoji       = '🧭'
+description = 'Solve <a href=/arrows>Arrows</a> in languages beginning with the letters "N", "E", "S", and "W".'
+target      = 4
 
 [['Hole/Lang Specific']]
 name        = 'Off-the-grid'
@@ -180,9 +229,19 @@ description = 'Solve <a href=/pangram-grep>Pangram Grep</a> in languages whose c
 target      = 26
 
 [['Hole/Lang Specific']]
+name        = 'Piña Colada'
+emoji       = '🍹'
+description = 'Solve any hole in Berry, Coconut, and Elixir.'
+
+[['Hole/Lang Specific']]
 name        = 'S-box 360'
 emoji       = '🎮'
 description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'
+
+[['Hole/Lang Specific']]
+name        = 'Simon Sed'
+emoji       = '💬'
+description = 'Solve <a href=/look-and-say#sed>Look and Say in sed</a>.'
 
 [['Hole/Lang Specific']]
 name        = 'Solve Quine'
@@ -193,7 +252,14 @@ description = 'Solve <a href=/quine>Quine</a>'
 name        = 'Sounds Quite Nice'
 emoji       = '🎺'
 description = 'Solve <a href=/musical-chords>Musical Chords</a> in any three of <a href=/musical-chords#c>C</a>, <a href=/musical-chords#c-sharp>C#</a>, <a href=/musical-chords#d>D</a>, or <a href=/musical-chords#f-sharp>F#</a>.'
+holes       = ['musical-chords']
+langs       = ['c', 'c-sharp', 'd', 'f-sharp']
 target      = 3
+
+[['Hole/Lang Specific']]
+name        = 'TeXnical Know-how'
+emoji       = '🧑‍💻'
+description = 'Solve any hole in TeX.'
 
 [['Hole/Lang Specific']]
 name        = 'Tim Toady'
@@ -201,14 +267,40 @@ emoji       = '🐪'
 description = 'Solve any hole in both Perl and Raku.'
 
 [['Hole/Lang Specific']]
+name        = 'Typesetter'
+emoji       = '⌨️'
+description = 'Solve <a href=/star-wars-opening-crawl#tex>Star Wars Opening Crawl in TeX</a>.'
+
+[['Hole/Lang Specific']]
 name        = 'Under Pressure'
 emoji       = '🗜'
 description = 'Solve <a href=/pascals-triangle#pascal>Pascal’s Triangle in Pascal</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Watt Are You Doing?'
+emoji       = '💡'
+description = 'Solve <a href=/si-units#powershell>SI Units in PowerShell</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'When in Rome'
+emoji       = '🏛️'
+description = 'Solve <a href=/roman-to-arabic>Roman to Arabic</a> in any three of <a href=/roman-to-arabic#c>C</a>, <a href=/roman-to-arabic#d>D</a>, <a href=/roman-to-arabic#v>V</a>, or <a href=/roman-to-arabic#viml>VimL</a>.'
+holes       = ['roman-to-arabic']
+langs       = ['c', 'd', 'v', 'viml']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'X-Factor'
 emoji       = '❌'
 description = 'Solve <a href=/factorial-factorisation#factor>Factorial Factorisation in Factor</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Zoodiac Signs'
+emoji       = '🌠'
+description = 'Solve <a href=/zodiac-signs>Zodiac Signs</a> in any three languages whose logo depicts an animal.'
+holes       = ['zodiac-signs']
+langs       = ['awk', 'basic', 'civet', 'factor', 'ocaml', 'perl', 'prolog', 'python', 'raku', 'swift', 'wren']
+target      = 3
 
 # Miscellaneous
 
@@ -413,6 +505,12 @@ emoji       = '🪄'
 description = 'Solve your <a href=//tolkiengateway.net/wiki/Bilbo%27s_Farewell_Party>eleventy-first</a> hole.'
 target      = 111
 
+[['Total Holes']]
+name        = 'Five!'
+emoji       = '❗'
+description = 'Solve your <a href=//en.wikipedia.org/wiki/Factorial>one hundred and twentieth</a> hole.'
+target      = 120
+
 # TODO
 # [['Total Holes']]
 # name        = 'That’s Gross!'
@@ -431,7 +529,7 @@ target      = 1984
 [['Total Points']]
 name        = 'It’s Over 9000!'
 emoji       = '🐉'
-description = 'Earn over 9,000 total points in either bytes or chars scoring.'
+description = 'Earn 9,001 total points in either bytes or chars scoring.'
 target      = 9001
 
 [['Total Points']]
@@ -451,3 +549,15 @@ name        = '0xDEAD'
 emoji       = '🪦'
 description = 'Earn 57,005 total points in either bytes or chars scoring.'
 target      = 57005
+
+[['Total Points']]
+name        = 'Overflowing'
+emoji       = '⛲'
+description = 'Earn 65,536 total points in either bytes or chars scoring.'
+target      = 65536
+
+[['Total Points']]
+name        = 'Into Space!'
+emoji       = '🚀'
+description = 'Earn <a href=//en.wikipedia.org/wiki/Kármán_line>100,000</a> total points in either bytes or chars scoring.'
+target      = 100000

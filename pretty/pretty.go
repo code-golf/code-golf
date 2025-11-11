@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// Bytes returns a string of integer bytes formatted as B/KiB/MiB.
+// Bytes returns a string of integer bytes formatted as B/KiB/MiB/GiB.
 func Bytes(b int) string {
 	const unit = 1024
 	if b < unit {
@@ -19,7 +19,7 @@ func Bytes(b int) string {
 		exp++
 	}
 
-	return fmt.Sprintf("%.1f %ciB", float64(b)/float64(div), "KM"[exp])
+	return fmt.Sprintf("%.1f %ciB", float64(b)/float64(div), "KMG"[exp])
 }
 
 // Comma returns a string of an integer with thousand separators.
@@ -32,6 +32,14 @@ func Comma(i int) string {
 	default:
 		return fmt.Sprint(i)
 	}
+}
+
+// Duration returns a HTML <time> tag of a time.Duration in milliseconds.
+func Duration(d time.Duration) template.HTML {
+	return template.HTML(fmt.Sprintf(
+		`<time datetime="PT%gS">%sms</time>`,
+		d.Seconds(), Comma(int(d.Milliseconds()))),
+	)
 }
 
 // Ordinal returns the ordinal of an integer.
