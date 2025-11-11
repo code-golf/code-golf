@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
@@ -31,15 +32,32 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int margc = argc + 3;
+    pid_t pid;
+
+    if (!(pid = fork())) {
+        execl(mojo, mojo, "run", "mojo", "build", code, NULL);
+        ERR_AND_EXIT("execl");
+    }
+
+    int status;
+
+    waitpid(pid, &status, 0);
+
+    if (!WIFEXITED(status))
+        exit(EXIT_FAILURE);
+
+    if (WEXITSTATUS(status))
+        return WEXITSTATUS(status);
+
+    if (remove(code))
+        ERR_AND_EXIT("remove");
+
+    int margc = argc;
     char** margv = malloc(margc * sizeof(char*));
-    margv[0] = (char*) mojo;
-    margv[1] = "run";
-    margv[2] = "mojo";
-    margv[3] = (char*) code;
-    memcpy(&margv[4], &argv[2], (argc - 2) * sizeof(char*));
+    margv[0] = "code";
+    memcpy(&margv[1], &argv[2], (argc - 2) * sizeof(char*));
     margv[margc - 1] = NULL;
 
-    execv(mojo, margv);
+    execv("code", margv);
     ERR_AND_EXIT("execv");
 }
