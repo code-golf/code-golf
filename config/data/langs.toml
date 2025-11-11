@@ -1653,7 +1653,7 @@ fn main() {
 '''
 
 [Scala]
-args       = [ '/usr/bin/scala', '-' ]
+args       = [ '/usr/bin/scala', '-e', '$code', '--server=false', '--' ]
 env        = [ 'COURSIER_CACHE=/cache', 'JAVA_HOME=/opt/java' ]
 experiment = 235
 size       = '206 MiB'
