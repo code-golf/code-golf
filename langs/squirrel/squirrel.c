@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* squirrel = "/usr/bin/sq", *code = "code.nut";
+const char* squirrel = "/usr/local/bin/sq_static", *code = "code.nut";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {

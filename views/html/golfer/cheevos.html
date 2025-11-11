@@ -1,9 +1,27 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-{{ $show := setting .Golfer "golfer/cheevos" "show-cheevos" }}
+{{ $show := setting .Golfer .Name "show-cheevos" }}
 
 <main>
+{{ if .Golfer }}
+    <form action=/golfer/settings/save class=tabs method=post>
+        <input name=page type=hidden value="{{ .Name }}">
+        <input name=path type=hidden value="{{ .Path }}">
+
+{{ range $i, $setting := .Settings }}
+    {{ if ne .ID "show-cheevos" }}{{ continue }}{{ end }}
+
+    {{ range $setting.Options }}
+        <button name="{{ $setting.ID }}" value="{{ .ID }}"
+            {{ if eq $show .ID }} disabled {{ end }} >
+            {{ .Name }}
+        </button>
+    {{ end }}
+{{ end }}
+    </form>
+{{ end }}
+
 {{ range $category, $cheevos := .Cheevos }}
     <details open>
         <div>
@@ -16,15 +34,31 @@
                 {{ continue }}
             {{ end }}
 
-            <div class="cheevo {{ if $progress.Earned }} earned {{ end }}">
-                <div>{{ .Emoji }}</div>
+            <section id="cheevo-{{ .ID }}"
+                  class="cheevo {{ if $progress.Earned }} earned {{ end }}">
+                <div class=emoji>{{ .Emoji }}</div>
                 <h3>{{ .Name }}</h3>
                 <p>{{ .Description }}
-                <p>
-                {{ if and (not $progress.Earned) .Target }}
+                <footer>
+            {{ if and (not $progress.Earned) .Target }}
+                {{ with $progress.Steps }}
+                    <fieldset disabled>
+                    {{ range $progress.Steps }}
+                        <label>
+                            <input type=checkbox
+                                {{ if .Complete }}checked{{ end }}>
+                        {{ if and .Path (not .Complete) }}
+                            <a href="{{ .Path }}">{{ .Name }}</a>
+                        {{ else }}
+                            <span>{{ .Name }}<span>
+                        {{ end }}
+                        </label>
+                    {{ end }}
+                    </fieldset>
+                {{ end }}
                     <progress max="{{ .Target }}"
                             value="{{ $progress.Progress }}"></progress>
-                {{ end }}
+            {{ end }}
                     <span>
                     {{ if $progress.Earned }}
                         {{ $i = inc $i }}
@@ -36,11 +70,11 @@
                     {{ end }}
                     </span>
                     <a href="/rankings/cheevos/{{ .ID }}">
-                        {{ comma $progress.Count }}
-                        golfer{{ if ne $progress.Count 1 }}s{{ end }}
+                        {{ amount $progress.Count "golfer" }}
                         ({{ $progress.Percent }}%)
                     </a>
-            </div>
+                </footer>
+            </section>
         {{ end }}
         </div>
         <summary>

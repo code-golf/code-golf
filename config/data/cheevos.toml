@@ -84,12 +84,16 @@ description = 'Solve <a href=/game-of-life#elixir>Game of Life in Elixir</a>.'
 name        = 'Alphabet Soup'
 emoji       = '🥣'
 description = 'Solve <a href=/scrambled-sort>Scrambled Sort</a> in any three of <a href=/scrambled-sort#c>C</a>, <a href=/scrambled-sort#d>D</a>, <a href=/scrambled-sort#j>J</a>, <a href=/scrambled-sort#k>K</a>, <a href=/scrambled-sort#r>R</a>, or <a href=/scrambled-sort#v>V</a>.'
+holes       = ['scrambled-sort']
+langs       = ['c', 'd', 'j', 'k', 'r', 'v']
 target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'Archivist'
 emoji       = '📚'
 description = 'Solve <a href=/isbn>ISBN</a> in any three languages that predate ISBN.'
+holes       = ['isbn']
+langs       = ['basic', 'cobol', 'common-lisp', 'forth', 'fortran']
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -101,6 +105,8 @@ description = 'Solve <a href=/seven-segment#assembly>Seven Segment in Assembly</
 name        = 'Bird Is the Word'
 emoji       = '🐦'
 description = 'Solve <a href=/levenshtein-distance>Levenshtein Distance</a> in any three of <a href=/levenshtein-distance#awk>AWK</a>, <a href=/levenshtein-distance#prolog>Prolog</a>, <a href=/levenshtein-distance#sql>SQL</a>, <a href=/levenshtein-distance#swift>Swift</a>, <a href=/levenshtein-distance#tcl>Tcl</a>, or <a href=/levenshtein-distance#wren>Wren</a>.'
+holes       = ['levenshtein-distance']
+langs       = ['awk', 'prolog', 'sql', 'swift', 'tcl', 'wren']
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -139,6 +145,14 @@ emoji       = '🐟'
 description = 'Solve <a href=/poker#fish>Poker in &gt;&lt;&gt;</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Flag Those Mines'
+emoji       = '🚩'
+description = 'Solve <a href=/minesweeper>Minesweeper</a> in any three languages beginning with the letter "F".'
+holes       = ['minesweeper']
+langs       = ['f-sharp', 'factor', 'forth', 'fortran']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Go Forth!'
 emoji       = '🏞️'
 description = 'Solve any hole in both Go and Forth.'
@@ -152,6 +166,8 @@ description = 'Solve <a href=/united-states#pascal>United States in PA-SC-AL</a>
 name        = 'Happy-Go-Lucky'
 emoji       = '🍀'
 description = 'Solve <a href=/happy-numbers#go>Happy Numbers</a> and <a href=/lucky-numbers#go>Lucky Numbers</a> in Go.'
+holes       = ['happy-numbers', 'lucky-numbers']
+langs       = ['go']
 target      = 2
 
 [['Hole/Lang Specific']]
@@ -173,6 +189,8 @@ description = 'Solve <a href=/brainfuck#brainfuck>brainfuck in brainfuck</a>.'
 name        = 'Jeweler'
 emoji       = '💍'
 description = 'Solve <a href=/diamonds>Diamonds</a> in <a href=/diamonds#crystal>Crystal</a> and <a href=/diamonds#ruby>Ruby</a>.'
+holes       = ['diamonds']
+langs       = ['crystal', 'ruby']
 target      = 2
 
 [['Hole/Lang Specific']]
@@ -184,7 +202,15 @@ description = 'Solve any hole in both J and K.'
 name        = 'Mary Had a Little Lambda'
 emoji       = '🐑'
 description = 'Solve <a href=/λ>λ</a> in any three of <a href=/λ#clojure>Clojure</a>, <a href=/λ#coconut>Coconut</a>, <a href=/λ#common-lisp>Common Lisp</a>, <a href=/λ#haskell>Haskell</a>, or <a href=/λ#scheme>Scheme</a>.'
+holes       = ['λ']
+langs       = ['clojure', 'coconut', 'common-lisp', 'haskell', 'scheme']
 target      = 3
+
+[['Hole/Lang Specific']]
+name        = 'Never Eat Shredded Wheat'
+emoji       = '🧭'
+description = 'Solve <a href=/arrows>Arrows</a> in languages beginning with the letters "N", "E", "S", and "W".'
+target      = 4
 
 [['Hole/Lang Specific']]
 name        = 'Off-the-grid'
@@ -226,6 +252,8 @@ description = 'Solve <a href=/quine>Quine</a>'
 name        = 'Sounds Quite Nice'
 emoji       = '🎺'
 description = 'Solve <a href=/musical-chords>Musical Chords</a> in any three of <a href=/musical-chords#c>C</a>, <a href=/musical-chords#c-sharp>C#</a>, <a href=/musical-chords#d>D</a>, or <a href=/musical-chords#f-sharp>F#</a>.'
+holes       = ['musical-chords']
+langs       = ['c', 'c-sharp', 'd', 'f-sharp']
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -254,9 +282,25 @@ emoji       = '💡'
 description = 'Solve <a href=/si-units#powershell>SI Units in PowerShell</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'When in Rome'
+emoji       = '🏛️'
+description = 'Solve <a href=/roman-to-arabic>Roman to Arabic</a> in any three of <a href=/roman-to-arabic#c>C</a>, <a href=/roman-to-arabic#d>D</a>, <a href=/roman-to-arabic#v>V</a>, or <a href=/roman-to-arabic#viml>VimL</a>.'
+holes       = ['roman-to-arabic']
+langs       = ['c', 'd', 'v', 'viml']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'X-Factor'
 emoji       = '❌'
 description = 'Solve <a href=/factorial-factorisation#factor>Factorial Factorisation in Factor</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Zoodiac Signs'
+emoji       = '🌠'
+description = 'Solve <a href=/zodiac-signs>Zodiac Signs</a> in any three languages whose logo depicts an animal.'
+holes       = ['zodiac-signs']
+langs       = ['awk', 'basic', 'civet', 'factor', 'ocaml', 'perl', 'prolog', 'python', 'raku', 'swift', 'wren']
+target      = 3
 
 # Miscellaneous
 

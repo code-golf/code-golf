@@ -1,15 +1,13 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache curl gcc make mpir-dev musl-dev patch
+RUN apk add --no-cache curl gcc make mpir-dev musl-dev
 
 ENV VER=3.2
 
-RUN curl -#L https://ftp.gnu.org/gnu/gnucobol/gnucobol-$VER.tar.xz \
+RUN curl -#L https://ftpmirror.gnu.org/gnu/gnucobol/gnucobol-$VER.tar.xz \
   | tar xJ --strip-components 1
 
-COPY codegen.patch /
-
-RUN patch -p0 < codegen.patch
+RUN sed -i 's/l ("int	/l ("static int /' cobc/codegen.c
 
 RUN ./configure               \
     --without-db              \
