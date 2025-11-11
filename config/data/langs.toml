@@ -1031,8 +1031,8 @@ example    = '''
 [Idris]
 args       = [ '/usr/bin/idris', '-' ]
 experiment = 1720
-size       = '68.8 MiB'
-version    = 'Idris 2 0.7.0'
+size       = '74.1 MiB'
+version    = 'Idris 2 0.8.0'
 website    = 'https://www.idris-lang.org'
 example    = '''
 import Data.List

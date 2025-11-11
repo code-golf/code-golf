@@ -1,4 +1,4 @@
-ARG VER=0.7.0
+ARG VER=0.8.0
 
 FROM codegolf/lang-scheme
 
