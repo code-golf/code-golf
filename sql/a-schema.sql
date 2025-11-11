@@ -164,6 +164,7 @@ CREATE TABLE connections (
     discriminator smallint,
     public        bool       NOT NULL DEFAULT false,
     username      text       NOT NULL,
+    avatar_url    text,
     PRIMARY KEY (connection, id),
     UNIQUE (connection, user_id)
 );
