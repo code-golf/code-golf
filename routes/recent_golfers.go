@@ -27,8 +27,8 @@ func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE NOT failing
 		  GROUP BY user_id
 		), cheevos AS (
-		    SELECT user_id, array_agg(trophy ORDER BY trophy) cheevos, MIN(earned) date
-		      FROM trophies
+		    SELECT user_id, array_agg(cheevo ORDER BY cheevo) cheevos, MIN(earned) date
+		      FROM cheevos
 		  GROUP BY user_id
 		  ORDER BY date DESC
 		     LIMIT $1

@@ -58,7 +58,7 @@ func main() {
 
 			// Once points is refreshed, award points based cheevos.
 			if _, err := db.Exec(
-				`INSERT INTO trophies(user_id, trophy)
+				`INSERT INTO cheevos(user_id, cheevo)
 				      SELECT user_id, 'big-brother'::cheevo
 				        FROM points
 				       WHERE points >= 1_984
@@ -125,7 +125,7 @@ func main() {
 					"superfluous users",
 					`DELETE FROM users u
 					  WHERE NOT EXISTS (SELECT FROM sessions WHERE user_id = u.id)
-						AND NOT EXISTS (SELECT FROM trophies WHERE user_id = u.id)`,
+						AND NOT EXISTS (SELECT FROM cheevos  WHERE user_id = u.id)`,
 				},
 				{
 					"users scheduled for deletion",
@@ -140,7 +140,7 @@ func main() {
 			}
 
 			if _, err := db.Exec(
-				`INSERT INTO trophies(user_id, trophy)
+				`INSERT INTO cheevos(user_id, cheevo)
 				 SELECT user_id, 'aged-like-fine-wine'
 				   FROM solutions
 				  WHERE NOT failing
@@ -183,8 +183,8 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 	defer tx.Rollback()
 
 	insertHole, err := tx.PrepareNamed(
-		`INSERT INTO holes ( id,  experiment)
-		      VALUES       (:id, :experiment)`,
+		`INSERT INTO holes ( id,  experiment,  name)
+		      VALUES       (:id, :experiment, :name)`,
 	)
 	if err != nil {
 		return err

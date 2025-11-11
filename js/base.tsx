@@ -56,7 +56,7 @@ for (const btn of $$<HTMLElement>('[data-dialog]'))
 
 // Search navigation dialog
 document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.key === 'p') {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
         const dialog = $<HTMLDialogElement>('#search-nav-dialog');
         if (!dialog) return;
 

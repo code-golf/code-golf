@@ -2,8 +2,8 @@
 {{ template "golfer" . }}
 
 <main>
-    <nav class=tabs>
-        <div>
+    <nav>
+        <div class=tabs>
         {{ range .Data.Displays }}
             <a {{ if ne . $.Data.Display }}
                 href="../../{{ . }}/{{ $.Data.Scope }}/{{ $.Data.Scoring }}"
@@ -12,7 +12,7 @@
             </a>
         {{ end }}
         </div>
-        <div>
+        <div class=tabs>
         {{ range .Data.Scopes }}
             <a {{ if ne . $.Data.Scope }}
                 href="../{{ . }}/{{ $.Data.Scoring }}"
@@ -21,7 +21,7 @@
             </a>
         {{ end }}
         </div>
-        <div>
+        <div class=tabs>
         {{ range .Data.Scorings }}
             <a {{ if ne . $.Data.Scoring }} href="{{ . }}" {{ end }}>
                 {{ title . }}

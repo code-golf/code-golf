@@ -36,7 +36,7 @@ my $session = new-golfer :$dbh;
 $client.get: 'https://app/about',
     headers => { cookie => "__Host-session=$session" };
 
-is $dbh.execute('SELECT ARRAY(SELECT trophy FROM trophies)').row, '{rtfm}',
+is $dbh.execute('SELECT ARRAY(SELECT cheevo FROM cheevos)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
 for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
@@ -47,46 +47,58 @@ for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     $cheevos.=subst: '{', '{solve-quine,'     if $_ eq 'quine';
     $cheevos.=subst: ',}', '}';
 
-    is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', ?, 'c', 1)", $_,
-    ).row, $cheevos, "$_/c earns $cheevos";
+    is save-solution(:hole($_) :lang<c>), $cheevos, "$_/c earns $cheevos";
 }
 
 for <
-    brainfuck                        brainfuck {inception}
-    divisors                         php       {elephpant-in-the-room}
-    evil-numbers                     scheme    {evil-scheme}
-    factorial-factorisation          factor    {x-factor}
-    game-of-life                     elixir    {alchemist}
-    hexdump                          hexagony  {hextreme-agony}
-    pascals-triangle                 pascal    {under-pressure}
-    poker                            fish      {fish-n-chips}
-    quine                            python    {ouroboros}
-    rijndael-s-box                   c-sharp   {s-box-360}
-    rock-paper-scissors-spock-lizard janet     {dammit-janet}
-    seven-segment                    assembly  {assembly-required}
-    sudoku                           hexagony  {off-the-grid}
-    ten-pin-bowling                  cobol     {cobowl}
-    𝑒                                r         {emergency-room}
+    24-game                          tex        {texnical-know-how}
+    brainfuck                        brainfuck  {inception}
+    divisors                         php        {elephpant-in-the-room}
+    css-colors                       basic      {horse-of-a-different-color}
+    evil-numbers                     scheme     {evil-scheme}
+    factorial-factorisation          factor     {x-factor}
+    game-of-life                     elixir     {alchemist}
+    hexdump                          hexagony   {hextreme-agony}
+    look-and-say                     sed        {simon-sed}
+    pascals-triangle                 pascal     {under-pressure}
+    poker                            fish       {fish-n-chips}
+    quine                            python     {ouroboros}
+    rijndael-s-box                   c-sharp    {s-box-360}
+    rock-paper-scissors-spock-lizard janet      {dammit-janet}
+    seven-segment                    assembly   {assembly-required}
+    si-units                         powershell {watt-are-you-doing}
+    star-wars-opening-crawl          tex        {typesetter}
+    sudoku                           hexagony   {off-the-grid}
+    ten-pin-bowling                  cobol      {cobowl}
+    united-states                    pascal     {going-postal}
+    𝑒                                r          {emergency-room}
 > -> $hole, $lang, $cheevos {
-    is $dbh.execute(
-        "SELECT earned FROM save_solution(2, ?, 'ab', ?, ?, 1)",
-        $lang eq 'assembly' ?? Nil !! 2, $hole, $lang,
-    ).row, $cheevos, "$hole/$lang earns $cheevos";
+    is save-solution(:$hole :$lang), $cheevos, "$hole/$lang earns $cheevos";
+}
+
+for <nim elixir sed wren> {
+    my $cheevos = $_ eq 'wren' ?? '{never-eat-shredded-wheat}' !! '{}';
+
+    is save-solution(:hole<arrows> :lang($_)), $cheevos,
+        "arrows/$_ earns $cheevos";
 }
 
 for <brainfuck d hexagony javascript nim swift sql zig> {
     my $cheevos = $_ eq 'zig' ?? '{pangramglot}' !! '{}';
 
-    is $dbh.execute(
-        "SELECT earned FROM save_solution(2, 2, 'ab', 'pangram-grep', ?, 1)",
-        $_,
-    ).row, $cheevos, "pangram-grep/$_ earns $cheevos";
+    is save-solution(:hole<pangram-grep> :lang($_)), $cheevos,
+        "pangram-grep/$_ earns $cheevos";
 }
 
-is $dbh.execute(
-    "SELECT earned FROM save_solution(3, 1, '⛳', 'π', 'c', 1)",
-).row, '{different-strokes}', 'Earns {different-strokes}';
+for <c d v> {
+    my $cheevos = $_ eq 'v' ?? '{when-in-rome}' !! '{}';
+
+    is save-solution(:hole<roman-to-arabic> :lang($_)), $cheevos,
+        "roman-to-arabic/$_ earns $cheevos";
+}
+
+is save-solution(:code<⛳> :hole<π> :lang<c>), '{different-strokes}',
+    'Earns {different-strokes}';
 
 for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     my $earns = %langs{ my $i = ++$ } // '{}';
@@ -100,10 +112,18 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';
     $earns.=subst: ',}', '}';
 
-    is $dbh.execute(
-        "SELECT earned FROM save_solution(2, ?, 'ab', 'musical-chords', ?, 1)",
-        $_ eq 'assembly' ?? Nil !! 2, $_,
-    ).row, $earns, "Lang $i ($_) earns $earns";
+    is save-solution(:hole<musical-chords> :lang($_)), $earns,
+        "Lang $i ($_) earns $earns";
 }
 
 done-testing;
+
+sub save-solution(:$code = 'ab', :$hole, :$lang) {
+    return $dbh.execute(
+        'SELECT earned FROM save_solution(
+            bytes := ?, chars := ?, code := ?, hole := ?,
+            lang  := ?, time_ms := 1::smallint, user_id := 1)',
+        $code.encode('UTF-8').bytes, $lang eq 'assembly' ?? Nil !! $code.chars,
+        $code, $hole, $lang,
+    ).row;
+}

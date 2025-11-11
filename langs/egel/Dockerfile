@@ -1,17 +1,26 @@
-FROM debian:bookworm-slim AS builder
+FROM alpine:3.22 AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes autoconf automake bash cmake g++ git libtool make texinfo
+RUN apk add --no-cache autoconf automake bash cmake curl g++ libtool linux-headers make texinfo
 
 ENV MAKEFLAGS=-j8 VER=0.1.14
 
-RUN git clone --progress --recurse-submodules -j4 -b v$VER \
-    --shallow-submodules https://github.com/egel-lang/egel
-
 WORKDIR /egel
 
-RUN cp CMakeLists.static CMakeLists.txt
+RUN curl -#L https://github.com/egel-lang/egel/archive/refs/tags/v$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN sed -i 's/#s/s/g' CMakeLists.static \
+ && cp CMakeLists.static CMakeLists.txt \
+ && sed -i 's/uin/size_/g' src/eval.hpp
+
+RUN curl -#L https://github.com/fmtlib/fmt/archive/refs/heads/master.tar.gz      \
+  | tar xz --directory /egel/vendor/fmt --strip-components 1                     \
+ && curl -#L https://github.com/unicode-org/icu/archive/refs/heads/master.tar.gz \
+  | tar xz --directory /egel/vendor/icu --strip-components 1                     \
+ && curl -#L https://github.com/libffi/libffi/archive/refs/heads/master.tar.gz   \
+  | tar xz --directory /egel/vendor/libffi --strip-components 1                  \
+ && curl -#L https://ftpmirror.gnu.org/gnu/lightning/lightning-2.2.3.tar.gz      \
+  | tar xz --directory /egel/vendor/lightning --strip-components 1
 
 WORKDIR /egel/vendor
 
@@ -24,18 +33,13 @@ RUN cmake -DCMAKE_BUILD_TYPE='MinSizeRel' .. \
 
 COPY egel.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/egel -s /egel.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/egel -s -static /egel.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6      \
-              /lib/x86_64-linux-gnu/libgcc_s.so.1  \
-              /lib/x86_64-linux-gnu/libm.so.6      \
-              /lib/x86_64-linux-gnu/libstdc++.so.6 /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2          /lib64/
-COPY --from=0 /usr/bin/egel                        /usr/bin/
-COPY --from=0 /usr/local/bin/egel                  /usr/local/bin/
-COPY --from=0 /usr/local/lib/egel                  /usr/local/lib/egel
+COPY --from=0 /usr/bin/egel       /usr/bin/
+COPY --from=0 /usr/local/bin/egel /usr/local/bin/
+COPY --from=0 /usr/local/lib/egel /usr/local/lib/egel
 
 ENTRYPOINT ["egel"]
 

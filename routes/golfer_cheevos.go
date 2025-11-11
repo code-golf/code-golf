@@ -2,6 +2,8 @@ package routes
 
 import (
 	"net/http"
+	"slices"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -13,9 +15,15 @@ import (
 func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 
+	type Step struct {
+		Complete   bool
+		Name, Path string
+	}
+
 	type Progress struct {
 		Count, Percent, Progress int
 		Earned                   *time.Time
+		Steps                    []Step
 	}
 
 	data := map[string]Progress{}
@@ -23,11 +31,11 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	db := session.Database(r)
 	rows, err := db.Query(
 		`WITH count AS (
-		    SELECT trophy, COUNT(*) FROM trophies GROUP BY trophy
+		    SELECT cheevo, COUNT(*) FROM cheevos GROUP BY cheevo
 		), earned AS (
-		    SELECT trophy, earned FROM trophies WHERE user_id = $1
+		    SELECT cheevo, earned FROM cheevos WHERE user_id = $1
 		) SELECT *, count * 100 / (SELECT COUNT(*) FROM users)
-		    FROM count LEFT JOIN earned USING(trophy)`,
+		    FROM count LEFT JOIN earned USING(cheevo)`,
 		golfer.ID,
 	)
 	if err != nil {
@@ -87,64 +95,125 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		return ids
 	}
 
-	for _, cheevo := range []struct {
-		cheevo       string
-		holes, langs []any
-	}{
-		{
-			cheevo: "alphabet-soup",
-			holes:  []any{"scrambled-sort"},
-			langs:  []any{"c", "d", "j", "k", "r", "v"},
-		},
-		{
-			cheevo: "archivist",
-			holes:  []any{"isbn"},
-			langs:  []any{"basic", "cobol", "common-lisp", "forth", "fortran"},
-		},
-		{
-			cheevo: "bird-is-the-word",
-			holes:  []any{"levenshtein-distance"},
-			langs:  []any{"awk", "prolog", "sql", "swift", "tcl", "wren"},
-		},
-		{
-			cheevo: "happy-go-lucky",
-			holes:  []any{"happy-numbers", "lucky-numbers"},
-			langs:  []any{"go"},
-		},
-		{
-			cheevo: "jeweler",
-			holes:  []any{"diamonds"},
-			langs:  []any{"crystal", "ruby"},
-		},
-		{
-			cheevo: "mary-had-a-little-lambda",
-			holes:  []any{"λ"},
-			langs:  []any{"clojure", "coconut", "common-lisp", "haskell", "scheme"},
-		},
-		{
-			cheevo: "sounds-quite-nice",
-			holes:  []any{"musical-chords"},
-			langs:  []any{"c", "c-sharp", "d", "f-sharp"},
-		},
-	} {
-		cheevoProgress(
-			`SELECT COUNT(DISTINCT(hole, lang))
+	for _, cheevo := range config.CheevoTree["Hole/Lang Specific"] {
+		if len(cheevo.Holes) == 0 || len(cheevo.Langs) == 0 {
+			continue
+		}
+
+		progress := data[cheevo.ID]
+
+		// No need to calculate progress if they've already earnt it.
+		if progress.Earned != nil {
+			continue
+		}
+
+		var completedSteps []struct{ Hole, Lang string }
+		if err := db.Select(
+			&completedSteps,
+			`SELECT DISTINCT hole, lang
 			   FROM stable_passing_solutions
 			  WHERE hole    = ANY($1)
 			    AND lang    = ANY($2)
 			    AND user_id = $3`,
-			[]string{cheevo.cheevo},
-			pq.Array(cheevo.holes),
-			pq.Array(cheevo.langs),
-		)
+			pq.Array(cheevo.Holes),
+			pq.Array(cheevo.Langs),
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for _, hole := range cheevo.Holes {
+			for _, lang := range cheevo.Langs {
+				step := Step{Path: "/" + hole.ID + "#" + lang.ID}
+
+				step.Name = hole.Name
+				if len(cheevo.Langs) > len(cheevo.Holes) {
+					step.Name = lang.Name
+				}
+
+				for _, c := range completedSteps {
+					if c.Hole == hole.ID && c.Lang == lang.ID {
+						step.Complete = true
+						break
+					}
+				}
+
+				progress.Steps = append(progress.Steps, step)
+			}
+		}
+
+		// Replace incomplete steps with "???" for "hidden" step cheevos.
+		if cheevo.ID == "archivist" {
+			progress.Steps = slices.DeleteFunc(progress.Steps,
+				func(s Step) bool { return !s.Complete })
+
+			progress.Steps = append(progress.Steps, slices.Repeat(
+				[]Step{{Name: "???"}},
+				cheevo.Target-len(progress.Steps),
+			)...)
+		}
+
+		progress.Progress = len(completedSteps)
+		data[cheevo.ID] = progress
 	}
 
-	cheevoProgress(
-		`SELECT pangramglot(array_agg(DISTINCT lang))
-		   FROM stable_passing_solutions
-		  WHERE hole = 'pangram-grep' AND user_id = $1`,
-		[]string{"pangramglot"},
-	)
+	if progress := data["never-eat-shredded-wheat"]; progress.Earned == nil {
+		var completedLangs []*config.Lang
+		if err := db.Select(
+			&completedLangs,
+			`WITH letters AS (
+			    SELECT substr(lang::text, 1, 1) lang_letter, lang
+			      FROM stable_passing_solutions
+			     WHERE hole = 'arrows' AND user_id = $1
+			) SELECT DISTINCT ON (lang_letter) lang
+			    FROM letters
+			   WHERE lang_letter IN ('n', 'e', 's', 'w')
+			ORDER BY lang_letter, lang`,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for _, c := range []string{"N", "E", "S", "W"} {
+			step := Step{Name: c + "..."}
+
+			for _, lang := range completedLangs {
+				if strings.ToUpper(lang.Name[:1]) == c {
+					step.Complete = true
+					step.Name = lang.Name
+					break
+				}
+			}
+
+			progress.Steps = append(progress.Steps, step)
+		}
+
+		progress.Progress = len(completedLangs)
+		data["never-eat-shredded-wheat"] = progress
+	}
+
+	if progress := data["pangramglot"]; progress.Earned == nil {
+		var completedSteps []string
+		if err := db.Select(
+			&completedSteps,
+			`SELECT unnest(letters(array_agg(DISTINCT lang)))
+			   FROM stable_passing_solutions
+			  WHERE hole = 'pangram-grep' AND user_id = $1`,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for c := 'A'; c <= 'Z'; c++ {
+			progress.Steps = append(progress.Steps, Step{
+				Name:     string(c),
+				Complete: slices.Contains(completedSteps, string(c)),
+			})
+		}
+
+		progress.Progress = len(completedSteps)
+		data["pangramglot"] = progress
+	}
 
 	cheevoProgress(
 		`SELECT COALESCE(EXTRACT(days FROM TIMEZONE('UTC', NOW()) - MIN(submitted)), 0)
@@ -163,15 +232,33 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		[]string{"polyglot", "polyglutton", "omniglot", "omniglutton"},
 	)
 
-	cheevoProgress(
-		`WITH distinct_holes AS (
-		    SELECT DISTINCT hole
-		      FROM stable_passing_solutions
-		     WHERE user_id = $2
-		) SELECT COUNT(DISTINCT $1::hstore->hole::text) FROM distinct_holes`,
-		[]string{"smörgåsbord"},
-		config.HoleCategoryHstore,
-	)
+	if progress := data["smörgåsbord"]; progress.Earned == nil {
+		var completedSteps []string
+		if err := db.Select(
+			&completedSteps,
+			`WITH distinct_holes AS (
+			    SELECT DISTINCT hole
+			      FROM stable_passing_solutions
+			     WHERE user_id = $2
+			) SELECT DISTINCT $1::hstore->hole::text FROM distinct_holes`,
+			config.HoleCategoryHstore,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for _, category := range []string{
+			"Art", "Computing", "Gaming", "Mathematics", "Sequence", "Transform",
+		} {
+			progress.Steps = append(progress.Steps, Step{
+				Name:     category,
+				Complete: slices.Contains(completedSteps, category),
+			})
+		}
+
+		progress.Progress = len(completedSteps)
+		data["smörgåsbord"] = progress
+	}
 
 	cheevoProgress(
 		`SELECT COUNT(DISTINCT hole)
