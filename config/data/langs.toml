@@ -1194,7 +1194,7 @@ example    = '''
 '''
 
 [Kotlin]
-args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
+args    = [ '/opt/java/bin/java', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '136 MiB'
 version = '2.2.21'
 website = 'https://kotlinlang.org'
@@ -1956,7 +1956,7 @@ w
 '''
 
 [Vyxal]
-args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
+args       = [ '/opt/java/bin/java', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '78.2 MiB'
 version    = '3.10.3'
