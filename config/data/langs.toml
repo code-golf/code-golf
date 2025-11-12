@@ -258,8 +258,8 @@ v Accessing arguments
 
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
-size    = '986 KiB'
-version = '1.1.0'
+size    = '1.00 MiB'
+version = '674b765'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -672,8 +672,8 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '110 MiB'
-version = 'F# 9.0 on .NET 9.0.10'
+size    = '113 MiB'
+version = 'F# 10.0 on .NET 10.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -963,7 +963,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '8.90 MiB'
+size    = '7.69 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -1592,7 +1592,7 @@ end
 [Rockstar]
 args      = [ '/usr/bin/rockstarwrapper', '-' ]
 redirects = [ 'rockstar-2' ]
-size      = '4.26 MiB'
+size      = '3.93 MiB'
 version   = '2.0.31'
 website   = 'https://codewithrockstar.com'
 example   = '''
@@ -1633,7 +1633,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '406 MiB'
-version = '1.91.0'
+version = '1.91.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1764,7 +1764,7 @@ foreach (arg in vargv)
 args       = [ '/usr/bin/staxwrapper', '-' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 439
-size       = '76.5 MiB'
+size       = '79.5 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
