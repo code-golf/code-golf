@@ -672,8 +672,8 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '110 MiB'
-version = 'F# 9.0 on .NET 9.0.10'
+size    = '113 MiB'
+version = 'F# 10.0 on .NET 10.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
