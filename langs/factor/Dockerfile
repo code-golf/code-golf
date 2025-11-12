@@ -1,17 +1,17 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache bash clang curl git make
+RUN apk add --no-cache bash clang curl git make patch
 
 ENV VER=0.100
 
 RUN curl -#o factor.zip https://downloads.factorcode.org/releases/$VER/factor-src-$VER.zip \
  && unzip -n factor
 
-WORKDIR /factor
+COPY factor.patch /
 
-RUN sed -i 's/64//' basis/io/directories/unix/linux/linux.factor   \
- && sed -i 's/lxstat64/lxstat/' basis/unix/stat/linux/64/64.factor \
- && sed -i '/^\[/,/al/d' basis/vocabs/prettyprint/prettyprint.factor
+RUN patch -p0 < factor.patch
+
+WORKDIR /factor
 
 RUN ./build.sh compile \
  && ./build.sh bootstrap
