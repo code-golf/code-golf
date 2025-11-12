@@ -154,6 +154,8 @@ RUN echo [] > extras/ligatures.json                           \
  && rm twe-svg.zip                                            \
     svg/1f1ea-1f1fa.svg      `# Flag: European Union`         \
     svg/1f1fa-1f1f3.svg      `# Flag: United Nations`         \
- && zip -qr twe-svg.zip svg                                   \
- && make                                                      \
- && woff2_compress 'build/Twemoji Mozilla.ttf'
+ && zip -qr twe-svg.zip svg
+
+COPY font.sh ./
+
+RUN ./font.sh
