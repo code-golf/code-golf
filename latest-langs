@@ -58,6 +58,7 @@ constant %paths = (
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
+    'Io'           => 'github.com/IoLanguage/io',
     'iogii'        => 'golfscript.com/iogii/source.html',
     'J'            => 'aplwiki.com/wiki/J',
     'Janet'        => 'github.com/janet-lang/janet/releases/latest',
