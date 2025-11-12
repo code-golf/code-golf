@@ -36,8 +36,8 @@ CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '24-game', '99-bottles-of-beer',
     'abundant-numbers', 'abundant-numbers-long', 'apérys-constant',
     'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
-    'ascii-table', 'billiards', 'binary-lambda-calculus', 'brainfuck',
-    'calendar', 'card-number-validation', 'catalan-numbers',
+    'ascii-table', 'billiards', 'binary-lambda-calculus', 'boggle',
+    'brainfuck', 'calendar', 'card-number-validation', 'catalan-numbers',
     'catalans-constant', 'christmas-trees', 'collatz', 'connect-four',
     'css-colors', 'css-colors-inverse', 'css-grid', 'cubes', 'day-of-week',
     'dfa-simulator', 'diamonds', 'divisors', 'ellipse-perimeters',
@@ -71,8 +71,8 @@ CREATE TYPE hole AS ENUM (
     'tic-tac-toe', 'time-distance', 'tongue-twisters', 'topological-sort',
     'tower-of-hanoi', 'transpose-sentence', 'trinomial-triangle', 'turtle',
     'tutorial', 'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
-    '√2', '𝑒'
+    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2',
+    '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
