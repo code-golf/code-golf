@@ -8,10 +8,8 @@
 const char* harbour = "/usr/local/bin/hbmk2", *code = "code.hb";
 
 int main(int argc, char* argv[]) {
-    if (!strcmp(argv[1], "--version")) {
-        execv(harbour, argv);
-        ERR_AND_EXIT("execv");
-    }
+    if (!strcmp(argv[1], "--version"))
+        exit(EXIT_SUCCESS);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
