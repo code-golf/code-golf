@@ -610,6 +610,56 @@ preamble = '''
     <b><code>-</code></b> when games are still in progress.
 '''
 
+[Crossword]
+category = 'Computing'
+experiment = 1308
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Crossword' },
+]
+output-delimiter = "\n\n"
+synopsis = 'Print valid crossword puzzles.'
+preamble = '''
+<p>
+    Each argument contains a variable number of words, separated by spaces. Use
+    the individual words to create a ten-by-ten crossword puzzle that meets the
+    following requirements:
+
+<ul>
+    <li>You must use all the words.
+    <li>Words can be formed horizontally or vertically, but not diagonally.
+    <li>No new words may be created, either horizontally or vertically, i.e.
+        the letters of one word may not be adjacent to the letters of another
+        word, unless this forms a usable word.
+    <li>Use capital letters for each word and a period for unused boxes.
+        Separate everything with spaces.
+</ul>
+
+<p>
+    For example, consider the following argument:
+
+<pre>freeze arm waffle love mad federal aura one</pre>
+
+<p>
+    If you take the above restrictions into account, the crossword below is one
+    of <i>many</i> valid possibilities.
+
+<pre>
+. W A F F L E . . .
+. . R . E . . . . .
+. . M A D . . . . .
+. . . . E . . . . .
+. . . . R . . . . .
+. A U R A . . . . .
+. . . . L O V E . .
+. . . . . N . . . .
+F R E E Z E . . . .
+. . . . . . . . . .
+</pre>
+
+<p>
+    For each argument, print any valid crossword puzzle.
+'''
+
 ['CSS Colors']
 case-fold = true
 category = 'Transform'
