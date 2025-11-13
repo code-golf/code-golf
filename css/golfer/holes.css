@@ -1,6 +1,9 @@
 @import "./_golfer.css";
 
-main nav { gap: 1rem 1.5rem }
+main nav {
+    display: flex;
+    gap: 1rem 1.5rem;
+}
 
 #holes {
     display: grid;

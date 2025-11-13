@@ -1,4 +1,4 @@
-ARG VER=1.25.1
+ARG VER=1.25.4
 
 FROM golang:$VER-alpine3.22 AS builder
 
@@ -14,7 +14,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/gowrapper -s -static /go.c
 FROM codegolf/lang-base
 
 COPY --from=0 /cache                                     /cache
-COPY --from=0 /lib/ld-musl-x86_64.so.1                   /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                        /lib/
 COPY --from=0 /usr/bin/gowrapper                         /usr/bin/
 COPY --from=0 /usr/local/go/bin/go                       /usr/local/bin/
 COPY --from=0 /usr/local/go/pkg/tool/linux_amd64/asm     \
