@@ -34,6 +34,14 @@ func Comma(i int) string {
 	}
 }
 
+// Duration returns a HTML <time> tag of a time.Duration in milliseconds.
+func Duration(d time.Duration) template.HTML {
+	return template.HTML(fmt.Sprintf(
+		`<time datetime="PT%gS">%sms</time>`,
+		d.Seconds(), Comma(int(d.Milliseconds()))),
+	)
+}
+
 // Ordinal returns the ordinal of an integer.
 func Ordinal(i int) string {
 	switch i % 10 {

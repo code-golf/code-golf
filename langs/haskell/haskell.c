@@ -34,8 +34,7 @@ int main(int argc, char* argv[]) {
     hargv[1] = "--run";
     hargv[2] = (char*) code;
     hargv[3] = "-fdiagnostics-color=always";
-    hargv[4] = "--";
-    hargv[5] = "";
+    hargv[4] = hargv[5] = "--";
     memcpy(&hargv[6], &argv[2], (argc - 2) * sizeof(char*));
     hargv[hargc - 1] = NULL;
 

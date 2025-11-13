@@ -1,30 +1,24 @@
-FROM debian:bookworm-slim AS builder
+FROM alpine:3.22 AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes gcc sysv-rc-conf wget
+RUN apk add --no-cache curl gcc make musl-dev
 
 ENV VER=3.9.7
 
-RUN wget -O libregina.deb https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/libregina3_$VER-1-amd64-Debian-12.deb \
- && dpkg -i libregina.deb
+RUN curl -#L https://downloads.sourceforge.net/regina-rexx/regina-rexx-$VER.tar.gz \
+  | tar xz --strip-components 1
 
-RUN wget -O regina.deb https://sourceforge.net/projects/regina-rexx/files/regina-rexx/$VER/regina-rexx_$VER-1-amd64-Debian-12.deb \
- && dpkg -i regina.deb
-
-COPY rexx.c /
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/rexx -s rexx.c
+RUN ./configure             \
+    --disable-flists        \
+    --disable-gci           \
+    --disable-posix-threads \
+    --disable-screen        \
+    --enable-64bit          \
+ && make install
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6          \
-              /lib/x86_64-linux-gnu/libcrypt.so.1      \
-              /lib/x86_64-linux-gnu/libdl.so.2         \
-              /lib/x86_64-linux-gnu/libpthread.so.0    /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2              /lib64/
-COPY --from=0 /usr/bin/regina /usr/bin/rexx            /usr/bin/
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libregina.so.3 /usr/lib/
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/local/bin/rexx /usr/bin/
 
 ENTRYPOINT ["rexx"]
 

@@ -4,33 +4,26 @@ FROM alpine:3.22 AS builder
 
 ARG VER
 
-RUN apk add --no-cache bash binutils-gold build-base cabal curl ghc gmp-dev ncurses-dev python3
+RUN apk add --no-cache bash binutils-gold build-base cabal curl ghc-bootstrap gmp-dev ncurses-dev python3
 
 RUN curl -#L https://downloads.haskell.org/~ghc/$VER/ghc-$VER-src.tar.xz \
   | tar xJ --strip-components 1
 
 RUN cabal update                   \
  && ./configure                    \
- && hadrian/build                  \
-    -j`nproc`                      \
+ && hadrian/build -j               \
     --docs=none                    \
     --flavour=release+omit_pragmas \
     stage2:exe:ghc-bin
 
 WORKDIR /_build/stage1/lib
 
-# Delete all archive files.
-RUN find . -name '*.a' -delete
-
-# Delete useless shared object files.
-RUN find . \( -name '*debug*.so' -or -name '*p-ghc*.so' \) -delete
+RUN find . \( -name '*.a' -or -name '*debug*.so' -or -name '*p-ghc*.so' \) -delete
 
 WORKDIR /_build/stage1/lib/x86_64-linux-ghc-$VER-inplace
 
-# Remove unused package directories.
 RUN find . \( -name 'ghc-experimental*' -or -name 'ghci*' \) -exec rm -rf {} +
 
-# Delete files not matching a pattern.
 RUN find . -not \( -name '*Constants.h' -or -name '*.dyn_hi' -or -name '*ghc*.so' -or -name 'settings' \) -delete
 
 COPY haskell.c /
@@ -41,7 +34,7 @@ FROM codegolf/lang-base
 
 ARG VER
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1                         /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                              /lib/
 COPY --from=0 /usr/bin/gcc /usr/bin/haskell                    /usr/bin/
 COPY --from=0 /usr/lib/libffi.so.8                             \
               /usr/lib/libgmp.so                               \
