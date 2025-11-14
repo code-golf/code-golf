@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* ox = "/usr/local/bin/oxl.bin", *code = "code.ox";
+const char* ox = "/usr/local/bin/oxl", *code = "code.ox";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
