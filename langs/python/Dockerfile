@@ -1,6 +1,6 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache clang curl libffi-dev llvm make zlib-dev
+RUN apk add --no-cache clang curl libffi-dev llvm-dev make
 
 # Also bump Coconut, Hy.
 ENV VER=3.14.0
@@ -8,7 +8,7 @@ ENV VER=3.14.0
 RUN curl -#L https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz \
   | tar xJ --strip-components 1
 
-RUN CC=clang ./configure       \
+RUN CC='clang' ./configure     \
     --disable-test-modules     \
     --prefix=/usr              \
     --with-lto=thin            \
@@ -22,17 +22,18 @@ RUN CC=clang ./configure       \
 WORKDIR /usr/lib/python3.14
 
 # Remove some unneeded libraries.
-RUN find . -name '*.opt-[12].pyc' -delete \
- && rm -r __pycache__/doctest.*           \
-          __pycache__/pydoc.*             \
-          __pycache__/turtle.*            \
-          _pyrepl                         \
-          ensurepip                       \
-          idlelib                         \
-          pydoc_data                      \
-          tkinter                         \
-          turtle.py                       \
-          turtledemo                      \
+RUN find . \( -name '*.opt-[12].pyc' -or \
+    -name 'zlib.cpython-*.so' \) -delete \
+ && rm -r __pycache__/doctest.*          \
+          __pycache__/pydoc.*            \
+          __pycache__/turtle.*           \
+          _pyrepl                        \
+          ensurepip                      \
+          idlelib                        \
+          pydoc_data                     \
+          tkinter                        \
+          turtle.py                      \
+          turtledemo                     \
           unittest
 
 FROM codegolf/lang-base
