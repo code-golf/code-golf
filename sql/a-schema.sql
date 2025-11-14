@@ -203,7 +203,7 @@ CREATE TABLE notes (
 );
 
 CREATE TABLE sessions (
-    id        uuid      NOT NULL DEFAULT GEN_RANDOM_UUID() PRIMARY KEY,
+    id        uuid      NOT NULL DEFAULT uuidv4() PRIMARY KEY,
     last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
