@@ -627,9 +627,10 @@ preamble = '''
 <ul>
     <li>You must use all the words.
     <li>Words can be formed horizontally or vertically, but not diagonally.
+    <li>Each word must overlap with at least one other word.
     <li>No new words may be created, either horizontally or vertically, i.e.
         the letters of one word may not be adjacent to the letters of another
-        word, unless this forms a usable word.
+        word unless they overlap.
     <li>Use capital letters for each word and a period for unused boxes.
         Separate everything with spaces.
 </ul>
