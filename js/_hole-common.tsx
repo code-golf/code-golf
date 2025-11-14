@@ -44,6 +44,7 @@ const renamedHoles: Record<string, string> = {
     'factorial-factorisation-ascii': 'factorial-factorisation',
     'grid-packing':                  'css-grid',
     'placeholder':                   'tutorial',
+    'star-wars-gpt':                 'text-prediction',
     'sudoku-v2':                     'sudoku-fill-in',
 };
 
