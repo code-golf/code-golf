@@ -627,9 +627,10 @@ preamble = '''
 <ul>
     <li>You must use all the words.
     <li>Words can be formed horizontally or vertically, but not diagonally.
+    <li>Each word must overlap with at least one other word.
     <li>No new words may be created, either horizontally or vertically, i.e.
         the letters of one word may not be adjacent to the letters of another
-        word, unless this forms a usable word.
+        word unless they overlap.
     <li>Use capital letters for each word and a period for unused boxes.
         Separate everything with spaces.
 </ul>
@@ -4044,12 +4045,12 @@ preamble = '''
     You are given a series of inputs. Each input contains a text <b>corpus</b>
     and 12 <b>prompt</b> words on subsequent lines.
     For each prompt, output the word which most frequently follows it in the corpus.
-    In case of a tie, print the one whose follow-on occurrence comes first.
+    In case of a tie, print the one whose first follow-on occurrence comes earliest.
 <p>
-    For example, suppose the corpus is <code>code golf and golf and code</code>
-    and the prompt is <code>and</code>.
+    For example, suppose the corpus is "code golf and golf and code"
+    and the prompt is "and".
     Both "golf" and "code" follow the word "and" maximally frequently (once), but "golf"
-    <em>does so first</em>, and so the output is <code>golf</code>.
+    <em>does so first</em>, and so the output is "golf".
 <p>
     In this problem, each corpus is formed by concatenating two
     <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
