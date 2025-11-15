@@ -1,6 +1,6 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache clang curl llvm-dev make
 
 # Also bump Coconut, Hy.
 ENV VER=3.14.0
@@ -8,10 +8,10 @@ ENV VER=3.14.0
 RUN curl -#L https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz \
   | tar xJ --strip-components 1
 
-RUN CC='cc' ./configure        \
+RUN CC='clang' ./configure     \
     --disable-test-modules     \
     --prefix=/usr              \
-    --with-lto=full            \
+    --with-lto=thin            \
     --with-tail-call-interp    \
     --without-ensurepip        \
     --without-static-libpython \
@@ -23,10 +23,14 @@ WORKDIR /usr/lib/python3.14
 
 # Remove some unneeded libraries.
 RUN find . -name '*.opt-[12].pyc' -delete   \
- && rm -r _pyrepl                           \
+ && rm -r __pycache__/doctest.*             \
+          __pycache__/pydoc.*               \
+          __pycache__/turtle.*              \
+          _pyrepl                           \
           ensurepip                         \
           idlelib                           \
           lib-dynload/binascii.cpython-*.so \
+          lib-dynload/zlib.cpython-*.so     \
           pydoc_data                        \
           tkinter                           \
           turtle.py                         \
