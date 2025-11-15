@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.22 MiB'
-version    = '0991c79'
+version    = 'fa246cc'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -258,8 +258,8 @@ v Accessing arguments
 
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
-size    = '986 KiB'
-version = '1.1.0'
+size    = '1.00 MiB'
+version = '674b765'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -638,7 +638,7 @@ none
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '57.1 MiB'
-version = '1.19.2'
+version = '1.19.3'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -672,8 +672,8 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '110 MiB'
-version = 'F# 9.0 on .NET 9.0.10'
+size    = '113 MiB'
+version = 'F# 10.0 on .NET 10.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -850,12 +850,13 @@ n*
 '''
 
 [Groovy]
-args    = [ '/usr/bin/groovy', '-e', '$code' ]
-env     = [ 'JAVA_HOME=/opt/java' ]
-size    = '73.9 MiB'
-version = '5.0.2'
-website = 'https://groovy-lang.org'
-example = '''
+args     = [ '/usr/bin/groovy', '-e', '$code' ]
+env      = [ 'JAVA_HOME=/opt/java' ]
+released = 2025-08-29
+size     = '73.9 MiB'
+version  = '5.0.2'
+website  = 'https://groovy-lang.org'
+example  = '''
 // Printing
 println "Hello, World!"
 
@@ -962,7 +963,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '8.90 MiB'
+size    = '7.69 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -1101,8 +1102,8 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '45.5 MiB'
-version = 'V8 14.1.146.11'
+size    = '45.6 MiB'
+version = 'V8 14.2.231.17'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1156,7 +1157,7 @@ end
 [K]
 args    = [ '/usr/bin/k', '/proc/self/fd/0' ]
 size    = '605 KiB'
-version = '544d014afd'
+version = '4dd7915334'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -1234,7 +1235,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.09 MiB'
-version    = '0.698'
+version    = '0.699'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1591,7 +1592,7 @@ end
 [Rockstar]
 args      = [ '/usr/bin/rockstarwrapper', '-' ]
 redirects = [ 'rockstar-2' ]
-size      = '4.26 MiB'
+size      = '3.93 MiB'
 version   = '2.0.31'
 website   = 'https://codewithrockstar.com'
 example   = '''
@@ -1632,7 +1633,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '406 MiB'
-version = '1.91.0'
+version = '1.91.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1763,7 +1764,7 @@ foreach (arg in vargv)
 args       = [ '/usr/bin/staxwrapper', '-' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 439
-size       = '76.5 MiB'
+size       = '79.5 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
@@ -1799,8 +1800,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.68 MiB'
-version = '9.0.2'
+size    = '5.67 MiB'
+version = '9.0.3'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
