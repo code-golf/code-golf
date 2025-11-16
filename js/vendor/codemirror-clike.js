@@ -93,6 +93,9 @@ export function clike(parserConfig) {
             while (!stream.match(/^\/[\/*]/, false) && stream.eat(isOperatorChar)) {}
             return 'operator';
         }
+        if (parserConfig.name == 'llvm') {
+            if (stream.match(/^[A-Za-z0-9_\.\$]+:/)) return 'operator';
+        }
         stream.eatWhile(isIdentifierChar);
         if (namespaceSeparator) while (stream.match(namespaceSeparator))
             stream.eatWhile(isIdentifierChar);
@@ -249,12 +252,13 @@ function words(str) {
     return obj;
 }
 function contains(words, word) {
-    if (typeof words === 'function') {
+    if (words.llvm && /i\d+/.test(word)) {
+        return true;
+    }
+    else if (typeof words === 'function') {
         return words(word);
     }
-    else {
-        return words.propertyIsEnumerable(word);
-    }
+    return words.propertyIsEnumerable(word);
 }
 const cKeywords = 'auto if break case register continue return default do sizeof ' +
     'static else struct switch extern typedef union for goto while enum const ' +
@@ -588,6 +592,66 @@ function tokenNestedComment(depth) {
         return 'comment';
     }
 }
+
+export const llvm = clike({
+    name: 'llvm',
+    keywords: words('acq_rel acquire add addrspace addrspacecast align alignstack alloca alwaysinline and any appending arcp ' +
+                    'ashr asm async atomic atomicrmw attributes bitcast br byval c call callbr caller catch catchpad catchret ' +
+                    'catchswitch cleanup cleanuppad cleanupret cmpxchg coldcc comdat constant continue contract datalayout ' +
+                    'declare define disjoint distinct eq exact external extractelement extractvalue fadd false fastcc fcmp fdiv ' +
+                    'fence filter fmul fneg for fpext fptosi fptoui fptrunc freeze frem from fsub gc getelementptr global icmp ' +
+                    'inbounds indirectbr initialexec inrange insertelement insertvalue inteldialect internal inttoptr invoke ' +
+                    'landingpad load lshr metadata module monotonic mul ne nnan nneg noalias noinline none noreturn nounwind nsw ' +
+                    'null nuw oeq optsize or phi poison preallocated prefix private ptrtoaddr ptrtoint reassoc release resume ret ' +
+                    'return sdiv section select seq_cst sext sge sgt shl shufflevector sideeffect signext sitofp sle slt srem ' +
+                    'store struct sub swifterror switch tail target thread_local to token triple true trunc try type udiv uge ugt ' +
+                    'uitofp ule ult undef unnamed_addr unordered unreachable unwind urem va_arg void volatile vscale with within ' +
+                    'x xor zeroext zeroinitializer zext'),
+    types: (() => {
+        const t = words('bfloat double float fp128 half label metadata opaque ppc_fp128 ptr token x86_amx x86_fp80 x86_mmx');
+        t.llvm = true;
+        return t;
+    })(),
+    hooks: {
+        '!': function(stream) {
+            if (stream.eat('{')) return null;
+            if (stream.eat('"')) {
+                stream.skipTo('"');
+            }
+            stream.eatWhile(/[\w".\d_]/);
+            return 'variable';
+        },
+        '"': function(stream) {
+            if (stream.prevToken != '!') {
+                stream.skipTo('"');
+                return false;
+            }
+            stream.eatWhile(/[\w.\d_]/);
+            return 'variable';
+        },
+        '%': function(stream) {
+            stream.eatWhile(/[\w.\d_]/);
+            return 'variable';
+        },
+        '/': function(stream, state) {
+            if (!stream.eat('*')) return false;
+            state.tokenize = tokenNestedComment(1);
+            return state.tokenize(stream, state);
+        },
+        ';': function(stream) {
+            stream.skipToEnd();
+            return 'comment';
+        },
+        '@': function(stream) {
+            stream.eatWhile(/[\w.\d_]/);
+            return 'variable';
+        },
+    },
+    multiLineStrings: true,
+    indentStatements: false,
+    indentSwitch: false,
+    isPunctuationChar: /[()*,.<=>\[\]{}]/,
+});
 
 export const scala = clike({
     keywords: words('abstract case catch class def do else extends final finally for forSome if' +
