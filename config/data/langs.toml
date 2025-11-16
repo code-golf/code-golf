@@ -1064,8 +1064,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '906 KiB'
-version = '1.39.1'
+size    = '911 KiB'
+version = '1.40.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1234,8 +1234,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.09 MiB'
-version    = '0.699'
+size       = '5.10 MiB'
+version    = '0.700'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1534,7 +1534,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.10'
+version   = 'Raku 6.d on Rakudo 2025.11'
 website   = 'https://raku.org'
 example   = '''
 # Printing
