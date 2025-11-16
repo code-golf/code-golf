@@ -1454,7 +1454,7 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '30.5 MiB'
+size    = '30.4 MiB'
 version = '3.14.0'
 website = 'https://www.python.org'
 example = '''
