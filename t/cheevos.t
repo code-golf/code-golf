@@ -76,6 +76,7 @@ for Q:ww<
     {pangramglot} pangram-grep 'brainfuck d hexagony javascript nim swift sql zig'
     {s-box-360} rijndael-s-box c-sharp
     {simon-sed} look-and-say sed
+    {sinosphere} mahjong 'c j v'
     {sounds-quite-nice} musical-chords 'c c-sharp d'
     {texnical-know-how} 24-game tex
     {typesetter} star-wars-opening-crawl tex
