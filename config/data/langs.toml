@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.22 MiB'
-version    = '0991c79'
+version    = 'fa246cc'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -1064,8 +1064,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '906 KiB'
-version = '1.39.1'
+size    = '911 KiB'
+version = '1.40.1'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1157,7 +1157,7 @@ end
 [K]
 args    = [ '/usr/bin/k', '/proc/self/fd/0' ]
 size    = '605 KiB'
-version = '4dd7915334'
+version = '717063f249'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -1234,8 +1234,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.09 MiB'
-version    = '0.699'
+size       = '5.10 MiB'
+version    = '0.700'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1480,7 +1480,7 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '30.5 MiB'
+size    = '30.4 MiB'
 version = '3.14.0'
 website = 'https://www.python.org'
 example = '''
@@ -1560,7 +1560,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.10'
+version   = 'Raku 6.d on Rakudo 2025.11'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1826,8 +1826,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.68 MiB'
-version = '9.0.2'
+size    = '5.67 MiB'
+version = '9.0.3'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing

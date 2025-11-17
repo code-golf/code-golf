@@ -21,7 +21,7 @@ CREATE TYPE cheevo AS ENUM (
     'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
     'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
-    'simon-sed', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'texnical-know-how', 'the-watering-hole',
     'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
     'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
@@ -136,9 +136,8 @@ CREATE TABLE users (
     pronouns     pronouns,
     settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
     about        text      NOT NULL DEFAULT '',
-    -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
     country_flag char(2)            GENERATED ALWAYS AS
-        (CASE WHEN show_country THEN country END) STORED,
+        (CASE WHEN show_country THEN country END),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),              -- Can't refer yourself!
     CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
@@ -204,7 +203,7 @@ CREATE TABLE notes (
 );
 
 CREATE TABLE sessions (
-    id        uuid      NOT NULL DEFAULT GEN_RANDOM_UUID() PRIMARY KEY,
+    id        uuid      NOT NULL DEFAULT uuidv4() PRIMARY KEY,
     last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
