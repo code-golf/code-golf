@@ -5,7 +5,7 @@ import (
 	"math/rand/v2"
 )
 
-var _ = answerFunc("repeating-decimals", func() []Answer {
+var _ = answerFunc("continued-fractions", func() []Answer {
 	tests := make([]test, 100)
 
 	for i := range 100 {
