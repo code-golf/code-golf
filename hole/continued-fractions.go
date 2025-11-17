@@ -16,7 +16,7 @@ var _ = answerFunc("repeating-decimals", func() []Answer {
 })
 
 func continuedFractionsTest(n, d int) string {
-	//in := fmt.Sprint(n, "/", d)
+	in := fmt.Sprint(n, "/", d)
 	out := fmt.Sprint("[", n/d)
 	n %= d
 	if n > 0 {
@@ -29,5 +29,5 @@ func continuedFractionsTest(n, d int) string {
 		out = out[:len(out)-1]
 	}
 	out = fmt.Sprint(out, "]")
-	return out
+	return test{in, out}
 }
