@@ -1323,9 +1323,9 @@ main :: proc() {
 
 [Ox]
 args       = [ '/usr/bin/ox', '-' ]
-env        = [ 'OX9PATH=/usr/local/include' ]
+env        = [ 'KMP_DUPLICATE_LIB_OK=1', 'LD_LIBRARY_PATH=/usr/local/lib', 'OX9PATH=/usr/local/include' ]
 experiment = 1910
-size       = '7.40 MiB'
+size       = '5.80 MiB'
 version    = '9.30'
 website    = 'https://www.doornik.com'
 example    = '''
