@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.305-alpine3.22-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:9.0.306-alpine3.22-amd64 AS builder
 
 WORKDIR /c-sharp
 
@@ -8,7 +8,7 @@ RUN dotnet publish -c Release -o /out
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1    /lib/
+COPY --from=0 /lib/ld-musl-*.so.1         /lib/
 COPY --from=0 /out/*.dll                  \
               /out/c-sharp                \
               /out/libSystem.Native.so    \

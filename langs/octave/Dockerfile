@@ -1,13 +1,13 @@
-ARG VER=10.2.0
+ARG VER=10.3.0
 
 FROM alpine:3.22 AS builder
 
 ARG VER
 
-RUN apk add --no-cache autoconf automake blas-dev build-base curl gawk gfortran \
-                       gperf lapack-dev less libtool ncurses pcre2 pcre2-dev
+RUN apk add --no-cache autoconf automake blas-dev curl g++ gawk gfortran gperf \
+                       lapack-dev less libtool make ncurses-dev pcre2-dev
 
-RUN curl -#L https://ftp.nluug.nl/pub/gnu/octave/octave-$VER.tar.xz \
+RUN curl -#L https://ftpmirror.gnu.org/gnu/octave/octave-$VER.tar.xz \
   | tar xJ --strip-components 1
 
 RUN ./configure        \
@@ -31,7 +31,7 @@ FROM codegolf/lang-base
 
 ARG VER
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1                      /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                           /lib/
 COPY --from=0 /usr/bin/octave                               /usr/bin/
 COPY --from=0 /usr/lib/libblas.so.3                         \
               /usr/lib/libgcc_s.so.1                        \
@@ -51,4 +51,4 @@ COPY --from=0 /usr/local/share/octave                       /usr/local/share/oct
 
 ENTRYPOINT ["octave"]
 
-CMD ["--version"]
+CMD ["--quiet", "--version"]
