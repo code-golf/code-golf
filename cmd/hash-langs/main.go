@@ -2,7 +2,7 @@ package main
 
 import (
 	"crypto/sha256"
-	"encoding/json"
+	"encoding/json/v2"
 	"fmt"
 	"io"
 	"io/fs"
@@ -39,7 +39,7 @@ func main() {
 	}
 	defer file.Close()
 
-	if err := json.NewEncoder(file).Encode(digests); err != nil {
+	if err := json.MarshalWrite(file, digests); err != nil {
 		panic(err)
 	}
 }

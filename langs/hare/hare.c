@@ -31,12 +31,13 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int hargc = argc + 2;
+    int hargc = argc + 3;
     char** hargv = malloc(hargc * sizeof(char*));
     hargv[0] = (char*) hare;
     hargv[1] = "run";
-    hargv[2] = (char*) code;
-    memcpy(&hargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    hargv[2] = "-R";
+    hargv[3] = (char*) code;
+    memcpy(&hargv[4], &argv[2], (argc - 2) * sizeof(char*));
     hargv[hargc - 1] = NULL;
 
     execv(hare, hargv);

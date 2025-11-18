@@ -36,7 +36,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/tex -s /tex.c
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/dash             /bin/sh
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
+COPY --from=0 /lib/ld-musl-*.so.1       /lib/
 COPY --from=0 /dvi-to-text /usr/bin/tex /usr/bin/
 COPY --from=0 /usr/lib/libncursesw.so.6 \
               /usr/lib/libreadline.so.8 /usr/lib/

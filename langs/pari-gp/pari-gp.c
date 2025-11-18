@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    if (!(fp = fopen("arguments", "w")))
+    if (!(fp = fopen("args", "w")))
         ERR_AND_EXIT("fopen");
 
     if (fputs(args, fp)) {

@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache clang curl git make
 
-ENV CFLAGS='-O3 -march=x86-64-v3 -DJIT_OFF' VER=5a14466
+ENV CFLAGS='-O3 -march=x86-64-v3 -DJIT_OFF' VER=d118d76
 
 WORKDIR /knight
 
@@ -13,7 +13,7 @@ RUN make
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /knight/target/knight    /usr/bin/
+COPY --from=0 /lib/ld-musl-*.so.1   /lib/
+COPY --from=0 /knight/target/knight /usr/bin/
 
 ENTRYPOINT ["knight"]
