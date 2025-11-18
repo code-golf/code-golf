@@ -2,9 +2,9 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl g++ linux-headers make
 
-ENV VER=0.698
+ENV VER=0.700
 
-RUN curl -#L https://github.com/luau-lang/luau/archive/refs/tags/696.tar.gz \
+RUN curl -#L https://github.com/luau-lang/luau/archive/refs/tags/$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN make config=release luau \

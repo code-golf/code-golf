@@ -1,10 +1,10 @@
-FROM rust:1.91.0-slim-trixie AS builder
+FROM rust:1.91.1-slim-trixie AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl musl-dev
 
-ENV CRT='x86_64-unknown-linux-musl' VER=38.0.3
+ENV CRT='x86_64-unknown-linux-musl' VER=38.0.4
 
 WORKDIR /usr/bin
 
