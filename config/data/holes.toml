@@ -610,6 +610,57 @@ preamble = '''
     <b><code>-</code></b> when games are still in progress.
 '''
 
+[Crossword]
+category = 'Computing'
+experiment = 1308
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Crossword' },
+]
+output-delimiter = "\n\n"
+synopsis = 'Print valid crossword puzzles.'
+preamble = '''
+<p>
+    Each argument contains a variable number of words, separated by spaces. Use
+    the individual words to create a ten-by-ten crossword puzzle that meets the
+    following requirements:
+
+<ul>
+    <li>You must use all the words.
+    <li>Words can be formed horizontally or vertically, but not diagonally.
+    <li>Each word must overlap with at least one other word.
+    <li>No new words may be created, either horizontally or vertically, i.e.
+        the letters of one word may not be adjacent to the letters of another
+        word unless they overlap.
+    <li>Use capital letters for each word and a period for unused boxes.
+        Separate everything with spaces.
+</ul>
+
+<p>
+    For example, consider the following argument:
+
+<pre>freeze arm waffle love mad federal aura one</pre>
+
+<p>
+    If you take the above restrictions into account, the crossword below is one
+    of <i>many</i> valid possibilities.
+
+<pre>
+. W A F F L E . . .
+. . R . E . . . . .
+. . M A D . . . . .
+. . . . E . . . . .
+. . . . R . . . . .
+. A U R A . . . . .
+. . . . L O V E . .
+. . . . . N . . . .
+F R E E Z E . . . .
+. . . . . . . . . .
+</pre>
+
+<p>
+    For each argument, print any valid crossword puzzle.
+'''
+
 ['CSS Colors']
 case-fold = true
 category = 'Transform'
@@ -3873,7 +3924,7 @@ preamble = '''
 
 ['Smooth Numbers']
 experiment = 2144
-category = 'Sequence'
+category = 'Mathematics'
 links = [
     { name = 'OEIS A000079', url = '//oeis.org/A000079' },
     { name = 'OEIS A003586', url = '//oeis.org/A003586' },
@@ -3992,10 +4043,16 @@ synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
 preamble = '''
 <p>
     You are given a series of inputs. Each input contains a text <b>corpus</b>
-    and a dozen <b>prompts</b> on subsequent lines. For each prompt, output the
-    most likely next word in the corpus by frequency (aka <b>mode</b>). If
-    there is more than one mode, output the first encountered in the corpus. In
-    this problem, each corpus is formed by concatenating two
+    and 12 <b>prompt</b> words on subsequent lines.
+    For each prompt, output the word which most frequently follows it in the corpus.
+    In case of a tie, print the one whose first follow-on occurrence comes earliest.
+<p>
+    For example, suppose the corpus is "code golf and golf and code"
+    and the prompt is "and".
+    Both "golf" and "code" follow the word "and" maximally frequently (once), but "golf"
+    <em>does so first</em>, and so the output is "golf".
+<p>
+    In this problem, each corpus is formed by concatenating two
     <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
     (separated by one space).
 '''

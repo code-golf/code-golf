@@ -7,7 +7,7 @@ RUN apt-get update                   \
     apt-get install --yes curl make
 
 # Also rebuild 05AB1E.
-ENV LANG='C.UTF-8' VER=1.19.2
+ENV LANG='C.UTF-8' VER=1.19.3
 
 COPY --from=0 /usr /usr
 
