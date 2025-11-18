@@ -3924,7 +3924,7 @@ preamble = '''
 
 ['Smooth Numbers']
 experiment = 2144
-category = 'Sequence'
+category = 'Mathematics'
 links = [
     { name = 'OEIS A000079', url = '//oeis.org/A000079' },
     { name = 'OEIS A003586', url = '//oeis.org/A003586' },
