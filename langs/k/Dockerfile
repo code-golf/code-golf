@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-ENV CC='gcc -static' VER=4dd7915334
+ENV CC='gcc -static' VER=717063f249
 
 WORKDIR /usr/bin
 
