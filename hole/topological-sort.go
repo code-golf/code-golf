@@ -72,10 +72,9 @@ func generateTsortTest(length, additional int) string {
 
 // single-digit numbers
 var _ = answerFunc("topological-sort", func() []Answer {
-	var tests []test
-	staticTest := "8 9\n7 8\n6 7\n5 6\n4 5\n3 4\n2 3\n1 2\n0 1"
-	staticResult := tsort(staticTest)
-	tests = append(tests, test{staticTest, staticResult})
+	const staticTest = "8 9\n7 8\n6 7\n5 6\n4 5\n3 4\n2 3\n1 2\n0 1"
+	tests := []test{{staticTest, tsort(staticTest)}}
+
 	for n := range 10 - 2 + 1 {
 		n += 2
 		for a := range (n-2)*(n-1)/2 + 1 {
