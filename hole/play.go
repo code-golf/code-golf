@@ -20,6 +20,9 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+// Limit how many runs can run at once.
+var runSemaphore = make(chan struct{}, 8)
+
 var timeout = 5 * time.Second
 
 // Increase the timeout under e2e as the hardware is less powerful than live.
@@ -88,7 +91,12 @@ func Play(
 	for i, answer := range answers {
 		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
 
-		g.Go(func() error { return play(ctx, hole, lang, code, &runs[i]) })
+		g.Go(func() error {
+			runSemaphore <- struct{}{}
+			defer func() { <-runSemaphore }()
+
+			return play(ctx, hole, lang, code, &runs[i])
+		})
 	}
 
 	return runs, g.Wait()
@@ -233,7 +241,7 @@ func runCode(
 
 	// Assembly bytes pipe.
 	var asmBytesRead, asmBytesWrite *os.File
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
@@ -294,7 +302,7 @@ func runCode(
 	}
 
 	// Actual byte count is printed by the assembler.
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		// Explicitly close the writer in case defasm died before it could.
 		// This prevents a very long wait in the upcoming fscanf.
 		asmBytesWrite.Close()

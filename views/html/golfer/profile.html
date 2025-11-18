@@ -134,9 +134,7 @@
 
     {{ with .Data.Followers }}
         <section class=icons>
-            <h2>
-                {{ len . }} Follower{{ if gt (len .) 1 }}s{{ end }}
-            </h2>
+            <h2>{{ amount (len .) "Follower" }}</h2>
         {{ range . }}
             <a href="{{ . }}" title="{{ . }}">
                 <img loading=lazy src="/golfers/{{ . }}/avatar/72">

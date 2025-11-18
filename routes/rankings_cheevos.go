@@ -39,8 +39,8 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		&data.Rows,
 		`WITH count AS (
 		    SELECT user_id, COUNT(*), MAX(earned) earned
-		      FROM trophies
-		     WHERE trophy = $1 OR $1 IS NULL
+		      FROM cheevos
+		     WHERE cheevo = $1 OR $1 IS NULL
 		  GROUP BY user_id
 		) SELECT count, country_flag country, earned, login name,
 		         CASE WHEN $1 IS NULL
