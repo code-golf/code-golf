@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-ENV VER=0.10.6
+ENV VER=0.11.0
 
 RUN curl -#L https://github.com/DanielXMoore/Civet/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
@@ -12,7 +12,7 @@ RUN npm install \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1                                   /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                                        /lib/
 COPY --from=0 /usr/bin/env /usr/bin/node                                 /usr/bin/
 COPY --from=0 /usr/lib/libada.so.2                                       \
               /usr/lib/libbrotlicommon.so.1                              \

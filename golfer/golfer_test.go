@@ -17,7 +17,7 @@ func TestEarn(t *testing.T) {
 	cheevos := pq.StringArray{"foo", "bar", "bar", "baz"}
 
 	for _, cheevo := range cheevos {
-		mock.ExpectExec("INSERT INTO trophies").
+		mock.ExpectExec("INSERT INTO cheevos").
 			WithArgs(golfer.ID, cheevo).
 			WillReturnResult(sqlmock.NewResult(1, 1))
 	}

@@ -58,11 +58,11 @@ type Hole struct {
 	CategoryColor, CategoryIcon string         `json:"-"`
 	Data                        template.JS    `json:"-"`
 	DataMap                     ordered.Map    `json:"-"`
-	Experiment                  int            `json:"-"`
+	Experiment                  int            `json:"experiment,omitzero"`
 	ID                          string         `json:"id"`
 	MultisetItemDelimiter       string         `json:"-" toml:"multiset-item-delimiter"`
 	OutputDelimiter             string         `json:"-" toml:"output-delimiter"`
-	Links                       []Link         `json:"links"`
+	Links                       []Link         `json:"links,omitempty"`
 	Name                        string         `json:"name"`
 	Preamble                    template.HTML  `json:"preamble"`
 	Released                    toml.LocalDate `json:"released"`
@@ -77,7 +77,7 @@ type HoleAnswer struct {
 
 type HoleAnswerFunc func() []HoleAnswer
 
-func init() {
+func initHoles() {
 	var holes map[string]*Hole
 	unmarshal("data/holes.toml", &holes)
 
@@ -91,11 +91,6 @@ func init() {
 		"Category", "Data", "Links", "Preamble", "Released", "Synopsis", "Variants"}
 	for name, hole := range holes {
 		hole.Name = name
-
-		// Ensure we don't return `"links": null` in the API.
-		if hole.Links == nil {
-			hole.Links = []Link{}
-		}
 
 		if len(hole.Variants) == 0 {
 			continue

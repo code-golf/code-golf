@@ -7,8 +7,16 @@ RUN wget -O- https://github.com/dloscutoff/pip/archive/refs/tags/v$VER.tar.gz \
 
 FROM codegolf/lang-python
 
-COPY --from=0 /*.py /
+COPY --from=0 /errors.py    \
+              /execution.py \
+              /operators.py \
+              /parsing.py   \
+              /pip.py       \
+              /ptypes.py    \
+              /scanning.py  \
+              /tokens.py    \
+              /version.py   /usr/lib/
 
 ENTRYPOINT ["python"]
 
-CMD ["pip.py", "--version"]
+CMD ["/usr/lib/pip.py", "--version"]

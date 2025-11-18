@@ -1,4 +1,4 @@
-FROM node:24.8.0-alpine3.22 AS builder
+FROM node:25.0.0-alpine3.22 AS builder
 
 RUN apk add --no-cache binutils
 
@@ -17,7 +17,7 @@ RUN mkdir symlink \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1            /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                 /lib/
 COPY --from=0 /symlink                            /usr/bin
 COPY --from=0 /usr/local/bin/node                 /usr/bin/
 COPY --from=0 /usr/lib/libgcc_s.so.1              \

@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache cmake curl g++ linux-headers ninja python3
 
-ENV VER=21.1.1
+ENV VER=21.1.5
 
 RUN curl -#L https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz \
   | tar xz --strip-components 1
@@ -20,11 +20,13 @@ RUN cmake -G Ninja                    \
     -DLLVM_INCLUDE_BENCHMARKS='OFF'   \
     -DLLVM_INCLUDE_EXAMPLES='OFF'     \
     -DLLVM_INCLUDE_TESTS='OFF'        \
+    -DLLVM_LINK_LLVM_DYLIB='ON'       \
     -DLLVM_TARGETS_TO_BUILD='Native' ..
 
-RUN ninja install        \
- && strip /usr/bin/clang \
-          /usr/lib/libLLVM.so
+RUN ninja install
+
+RUN strip /usr/lib/libLLVM.so.21.1 \
+          /usr/lib/libclang-cpp.so.21.1
 
 COPY cpp.c /
 
@@ -32,8 +34,9 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/cpp -s -static /cpp.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1          /lib/
+COPY --from=0 /lib/ld-musl-*.so.1               /lib/
 COPY --from=0 /usr/bin/clang                    \
+              /usr/bin/clang++                  \
               /usr/bin/cpp                      \
               /usr/bin/ld                       /usr/bin/
 COPY --from=0 /usr/include/*.h                  /usr/include/
@@ -43,9 +46,10 @@ COPY --from=0 /usr/include/sys/*.h              /usr/include/sys/
 COPY --from=0 /usr/lib/Scrt1.o                  \
               /usr/lib/crti.o                   \
               /usr/lib/crtn.o                   \
-              /usr/lib/libLLVM.so               \
+              /usr/lib/libLLVM.so.21.1          \
               /usr/lib/libbfd-2.44.so           \
               /usr/lib/libc.so                  \
+              /usr/lib/libclang-cpp.so.21.1     \
               /usr/lib/libctf.so.0              \
               /usr/lib/libgcc_s.so              \
               /usr/lib/libgcc_s.so.1            \
