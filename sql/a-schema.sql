@@ -16,15 +16,16 @@ CREATE TYPE cheevo AS ENUM (
     'inception', 'independence-day', 'interview-ready', 'into-space',
     'its-over-9000', 'jeweler', 'just-kidding', 'like-comment-subscribe',
     'marathon-runner', 'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
-    'my-god-its-full-of-stars', 'neunundneunzig-luftballons', 'off-the-grid',
-    'omniglot', 'omniglutton', 'ouroboros', 'overflowing', 'pangramglot',
-    'patches-welcome', 'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot',
-    'polyglutton', 'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34',
-    's-box-360', 'simon-sed', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'my-god-its-full-of-stars', 'neunundneunzig-luftballons',
+    'never-eat-shredded-wheat', 'off-the-grid', 'omniglot', 'omniglutton',
+    'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
+    'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
+    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
+    'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'texnical-know-how', 'the-watering-hole',
     'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
     'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
-    'x-factor', 'x86'
+    'when-in-rome', 'x-factor', 'x86', 'zoodiac-signs'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -35,14 +36,15 @@ CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '24-game', '99-bottles-of-beer',
     'abundant-numbers', 'abundant-numbers-long', 'apérys-constant',
     'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
-    'ascii-table', 'billiards', 'brainfuck', 'calendar',
-    'card-number-validation', 'catalan-numbers', 'catalans-constant',
-    'christmas-trees', 'collatz', 'connect-four', 'css-colors',
-    'css-colors-inverse', 'css-grid', 'cubes', 'day-of-week', 'dfa-simulator',
-    'diamonds', 'divisors', 'ellipse-perimeters', 'emirp-numbers',
-    'emirp-numbers-long', 'emojify', 'evil-numbers', 'evil-numbers-long',
-    'factorial-factorisation', 'farey-sequence', 'fibonacci', 'fizz-buzz',
-    'flags', 'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
+    'ascii-table', 'billiards', 'binary-lambda-calculus', 'brainfuck',
+    'calendar', 'card-number-validation', 'catalan-numbers',
+    'catalans-constant', 'christmas-trees', 'collatz', 'connect-four',
+    'crossword', 'css-colors', 'css-colors-inverse', 'css-grid', 'cubes',
+    'day-of-week', 'dfa-simulator', 'diamonds', 'divisors',
+    'ellipse-perimeters', 'emirp-numbers', 'emirp-numbers-long', 'emojify',
+    'evil-numbers', 'evil-numbers-long', 'factorial-factorisation',
+    'farey-sequence', 'fibonacci', 'fizz-buzz', 'flags',
+    'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
     'forsyth-edwards-notation', 'fractions', 'game-of-life',
     'gijswijts-sequence', 'gray-code-decoder', 'gray-code-encoder',
     'happy-numbers', 'happy-numbers-long', 'hexagonal-spiral', 'hexdump',
@@ -134,9 +136,8 @@ CREATE TABLE users (
     pronouns     pronouns,
     settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
     about        text      NOT NULL DEFAULT '',
-    -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
     country_flag char(2)            GENERATED ALWAYS AS
-        (CASE WHEN show_country THEN country END) STORED,
+        (CASE WHEN show_country THEN country END),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),              -- Can't refer yourself!
     CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
@@ -162,6 +163,7 @@ CREATE TABLE connections (
     discriminator smallint,
     public        bool       NOT NULL DEFAULT false,
     username      text       NOT NULL,
+    avatar_url    text,
     PRIMARY KEY (connection, id),
     UNIQUE (connection, user_id)
 );
@@ -201,7 +203,7 @@ CREATE TABLE notes (
 );
 
 CREATE TABLE sessions (
-    id        uuid      NOT NULL DEFAULT GEN_RANDOM_UUID() PRIMARY KEY,
+    id        uuid      NOT NULL DEFAULT uuidv4() PRIMARY KEY,
     last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );

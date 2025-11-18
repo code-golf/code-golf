@@ -1,4 +1,4 @@
-FROM rust:1.91.0-slim-trixie AS builder
+FROM rust:1.91.1-slim-trixie AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
@@ -11,11 +11,11 @@ WORKDIR /hurl
 RUN curl -#L https://git.sr.ht/~ntietz/hurl-lang/archive/$VER.tar.gz \
   | tar xz --strip-components 1
 
-COPY parser.patch .
+COPY hurl.patch .
 
 RUN rustup target add $CRT \
  && sed -i '1d' src/lib.rs \
- && patch -p0 < parser.patch
+ && patch -p0 < hurl.patch
 
 RUN cargo install     \
     --path .          \

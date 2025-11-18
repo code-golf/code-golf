@@ -241,7 +241,7 @@ func runCode(
 
 	// Assembly bytes pipe.
 	var asmBytesRead, asmBytesWrite *os.File
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
@@ -302,7 +302,7 @@ func runCode(
 	}
 
 	// Actual byte count is printed by the assembler.
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		// Explicitly close the writer in case defasm died before it could.
 		// This prevents a very long wait in the upcoming fscanf.
 		asmBytesWrite.Close()

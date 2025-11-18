@@ -3,7 +3,7 @@ package routes
 import (
 	"cmp"
 	"context"
-	"encoding/json"
+	"encoding/json/v2"
 	"errors"
 	"net/http"
 	"slices"
@@ -27,7 +27,7 @@ type solution struct {
 	Pass     bool          `json:"pass"`
 	Stderr   string        `json:"stderr"`
 	Tested   time.Time     `json:"tested"`
-	Took     time.Duration `json:"took"`
+	Took     time.Duration `json:"took,format:nano"`
 	Total    int           `json:"total"`
 }
 
