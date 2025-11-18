@@ -10,6 +10,7 @@
                 <th>Hole
                 <th>Golfer
                 <th class="right wide">{{ title .Data.Scoring }}
+                <th class="right wide">Time
                 <th class=right>Submitted
         <tbody>
         {{ $name := "" }}
@@ -37,6 +38,7 @@
                         <span class=right>{{ comma .Strokes }}</span>
                         {{ svg .Lang.ID }}
                     </a>
+                <td class="right wide">{{ with .Time }}{{ duration . }}{{ end }}
                 <td class=right>{{ time (.Submitted.In $.Location) }}
         {{ end }}
     </table>

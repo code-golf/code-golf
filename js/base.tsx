@@ -1,6 +1,10 @@
 import { requestResults, SearchNavResult } from './_search-nav';
 import { $, $$ } from './_util';
 
+// Work around a Chrome bug, force SVGs to re-appear, should be fixed in 144.
+// See https://issues.chromium.org/issues/459746761 for details.
+$$('use[href]').forEach(e => e.setAttribute('href', e.getAttribute('href')!));
+
 const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
 
 // Add current time zone to the redirect URI of any log in links.
@@ -56,7 +60,7 @@ for (const btn of $$<HTMLElement>('[data-dialog]'))
 
 // Search navigation dialog
 document.addEventListener('keydown', e => {
-    if (e.ctrlKey && e.key === 'p') {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
         const dialog = $<HTMLDialogElement>('#search-nav-dialog');
         if (!dialog) return;
 

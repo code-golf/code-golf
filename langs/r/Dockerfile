@@ -3,7 +3,7 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache build-base bzip2-dev curl curl-dev gettext-dev \
                        gfortran pcre2-dev perl tzdata xz-dev zlib-dev
 
-ENV VER=4.5.1
+ENV VER=4.5.2
 
 RUN curl -#L https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz \
   | tar xJ --strip-components 1
@@ -36,7 +36,7 @@ RUN make install
 FROM codegolf/lang-base
 
 COPY --from=0 /busybox/_install/bin        /bin
-COPY --from=0 /lib/ld-musl-x86_64.so.1     /lib/
+COPY --from=0 /lib/ld-musl-*.so.1          /lib/
 COPY --from=0 /busybox/_install/usr/bin    /usr/bin
 COPY --from=0 /usr/bin/printf              /usr/bin/
 COPY --from=0 /usr/bin/Rscript             /usr/bin/R

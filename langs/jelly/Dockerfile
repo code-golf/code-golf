@@ -1,7 +1,8 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache curl gcc libffi-dev make musl-dev openssl-dev zlib-dev
+RUN apk add --no-cache curl gcc make musl-dev openssl-dev zlib-dev
 
+# FIXME Python 3.14.0 denied
 ENV PYVER=3.13.5 VER=70c9fd9
 
 RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
@@ -43,13 +44,9 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/jellywrapper -s -static /jelly.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/jelly           \
-              /usr/bin/jellywrapper    \
-              /usr/bin/python3.13      /usr/bin/
-COPY --from=0 /usr/lib/libz.so.1       /usr/lib/
-COPY --from=0 /usr/lib/python3.13      /usr/lib/python3.13
-
-ENTRYPOINT ["jellywrapper"]
-
-CMD ["--version"]
+COPY --from=0 /lib/ld-musl-*.so.1   /lib/
+COPY --from=0 /usr/bin/jelly        \
+              /usr/bin/jellywrapper \
+              /usr/bin/python3.13   /usr/bin/
+COPY --from=0 /usr/lib/libz.so.1    /usr/lib/
+COPY --from=0 /usr/lib/python3.13   /usr/lib/python3.13
