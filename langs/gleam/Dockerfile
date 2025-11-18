@@ -1,6 +1,6 @@
 FROM codegolf/lang-erlang
 
-FROM rust:1.91.0-slim-trixie AS builder
+FROM rust:1.91.1-slim-trixie AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \

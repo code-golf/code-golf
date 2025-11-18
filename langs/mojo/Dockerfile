@@ -74,5 +74,3 @@ COPY --from=0 /usr/lib/x86_64-linux-gnu/Scrt1.o                           \
 COPY --from=0 /usr/libexec/gcc/x86_64-linux-gnu/14/liblto_plugin.so       /usr/libexec/gcc/x86_64-linux-gnu/14/
 
 ENTRYPOINT ["mojo"]
-
-CMD ["--version"]

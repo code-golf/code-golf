@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '5.22 MiB'
-version    = '0991c79'
+version    = 'fa246cc'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -258,8 +258,8 @@ v Accessing arguments
 
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
-size    = '986 KiB'
-version = '1.1.0'
+size    = '1.00 MiB'
+version = '674b765'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -638,7 +638,7 @@ none
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '57.1 MiB'
-version = '1.19.2'
+version = '1.19.3'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -672,8 +672,8 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '110 MiB'
-version = 'F# 9.0 on .NET 9.0.10'
+size    = '113 MiB'
+version = 'F# 10.0 on .NET 10.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -963,7 +963,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '8.90 MiB'
+size    = '7.69 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -1064,8 +1064,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '906 KiB'
-version = '1.39.1'
+size    = '911 KiB'
+version = '1.40.1'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1157,7 +1157,7 @@ end
 [K]
 args    = [ '/usr/bin/k', '/proc/self/fd/0' ]
 size    = '605 KiB'
-version = '4dd7915334'
+version = '717063f249'
 website = 'https://codeberg.org/ngn/k'
 example = '''
 /Printing
@@ -1234,8 +1234,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.09 MiB'
-version    = '0.699'
+size       = '5.10 MiB'
+version    = '0.700'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1476,7 +1476,7 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '30.5 MiB'
+size    = '30.4 MiB'
 version = '3.14.0'
 website = 'https://www.python.org'
 example = '''
@@ -1556,7 +1556,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.10'
+version   = 'Raku 6.d on Rakudo 2025.11'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1614,7 +1614,7 @@ end
 [Rockstar]
 args      = [ '/usr/bin/rockstarwrapper', '-' ]
 redirects = [ 'rockstar-2' ]
-size      = '4.26 MiB'
+size      = '3.93 MiB'
 version   = '2.0.31'
 website   = 'https://codewithrockstar.com'
 example   = '''
@@ -1655,7 +1655,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '406 MiB'
-version = '1.91.0'
+version = '1.91.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1786,7 +1786,7 @@ foreach (arg in vargv)
 args       = [ '/usr/bin/staxwrapper', '-' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 439
-size       = '76.5 MiB'
+size       = '79.5 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
@@ -1822,8 +1822,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.68 MiB'
-version = '9.0.2'
+size    = '5.67 MiB'
+version = '9.0.3'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
