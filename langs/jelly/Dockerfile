@@ -3,7 +3,7 @@ FROM alpine:3.22 AS builder
 RUN apk add --no-cache curl gcc make musl-dev openssl-dev zlib-dev
 
 # FIXME Python 3.14.0 denied
-ENV PYVER=3.13.5 VER=70c9fd9
+ENV PYVER=3.13.9 VER=70c9fd9
 
 RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
   | tar xJ --strip-components 1
