@@ -18,5 +18,3 @@ RUN cmake ../..     \
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/joy /usr/bin/
-
-ENTRYPOINT ["joy"]

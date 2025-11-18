@@ -244,6 +244,14 @@ emoji       = '💬'
 description = 'Solve <a href=/look-and-say#sed>Look and Say in sed</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Sinosphere'
+emoji       = '🥢'
+description = 'Solve <a href=/mahjong>Mahjong</a> in any three of <a href=/mahjong#c>C</a>, <a href=/mahjong#j>J</a>, <a href=/mahjong#k>K</a>, or <a href=/mahjong#v>V</a>.'
+holes       = ['mahjong']
+langs       = ['c', 'j', 'k', 'v']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Solve Quine'
 emoji       = '🪞'
 description = 'Solve <a href=/quine>Quine</a>'
