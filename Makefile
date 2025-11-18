@@ -66,8 +66,8 @@ fmt:
 
 font:
 	@docker build -t code-golf-font -f docker/font.Dockerfile docker
-	@id=`docker create code-golf-font`;                                                \
-	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" fonts/twemoji.woff2; \
+	@id=`docker create code-golf-font`;                         \
+	    docker cp $$id:twemoji-colr/build/twemoji.woff2 fonts/; \
 	    docker rm $$id
 
 mathjax-fonts:
