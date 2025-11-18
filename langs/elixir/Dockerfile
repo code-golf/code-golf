@@ -6,7 +6,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV LANG='C.UTF-8' VER=1.19.2
+ENV LANG='C.UTF-8' VER=1.19.3
 
 COPY --from=0 /usr /usr
 

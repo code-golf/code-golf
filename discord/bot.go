@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -22,12 +23,10 @@ const minElapsedTimeToShowDate = 30 * 24 * time.Hour
 
 var (
 	bot                 *discordgo.Session
+	freshHole           *config.Hole
+	freshLang           *config.Lang
 	lastAnnouncementMap = make(map[string]*RecAnnouncement)
 	mux                 sync.Mutex
-
-	// TODO Make this dynamic based on hole/lang age.
-	freshHole = config.HoleByID["minesweeper"]
-	freshLang = config.LangByID["groovy"]
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
@@ -51,6 +50,19 @@ type RecAnnouncement struct {
 }
 
 func init() {
+	freshHole = slices.MaxFunc(config.HoleList, func(a, b *config.Hole) int {
+		return strings.Compare(a.Released.String(), b.Released.String())
+	})
+
+	freshLang = slices.MaxFunc(config.LangList, func(a, b *config.Lang) int {
+		return strings.Compare(a.Released.String(), b.Released.String())
+	})
+
+	// Is the latest lang still that fresh?
+	if time.Since(freshLang.Released.AsTime(time.UTC)) > 1000*time.Hour {
+		freshLang = nil
+	}
+
 	// Ensure we have all our config.
 	switch "" {
 	case botToken, chanFreshID, chanSourID, chanWildID, guildID,
@@ -193,7 +205,8 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 			}
 
 			if update.FailingStrokes.Valid && update.FailingStrokes.V <= update.To.Strokes.V {
-				fieldValues[update.Scoring] += fmt.Sprintf(" (replaced failing %d)", update.FailingStrokes.V)
+				fieldValues[update.Scoring] += fmt.Sprintf(
+					" (replaced failing %s)", pretty.Comma(update.FailingStrokes.V))
 			}
 		}
 	}
