@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"cmp"
+	"encoding/json/jsontext"
 	"encoding/json/v2"
 	"fmt"
 	"net/http"
@@ -106,13 +108,15 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	out := struct {
-		Cheevos     []config.Cheevo     `json:"cheevos"`
-		LoggedIn    bool                `json:"logged_in"`
-		RankUpdates []Golfer.RankUpdate `json:"rank_updates"`
-		Runs        []hole.Run          `json:"runs"`
+		Cheevos      []config.Cheevo     `json:"cheevos"`
+		Experimental bool                `json:"experimental"`
+		LoggedIn     bool                `json:"logged_in"`
+		RankUpdates  []Golfer.RankUpdate `json:"rank_updates"`
+		Runs         []hole.Run          `json:"runs"`
 	}{
-		LoggedIn: golfer != nil,
-		Runs:     runs,
+		Experimental: experimental,
+		LoggedIn:     golfer != nil,
+		Runs:         runs,
 	}
 
 	if golfer != nil && slices.ContainsFunc(
@@ -129,6 +133,10 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 	if pass && golfer != nil {
 		out.RankUpdates =
 			[]Golfer.RankUpdate{{Scoring: "bytes"}, {Scoring: "chars"}}
+
+		longestRun := slices.MaxFunc(runs, func(a, b hole.Run) int {
+			return cmp.Compare(a.Time, b.Time)
+		})
 
 		if err := db.QueryRowContext(
 			r.Context(),
@@ -152,20 +160,23 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_best_chars,
 			        old_best_chars_submitted
 			   FROM save_solution(
-			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			            bytes   := CASE WHEN $7
 			                            THEN $5
 			                            ELSE octet_length($1)
 			                            END,
-			            chars   := CASE WHEN $3 = 'assembly'::lang
+			            chars   := CASE WHEN $7
 			                            THEN NULL
 			                            ELSE char_length($1)
 			                            END,
 			            code    := $1,
 			            hole    := $2,
 			            lang    := $3,
+			            time_ms := $6,
 			            user_id := $4
 			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
+			longestRun.Time.Round(time.Millisecond)/time.Millisecond,
+			langObj.Assembly,
 		).Scan(
 			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].FailingStrokes,
@@ -217,11 +228,6 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		// If any of the updates are record breakers, announce them on Discord
 		if len(recordUpdates) > 0 {
 			go discord.LogNewRecord(golfer, holeObj, langObj, recordUpdates, db)
-		}
-
-		// For now don't show any popups for experimental solutions.
-		if experimental {
-			out.RankUpdates = []Golfer.RankUpdate{}
 		}
 
 		// Cheevos.
@@ -334,7 +340,8 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	if err := json.MarshalWrite(w, &out); err != nil {
+	// Solutions could produce invalid UTF-8, allow that through.
+	if err := json.MarshalWrite(w, &out, jsontext.AllowInvalidUTF8(true)); err != nil {
 		panic(err)
 	}
 }

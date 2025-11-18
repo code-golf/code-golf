@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bison cmake curl flex fts-dev g++ libpcap-dev linux-headers make openssl-dev python3 zlib-dev
 
-ENV VER=8.0.1
+ENV VER=8.0.4
 
 RUN curl -#L https://download.zeek.org/zeek-$VER.tar.gz \
   | tar xz --strip-components 1
@@ -34,7 +34,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/zeek -s -static zeek.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1              /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /usr/bin/zeek                         /usr/bin/
 COPY --from=0 /usr/lib/libcrypto.so.3               \
               /usr/lib/libfts.so.0                  \
