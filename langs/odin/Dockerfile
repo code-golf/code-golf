@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache clang curl dash llvm-dev make
 
-ENV CPPFLAGS='-march=x86-64-v3' VER=2025-09
+ENV CPPFLAGS='-march=x86-64-v3' VER=2025-11
 
 RUN curl -#L https://github.com/odin-lang/Odin/archive/refs/tags/dev-$VER.tar.gz \
   | tar xz --directory /usr/local/lib --strip-components 1
@@ -25,7 +25,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/odinwrapper -s /odin.c
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/dash                    /bin/sh
-COPY --from=0 /lib/ld-musl-x86_64.so.1         /lib/
+COPY --from=0 /lib/ld-musl-*.so.1              /lib/
 COPY --from=0 /usr/bin/clang                   \
               /usr/bin/ld                      \
               /usr/bin/odinwrapper             /usr/bin/
