@@ -10,7 +10,7 @@ RUN curl -#L https://www.rebol.com/downloads/v$VER/rebol-core-$VER-4-10.tar.gz \
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-linux-x86-64.so.2 \
-              /lib/ld-musl-x86_64.so.1  \
+              /lib/ld-musl-*.so.1       \
               /lib/libgcompat.so.0      /lib/
 COPY --from=0 /lib64                    /lib64
 COPY --from=0 /rebol                    /usr/bin/

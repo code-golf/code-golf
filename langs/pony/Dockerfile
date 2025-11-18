@@ -2,12 +2,12 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache binutils-gold clang curl dash
 
-ENV VER=0.59.0
+ENV SHELL='dash' VER=0.60.4
 
-RUN curl -#L https://github.com/ponylang/ponyup/archive/refs/heads/master.tar.gz \
+RUN curl -#L https://github.com/ponylang/ponyup/archive/master.tar.gz \
   | tar xz --strip-components 1
 
-RUN SHELL='sh' ./ponyup-init.sh
+RUN ./ponyup-init.sh
 
 RUN ~/.local/share/ponyup/bin/ponyup update ponyc release-$VER
 
@@ -20,7 +20,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/pony -s pony.c
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/dash                              /bin/sh
-COPY --from=0 /lib/ld-musl-x86_64.so.1                   /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                        /lib/
 COPY --from=0 /usr/bin/clang                             \
               /usr/bin/ld.gold                           \
               /usr/bin/pony                              /usr/bin/
