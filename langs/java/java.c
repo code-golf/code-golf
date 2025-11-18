@@ -31,11 +31,14 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int jargc = argc + 1;
+    int jargc = argc + 4;
     char** jargv = malloc(jargc * sizeof(char*));
     jargv[0] = (char*) java;
-    jargv[1] = (char*) code;
-    memcpy(&jargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    jargv[1] = "-XX:+AutoCreateSharedArchive";
+    jargv[2] = "-XX:SharedArchiveFile=/cds.jsa";
+    jargv[3] = "-Xlog:cds=off";
+    jargv[4] = (char*) code;
+    memcpy(&jargv[5], &argv[2], (argc - 2) * sizeof(char*));
     jargv[jargc - 1] = NULL;
 
     execv(java, jargv);

@@ -8,6 +8,8 @@ import (
 	"slices"
 	"strings"
 	"testing"
+
+	"github.com/pelletier/go-toml/v2"
 )
 
 var (
@@ -28,21 +30,23 @@ var (
 )
 
 type Lang struct {
-	Args, Redirects, Env []string `json:"-"`
-	ArgsQuine            []string `json:"-" toml:"args-quine"`
-	Digest               string   `json:"digest"`
-	DigestTrunc          []byte   `json:"-"`
-	Example              string   `json:"example"`
-	Experiment           int      `json:"experiment,omitempty"`
-	ID                   string   `json:"id"`
-	LogoURL              string   `json:"logo-url"`
-	Name                 string   `json:"name"`
-	Size                 string   `json:"size"`
-	Version              string   `json:"version"`
-	Website              string   `json:"website"`
+	Args, Redirects, Env []string       `json:"-"`
+	ArgsQuine            []string       `json:"-" toml:"args-quine"`
+	Assembly             bool           `json:"-"`
+	Digest               string         `json:"digest"`
+	DigestTrunc          []byte         `json:"-"`
+	Example              string         `json:"example"`
+	Experiment           int            `json:"experiment,omitzero"`
+	ID                   string         `json:"id"`
+	LogoURL              string         `json:"logo-url"`
+	Name                 string         `json:"name"`
+	Released             toml.LocalDate `json:"released"`
+	Size                 string         `json:"size"`
+	Version              string         `json:"version"`
+	Website              string         `json:"website"`
 }
 
-func init() {
+func initLangs() {
 	// Digests.
 	var digests map[string]string
 	if !testing.Testing() {

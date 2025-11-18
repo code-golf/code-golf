@@ -1,8 +1,8 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl gd-dev giflib-dev groff libffi-dev openssl-dev zlib-dev
+RUN apk add --no-cache clang curl gd-dev giflib-dev groff llvm-dev make openssl-dev zlib-dev
 
-ENV PYVER=3.13.6 VER=1.3f
+ENV PYVER=3.14.0 VER=1.3f
 
 WORKDIR /piet
 
@@ -11,7 +11,7 @@ RUN curl -#L https://www.bertnase.de/npiet/npiet-$VER.tar.gz \
 
 RUN ./configure && make && make install
 
-RUN curl -#o /usr/bin/ascii-piet https://raw.githubusercontent.com/dloscutoff/ascii-piet/refs/heads/master/ascii2piet.py \
+RUN wget -qO /usr/bin/ascii-piet https://raw.githubusercontent.com/dloscutoff/ascii-piet/refs/heads/master/ascii2piet.py \
  && chmod +x /usr/bin/ascii-piet
 
 WORKDIR /python
@@ -19,18 +19,19 @@ WORKDIR /python
 RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
   | tar xJ --strip-components 1
 
-RUN CC='cc' ./configure        \
+RUN CC='clang' ./configure     \
     --disable-test-modules     \
     --prefix=/usr              \
     --with-lto=thin            \
+    --with-tail-call-interp    \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.13  \
-          /usr/lib/python3.13/lib-dynload/*.so
+ && strip /usr/bin/python3.14  \
+          /usr/lib/python3.14/lib-dynload/*.so
 
 RUN pip3 install pillow
 
-WORKDIR /usr/lib/python3.13
+WORKDIR /usr/lib/python3.14
 
 # Remove some unneeded libraries.
 RUN find . -name '*.opt-[12].pyc' -delete \
@@ -52,10 +53,10 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/piet -s -static /piet.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1      /lib/
+COPY --from=0 /lib/ld-musl-*.so.1           /lib/
 COPY --from=0 /usr/bin/ascii-piet           \
               /usr/bin/piet                 /usr/bin/
-COPY --from=0 /usr/bin/python3.13           /usr/bin/python3
+COPY --from=0 /usr/bin/python3.14           /usr/bin/python3
 COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libXau.so.6          \
               /usr/lib/libXdmcp.so.6        \
@@ -84,9 +85,7 @@ COPY --from=0 /usr/lib/libX11.so.6          \
               /usr/lib/libyuv.so            \
               /usr/lib/libz.so.1            \
               /usr/lib/libzstd.so.1         /usr/lib/
-COPY --from=0 /usr/lib/python3.13           /usr/lib/python3.13
+COPY --from=0 /usr/lib/python3.14           /usr/lib/python3.14
 COPY --from=0 /usr/local/bin/npiet          /usr/local/bin/
 
 ENTRYPOINT ["piet"]
-
-CMD ["--version"]
