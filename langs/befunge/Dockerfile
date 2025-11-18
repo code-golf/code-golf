@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache cmake curl gcc make musl-dev
 
-ENV CFLAGS='-Wno-implicit-function-declaration' LDFLAGS='-static' VER=b7bf640
+ENV CFLAGS='-Wno-implicit-function-declaration' LDFLAGS='-static' VER=29e4cfa
 
 RUN curl -#L https://github.com/VorpalBlade/cfunge/tarball/$VER \
   | tar xz --strip-components 1

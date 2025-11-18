@@ -1,6 +1,6 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache ccache curl dash gc-dev gcc libunwind-dev make musl-dev pkgconfig
+RUN apk add --no-cache ccache curl dash gc-dev gcc libunwind-dev make musl-dev pkgconf
 
 ENV VER=32b9c90
 
@@ -15,7 +15,7 @@ RUN make -j`nproc` tools \
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/dash                         /bin/sh
-COPY --from=0 /lib/ld-musl-x86_64.so.1              /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /usr/bin/as /usr/bin/cc /usr/bin/ld   /usr/bin/
 COPY --from=0 /usr/include                          /usr/include
 COPY --from=0 /usr/lib/crti.o                       \
@@ -46,5 +46,3 @@ COPY --from=0 /usr/libexec/gcc/*/*/cc1              \
 COPY --from=0 /usr/local/bin/nit                    /usr/local/bin/
 COPY --from=0 /usr/local/lib/core                   /usr/local/lib/core
 COPY --from=0 /usr/local/src                        /usr/local/src
-
-ENTRYPOINT ["nit"]

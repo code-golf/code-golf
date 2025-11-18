@@ -33,9 +33,19 @@ function defaultMatchPriority(haystack: string, needle: string) {
 
     needle = normalize(needle);
     haystack = normalize(haystack);
-    if (needle === haystack) return 1e10;
-    if (haystack.startsWith(needle)) return 1e5 - haystack.length;
-    if (haystack.includes(needle)) return 1e3 - haystack.length - needle.length;
+    if (needle === haystack) return 1e11;
+
+    const isJustLetters = /^[a-z]+$/.test(needle);
+    if (haystack.startsWith(needle)) return 1e9 - haystack.length;
+    if (isJustLetters) {
+        const fuzzyRegex = new RegExp('([^a-z]|^)' + needle.split('').join('(.*([^a-z]|^))?'));
+        if (fuzzyRegex.test(haystack)) return 1e7 - haystack.split(/[^a-z]/).length*100 - haystack.length;
+    }
+    if (haystack.includes(needle)) return 1e5 - haystack.length - needle.length;
+    if (isJustLetters) {
+        const fuzzyRegex = new RegExp(needle.split('').join('.*'));
+        if (fuzzyRegex.test(haystack)) return 1e3 - haystack.length;
+    }
     return 0;
 }
 
@@ -101,6 +111,8 @@ export function requestResults(search: string, updateResults: (results: SearchNa
 
 function processResults(results: SearchNavResultInternal[]) {
     results = results.filter(x => x.priority > 0 && new URL(x.path, location.origin).href !== location.href);
+    const maxPriority = Math.max(...results.map(x => x.priority), 0);
+    results = results.filter(x => x.priority >= maxPriority / 1000);
     results.sort((a,b) => b.priority - a.priority);
     return results.slice(0, 10);
 }
