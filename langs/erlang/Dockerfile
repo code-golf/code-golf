@@ -71,7 +71,7 @@ FROM codegolf/lang-base
 
 COPY --from=0 /bin/dash                              /bin/sh
 COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6        \
-              /lib/x86_64-linux-gnu/libm.so.6        /lib/
+              /lib/x86_64-linux-gnu/libm.so.6        /lib/x86_64-linux-gnu/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2            /lib64/
 COPY --from=0 /usr/bin/basename                      \
               /usr/bin/dirname                       \
@@ -83,6 +83,7 @@ COPY --from=0 /usr/local                             /usr/lib/erlang
 COPY --from=0 /usr/lib/erlang/bin/erl                \
               /usr/lib/erlang/bin/no_dot_erlang.boot \
               /usr/lib/erlang/bin/start.boot         /usr/lib/erlang/bin/
+COPY --from=0 /usr/lib/locale                        /usr/lib/locale
 
 ENTRYPOINT ["erlang"]
 

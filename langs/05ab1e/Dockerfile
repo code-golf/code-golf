@@ -1,13 +1,14 @@
-FROM codegolf/lang-elixir AS builder
-
-FROM debian:trixie-slim
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl gcc
 
+FROM codegolf/lang-elixir
+
 ENV LANG='C.UTF-8' VER=c31668b
 
+COPY --from=0 /etc /etc
 COPY --from=0 /usr /usr
 
 WORKDIR /usr/local
@@ -27,7 +28,7 @@ COPY 05ab1e.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/05ab1e -s /05ab1e.c
 
-FROM codegolf/lang-elixir
+FROM codegolf/lang-erlang
 
 COPY --from=1 /usr/bin/05ab1e   /usr/bin/
 COPY --from=1 /usr/local/osabie /usr/local/bin/

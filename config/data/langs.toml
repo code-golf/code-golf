@@ -2,7 +2,7 @@
 args       = [ '/usr/bin/05ab1e', '-' ]
 env        = [ 'LANG=C.UTF-8' ]
 experiment = 233
-size       = '69.7 MiB'
+size       = '61.0 MiB'
 version    = 'c31668b'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 [Erlang]
 args       = [ '/usr/bin/erlang', '-' ]
 experiment = 181
-size       = '58.3 MiB'
+size       = '58.7 MiB'
 version    = 'OTP 28.1.1'
 website    = 'https://www.erlang.org'
 example    = '''
@@ -778,7 +778,7 @@ end
 '''
 
 [Gleam]
-args    = [ '/usr/bin/gleam', '-', '--' ]
+args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '83.7 MiB'
 version = '1.13.0'

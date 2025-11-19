@@ -27,7 +27,6 @@ FROM codegolf/lang-erlang
 
 COPY --from=0 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/
 COPY --from=0 /usr/bin/gleam                      /usr/bin/
-COPY --from=0 /usr/lib/locale                     /usr/lib/locale
 COPY --chown=nobody                               \
      --from=0 /usr/local/gleam.toml               \
               /usr/local/manifest.toml            /usr/local/
