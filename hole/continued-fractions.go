@@ -5,14 +5,21 @@ import (
 	"math/rand/v2"
 )
 
+var hardCodedFractions = [...]struct{ n, d int }{
+	{0, 1}, {0, 7}, {233, 144}, {255, 2}, {4, 1}, {87, 1}, {50, 10}, {3, 14}, {5, 75},
+	{7, 147}, {253, 11}, {5, 3},
+}
+
 var _ = answerFunc("continued-fractions", func() []Answer {
 	tests := make([]test, 100)
 
-	for i := range 100 {
-		tests[i] = continuedFractionsTest(rand.IntN(256), 1+rand.IntN(255))
+	for i, fraction := range hardCodedFractions {
+		tests[i] = continuedFractionsTest(fraction.n, fraction.d)
 	}
 
-	return outputTests(shuffle(tests))
+	for i := len(hardCodedFractions); i < len(tests); i++ {
+		tests[i] = continuedFractionsTest(rand.IntN(256), 1+rand.IntN(255))
+	}
 })
 
 func continuedFractionsTest(n, d int) test {
