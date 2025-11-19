@@ -1,4 +1,4 @@
-FROM golang:1.25.3-alpine3.22
+FROM golang:1.25.4-alpine3.22
 
 ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 
@@ -19,8 +19,8 @@ COPY --from=codegolf/lang-kotlin       / /langs/kotlin/rootfs/
 COPY --from=codegolf/lang-powershell   / /langs/powershell/rootfs/
 COPY --from=codegolf/lang-assembly     / /langs/assembly/rootfs/
 COPY --from=codegolf/lang-dart         / /langs/dart/rootfs/
-COPY --from=codegolf/lang-cpp          / /langs/cpp/rootfs/
 COPY --from=codegolf/lang-f-sharp      / /langs/f-sharp/rootfs/
+COPY --from=codegolf/lang-cpp          / /langs/cpp/rootfs/
 COPY --from=codegolf/lang-c-sharp      / /langs/c-sharp/rootfs/
 COPY --from=codegolf/lang-vala         / /langs/vala/rootfs/
 COPY --from=codegolf/lang-d            / /langs/d/rootfs/
@@ -29,8 +29,8 @@ COPY --from=codegolf/lang-scala        / /langs/scala/rootfs/
 COPY --from=codegolf/lang-coconut      / /langs/coconut/rootfs/
 COPY --from=codegolf/lang-civet        / /langs/civet/rootfs/
 COPY --from=codegolf/lang-coffeescript / /langs/coffeescript/rootfs/
-COPY --from=codegolf/lang-vyxal        / /langs/vyxal/rootfs/
 COPY --from=codegolf/lang-stax         / /langs/stax/rootfs/
+COPY --from=codegolf/lang-vyxal        / /langs/vyxal/rootfs/
 COPY --from=codegolf/lang-raku         / /langs/raku/rootfs/
 COPY --from=codegolf/lang-gleam        / /langs/gleam/rootfs/
 COPY --from=codegolf/lang-basic        / /langs/basic/rootfs/
@@ -63,9 +63,9 @@ COPY --from=codegolf/lang-apl          / /langs/apl/rootfs/
 COPY --from=codegolf/lang-picat        / /langs/picat/rootfs/
 COPY --from=codegolf/lang-j            / /langs/j/rootfs/
 COPY --from=codegolf/lang-hare         / /langs/hare/rootfs/
-COPY --from=codegolf/lang-hexagony     / /langs/hexagony/rootfs/
 COPY --from=codegolf/lang-php          / /langs/php/rootfs/
 COPY --from=codegolf/lang-tex          / /langs/tex/rootfs/
+COPY --from=codegolf/lang-hexagony     / /langs/hexagony/rootfs/
 COPY --from=codegolf/lang-scheme       / /langs/scheme/rootfs/
 COPY --from=codegolf/lang-egel         / /langs/egel/rootfs/
 COPY --from=codegolf/lang-harbour      / /langs/harbour/rootfs/
@@ -73,9 +73,9 @@ COPY --from=codegolf/lang-tcl          / /langs/tcl/rootfs/
 COPY --from=codegolf/lang-perl         / /langs/perl/rootfs/
 COPY --from=codegolf/lang-arturo       / /langs/arturo/rootfs/
 COPY --from=codegolf/lang-luau         / /langs/luau/rootfs/
-COPY --from=codegolf/lang-rockstar     / /langs/rockstar/rootfs/
 COPY --from=codegolf/lang-cobol        / /langs/cobol/rootfs/
 COPY --from=codegolf/lang-squirrel     / /langs/squirrel/rootfs/
+COPY --from=codegolf/lang-rockstar     / /langs/rockstar/rootfs/
 COPY --from=codegolf/lang-hush         / /langs/hush/rootfs/
 COPY --from=codegolf/lang-awk          / /langs/awk/rootfs/
 COPY --from=codegolf/lang-c            / /langs/c/rootfs/
@@ -86,8 +86,8 @@ COPY --from=codegolf/lang-algol-68     / /langs/algol-68/rootfs/
 COPY --from=codegolf/lang-rebol        / /langs/rebol/rootfs/
 COPY --from=codegolf/lang-sql          / /langs/sql/rootfs/
 COPY --from=codegolf/lang-rexx         / /langs/rexx/rootfs/
-COPY --from=codegolf/lang-jq           / /langs/jq/rootfs/
 COPY --from=codegolf/lang-berry        / /langs/berry/rootfs/
+COPY --from=codegolf/lang-jq           / /langs/jq/rootfs/
 COPY --from=codegolf/lang-janet        / /langs/janet/rootfs/
 COPY --from=codegolf/lang-knight       / /langs/knight/rootfs/
 COPY --from=codegolf/lang-fennel       / /langs/fennel/rootfs/
