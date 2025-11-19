@@ -615,7 +615,7 @@ category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Continued_fraction' },
 ]
-experiment = -1
+experiment = 2503
 synopsis = 'Convert fractions to continued fractions.'
 preamble = '''
 <p>
