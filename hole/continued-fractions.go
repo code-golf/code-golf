@@ -19,9 +19,10 @@ func continuedFractionsTest(n, d int) test {
 	in := fmt.Sprint(n, "/", d)
 	out := fmt.Sprint("[", n/d)
 	n %= d
-	if n > 0 {
+	d, n = n, d
+	if d > 0 {
 		out = fmt.Sprint(out, ";")
-		for n%d > 0 {
+		for d > 0 {
 			out = fmt.Sprint(out, n/d, ",")
 			n %= d
 			n, d = d, n
