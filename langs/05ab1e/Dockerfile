@@ -2,7 +2,7 @@ FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl gcc
+    apt-get install --yes curl gcc patch
 
 FROM codegolf/lang-elixir
 
@@ -16,7 +16,9 @@ WORKDIR /usr/local
 RUN curl -#L https://github.com/Adriandmen/05AB1E/tarball/$VER \
   | tar xz --strip-components 1
 
-RUN sed -i 's/-2/-2\/\/1/g' lib/interp/interpreter.ex
+COPY 05ab1e.patch .
+
+RUN patch -p0 < 05ab1e.patch
 
 RUN mix local.hex --force          \
  && mix local.rebar                \
