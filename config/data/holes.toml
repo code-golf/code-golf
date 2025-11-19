@@ -613,7 +613,8 @@ preamble = '''
 ['Continued Fractions']
 category = 'Mathematics'
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Continued_fraction' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Continued_fraction' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Continued_fraction' },
 ]
 experiment = 2503
 synopsis = 'Convert fractions to continued fractions.'
