@@ -21,13 +21,13 @@ func continuedFractionsTest(n, d int) test {
 	n %= d
 	d, n = n, d
 	if d > 0 {
-		out = fmt.Sprint(out, ";")
+		out = fmt.Sprint(out, "; ")
 		for d > 0 {
-			out = fmt.Sprint(out, n/d, ",")
+			out = fmt.Sprint(out, n/d, ", ")
 			n %= d
 			n, d = d, n
 		}
-		out = out[:len(out)-1]
+		out = out[:len(out)-2]
 	}
 	out = fmt.Sprint(out, "]")
 	return test{in, out}
