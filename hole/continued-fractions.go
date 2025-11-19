@@ -15,7 +15,7 @@ var _ = answerFunc("continued-fractions", func() []Answer {
 	return outputTests(shuffle(tests))
 })
 
-func continuedFractionsTest(n, d int) string {
+func continuedFractionsTest(n, d int) test {
 	in := fmt.Sprint(n, "/", d)
 	out := fmt.Sprint("[", n/d)
 	n %= d
