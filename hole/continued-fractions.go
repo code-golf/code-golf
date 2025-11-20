@@ -20,6 +20,7 @@ var _ = answerFunc("continued-fractions", func() []Answer {
 	for i := len(hardCodedFractions); i < len(tests); i++ {
 		tests[i] = continuedFractionsTest(rand.IntN(256), 1+rand.IntN(255))
 	}
+	return outputTests(shuffle(tests))
 })
 
 func continuedFractionsTest(n, d int) test {
