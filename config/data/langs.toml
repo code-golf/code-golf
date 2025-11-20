@@ -101,7 +101,7 @@ loop arg [a] [
 [Assembly]
 args     = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
 assembly = true
-size     = '124 MiB'
+size     = '114 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
 example  = '''
