@@ -348,7 +348,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '111 MiB'
-version = 'C# 13.0 on .NET 10.0.0'
+version = 'C# 14.0 on .NET 10.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
