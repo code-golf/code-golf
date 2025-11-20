@@ -81,8 +81,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '5.22 MiB'
-version    = 'fa246cc'
+size       = '4.93 MiB'
+version    = '35567b1'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -101,7 +101,7 @@ loop arg [a] [
 [Assembly]
 args     = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
 assembly = true
-size     = '124 MiB'
+size     = '114 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
 example  = '''
@@ -347,8 +347,8 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '108 MiB'
-version = 'C# 13.0 on .NET 9.0.10'
+size    = '111 MiB'
+version = 'C# 14.0 on .NET 10.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.5'
+version = 'Clang 21.1.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -1103,7 +1103,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '45.6 MiB'
-version = 'V8 14.2.231.17'
+version = 'V8 14.2.231.21'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1414,8 +1414,8 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '136 MiB'
-version    = 'PowerShell 7.5.4 on .NET 9.0.10'
+size       = '137 MiB'
+version    = 'PowerShell 7.5.4 on .NET 10.0.0'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
