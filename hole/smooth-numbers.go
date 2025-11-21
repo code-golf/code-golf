@@ -41,7 +41,7 @@ var _ = answerFunc("smooth-numbers", func() []Answer {
 			}
 		}
 		tests[j] = []test{{
-			in: fmt.Sprint(n, " ", k),
+			in: fmt.Sprintf("%d %d", k, n),
 			out: expected.String(),
 		}}
 	}
