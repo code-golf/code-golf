@@ -31,7 +31,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			Name                                     string
 			OtherStrokes                             *int
 			Submitted                                time.Time
-			Time                                     *time.Duration
+			Time                                     time.Duration
 		}
 	}{
 		HoleID:  param(r, "hole"),

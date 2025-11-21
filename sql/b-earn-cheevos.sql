@@ -175,6 +175,12 @@ BEGIN
     IF hole = 'look-and-say' AND lang = 'sed' THEN
         earned := earn(earned, 'simon-sed', user_id); END IF;
 
+    -- 🥢 Sinosphere
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('c', 'j', 'k', 'v');
+    IF hole = 'mahjong' AND found THEN
+        earned := earn(earned, 'sinosphere', user_id); END IF;
+
     -- 🪞 Solve Quine
     IF hole = 'quine' THEN
         earned := earn(earned, 'solve-quine', user_id); END IF;

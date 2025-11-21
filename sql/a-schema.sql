@@ -21,7 +21,7 @@ CREATE TYPE cheevo AS ENUM (
     'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
     'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
-    'simon-sed', 'slowcoach', 'smörgåsbord', 'solve-quine',
+    'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord', 'solve-quine',
     'sounds-quite-nice', 'takeout', 'texnical-know-how', 'the-watering-hole',
     'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
     'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
@@ -39,40 +39,40 @@ CREATE TYPE hole AS ENUM (
     'ascii-table', 'billiards', 'binary-lambda-calculus', 'brainfuck',
     'calendar', 'card-number-validation', 'catalan-numbers',
     'catalans-constant', 'christmas-trees', 'collatz', 'connect-four',
-    'css-colors', 'css-colors-inverse', 'css-grid', 'cubes', 'day-of-week',
-    'dfa-simulator', 'diamonds', 'divisors', 'ellipse-perimeters',
-    'emirp-numbers', 'emirp-numbers-long', 'emojify', 'evil-numbers',
-    'evil-numbers-long', 'factorial-factorisation', 'farey-sequence',
-    'fibonacci', 'fizz-buzz', 'flags', 'floyd-steinberg-dithering',
-    'foo-fizz-buzz-bar', 'forsyth-edwards-notation', 'fractions',
-    'game-of-life', 'gijswijts-sequence', 'gray-code-decoder',
-    'gray-code-encoder', 'happy-numbers', 'happy-numbers-long',
-    'hexagonal-spiral', 'hexdump', 'highly-composite-numbers',
-    'hilbert-curve', 'intersection', 'inventory-sequence', 'isbn',
-    'jacobi-symbol', 'kaprekar-numbers', 'kolakoski-constant',
-    'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
-    'leyland-numbers', 'ln-2', 'look-and-say', 'lucky-numbers',
-    'lucky-tickets', 'mahjong', 'mandelbrot', 'maze', 'medal-tally',
-    'minesweeper', 'morse-decoder', 'morse-encoder', 'musical-chords',
-    'n-queens', 'nfa-simulator', 'niven-numbers', 'niven-numbers-long',
-    'number-spiral', 'odd-polyomino-tiling', 'odious-numbers',
-    'odious-numbers-long', 'ordinal-numbers', 'p-adic-expansion',
-    'palindromemordnilap', 'pangram-grep', 'partition-numbers',
-    'pascals-triangle', 'pernicious-numbers', 'pernicious-numbers-long',
-    'poker', 'polygon-triangulations', 'polyominoes', 'prime-numbers',
-    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'qr-encoder',
-    'quadratic-formula', 'quine', 'recamán', 'repeating-decimals',
-    'reverse-polish-notation', 'reversi', 'rijndael-s-box',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rot13',
-    'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set', 'seven-segment',
-    'si-units', 'sierpiński-triangle', 'smith-numbers', 'smooth-numbers',
-    'snake', 'spelling-numbers', 'sphenic-numbers', 'star-wars-opening-crawl',
-    'sudoku', 'sudoku-fill-in', 'ten-pin-bowling', 'text-prediction',
-    'tic-tac-toe', 'time-distance', 'tongue-twisters', 'topological-sort',
-    'tower-of-hanoi', 'transpose-sentence', 'trinomial-triangle', 'turtle',
-    'tutorial', 'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ',
-    '√2', '𝑒'
+    'continued-fractions', 'crossword', 'css-colors', 'css-colors-inverse',
+    'css-grid', 'cubes', 'day-of-week', 'dfa-simulator', 'diamonds',
+    'divisors', 'ellipse-perimeters', 'emirp-numbers', 'emirp-numbers-long',
+    'emojify', 'evil-numbers', 'evil-numbers-long', 'factorial-factorisation',
+    'farey-sequence', 'fibonacci', 'fizz-buzz', 'flags',
+    'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
+    'forsyth-edwards-notation', 'fractions', 'game-of-life',
+    'gijswijts-sequence', 'gray-code-decoder', 'gray-code-encoder',
+    'happy-numbers', 'happy-numbers-long', 'hexagonal-spiral', 'hexdump',
+    'highly-composite-numbers', 'hilbert-curve', 'intersection',
+    'inventory-sequence', 'isbn', 'jacobi-symbol', 'kaprekar-numbers',
+    'kolakoski-constant', 'kolakoski-sequence', 'leap-years',
+    'levenshtein-distance', 'leyland-numbers', 'ln-2', 'look-and-say',
+    'lucky-numbers', 'lucky-tickets', 'mahjong', 'mandelbrot', 'maze',
+    'medal-tally', 'minesweeper', 'morse-decoder', 'morse-encoder',
+    'musical-chords', 'n-queens', 'nfa-simulator', 'niven-numbers',
+    'niven-numbers-long', 'number-spiral', 'odd-polyomino-tiling',
+    'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
+    'p-adic-expansion', 'palindromemordnilap', 'pangram-grep',
+    'partition-numbers', 'pascals-triangle', 'pernicious-numbers',
+    'pernicious-numbers-long', 'poker', 'polygon-triangulations',
+    'polyominoes', 'prime-numbers', 'prime-numbers-long', 'proximity-grid',
+    'qr-decoder', 'qr-encoder', 'quadratic-formula', 'quine', 'recamán',
+    'repeating-decimals', 'reverse-polish-notation', 'reversi',
+    'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
+    'rot13', 'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set',
+    'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
+    'smooth-numbers', 'snake', 'spelling-numbers', 'sphenic-numbers',
+    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'ten-pin-bowling',
+    'text-prediction', 'tic-tac-toe', 'time-distance', 'tongue-twisters',
+    'topological-sort', 'tower-of-hanoi', 'transpose-sentence',
+    'trinomial-triangle', 'turtle', 'tutorial', 'united-states',
+    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
+    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -136,9 +136,8 @@ CREATE TABLE users (
     pronouns     pronouns,
     settings     jsonb     NOT NULL DEFAULT '{}'::jsonb,
     about        text      NOT NULL DEFAULT '',
-    -- TODO Make country_flag VIRTUAL not STORED when PostgreSQL supports it.
     country_flag char(2)            GENERATED ALWAYS AS
-        (CASE WHEN show_country THEN country END) STORED,
+        (CASE WHEN show_country THEN country END),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),              -- Can't refer yourself!
     CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
@@ -204,7 +203,7 @@ CREATE TABLE notes (
 );
 
 CREATE TABLE sessions (
-    id        uuid      NOT NULL DEFAULT GEN_RANDOM_UUID() PRIMARY KEY,
+    id        uuid      NOT NULL DEFAULT uuidv4() PRIMARY KEY,
     last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
@@ -221,7 +220,7 @@ CREATE TABLE solutions (
     code        text      NOT NULL,
     tested      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     lang_digest bytea     NOT NULL,
-    time_ms     smallint, -- TODO make NOT NULL once everything re-tested.
+    time_ms     smallint  NOT NULL,
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)
