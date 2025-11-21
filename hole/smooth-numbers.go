@@ -8,7 +8,7 @@ import (
 )
 
 var _ = answerFunc("smooth-numbers", func() []Answer {
-	tests := make([][]test, 5)
+	tests := make([][1]test, 5)
 
 	for j := range 5 {
 		n, k := randInt(1, math.MaxInt8), randInt(1, math.MaxInt16)
