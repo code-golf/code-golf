@@ -40,7 +40,10 @@ var _ = answerFunc("smooth-numbers", func() []Answer {
 				}
 			}
 		}
-		tests[j] = []test{test{fmt.Sprintf("%d %d", n, k), expected.String()}}
+		tests[j] = []test{{
+			in: fmt.Sprintf("%d %d", n, k),
+			out: expected.String(),
+		}}
 	}
 
 	return outputTests(tests...)
