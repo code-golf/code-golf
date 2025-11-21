@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.23 MiB'
-version    = 'Algol 68 Genie 3.10.6'
+version    = 'Algol 68 Genie 3.10.7'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '4.93 MiB'
-version    = '35567b1'
+version    = '01cb217'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -591,8 +591,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '113 MiB'
-version = '3.9.4'
+size    = '118 MiB'
+version = '3.10.1'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1136,8 +1136,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '360 MiB'
-version = '1.12.1'
+size    = '361 MiB'
+version = '1.12.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1234,8 +1234,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.10 MiB'
-version    = '0.700'
+size       = '5.12 MiB'
+version    = '0.701'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
