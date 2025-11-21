@@ -207,6 +207,12 @@ langs       = ['clojure', 'coconut', 'common-lisp', 'haskell', 'scheme']
 target      = 3
 
 [['Hole/Lang Specific']]
+name        = 'Never Eat Shredded Wheat'
+emoji       = '🧭'
+description = 'Solve <a href=/arrows>Arrows</a> in languages beginning with the letters "N", "E", "S", and "W".'
+target      = 4
+
+[['Hole/Lang Specific']]
 name        = 'Off-the-grid'
 emoji       = '📴'
 description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-fill-in#hexagony>Sudoku (Fill-in)</a> in Hexagony.'
@@ -236,6 +242,14 @@ description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft
 name        = 'Simon Sed'
 emoji       = '💬'
 description = 'Solve <a href=/look-and-say#sed>Look and Say in sed</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Sinosphere'
+emoji       = '🥢'
+description = 'Solve <a href=/mahjong>Mahjong</a> in any three of <a href=/mahjong#c>C</a>, <a href=/mahjong#j>J</a>, <a href=/mahjong#k>K</a>, or <a href=/mahjong#v>V</a>.'
+holes       = ['mahjong']
+langs       = ['c', 'j', 'k', 'v']
+target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'Solve Quine'
@@ -276,9 +290,25 @@ emoji       = '💡'
 description = 'Solve <a href=/si-units#powershell>SI Units in PowerShell</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'When in Rome'
+emoji       = '🏛️'
+description = 'Solve <a href=/roman-to-arabic>Roman to Arabic</a> in any three of <a href=/roman-to-arabic#c>C</a>, <a href=/roman-to-arabic#d>D</a>, <a href=/roman-to-arabic#v>V</a>, or <a href=/roman-to-arabic#viml>VimL</a>.'
+holes       = ['roman-to-arabic']
+langs       = ['c', 'd', 'v', 'viml']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'X-Factor'
 emoji       = '❌'
 description = 'Solve <a href=/factorial-factorisation#factor>Factorial Factorisation in Factor</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Zoodiac Signs'
+emoji       = '🌠'
+description = 'Solve <a href=/zodiac-signs>Zodiac Signs</a> in any three languages whose logo depicts an animal.'
+holes       = ['zodiac-signs']
+langs       = ['awk', 'basic', 'civet', 'factor', 'ocaml', 'perl', 'prolog', 'python', 'raku', 'swift', 'wren']
+target      = 3
 
 # Miscellaneous
 
