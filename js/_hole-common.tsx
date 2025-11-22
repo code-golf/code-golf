@@ -1,8 +1,9 @@
 import { ASMStateField }                       from '@defasm/codemirror';
-import { $, $$, byteLen, charLen, comma, ord } from './_util';
+import { $, $$, byteLen, charLen, comma, ord, strokeLen } from './_util';
 import { Vim }                                 from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions } from './_codemirror';
 import LZString                                from 'lz-string';
+import { getAllowedStrokes }                   from './lang-allowed-strokes';
 
 let tabLayout: boolean = false;
 
@@ -820,6 +821,7 @@ export async function populateScores(editor: any) {
 export interface Scorings {
     byte?: number;
     char?: number;
+    stroke?: number;
 }
 
 export function getScorings(tr: any, editor: any) {
@@ -833,6 +835,11 @@ export function getScorings(tr: any, editor: any) {
         total.byte = byteLen(code);
         total.char = charLen(code);
 
+        const allowedStrokes = getAllowedStrokes(getLang());
+        if (allowedStrokes !== undefined) {
+            total.stroke = strokeLen(code, allowedStrokes);
+        }
+
         if (tr.selection) {
             selection.byte = 0;
             selection.char = 0;
@@ -841,6 +848,11 @@ export function getScorings(tr: any, editor: any) {
                 const contents = code.slice(range.from, range.to);
                 selection.byte += byteLen(contents);
                 selection.char += charLen(contents);
+
+                if (allowedStrokes !== undefined) {
+                    selection.stroke ??= 0;
+                    selection.stroke += strokeLen(contents, allowedStrokes);
+                }
             }
         }
     }

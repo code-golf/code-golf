@@ -153,7 +153,7 @@ function makeEditor(parent: HTMLDivElement) {
 
             const code = tr.state.doc.toString();
             const scorings: {total: Scorings, selection?: Scorings} = getScorings(tr, editor);
-            const scoringKeys = ['byte', 'char'] as const;
+            const scoringKeys = ['byte', 'char', 'stroke'] as const;
 
             $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
 
