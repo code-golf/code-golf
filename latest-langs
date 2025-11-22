@@ -16,11 +16,17 @@ sub get {
         return $ua.get($gnurl.subst(/\/ <-[/]>+ \/ $/, $url.match(/ (\/ (<-[/]>+) $) /)) ~ "?C=M;O=D")<content>.decode
             if $gnurl;
 
-        repeat while !$gnurl {
-            my $link = ($ua = HTTP::Tiny.new).get("https://$url");
+        repeat until $gnurl {
+            my $link = $ua.get("https://$url");
 
             return $ua.get(($gnurl = $link<url>) ~ "?C=M;O=D")<content>.decode
                 if $link<content>.decode.contains("Last modified");
+
+            CATCH {
+                default {
+                    return $ua.get(($gnurl = $ua.get("https://" ~ $url.match(/mirror/).replace-with(""))<url>) ~ "?C=M;O=D")<content>.decode
+                }
+            }
         }
     }
 
