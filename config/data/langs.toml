@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.23 MiB'
-version    = 'Algol 68 Genie 3.10.6'
+version    = 'Algol 68 Genie 3.10.7'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -81,8 +81,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '5.22 MiB'
-version    = 'fa246cc'
+size       = '4.93 MiB'
+version    = '01cb217'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -101,7 +101,7 @@ loop arg [a] [
 [Assembly]
 args     = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
 assembly = true
-size     = '124 MiB'
+size     = '114 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
 example  = '''
@@ -259,7 +259,7 @@ v Accessing arguments
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '1.00 MiB'
-version = '674b765'
+version = 'ceb7888'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -347,8 +347,8 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '108 MiB'
-version = 'C# 13.0 on .NET 9.0.10'
+size    = '111 MiB'
+version = 'C# 14.0 on .NET 10.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.5'
+version = 'Clang 21.1.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -591,8 +591,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '113 MiB'
-version = '3.9.4'
+size    = '118 MiB'
+version = '3.10.1'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1103,7 +1103,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '45.6 MiB'
-version = 'V8 14.2.231.17'
+version = 'V8 14.2.231.21'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1146,8 +1146,8 @@ example    = '''
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '360 MiB'
-version = '1.12.1'
+size    = '361 MiB'
+version = '1.12.2'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1244,8 +1244,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.10 MiB'
-version    = '0.700'
+size       = '5.12 MiB'
+version    = '0.701'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1373,8 +1373,8 @@ say for @ARGV;
 
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
-size    = '8.39 MiB'
-version = '8.4.14'
+size    = '15.5 MiB'
+version = '8.5.0'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1424,8 +1424,8 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '136 MiB'
-version    = 'PowerShell 7.5.4 on .NET 9.0.10'
+size       = '137 MiB'
+version    = 'PowerShell 7.5.4 on .NET 10.0.0'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing

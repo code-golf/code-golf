@@ -8,9 +8,9 @@ import (
 )
 
 var _ = answerFunc("smooth-numbers", func() []Answer {
-	var tests []test
+	tests := make([][]test, 5)
 
-	for range 64 {
+	for j := range 5 {
 		n, k := randInt(1, math.MaxInt8), randInt(1, math.MaxInt16)
 
 		var primes []int
@@ -33,12 +33,15 @@ var _ = answerFunc("smooth-numbers", func() []Answer {
 			}
 
 			if x == 1 {
-				expected.WriteString(fmt.Sprintf("%d ", i))
+				if i == 1 {
+					expected.WriteString(fmt.Sprintf("%d", i))
+				} else {
+					expected.WriteString(fmt.Sprintf(" %d", i))
+				}
 			}
 		}
-
-		tests = append(tests, test{fmt.Sprintf("%d %d", n, k), expected.String()})
+		tests[j] = []test{{fmt.Sprintf("%d %d", n, k), expected.String()}}
 	}
 
-	return outputTests(shuffle(tests))
+	return outputTests(tests...)
 })
