@@ -9,6 +9,7 @@ import {
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
+    Scorings,
 } from './_hole-common';
 import UnprintableElement from './_unprintable';
 
@@ -17,7 +18,7 @@ const editor = new EditorView({
         const result = editor.update([tr]) as unknown;
 
         const code = tr.state.doc.toString();
-        const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
+        const scorings: {total: Scorings, selection?: Scorings} = getScorings(tr, editor);
         const scoringKeys = ['byte', 'char'] as const;
 
         $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());

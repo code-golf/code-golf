@@ -817,10 +817,15 @@ export async function populateScores(editor: any) {
     });
 }
 
+export interface Scorings {
+    byte?: number;
+    char?: number;
+}
+
 export function getScorings(tr: any, editor: any) {
     const code = tr.state.doc.toString();
-    const total: {byte?: number, char?: number} = {};
-    const selection: {byte?: number, char?: number} = {};
+    const total: Scorings = {};
+    const selection: Scorings = {};
 
     if (getLang() == 'assembly')
         total.byte = (editor.state.field(ASMStateField) as any).head.length();
