@@ -18,13 +18,13 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		RankingsView             string
 		Solutions                []map[string]string
 	}{
+		Hole:         config.AllHoleByID[param(r, "hole")],
 		Langs:        config.AllLangByID,
 		RankingsView: "me",
 		Solutions:    []map[string]string{{}, {}},
 	}
 
-	var ok bool
-	if data.Hole, ok = config.AllHoleByID[param(r, "hole")]; !ok {
+	if data.Hole == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
