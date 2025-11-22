@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache build-base curl python3 readline-dev
 
-ENV VER=674b765
+ENV VER=ceb7888
 
 RUN curl -#L https://github.com/berry-lang/berry/archive/$VER.tar.gz \
   | tar xz --strip-components 1

@@ -20,7 +20,7 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		Lang                             *config.Lang
 		Golfers, Rank, Strokes, TieCount int
 		Submitted                        time.Time
-		Time                             *time.Duration
+		Time                             time.Duration
 	}
 
 	data := struct {

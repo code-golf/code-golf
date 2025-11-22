@@ -39,10 +39,10 @@ CREATE TYPE hole AS ENUM (
     'ascii-table', 'billiards', 'binary-lambda-calculus', 'brainfuck',
     'calendar', 'card-number-validation', 'catalan-numbers',
     'catalans-constant', 'christmas-trees', 'collatz', 'connect-four',
-    'crossword', 'css-colors', 'css-colors-inverse', 'css-grid', 'cubes',
-    'day-of-week', 'dfa-simulator', 'diamonds', 'divisors',
-    'ellipse-perimeters', 'emirp-numbers', 'emirp-numbers-long', 'emojify',
-    'evil-numbers', 'evil-numbers-long', 'factorial-factorisation',
+    'continued-fractions', 'crossword', 'css-colors', 'css-colors-inverse',
+    'css-grid', 'cubes', 'day-of-week', 'dfa-simulator', 'diamonds',
+    'divisors', 'ellipse-perimeters', 'emirp-numbers', 'emirp-numbers-long',
+    'emojify', 'evil-numbers', 'evil-numbers-long', 'factorial-factorisation',
     'farey-sequence', 'fibonacci', 'fizz-buzz', 'flags',
     'floyd-steinberg-dithering', 'foo-fizz-buzz-bar',
     'forsyth-edwards-notation', 'fractions', 'game-of-life',
@@ -220,7 +220,7 @@ CREATE TABLE solutions (
     code        text      NOT NULL,
     tested      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     lang_digest bytea     NOT NULL,
-    time_ms     smallint, -- TODO make NOT NULL once everything re-tested.
+    time_ms     smallint  NOT NULL,
     -- Assembly can only be scored on bytes, and they are compiled bytes.
     CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
         OR (lang != 'assembly' AND bytes = octet_length(code)
