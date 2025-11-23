@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* harbour = "/usr/local/bin/hbmk2", *code = "code.hb";
+const char* harbour = "/usr/local/bin/hbmk2", *code = "code.hbs";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
