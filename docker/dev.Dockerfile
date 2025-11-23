@@ -42,6 +42,7 @@ COPY --from=codegolf/lang-elixir       / /langs/elixir/rootfs/
 COPY --from=codegolf/lang-java         / /langs/java/rootfs/
 COPY --from=codegolf/lang-erlang       / /langs/erlang/rootfs/
 COPY --from=codegolf/lang-prolog       / /langs/prolog/rootfs/
+COPY --from=codegolf/lang-webassembly  / /langs/webassembly/rootfs/
 COPY --from=codegolf/lang-javascript   / /langs/javascript/rootfs/
 COPY --from=codegolf/lang-haxe         / /langs/haxe/rootfs/
 COPY --from=codegolf/lang-hy           / /langs/hy/rootfs/
