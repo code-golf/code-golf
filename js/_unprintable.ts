@@ -73,6 +73,11 @@ export default class UnprintableElement extends HTMLElement {
             l = '⌟';
             t = '(empty)';
         }
+        else if (c == '\uFEFF') {
+            h = 'B';
+            l = 'M';
+            t = '(BOM)';
+        }
         else if (c.length == 1) {
             const code = c.charCodeAt(0);
             h = '0123456789ABCDEF'[code / 16 | 0];
@@ -91,7 +96,7 @@ export default class UnprintableElement extends HTMLElement {
         this.#span.title = t;
     }
 
-    static PATTERN = /([\x00-\x08\x0B-\x1F\x7F-\xA0])/g;
+    static PATTERN = /([\x00-\x08\x0B-\x1F\x7F-\xA0\uFEFF])/g;
 
     static escape(text: string): DocumentFragment {
         const frag = document.createDocumentFragment();
