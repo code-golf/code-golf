@@ -54,6 +54,7 @@ COPY --from=codegolf/lang-c-sharp      / /langs/c-sharp/rootfs/
 COPY --from=codegolf/lang-vala         / /langs/vala/rootfs/
 COPY --from=codegolf/lang-d            / /langs/d/rootfs/
 COPY --from=codegolf/lang-ocaml        / /langs/ocaml/rootfs/
+COPY --from=codegolf/lang-curry        / /langs/curry/rootfs/
 COPY --from=codegolf/lang-scala        / /langs/scala/rootfs/
 COPY --from=codegolf/lang-coconut      / /langs/coconut/rootfs/
 COPY --from=codegolf/lang-civet        / /langs/civet/rootfs/
