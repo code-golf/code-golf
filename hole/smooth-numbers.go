@@ -33,11 +33,10 @@ var _ = answerFunc("smooth-numbers", func() []Answer {
 			}
 
 			if x == 1 {
-				if i == 1 {
-					expected.WriteString(fmt.Sprintf("%d", i))
-				} else {
-					expected.WriteString(fmt.Sprintf(" %d", i))
+				if i != 1 {
+					expected.WriteByte('\n')
 				}
+				fmt.Fprint(&expected, i)
 			}
 		}
 		tests[j] = []test{{fmt.Sprintf("%d %d", n, k), expected.String()}}

@@ -3960,7 +3960,7 @@ preamble = '''
 
 <p>
     For each argument <code>𝑛 𝑘</code>, print all the <i>n</i>-smooth numbers
-    from 1 to <i>k</i> inclusive, separated by spaces.
+    from 1 to <i>k</i> inclusive, each on their own line.
 '''
 
 [Snake]
