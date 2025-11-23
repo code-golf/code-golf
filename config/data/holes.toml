@@ -3955,12 +3955,13 @@ links = [
 synopsis = 'Print all the n-smooth numbers from 1 to k inclusive.'
 preamble = '''
 <p>
-    An <i>n</i>-smooth number is a positive integer whose prime factors are all
-    less than or equal to <i>n</i>.
+    An <i>n</i>-smooth number is a positive integer whose prime factors are
+    all less than or equal to <i>n</i>.
 
 <p>
-    For each argument <code>𝑛 𝑘</code>, print all the <i>n</i>-smooth numbers
-    from 1 to <i>k</i> inclusive, each on their own line.
+    Given the arguments <code>𝑛</code> and <code>𝑘</code>, print all the
+    <i>n</i>-smooth numbers from 1 to <i>k</i> inclusive, each on their own
+    line.
 '''
 
 [Snake]
