@@ -64,7 +64,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         const langID = location.hash.slice(1) || localStorage.getItem('lang');
         currentLang = langs[langID ?? ''] ?? langs['python'];
 
-        lang = currentLang.id
+        lang = currentLang.id;
 
         // Assembly only has bytes.
         if (currentLang.assembly)
@@ -106,7 +106,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
     }
 }
 
-export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
+export function initDeleteBtn(deleteBtn: HTMLElement | undefined) {
     deleteBtn?.addEventListener('click', () => {
         $('#delete-dialog b').innerText = currentLang.name;
         $<HTMLInputElement>('#delete-dialog [name=lang]').value = lang;
@@ -121,7 +121,7 @@ export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
             navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
-export const langs: Record<string, Lang> = JSON.parse($('#languages').innerText);
+const langs: Record<string, Lang> = JSON.parse($('#languages').innerText);
 const sortedLangs  =
     Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
 
