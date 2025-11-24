@@ -38,19 +38,8 @@ async function getHoleLangNotesContent(lang: string): Promise<string> {
     return holeLangNotesCache[lang] ?? '';
 }
 
-const renamedHoles: Record<string, string> = {
-    'billiard':                      'billiards',
-    'eight-queens':                  'n-queens',
-    'factorial-factorisation-ascii': 'factorial-factorisation',
-    'grid-packing':                  'css-grid',
-    'placeholder':                   'tutorial',
-    'sudoku-v2':                     'sudoku-fill-in',
-};
-
-const renamedLangs: Record<string, string> = {
-    lisp:  'common-lisp',
-    perl6: 'raku',
-};
+const renamedHoles: Record<string, string> = JSON.parse($('#renamed-holes').innerText);
+const renamedLangs: Record<string, string> = JSON.parse($('#renamed-langs').innerText);
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
     tabLayout = _tabLayout;

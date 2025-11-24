@@ -11,17 +11,20 @@ import (
 // GET /{hole}
 func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Authors                  []string
-		HideDetails              bool
-		Hole, PrevHole, NextHole *config.Hole
-		Langs                    map[string]*config.Lang
-		RankingsView             string
-		Solutions                []map[string]string
+		Authors                      []string
+		HideDetails                  bool
+		Hole, PrevHole, NextHole     *config.Hole
+		HoleRedirects, LangRedirects map[string]string
+		Langs                        map[string]*config.Lang
+		RankingsView                 string
+		Solutions                    []map[string]string
 	}{
-		Hole:         config.AllHoleByID[param(r, "hole")],
-		Langs:        config.AllLangByID,
-		RankingsView: "me",
-		Solutions:    []map[string]string{{}, {}},
+		Hole:          config.AllHoleByID[param(r, "hole")],
+		HoleRedirects: config.HoleRedirects,
+		LangRedirects: config.LangRedirects,
+		Langs:         config.AllLangByID,
+		RankingsView:  "me",
+		Solutions:     []map[string]string{{}, {}},
 	}
 
 	if data.Hole == nil {
