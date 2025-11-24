@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-hardcodedTests := [...]struct{ n, k int }{
+var hardcodedTests = [...]struct{ n, k int }{
 	{2, 32768}, {3, 529},
 }
 
