@@ -5,6 +5,7 @@ import { EditorState, EditorView, extensions } from './_codemirror';
 import LZString                                from 'lz-string';
 
 interface Lang {
+    assembly:   boolean,
     example:    string,
     experiment: number,
     id:         string,
@@ -66,7 +67,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
         lang = currentLang.id
 
         // Assembly only has bytes.
-        if (lang == 'assembly')
+        if (currentLang.assembly)
             setSolution(0);
 
         localStorage.setItem('lang', lang);
@@ -201,7 +202,7 @@ export function setState(code: string, editor: EditorView) {
                 ['fish', 'hexagony'].includes(lang)
                     ? extensions.zeroIndexedLineNumbers : [extensions.lineNumbers, extensions.bracketMatching],
                 // These languages shouldn't wrap lines.
-                ['assembly', 'fish', 'hexagony'].includes(lang)
+                (currentLang.assembly || ['fish', 'hexagony'].includes(lang))
                     ? [] : EditorView.lineWrapping,
             ],
         }),
@@ -746,10 +747,10 @@ export function setCodeForLangAndSolution(editor: any) {
     setState(localStorage.getItem(getAutoSaveKey(lang, solution)) ||
         getSolutionCode(lang, solution) || currentLang.example, editor);
 
-    if (lang == 'assembly') scoring = 0;
+    if (currentLang.assembly) scoring = 0;
     const charsTab = $('#scoringTabs a:last-child');
     if (charsTab)
-        charsTab.classList.toggle('hide', lang == 'assembly');
+        charsTab.classList.toggle('hide', currentLang.assembly);
 
     refreshScores(editor);
 
@@ -765,7 +766,7 @@ export async function populateScores(editor: any) {
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
     const res       = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
     const rows      = res.ok ? await res.json() : [];
-    const colspan   = lang == 'assembly' ? 3 : 4;
+    const colspan   = currentLang.assembly ? 3 : 4;
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
@@ -785,7 +786,7 @@ export async function populateScores(editor: any) {
                         <span>{comma(r.bytes)}</span>
                     </a>}
             </td>
-            {lang == 'assembly' ? '' : <td title={tooltip(r, 'Chars')}>
+            {currentLang.assembly ? '' : <td title={tooltip(r, 'Chars')}>
                 {scoringID != 'chars' ? comma(r.chars) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
                         <span>{comma(r.chars)}</span>
@@ -823,7 +824,7 @@ export function getScorings(tr: any, editor: any) {
     const total: {byte?: number, char?: number} = {};
     const selection: {byte?: number, char?: number} = {};
 
-    if (getLang() == 'assembly')
+    if (currentLang.assembly)
         total.byte = (editor.state.field(ASMStateField) as any).head.length();
     else {
         total.byte = byteLen(code);
