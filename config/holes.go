@@ -33,9 +33,6 @@ var (
 	AllHoleByID = map[string]*Hole{}
 	AllHoleList []*Hole
 
-	// Ten most recent holes, used for /rankings/recent-holes.
-	RecentHoles []*Hole
-
 	// A map of hole ID to category for passing to SQL queries.
 	HoleCategoryHstore = hstore.Hstore{Map: map[string]sql.NullString{}}
 
@@ -197,17 +194,6 @@ func initHoles() {
 			ExpHoleList = append(ExpHoleList, hole)
 		}
 	}
-
-	// Ten most recent holes.
-	RecentHoles = make([]*Hole, len(HoleList))
-	copy(RecentHoles, HoleList)
-	slices.SortFunc(RecentHoles, func(a, b *Hole) int {
-		if c := cmp.Compare(b.Released.String(), a.Released.String()); c != 0 {
-			return c
-		}
-		return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
-	})
-	RecentHoles = RecentHoles[:10]
 
 	for _, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
 		// Case-insensitive sort.

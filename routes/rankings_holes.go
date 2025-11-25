@@ -11,11 +11,9 @@ import (
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // GET /rankings/holes/{hole}/{lang}/{scoring}
-// GET /rankings/recent-holes/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Distribution                          []struct{ Frequency, Strokes int }
@@ -23,7 +21,6 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
 		Pager                                 *pager.Pager
-		Recent                                bool
 		Rows                                  []struct {
 			Country                                  *config.Country
 			Holes, Points, Rank, Row, Strokes, Total int
@@ -37,14 +34,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		HoleID:  param(r, "hole"),
 		LangID:  param(r, "lang"),
 		Pager:   pager.New(r),
-		Recent:  strings.HasPrefix(r.URL.Path, "/rankings/recent-holes"),
 		Scoring: param(r, "scoring"),
-	}
-
-	var holeWhere any
-	if data.Recent {
-		data.HoleID = "all"
-		holeWhere = pq.Array(config.RecentHoles)
 	}
 
 	if data.HoleID != "all" && config.AllHoleByID[data.HoleID] == nil ||
@@ -75,7 +65,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			               PARTITION BY user_id, hole ORDER BY points DESC, strokes
 			           )
 			      FROM rankings
-			     WHERE scoring = $1 AND (hole = ANY($4) OR $4 IS NULL)
+			     WHERE scoring = $1
 			       AND NOT experimental
 			), summed AS (
 			    SELECT user_id,
@@ -99,7 +89,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			ORDER BY rank, submitted
 			   LIMIT $2 OFFSET $3`
 
-		bind = []any{data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
+		bind = []any{data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else if data.HoleID == "all" {
 		query = `WITH summed AS (
 			    SELECT user_id,
@@ -108,8 +98,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			           SUM(strokes)         strokes,
 			           MAX(submitted)       submitted
 			      FROM rankings
-			     WHERE (hole = ANY($5) OR $5 IS NULL)
-			       AND lang    = $1
+			     WHERE lang    = $1
 			       AND scoring = $2
 			       AND NOT experimental_hole
 			  GROUP BY user_id
@@ -126,7 +115,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			ORDER BY rank, submitted
 			   LIMIT $3 OFFSET $4`
 
-		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset, holeWhere}
+		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else if data.LangID == "all" {
 		query = `SELECT country_flag     country,
 			          lang             lang,
@@ -211,8 +200,6 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	if data.Hole != nil {
 		desc.WriteString(data.Hole.Name)
 		desc.WriteString(" in ")
-	} else if data.Recent {
-		desc.WriteString("Ten most recent holes in ")
 	} else {
 		desc.WriteString("All holes in ")
 	}
@@ -225,39 +212,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	desc.WriteString(data.Scoring)
-
-	if data.Recent {
-		desc.WriteString(". <p>")
-
-		for i, hole := range config.RecentHoles {
-			if i > 0 {
-				desc.WriteString(", ")
-
-				if i == len(config.RecentHoles)-1 {
-					desc.WriteString("and ")
-				}
-			}
-
-			desc.WriteString(`<a href="/`)
-			desc.WriteString(hole.ID)
-			if data.LangID != "all" {
-				desc.WriteByte('#')
-				desc.WriteString(data.LangID)
-			}
-			desc.WriteString(`">`)
-			desc.WriteString(hole.Name)
-			desc.WriteString("</a>")
-		}
-	}
-
 	desc.WriteByte('.')
 
-	name := "rankings/holes"
-	title := "Rankings: Holes"
-	if data.Recent {
-		name = "rankings/recent-holes"
-		title = "Rankings: Recent Holes"
-	}
-
-	render(w, r, name, data, title, template.HTML(desc.String()))
+	render(w, r, "rankings/holes", data, "Rankings: Holes", template.HTML(desc.String()))
 }

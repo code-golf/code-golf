@@ -91,14 +91,6 @@ func initNav() {
 			},
 		},
 
-		"rankings/recent-holes": {
-			Path: "/rankings/recent-holes/{lang}/{scoring}",
-			Groups: []*LinkGroup{
-				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(false),
-			},
-		},
-
 		"recent/solutions": {
 			Path: "/recent/solutions/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
