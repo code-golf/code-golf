@@ -356,6 +356,9 @@ CREATE UNIQUE INDEX   medals_key ON   medals(user_id, hole, lang, scoring, medal
 CREATE UNIQUE INDEX   points_key ON   points(user_id, scoring);
 CREATE UNIQUE INDEX rankings_key ON rankings(user_id, hole, lang, scoring);
 
+-- Used by /golfers/{golfer}/{hole}/{lang}/{scoring}
+CREATE INDEX ON solutions_log(user_id, hole, lang, scoring);
+
 -- Used by /stats
 CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;
 CREATE INDEX solutions_lang_key ON solutions(lang, user_id) WHERE NOT failing;
