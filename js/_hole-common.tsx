@@ -1,8 +1,8 @@
-import { ASMStateField }                       from '@defasm/codemirror';
-import { $, $$, byteLen, charLen, comma, ord } from './_util';
-import { Vim }                                 from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions } from './_codemirror';
-import LZString                                from 'lz-string';
+import { ASMStateField }                               from '@defasm/codemirror';
+import { $, $$, avatar, byteLen, charLen, comma, ord } from './_util';
+import { Vim }                                         from '@replit/codemirror-vim';
+import { EditorState, EditorView, extensions }         from './_codemirror';
+import LZString                                        from 'lz-string';
 
 interface Lang {
     assembly:   boolean,
@@ -776,7 +776,7 @@ export async function populateScores(editor: any) {
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
-                    <img src={`/golfers/${r.golfer.name}/avatar/48`}/>
+                    <img src={avatar(r.golfer.avatar_url, 48)}/>
                     <span>{r.golfer.name}</span>
                 </a>
             </td>

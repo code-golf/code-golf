@@ -41,6 +41,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 		return pretty.Comma(i) + " " + term
 	},
 
+	// Backend version, keep in sync with js/util.js.
 	"avatar": func(rawURL string, size int) (*url.URL, error) {
 		u, err := url.Parse(rawURL)
 		if err != nil {
