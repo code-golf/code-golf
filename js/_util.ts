@@ -35,26 +35,26 @@ export const charLen = (str: string) => {
 
 // Frontend version, keep in sync with views/views.go.
 export const avatar = (rawURL: string, size: number): URL => {
-    let u = new URL(rawURL);
+    const u = new URL(rawURL);
 
     // Set the size for every host.
-    let q = u.searchParams;
+    const q = u.searchParams;
     q.set('size', size.toString());
 
     // Set any host specific parameters.
     switch (u.hostname) {
-        case 'gravatar.com':
-        case 'secure.gravatar.com':
-        case 'www.gravatar.com':
-            // TODO This munging should be pushed to connection time.
-            u.hostname = 'gravatar.com';
-            u.protocol = 'https:';
-            q.delete('d');
-            q.delete('r');
+    case 'gravatar.com':
+    case 'secure.gravatar.com':
+    case 'www.gravatar.com':
+        // TODO This munging should be pushed to connection time.
+        u.hostname = 'gravatar.com';
+        u.protocol = 'https:';
+        q.delete('d');
+        q.delete('r');
 
-            q.set('default', 'identicon');
-            q.set('rating', 'PG');
-            break;
+        q.set('default', 'identicon');
+        q.set('rating', 'PG');
+        break;
     }
 
     u.search = q.toString();
