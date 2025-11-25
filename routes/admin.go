@@ -12,6 +12,10 @@ import (
 // GET /admin
 func adminGET(w http.ResponseWriter, r *http.Request) {
 	var data struct {
+		AvatarURLs []struct {
+			Count int
+			URL   *string
+		}
 		LastTested []struct {
 			Day       time.Time
 			Solutions int
@@ -33,6 +37,17 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 
 	db := session.Database(r)
 	golfer := session.Golfer(r)
+
+	if err := db.Select(
+		&data.AvatarURLs,
+		` SELECT regexp_replace(avatar_url, '(?<!/)/[^/][^?]+', '/path') url,
+		         COUNT(*)
+		    FROM connections
+		GROUP BY 1
+		ORDER BY 1 NULLS FIRST`,
+	); err != nil {
+		panic(err)
+	}
 
 	if err := db.Select(
 		&data.LastTested,
