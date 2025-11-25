@@ -39,6 +39,9 @@ var (
 	// Aliases & Redirects
 	HoleAliases   = map[string]string{}
 	HoleRedirects = map[string]string{}
+
+	// Latest stable hole.
+	LatestHole *Hole
 )
 
 type Link struct {
@@ -201,4 +204,8 @@ func initHoles() {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
 	}
+
+	LatestHole = slices.MaxFunc(HoleList, func(a, b *Hole) int {
+		return strings.Compare(a.Released.String(), b.Released.String())
+	})
 }

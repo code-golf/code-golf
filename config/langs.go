@@ -27,6 +27,9 @@ var (
 
 	// Redirects.
 	LangRedirects = map[string]string{}
+
+	// Latest stable lang.
+	LatestLang *Lang
 )
 
 type Lang struct {
@@ -103,4 +106,8 @@ func initLangs() {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
 	}
+
+	LatestLang = slices.MaxFunc(LangList, func(a, b *Lang) int {
+		return strings.Compare(a.Released.String(), b.Released.String())
+	})
 }

@@ -12,14 +12,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var latestHole *config.Hole
 var nextHole = config.ExpHoleByID["minesweeper"]
-
-func init() {
-	latestHole = slices.MaxFunc(config.HoleList, func(a, b *config.Hole) int {
-		return strings.Compare(a.Released.String(), b.Released.String())
-	})
-}
 
 type banner struct {
 	Body          template.HTML
@@ -157,7 +150,7 @@ Cheevo:
 	}
 
 	// Latest hole (if unsolved).
-	if hole := latestHole; !golfer.Solved(hole.ID) {
+	if hole := config.LatestHole; !golfer.Solved(hole.ID) {
 		banners = append(banners, banner{
 			HideKey: "latest-hole-" + hole.ID,
 			Type:    "info",
