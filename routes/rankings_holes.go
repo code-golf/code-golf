@@ -57,35 +57,19 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	var query string
 	var bind []any
 
-	// TODO Try and merge these SQL queries?
 	if data.HoleID == "all" && data.LangID == "all" {
-		query = `WITH foo AS (
-			    SELECT user_id, hole, lang, points, strokes, submitted,
-			           ROW_NUMBER() OVER (
-			               PARTITION BY user_id, hole ORDER BY points DESC, strokes
-			           )
-			      FROM rankings
-			     WHERE scoring = $1
-			       AND NOT experimental
-			), summed AS (
-			    SELECT user_id,
-			           COUNT(*)       holes,
-			           SUM(points)    points,
-			           SUM(strokes)   strokes,
-			           MAX(submitted) submitted
-			      FROM foo
-			     WHERE row_number = 1
-			  GROUP BY user_id
-			) SELECT country_flag                                 country,
-			         holes                                        holes,
-			         login                                        name,
-			         points                                       points,
-			         RANK() OVER (ORDER BY points DESC, strokes)  rank,
-			         strokes                                      strokes,
-			         submitted                                    submitted,
-			         COUNT(*) OVER()                              total
-			    FROM summed
+		query = `
+			  SELECT country_flag                                country,
+			         holes                                       holes,
+			         login                                       name,
+			         points                                      points,
+			         RANK() OVER (ORDER BY points DESC, strokes) rank,
+			         strokes                                     strokes,
+			         submitted                                   submitted,
+			         COUNT(*) OVER()                             total
+			    FROM points
 			    JOIN users ON user_id = id
+			   WHERE scoring = $1
 			ORDER BY rank, submitted
 			   LIMIT $2 OFFSET $3`
 
