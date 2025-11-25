@@ -27,7 +27,8 @@
     <a {{ if not (hasPrefix .Path "/rankings/cheevos/") }}
         href=/rankings/cheevos/all
     {{ end }}>
-        Cheevos
+        <span class=wide>Achievements</span>
+        <span class=thin>Cheevos</span>
     </a>
 
     <a {{ if not (hasPrefix .Path "/rankings/holes/") }}
@@ -39,7 +40,7 @@
     <a {{ if not (hasPrefix .Path "/rankings/langs/") }}
         href=/rankings/langs/all/bytes
     {{ end }}>
-        Langs
+        Lang<span class=wide>uage</span>s
     </a>
 
     <a {{ if not (hasPrefix .Path "/rankings/medals/") }}
@@ -51,6 +52,6 @@
     <a {{ if not (hasPrefix .Path "/rankings/misc/") }}
         href=/rankings/misc/diamond-deltas
     {{ end }}>
-        Misc
+        Misc<span class=wide>ellaneous</span>
     </a>
 </nav>
