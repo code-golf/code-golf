@@ -176,6 +176,15 @@ CREATE TABLE follows (
     CHECK (follower_id != followee_id)  -- Can't follow yourself!
 );
 
+-- TODO This eventually needs to not hardcode github in order to allow log in
+--      with other providers, we'll probably have a "primary connection" col
+--      on users (which also needs to be renamed to golfers one day).
+--      See https://dba.stackexchange.com/questions/112061
+CREATE VIEW golfers_with_avatars AS
+     SELECT u.*, COALESCE(avatar_url, '/icon-fill.svg') avatar_url
+       FROM users       u
+       JOIN connections c ON c.user_id = u.id AND c.connection = 'github';
+
 -- config/data/holes.toml is the canonical source of truth for hole data.
 -- This table is a shadow copy, updated on startup, used in DB queries.
 -- TODO Move category here, remove config.HoleCategoryHstore.
@@ -359,6 +368,7 @@ ALTER MATERIALIZED VIEW points   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 
 -- Views.
+GRANT SELECT ON golfers_with_avatars     TO "code-golf";
 GRANT SELECT ON stable_passing_solutions TO "code-golf";
 
 -- Tables.

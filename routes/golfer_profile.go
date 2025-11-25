@@ -37,9 +37,9 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		Connections      []oauth.Connection
 		Followers        []string
 		Following        []struct {
+			AvatarURL, Name    string
 			Bytes, Chars, Rank int
 			Country            *config.Country
-			Name               string
 		}
 		Langs []struct {
 			Lang                          *config.Lang
@@ -190,12 +190,12 @@ rows:
 	if err := db.Select(
 		&data.Following,
 		`WITH follows AS (
-		    SELECT country_flag country, login name,
+		    SELECT avatar_url, country_flag country, login name,
 		           COALESCE((SELECT points FROM points
 		              WHERE scoring = 'bytes' AND user_id = id), 0) bytes,
 		           COALESCE((SELECT points FROM points
 		              WHERE scoring = 'chars' AND user_id = id), 0) chars
-		      FROM users
+		      FROM golfers_with_avatars
 		     WHERE id = ANY(following($1, $2))
 		) SELECT *, RANK() OVER (ORDER BY bytes DESC, chars DESC)
 		    FROM follows

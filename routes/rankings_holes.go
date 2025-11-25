@@ -22,10 +22,10 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		HoleID, LangID, OtherScoring, Scoring string
 		Pager                                 *pager.Pager
 		Rows                                  []struct {
+			AvatarURL, Name                          string
 			Country                                  *config.Country
 			Holes, Points, Rank, Row, Strokes, Total int
 			Lang                                     *config.Lang
-			Name                                     string
 			OtherStrokes                             *int
 			Submitted                                time.Time
 			Time                                     time.Duration
@@ -59,7 +59,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 	if data.HoleID == "all" && data.LangID == "all" {
 		query = `
-			  SELECT country_flag                                country,
+			  SELECT avatar_url                                  avatar_url,
+			         country_flag                                country,
 			         holes                                       holes,
 			         login                                       name,
 			         points                                      points,
@@ -68,7 +69,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         submitted                                   submitted,
 			         COUNT(*) OVER()                             total
 			    FROM points
-			    JOIN users ON user_id = id
+			    JOIN golfers_with_avatars ON user_id = id
 			   WHERE scoring = $1
 			ORDER BY rank, submitted
 			   LIMIT $2 OFFSET $3`
@@ -86,7 +87,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			       AND scoring = $2
 			       AND NOT experimental_hole
 			  GROUP BY user_id
-			) SELECT country_flag                                 country,
+			) SELECT avatar_url                                   avatar_url,
+			         country_flag                                 country,
 			         holes                                        holes,
 			         login                                        name,
 			         points                                       points,
@@ -95,13 +97,14 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         submitted                                    submitted,
 			         COUNT(*) OVER()                              total
 			    FROM summed
-			    JOIN users ON user_id = id
+			    JOIN golfers_with_avatars ON user_id = id
 			ORDER BY rank, submitted
 			   LIMIT $3 OFFSET $4`
 
 		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else if data.LangID == "all" {
-		query = `SELECT country_flag     country,
+		query = `SELECT avatar_url       avatar_url,
+			          country_flag     country,
 			          lang             lang,
 			          login            name,
 			          other_strokes    other_strokes,
@@ -113,14 +116,15 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          time_ms * 1e6    time,
 			          COUNT(*) OVER()  total
 			     FROM rankings
-			     JOIN users ON user_id = id
+			     JOIN golfers_with_avatars ON user_id = id
 			    WHERE hole = $1 AND scoring = $2
 			 ORDER BY rank_overall, submitted
 			    LIMIT $3 OFFSET $4`
 
 		bind = []any{data.HoleID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else {
-		query = `SELECT country_flag     country,
+		query = `SELECT avatar_url       avatar_url,
+			          country_flag     country,
 			          lang             lang,
 			          login            name,
 			          other_strokes    other_strokes,
@@ -132,7 +136,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			          time_ms * 1e6    time,
 			          COUNT(*) OVER()  total
 			     FROM rankings
-			     JOIN users ON user_id = id
+			     JOIN golfers_with_avatars ON user_id = id
 			    WHERE hole = $1 AND lang = $2 AND scoring = $3
 			 ORDER BY rank, submitted
 			    LIMIT $4 OFFSET $5`

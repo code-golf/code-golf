@@ -13,9 +13,9 @@ import (
 // GET /recent/solutions/{hole}/{lang}/{scoring}
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
+		AvatarURL, Name                  string
 		Country                          *config.Country
 		Experimental                     bool
-		Name                             string
 		Hole                             *config.Hole
 		Lang                             *config.Lang
 		Golfers, Rank, Strokes, TieCount int
@@ -49,10 +49,10 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Select(
 		&data.Rows,
-		` SELECT experimental, golfers, hole, lang, login name, strokes, rank,
-		         submitted, tie_count, time_ms * 1e6 time
+		` SELECT avatar_url, experimental, golfers, hole, lang, login name,
+		         strokes, rank, submitted, tie_count, time_ms * 1e6 time
 		    FROM rankings
-		    JOIN users ON user_id = id
+		    JOIN golfers_with_avatars ON user_id = id
 		   WHERE (hole = $1 OR $1 IS NULL)
 		     AND (lang = $2 OR $2 IS NULL)
 		     AND scoring = $3

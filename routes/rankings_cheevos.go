@@ -18,9 +18,9 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		Cheevo *config.Cheevo
 		Pager  *pager.Pager
 		Rows   []struct {
+			AvatarURL, Name    string
 			Country            *config.Country
 			Earned             time.Time
-			Name               string
 			Count, Rank, Total int
 		}
 		Total int
@@ -42,13 +42,13 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		      FROM cheevos
 		     WHERE cheevo = $1 OR $1 IS NULL
 		  GROUP BY user_id
-		) SELECT count, country_flag country, earned, login name,
+		) SELECT avatar_url, count, country_flag country, earned, login name,
 		         CASE WHEN $1 IS NULL
 		            THEN RANK() OVER(ORDER BY count DESC)
 		            ELSE RANK() OVER(ORDER BY earned)
 		         END,
 		         COUNT(*) OVER() total
-		    FROM count JOIN users ON id = user_id
+		    FROM count JOIN golfers_with_avatars ON id = user_id
 		ORDER BY rank, earned, login
 		   LIMIT $2 OFFSET $3`,
 		data.Cheevo,

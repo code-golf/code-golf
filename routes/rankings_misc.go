@@ -16,6 +16,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Pager *pager.Pager
 		Rows  []struct {
+			AvatarURL                        string
 			Bytes, Chars, Count, Rank, Total int
 			Country                          *config.Country `db:"country_flag"`
 			Hole                             *config.Hole
@@ -40,35 +41,35 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			    SELECT DISTINCT hole, lang, scoring, strokes
 			      FROM rankings
 			     WHERE rank = 2 AND NOT experimental
-			) SELECT country_flag, hole, lang, login, scoring,
+			) SELECT avatar_url, country_flag, hole, lang, login, scoring,
 			         silvers.strokes - diamonds.strokes count,
 			         RANK() OVER(ORDER BY silvers.strokes - diamonds.strokes DESC),
 			         COUNT(*) OVER () total
 			    FROM diamonds
 			    JOIN silvers USING (hole, lang, scoring)
-			    JOIN users ON id = user_id
+			    JOIN golfers_with_avatars ON id = user_id
 			ORDER BY rank, scoring
 			   LIMIT $1 OFFSET $2`
 	case "followers":
 		desc = "Total followers."
 		sql = `WITH followers AS (
 			    SELECT followee_id, COUNT(*) FROM follows GROUP BY followee_id
-			) SELECT count, country_flag, login,
+			) SELECT avatar_url, count, country_flag, login,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM followers
-			    JOIN users ON id = followee_id
+			    JOIN golfers_with_avatars ON id = followee_id
 			ORDER BY rank, login
 			   LIMIT $1 OFFSET $2`
 	case "holes-authored":
 		desc = "Total holes authored."
 		sql = `WITH holes AS (
 			    SELECT user_id, COUNT(*) FROM authors GROUP BY user_id
-			) SELECT count, country_flag, login,
+			) SELECT avatar_url, count, country_flag, login,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM holes
-			    JOIN users ON id = user_id
+			    JOIN golfers_with_avatars ON id = user_id
 			ORDER BY rank, login
 			   LIMIT $1 OFFSET $2`
 	case "most-tied-golds":
@@ -92,11 +93,11 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			desc = "🦄 Oldest unicorns (uncontested solves)."
 		}
 
-		sql = `SELECT country_flag, hole, lang, login, scoring, submitted,
+		sql = `SELECT avatar_url, country_flag, hole, lang, login, scoring, submitted,
 			         RANK() OVER(ORDER BY submitted),
 			         COUNT(*) OVER () total
 			    FROM medals
-			    JOIN users ON id = user_id
+			    JOIN golfers_with_avatars ON id = user_id
 			   WHERE medal = $3
 			ORDER BY rank, hole, lang, scoring, login
 			   LIMIT $1 OFFSET $2`
@@ -104,11 +105,11 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		desc = "Total referrals."
 		sql = `WITH referrals AS (
 			    SELECT referrer_id, COUNT(*) FROM users GROUP BY referrer_id
-			) SELECT count, country_flag, login,
+			) SELECT avatar_url, count, country_flag, login,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM referrals
-			    JOIN users ON id = referrals.referrer_id
+			    JOIN golfers_with_avatars ON id = referrals.referrer_id
 			ORDER BY rank, login
 			   LIMIT $1 OFFSET $2`
 	case "solutions":
@@ -121,11 +122,11 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			      FROM solutions
 			     WHERE NOT failing
 			  GROUP BY user_id
-			) SELECT bytes, chars, count, country_flag, login,
+			) SELECT avatar_url, bytes, chars, count, country_flag, login,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM solutions
-			    JOIN users ON id = user_id
+			    JOIN golfers_with_avatars ON id = user_id
 			ORDER BY rank, bytes, chars, login
 			   LIMIT $1 OFFSET $2`
 	default:

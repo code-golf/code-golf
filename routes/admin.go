@@ -21,9 +21,9 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 			Solutions int
 		}
 		Sessions []struct {
-			Country  *config.Country
-			LastUsed time.Time
-			Name     string
+			AvatarURL, Name string
+			Country         *config.Country
+			LastUsed        time.Time
 		}
 		Tables []struct {
 			Name       null.String
@@ -65,9 +65,9 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE user_id != $1
 		       AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 hour'
 		  GROUP BY user_id
-		) SELECT country_flag country, last_used, login name
+		) SELECT avatar_url, country_flag country, last_used, login name
 		    FROM grouped_sessions
-		    JOIN users ON id = user_id
+		    JOIN golfers_with_avatars ON id = user_id
 		ORDER BY last_used DESC`,
 		golfer.ID,
 	); err != nil {

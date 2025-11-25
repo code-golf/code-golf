@@ -15,9 +15,9 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		HoleID, LangID, Scoring  string
 		Pager                    *pager.Pager
 		Rows                     []struct {
+			AvatarURL, Name                        string
 			Country                                *config.Country
 			Unicorn, Diamond, Gold, Silver, Bronze int
-			Name                                   string
 			Rank, Total                            int
 		}
 	}{
@@ -56,9 +56,9 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
 		         ),
 		         unicorn, diamond, gold, silver, bronze,
-		         country_flag country, login name, COUNT(*) OVER() total
+		         avatar_url, country_flag country, login name, COUNT(*) OVER() total
 		    FROM counts
-		    JOIN users ON id = user_id
+		    JOIN golfers_with_avatars ON id = user_id
 		ORDER BY rank, login
 		   LIMIT $4 OFFSET $5`,
 		data.HoleID,
