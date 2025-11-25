@@ -29,7 +29,7 @@ CREATE TYPE cheevo AS ENUM (
 );
 
 CREATE TYPE connection AS ENUM (
-    'discord', 'github', 'gitlab', 'stack-overflow'
+    'discord', 'github', 'gitlab', 'gravatar', 'stack-overflow'
 );
 
 CREATE TYPE hole AS ENUM (

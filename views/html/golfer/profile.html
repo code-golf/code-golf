@@ -57,6 +57,8 @@
                 {{ $url = print "//discord.com/users/" .ID }}
             {{ else if or (eq .Connection "github") (eq .Connection "gitlab") }}
                 {{ $url = print "//" .Connection ".com/" .Username }}
+            {{ else if eq .Connection "gravatar" }}
+                {{ $url = print "//gravatar.com/" .Username }}
             {{ else if eq .Connection "stack-overflow" }}
                 {{ $url = print "//stackoverflow.com/users/" .ID }}
             {{ end }}
