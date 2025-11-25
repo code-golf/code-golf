@@ -10,7 +10,7 @@
         {{ $lastDate = .Date }}
     {{ end }}
         {{ $golfer := .Golfer }}
-        <img loading=lazy src="/golfers/{{ $golfer }}/avatar/48">
+        <img loading=lazy src="{{ avatar .AvatarURL 48 }}">
 
     {{ if gt (len .Cheevos ) 1 }}
         <details>
@@ -138,8 +138,8 @@
         <section class=icons>
             <h2>{{ amount (len .) "Follower" }}</h2>
         {{ range . }}
-            <a href="{{ . }}" title="{{ . }}">
-                <img loading=lazy src="/golfers/{{ . }}/avatar/72">
+            <a href="{{ .Name }}" title="{{ .Name }}">
+                <img loading=lazy src="{{ avatar .AvatarURL 72 }}">
             </a>
         {{ end }}
         </section>

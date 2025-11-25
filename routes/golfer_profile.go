@@ -7,7 +7,6 @@ import (
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/oauth"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // GET /golfers/{golfer}
@@ -15,10 +14,10 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
 
 	type row struct {
-		Cheevos      []*config.Cheevo
-		Date, Golfer string
-		Hole         *config.Hole
-		Lang         *config.Lang
+		AvatarURL, Date, Golfer string
+		Cheevos                 []*config.Cheevo
+		Hole                    *config.Hole
+		Lang                    *config.Lang
 	}
 
 	db := session.Database(r)
@@ -35,7 +34,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		CategoryOverview map[string]map[string]int
 		Connections      []oauth.Connection
-		Followers        []string
+		Followers        []struct{ AvatarURL, Name string }
 		Following        []struct {
 			AvatarURL, Name    string
 			Bytes, Chars, Rank int
@@ -89,8 +88,8 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		                        ELSE user_id = $2
 		           END
 		  GROUP BY user_id, hole, lang
-		) SELECT cheevo, date, login, hole, lang
-		    FROM data JOIN users ON id = user_id
+		) SELECT cheevo, date, avatar_url, login, hole, lang
+		    FROM data JOIN golfers_with_avatars ON id = user_id
 		ORDER BY date DESC, login LIMIT $4`,
 		followedGolfersInFeed,
 		golfer.ID,
@@ -108,7 +107,9 @@ rows:
 		var time time.Time
 
 		var r row
-		if err := rows.Scan(&cheevo, &time, &r.Golfer, &r.Hole, &r.Lang); err != nil {
+		if err := rows.Scan(
+			&cheevo, &time, &r.AvatarURL, &r.Golfer, &r.Hole, &r.Lang,
+		); err != nil {
 			panic(err)
 		}
 
@@ -206,13 +207,15 @@ rows:
 		panic(err)
 	}
 
-	if err := db.QueryRow(
-		`SELECT array_agg(login ORDER BY login)
-		   FROM follows
-		   JOIN users ON id = follower_id
-		  WHERE followee_id = $1`,
+	if err := db.Select(
+		&data.Followers,
+		` SELECT avatar_url, login name
+		    FROM follows
+		    JOIN golfers_with_avatars ON id = follower_id
+		   WHERE followee_id = $1
+		ORDER BY name`,
 		golfer.ID,
-	).Scan(pq.Array(&data.Followers)); err != nil {
+	); err != nil {
 		panic(err)
 	}
 

@@ -22,16 +22,16 @@ const (
 // TODO Some of this stuff isn't needed on every request but is needed to
 // populate golfer settings, that should be fixed.
 type Golfer struct {
-	About, Name, Referrer, Theme          string
-	Admin, HasNotes, ShowCountry, Sponsor bool
-	BytesPoints, CharsPoints, ID          int
-	Cheevos, Holes                        pq.StringArray
-	Country                               *config.Country
-	Delete                                null.Time
-	FailingSolutions                      FailingSolutions
-	Following                             pq.Int64Array
-	Pronouns, TimeZone                    null.String
-	Settings                              Settings
+	About, AvatarURL, Name, Referrer, Theme string
+	Admin, HasNotes, ShowCountry, Sponsor   bool
+	BytesPoints, CharsPoints, ID            int
+	Cheevos, Holes                          pq.StringArray
+	Country                                 *config.Country
+	Delete                                  null.Time
+	FailingSolutions                        FailingSolutions
+	Following                               pq.Int64Array
+	Pronouns, TimeZone                      null.String
+	Settings                                Settings
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.
@@ -50,7 +50,7 @@ type GolferInfo struct {
 	CheevosTotal, HolesTotal, LangsTotal int
 
 	// Slice of golfers referred
-	Referrals pq.StringArray
+	Referrals []struct{ AvatarURL, Name string }
 
 	// Start date
 	Started time.Time

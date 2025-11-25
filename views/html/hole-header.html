@@ -40,9 +40,9 @@
             <ul>
             {{ range . }}
                 <li>
-                    <a href="/golfers/{{ . }}">
-                        <img src="/golfers/{{ . }}/avatar/48">
-                        {{ . }}
+                    <a href="/golfers/{{ .Name }}">
+                        <img src="{{ avatar .AvatarURL 48 }}">
+                        {{ .Name }}
                     </a>
             {{ end }}
             </ul>
@@ -50,7 +50,7 @@
     </dialog>
     <button data-dialog=authors-dialog id=authors-btn>
     {{ range . }}
-        <img src="/golfers/{{ . }}/avatar/72">
+        <img src="{{ avatar .AvatarURL 72 }}">
     {{ end }}
     </button>
 {{ end }}

@@ -2,7 +2,7 @@
     {{ $me := and $.Golfer (eq $.Golfer.ID .ID) }}
 
     <div class=grid id=profile>
-        <img src="/golfers/{{ .Name }}/avatar/176">
+        <img src="{{ avatar .AvatarURL 176 }}">
         <h1 title="{{ .Name }}{{ with .Pronouns.V }} ({{ . }}){{ end }}">
             {{ .Name }}
             {{ with .Pronouns.V }}<span id=pronouns>({{ . }})</span>{{ end }}
@@ -156,9 +156,9 @@
                 <ul>
                 {{ range . }}
                     <li>
-                        <a href="/golfers/{{ . }}">
-                            <img loading=lazy src="/golfers/{{ . }}/avatar/48">
-                            {{ . }}
+                        <a href="/golfers/{{ .Name }}">
+                            <img loading=lazy src="{{ avatar .AvatarURL 48 }}">
+                            {{ .Name }}
                         </a>
                 {{ end }}
                 </ul>

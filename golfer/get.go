@@ -26,6 +26,7 @@ func Get(db *sqlx.DB, sessionID string) *Golfer {
 		  ORDER BY hole, lang
 		)  SELECT u.about                                   about,
 		          u.admin                                   admin,
+		          u.avatar_url                              avatar_url,
 		          COALESCE(bytes.points, 0)                 bytes_points,
 		          COALESCE(chars.points, 0)                 chars_points,
 		          u.country                                 country,
@@ -55,7 +56,7 @@ func Get(db *sqlx.DB, sessionID string) *Golfer {
 		                  FROM solutions
 		                 WHERE user_id = u.id
 		              ORDER BY hole)                        holes
-		     FROM users  u
+		     FROM golfers_with_avatars u
 		     JOIN golfer g     ON u.id = g.user_id
 		LEFT JOIN users  r     ON r.id = u.referrer_id
 		LEFT JOIN points bytes ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
@@ -103,11 +104,12 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		 GROUP BY user_id
 		)  SELECT about,
 		          admin,
+		          avatar_url,
 		          COALESCE(bronze, 0)                   bronze,
 		          ARRAY(
 		            SELECT cheevo
 		              FROM cheevos
-		             WHERE user_id = users.id
+		             WHERE user_id = golfers_with_avatars.id
 		          ORDER BY cheevo
 		          )                                     cheevos,
 		          country_flag                          country,
@@ -119,7 +121,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          ARRAY(
 		            SELECT hole
 		              FROM authors
-		             WHERE user_id = users.id
+		             WHERE user_id = golfers_with_avatars.id
 		          ORDER BY hole
 		          )                                     holes_authored,
 		          id,
@@ -130,17 +132,11 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          COALESCE(bytes.points, 0)             bytes_points,
 		          COALESCE(chars.points, 0)             chars_points,
 		          pronouns                              pronouns,
-		          ARRAY(
-		            SELECT login
-		              FROM users u
-		             WHERE referrer_id = users.id
-		          ORDER BY login
-		          )                                     referrals,
 		          COALESCE(silver, 0)                   silver,
 		          sponsor,
 		          started,
 		          COALESCE(unicorn, 0)                  unicorn
-		     FROM users
+		     FROM golfers_with_avatars
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
 		LEFT JOIN points chars ON id = chars.user_id AND chars.scoring = 'chars'
@@ -149,6 +145,17 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {
+		panic(err)
+	}
+
+	if err := db.Select(
+		&info.Referrals,
+		` SELECT avatar_url, login name
+		    FROM golfers_with_avatars
+		   WHERE referrer_id = $1
+		ORDER BY name`,
+		info.ID,
+	); err != nil {
 		panic(err)
 	}
 

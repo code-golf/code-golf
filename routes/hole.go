@@ -5,13 +5,12 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // GET /{hole}
 func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Authors                      []string
+		Authors                      []struct{ AvatarURL, Name string }
 		HideDetails                  bool
 		Hole, PrevHole, NextHole     *config.Hole
 		HoleRedirects, LangRedirects map[string]string
@@ -45,13 +44,14 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Lookup the hole's author(s).
-	if err := session.Database(r).QueryRow(
-		`SELECT array_agg(login ORDER BY login)
+	if err := session.Database(r).Select(
+		&data.Authors,
+		`SELECT avatar_url, login name
 		   FROM authors
-		   JOIN users ON id = user_id
+		   JOIN golfers_with_avatars ON id = user_id
 		  WHERE hole = $1`,
 		data.Hole.ID,
-	).Scan(pq.Array(&data.Authors)); err != nil {
+	); err != nil {
 		panic(err)
 	}
 
