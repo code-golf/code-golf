@@ -4211,7 +4211,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Taxicab_numbers' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Taxicab_number' },
 ]
-synopsis = 'Print all taxicab numbers from 1 to 100,000,000'
+synopsis = 'Print all taxicab numbers from 1 to 100,000,000.'
 preamble = '''
 <p>
     A taxicab number is a number that is expressible as the sum of two cubes in at least two different ways.
