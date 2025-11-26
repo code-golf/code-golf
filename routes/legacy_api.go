@@ -386,7 +386,6 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		CharsBytes *int `json:"chars_bytes"`
 		Golfer     struct {
 			AvatarURL string `json:"avatar_url"`
-			ID        int    `json:"id"`
 			Name      string `json:"name"`
 		} `json:"golfer"`
 		Me   bool `json:"me"`
@@ -429,8 +428,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		       AND scoring = $5
 		       AND NOT failing
 		)   SELECT bytes, bytes_chars, chars, chars_bytes, me, rank,
-		           avatar_url "golfer.avatar_url",
-		           id "golfer.id", name "golfer.name"
+		           avatar_url "golfer.avatar_url", name "golfer.name"
 		      FROM ranks
 		      JOIN golfers_with_avatars ON id = user_id
 		 LEFT JOIN other_scoring USING(user_id)
