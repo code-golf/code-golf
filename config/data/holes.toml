@@ -4203,6 +4203,24 @@ name      = 'Sudoku (Fill-in)'
 redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
 
+['Taxicab Numbers']
+experiment = 914
+category = 'Sequence'
+links = [
+    { name = 'OEIS A001235', url = '//oeis.org/A001235' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Taxicab_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Taxicab_number' },
+]
+synopsis = 'Print all taxicab numbers from 1 to 100,000,000'
+preamble = '''
+<p>
+    A taxicab number is a number that is expressible as the sum of two cubes in at least two different ways.
+
+<p>
+    For example <b>1729 = 1<sup>3</sup> + 12<sup>3</sup> = 9<sup>3</sup> + 10<sup>3</sup></b>,
+    <b>4104 = 2<sup>3</sup> + 16<sup>3</sup> = 9<sup>3</sup> + 15<sup>3</sup></b>, etc.
+'''
+
 ['Ten-pin Bowling']
 category = 'Gaming'
 links = [
