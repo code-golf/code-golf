@@ -26,7 +26,7 @@ func scoresAllGET(w http.ResponseWriter, r *http.Request) {
 		    SELECT hole,
 		           lang,
 		           scoring,
-		           login,
+		           name login,
 		           chars,
 		           bytes,
 		           submitted
@@ -430,7 +430,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		       AND NOT failing
 		)   SELECT bytes, bytes_chars, chars, chars_bytes, me, rank,
 		           avatar_url "golfer.avatar_url",
-		           id "golfer.id", login "golfer.name"
+		           id "golfer.id", name "golfer.name"
 		      FROM ranks
 		      JOIN golfers_with_avatars ON id = user_id
 		 LEFT JOIN other_scoring USING(user_id)

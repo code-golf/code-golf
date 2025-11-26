@@ -49,7 +49,7 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Select(
 		&data.Rows,
-		` SELECT avatar_url, experimental, golfers, hole, lang, login name,
+		` SELECT avatar_url, experimental, golfers, hole, lang, name,
 		         strokes, rank, submitted, tie_count, time_ms * 1e6 time
 		    FROM rankings
 		    JOIN golfers_with_avatars ON user_id = id

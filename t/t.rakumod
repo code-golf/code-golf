@@ -24,7 +24,7 @@ sub dbh is export {
 # Create a new Golfer, log them in, and return the session ID.
 # If called with no DB handle then it'll implicitly connect & truncate tables.
 sub new-golfer(:$dbh = dbh, :$id = 1, :$name = 'Bob') is export {
-    $dbh.execute('INSERT INTO users (id, login) VALUES ($1, $2)', $id, $name);
+    $dbh.execute('INSERT INTO users (id, name) VALUES ($1, $2)', $id, $name);
 
     $dbh.execute(
         ｢INSERT INTO connections (id, connection, user_id, username)

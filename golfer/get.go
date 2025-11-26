@@ -32,9 +32,9 @@ func Get(db *sqlx.DB, sessionID string) *Golfer {
 		          u.country                                 country,
 		          u.delete                                  delete,
 		          u.id                                      id,
-		          u.login                                   name,
+		          u.name                                    name,
 		          u.pronouns                                pronouns,
-		          COALESCE(r.login, '')                     referrer,
+		          COALESCE(r.name, '')                      referrer,
 		          u.settings                                settings,
 		          u.show_country                            show_country,
 		          u.sponsor                                 sponsor,
@@ -128,7 +128,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          (SELECT COUNT(DISTINCT lang)
 		             FROM stable_passing_solutions
 		            WHERE user_id = id)                 langs,
-		          login                                 name,
+		          name                                  name,
 		          COALESCE(bytes.points, 0)             bytes_points,
 		          COALESCE(chars.points, 0)             chars_points,
 		          pronouns                              pronouns,
@@ -140,7 +140,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
 		LEFT JOIN points chars ON id = chars.user_id AND chars.scoring = 'chars'
-		    WHERE login = $1`,
+		    WHERE name = $1`,
 		name,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
@@ -150,7 +150,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 
 	if err := db.Select(
 		&info.Referrals,
-		` SELECT avatar_url, login name
+		` SELECT avatar_url, name
 		    FROM golfers_with_avatars
 		   WHERE referrer_id = $1
 		ORDER BY name`,

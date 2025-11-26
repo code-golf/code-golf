@@ -105,7 +105,7 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 }
 
 func getUsername(id int, db *sqlx.DB) (name string) {
-	err := db.Get(&name, "SELECT login FROM users WHERE id = $1", id)
+	err := db.Get(&name, "SELECT name FROM users WHERE id = $1", id)
 	if err != nil {
 		name = "unknown golfer"
 		log.Println(err)

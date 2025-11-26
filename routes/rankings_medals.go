@@ -56,10 +56,10 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
 		         ),
 		         unicorn, diamond, gold, silver, bronze,
-		         avatar_url, country_flag country, login name, COUNT(*) OVER() total
+		         avatar_url, country_flag country, name, COUNT(*) OVER() total
 		    FROM counts
 		    JOIN golfers_with_avatars ON id = user_id
-		ORDER BY rank, login
+		ORDER BY rank, name
 		   LIMIT $4 OFFSET $5`,
 		data.HoleID,
 		data.LangID,

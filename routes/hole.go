@@ -46,7 +46,7 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 	// Lookup the hole's author(s).
 	if err := session.Database(r).Select(
 		&data.Authors,
-		`SELECT avatar_url, login name
+		`SELECT avatar_url, name
 		   FROM authors
 		   JOIN golfers_with_avatars ON id = user_id
 		  WHERE hole = $1`,

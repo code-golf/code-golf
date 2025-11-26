@@ -88,9 +88,9 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		                        ELSE user_id = $2
 		           END
 		  GROUP BY user_id, hole, lang
-		) SELECT cheevo, date, avatar_url, login, hole, lang
+		) SELECT cheevo, date, avatar_url, name, hole, lang
 		    FROM data JOIN golfers_with_avatars ON id = user_id
-		ORDER BY date DESC, login LIMIT $4`,
+		ORDER BY date DESC, name LIMIT $4`,
 		followedGolfersInFeed,
 		golfer.ID,
 		golfer.FollowLimit(),
@@ -191,7 +191,7 @@ rows:
 	if err := db.Select(
 		&data.Following,
 		`WITH follows AS (
-		    SELECT avatar_url, country_flag country, login name,
+		    SELECT avatar_url, country_flag country, name,
 		           COALESCE((SELECT points FROM points
 		              WHERE scoring = 'bytes' AND user_id = id), 0) bytes,
 		           COALESCE((SELECT points FROM points
@@ -209,7 +209,7 @@ rows:
 
 	if err := db.Select(
 		&data.Followers,
-		` SELECT avatar_url, login name
+		` SELECT avatar_url, name
 		    FROM follows
 		    JOIN golfers_with_avatars ON id = follower_id
 		   WHERE followee_id = $1

@@ -32,7 +32,7 @@ func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id
 		  ORDER BY date DESC
 		     LIMIT $1
-		)  SELECT avatar_url, country_flag country, cheevos, date, login name, langs
+		)  SELECT avatar_url, country_flag country, cheevos, date, name, langs
 		     FROM cheevos
 		     JOIN golfers_with_avatars ON id = user_id
 		LEFT JOIN langs USING (user_id)

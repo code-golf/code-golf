@@ -125,7 +125,7 @@ CREATE TABLE users (
     id           int       NOT NULL PRIMARY KEY,
     admin        bool      NOT NULL DEFAULT false,
     sponsor      bool      NOT NULL DEFAULT false,
-    login        citext    NOT NULL UNIQUE,
+    name         citext    NOT NULL UNIQUE,
     time_zone    text,
     delete       timestamp,
     country      char(2),
@@ -139,8 +139,8 @@ CREATE TABLE users (
     country_flag char(2)            GENERATED ALWAYS AS
         (CASE WHEN show_country THEN country END),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
-    CHECK (id != referrer_id),              -- Can't refer yourself!
-    CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
+    CHECK (id != referrer_id),             -- Can't refer yourself!
+    CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
 
 CREATE TABLE authors (
