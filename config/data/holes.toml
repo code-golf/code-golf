@@ -4221,7 +4221,7 @@ preamble = '''
     <b>4104 = 2<sup>3</sup> + 16<sup>3</sup> = 9<sup>3</sup> + 15<sup>3</sup></b>.
     
 <p>
-    Print all the taxicab numbers from <b>1</b> to <b>10,000,000</b> inclusive,
+    Print all the taxicab numbers from <b>1</b> to <b>100,000,000</b> inclusive,
     each on their own line.
 '''
 
