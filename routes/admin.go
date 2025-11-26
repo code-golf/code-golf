@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/session"
 )
@@ -25,9 +26,9 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 			Solutions int
 		}
 		Sessions []struct {
-			AvatarURL, Name string
-			Country         *config.Country
-			LastUsed        time.Time
+			golfer.GolferLink
+
+			LastUsed time.Time
 		}
 		Tables []struct {
 			Name       null.String
@@ -80,7 +81,7 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE user_id != $1
 		       AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 hour'
 		  GROUP BY user_id
-		) SELECT avatar_url, country_flag country, last_used, name
+		) SELECT avatar_url, country_flag, last_used, name
 		    FROM grouped_sessions
 		    JOIN golfers_with_avatars ON id = user_id
 		ORDER BY last_used DESC`,

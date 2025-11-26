@@ -37,15 +37,7 @@
     <dialog id=authors-dialog>
         <div>
             <h1>{{ $.Data.Hole.Name }} Authors</h1>
-            <ul>
-            {{ range . }}
-                <li>
-                    <a href="/golfers/{{ .Name }}">
-                        <img src="{{ avatar .AvatarURL 48 }}">
-                        {{ .Name }}
-                    </a>
-            {{ end }}
-            </ul>
+            <ul>{{ range . }}<li>{{ template "golfer-link" . }}{{ end }}</ul>
         </div>
     </dialog>
     <button data-dialog=authors-dialog id=authors-btn>

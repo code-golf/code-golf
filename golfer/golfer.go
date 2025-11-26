@@ -18,20 +18,29 @@ const (
 	FollowLimitSponsor = 24
 )
 
+// GolferLink is the smallest unit of golfer, mainly used to make golfer links.
+type GolferLink struct {
+	AvatarURL   string          `json:"avatar_url"`
+	CountryFlag *config.Country `json:"-"`
+	Name        string          `json:"name"`
+}
+
 // Golfer is the info of a logged in golfer we need on every request.
 // TODO Some of this stuff isn't needed on every request but is needed to
 // populate golfer settings, that should be fixed.
 type Golfer struct {
-	About, AvatarURL, Name, Referrer, Theme string
-	Admin, HasNotes, ShowCountry, Sponsor   bool
-	BytesPoints, CharsPoints, ID            int
-	Cheevos, Holes                          pq.StringArray
-	Country                                 *config.Country
-	Delete                                  null.Time
-	FailingSolutions                        FailingSolutions
-	Following                               pq.Int64Array
-	Pronouns, TimeZone                      null.String
-	Settings                                Settings
+	GolferLink
+
+	About, Referrer, Theme                string
+	Admin, HasNotes, ShowCountry, Sponsor bool
+	BytesPoints, CharsPoints, ID          int
+	Cheevos, Holes                        pq.StringArray
+	Country                               *config.Country
+	Delete                                null.Time
+	FailingSolutions                      FailingSolutions
+	Following                             pq.Int64Array
+	Pronouns, TimeZone                    null.String
+	Settings                              Settings
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.
@@ -50,7 +59,7 @@ type GolferInfo struct {
 	CheevosTotal, HolesTotal, LangsTotal int
 
 	// Slice of golfers referred
-	Referrals []struct{ AvatarURL, Name string }
+	Referrals []GolferLink
 
 	// Start date
 	Started time.Time

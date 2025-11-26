@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
@@ -13,8 +14,8 @@ import (
 // GET /recent/solutions/{hole}/{lang}/{scoring}
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		AvatarURL, Name                  string
-		Country                          *config.Country
+		golfer.GolferLink
+
 		Experimental                     bool
 		Hole                             *config.Hole
 		Lang                             *config.Lang

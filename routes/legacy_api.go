@@ -380,16 +380,13 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type entry struct {
-		Bytes      *int `json:"bytes"`
-		BytesChars *int `json:"bytes_chars"`
-		Chars      *int `json:"chars"`
-		CharsBytes *int `json:"chars_bytes"`
-		Golfer     struct {
-			AvatarURL string `json:"avatar_url"`
-			Name      string `json:"name"`
-		} `json:"golfer"`
-		Me   bool `json:"me"`
-		Rank int  `json:"rank"`
+		Bytes      *int              `json:"bytes"`
+		BytesChars *int              `json:"bytes_chars"`
+		Chars      *int              `json:"chars"`
+		CharsBytes *int              `json:"chars_bytes"`
+		Golfer     Golfer.GolferLink `json:"golfer"`
+		Me         bool              `json:"me"`
+		Rank       int               `json:"rank"`
 	}
 
 	sqlWhere, sqlLimit := "true", "$6"

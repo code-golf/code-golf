@@ -4,13 +4,14 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
 )
 
 // GET /{hole}
 func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Authors                      []struct{ AvatarURL, Name string }
+		Authors                      []golfer.GolferLink
 		HideDetails                  bool
 		Hole, PrevHole, NextHole     *config.Hole
 		HoleRedirects, LangRedirects map[string]string

@@ -6,7 +6,7 @@
         <h1 title="{{ .Name }}{{ with .Pronouns.V }} ({{ . }}){{ end }}">
             {{ .Name }}
             {{ with .Pronouns.V }}<span id=pronouns>({{ . }})</span>{{ end }}
-        {{ with .Country }}
+        {{ with .CountryFlag }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
@@ -154,13 +154,7 @@
             <div>
                 <h1>{{ amount (len .) "Referral" }}</h1>
                 <ul>
-                {{ range . }}
-                    <li>
-                        <a href="/golfers/{{ .Name }}">
-                            <img loading=lazy src="{{ avatar .AvatarURL 48 }}">
-                            {{ .Name }}
-                        </a>
-                {{ end }}
+                    {{ range . }}<li>{{ template "golfer-link" . }}{{ end }}
                 </ul>
             </div>
         </dialog>

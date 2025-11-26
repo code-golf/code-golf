@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -18,8 +19,8 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		Cheevo *config.Cheevo
 		Pager  *pager.Pager
 		Rows   []struct {
-			AvatarURL, Name    string
-			Country            *config.Country
+			golfer.GolferLink
+
 			Earned             time.Time
 			Count, Rank, Total int
 		}
@@ -42,7 +43,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		      FROM cheevos
 		     WHERE cheevo = $1 OR $1 IS NULL
 		  GROUP BY user_id
-		) SELECT avatar_url, count, country_flag country, earned, name,
+		) SELECT avatar_url, count, country_flag, earned, name,
 		         CASE WHEN $1 IS NULL
 		            THEN RANK() OVER(ORDER BY count DESC)
 		            ELSE RANK() OVER(ORDER BY earned)

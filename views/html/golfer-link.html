@@ -1,7 +1,7 @@
 <a href="/golfers/{{ .Name }}">
     <img loading=lazy src="{{ avatar .AvatarURL 48 }}">
     <span>{{ .Name }}</span>
-{{ with .Country }}
+{{ with .CountryFlag }}
     <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
 {{ end }}
 </a>

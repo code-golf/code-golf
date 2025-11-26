@@ -112,7 +112,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		             WHERE user_id = golfers_with_avatars.id
 		          ORDER BY cheevo
 		          )                                     cheevos,
-		          country_flag                          country,
+		          country_flag                          country_flag,
 		          COALESCE(diamond, 0)                  diamond,
 		          COALESCE(gold, 0)                     gold,
 		          (SELECT COUNT(DISTINCT hole)

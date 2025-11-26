@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -22,8 +23,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		HoleID, LangID, OtherScoring, Scoring string
 		Pager                                 *pager.Pager
 		Rows                                  []struct {
-			AvatarURL, Name                          string
-			Country                                  *config.Country
+			golfer.GolferLink
+
 			Holes, Points, Rank, Row, Strokes, Total int
 			Lang                                     *config.Lang
 			OtherStrokes                             *int
@@ -60,7 +61,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	if data.HoleID == "all" && data.LangID == "all" {
 		query = `
 			  SELECT avatar_url                                  avatar_url,
-			         country_flag                                country,
+			         country_flag                                country_flag,
 			         holes                                       holes,
 			         name                                        name,
 			         points                                      points,
@@ -88,7 +89,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			       AND NOT experimental_hole
 			  GROUP BY user_id
 			) SELECT avatar_url                                   avatar_url,
-			         country_flag                                 country,
+			         country_flag                                 country_flag,
 			         holes                                        holes,
 			         name                                         name,
 			         points                                       points,
@@ -104,7 +105,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else if data.LangID == "all" {
 		query = `SELECT avatar_url       avatar_url,
-			          country_flag     country,
+			          country_flag     country_flag,
 			          lang             lang,
 			          name             name,
 			          other_strokes    other_strokes,
@@ -124,7 +125,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		bind = []any{data.HoleID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else {
 		query = `SELECT avatar_url       avatar_url,
-			          country_flag     country,
+			          country_flag     country_flag,
 			          lang             lang,
 			          name             name,
 			          other_strokes    other_strokes,

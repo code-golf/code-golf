@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -16,13 +17,12 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Pager *pager.Pager
 		Rows  []struct {
-			AvatarURL                        string
+			golfer.GolferLink
+
 			Bytes, Chars, Count, Rank, Total int
-			Country                          *config.Country `db:"country_flag"`
 			Hole                             *config.Hole
 			Lang                             *config.Lang
 			Me                               bool
-			Name                             string
 			Scoring                          string
 			Submitted                        time.Time
 		}
