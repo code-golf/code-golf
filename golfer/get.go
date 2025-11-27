@@ -52,16 +52,17 @@ func Get(db *sqlx.DB, sessionID string) *Golfer {
 		              ORDER BY followee_id)                 following,
 		          (SELECT COUNT(*)
 		             FROM notes WHERE user_id = u.id) > 0   has_notes,
-		          ARRAY(SELECT DISTINCT hole
-		                  FROM solutions
-		                 WHERE user_id = u.id
-		              ORDER BY hole)                        holes
+		          EXISTS(SELECT *
+		                   FROM solutions
+		                  WHERE user_id = u.id
+		                    AND hole = $2)                  solved_latest_hole
 		     FROM golfers_with_avatars u
 		     JOIN golfer g     ON u.id = g.user_id
 		LEFT JOIN users  r     ON r.id = u.referrer_id
 		LEFT JOIN points bytes ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
 		LEFT JOIN points chars ON u.id = chars.user_id AND chars.scoring = 'chars'`,
 		sessionID,
+		config.LatestHole,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {

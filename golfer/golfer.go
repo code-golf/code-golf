@@ -34,13 +34,16 @@ type Golfer struct {
 	About, Referrer, Theme                string
 	Admin, HasNotes, ShowCountry, Sponsor bool
 	BytesPoints, CharsPoints, ID          int
-	Cheevos, Holes                        pq.StringArray
+	Cheevos                               pq.StringArray
 	Country                               *config.Country
 	Delete                                null.Time
 	FailingSolutions                      FailingSolutions
 	Following                             pq.Int64Array
 	Pronouns, TimeZone                    null.String
 	Settings                              Settings
+
+	// Has the golfer solved the latest hole? Includes failing solutions.
+	SolvedLatestHole bool
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.
@@ -156,12 +159,6 @@ func (g *Golfer) SaveSettings(db *sqlx.DB) {
 	}
 
 	db.MustExec("UPDATE users SET settings = $1 WHERE id = $2", g.Settings, g.ID)
-}
-
-// Solved returns whether the golfer has solved that hole. Counts failing too.
-func (g *Golfer) Solved(holeID string) bool {
-	_, ok := slices.BinarySearch(g.Holes, holeID)
-	return ok
 }
 
 func (g Golfer) SponsorOrAdmin() bool { return g.Sponsor || g.Admin }

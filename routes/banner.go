@@ -150,7 +150,7 @@ Cheevo:
 	}
 
 	// Latest hole (if unsolved).
-	if hole := config.LatestHole; !golfer.Solved(hole.ID) {
+	if hole := config.LatestHole; !golfer.SolvedLatestHole {
 		banners = append(banners, banner{
 			HideKey: "latest-hole-" + hole.ID,
 			Type:    "info",
