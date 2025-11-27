@@ -42,8 +42,8 @@ type Golfer struct {
 	Pronouns, TimeZone                    null.String
 	Settings                              Settings
 
-	// Has the golfer solved the latest hole? Includes failing solutions.
-	SolvedLatestHole bool
+	// Has the golfer solved the latest hole/lang? Includes failing solutions.
+	SolvedLatestHole, SolvedLatestLang bool
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.

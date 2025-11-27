@@ -159,5 +159,15 @@ Cheevo:
 		})
 	}
 
+	// Latest lang (if unsolved).
+	if lang := config.LatestLang; !golfer.SolvedLatestLang {
+		banners = append(banners, banner{
+			HideKey: "latest-lang-" + lang.ID,
+			Type:    "info",
+			Body: template.HTML(lang.Name +
+				" is now live! Why not try and solve a hole in it?"),
+		})
+	}
+
 	return
 }

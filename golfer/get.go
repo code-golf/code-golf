@@ -55,7 +55,11 @@ func Get(db *sqlx.DB, sessionID string) *Golfer {
 		          EXISTS(SELECT *
 		                   FROM solutions
 		                  WHERE user_id = u.id
-		                    AND hole = $2)                  solved_latest_hole
+		                    AND hole = $2)                  solved_latest_hole,
+		          EXISTS(SELECT *
+		                   FROM solutions
+		                  WHERE user_id = u.id
+		                    AND lang = $3)                  solved_latest_lang
 		     FROM golfers_with_avatars u
 		     JOIN golfer g     ON u.id = g.user_id
 		LEFT JOIN users  r     ON r.id = u.referrer_id
@@ -63,6 +67,7 @@ func Get(db *sqlx.DB, sessionID string) *Golfer {
 		LEFT JOIN points chars ON u.id = chars.user_id AND chars.scoring = 'chars'`,
 		sessionID,
 		config.LatestHole,
+		config.LatestLang,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {
