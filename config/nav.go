@@ -91,6 +91,15 @@ func initNav() {
 			},
 		},
 
+		"recent/cheevos": {
+			OnePerRow: true,
+			Path:      "/recent/cheevos/{cheevo}",
+			Groups: append(
+				[]*LinkGroup{group("", "cheevo", "All")},
+				groupsCheevos()...,
+			),
+		},
+
 		"recent/solutions": {
 			Path: "/recent/solutions/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
