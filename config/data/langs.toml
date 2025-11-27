@@ -652,12 +652,12 @@ for arg <- System.argv, do: IO.puts arg
 '''
 
 [Erlang]
-args       = [ '/usr/bin/erlang', '-' ]
-experiment = 181
-size       = '49.7 MiB'
-version    = 'OTP 28.1.1'
-website    = 'https://www.erlang.org'
-example    = '''
+args     = [ '/usr/bin/erlang', '-' ]
+released = 2025-11-27
+size     = '49.7 MiB'
+version  = 'OTP 28.1.1'
+website  = 'https://www.erlang.org'
+example  = '''
 main(Args) ->
   % Printing
   io:format("Hello, World!~n"),
