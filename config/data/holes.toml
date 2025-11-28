@@ -4389,6 +4389,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
 ]
+released = 2025-12-01
 synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle.'
 preamble = '''
 <p>
