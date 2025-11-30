@@ -66,8 +66,8 @@ fmt:
 
 font:
 	@docker build -t code-golf-font -f docker/font.Dockerfile docker
-	@id=`docker create code-golf-font`;                                                \
-	    docker cp "$$id:twemoji-colr/build/Twemoji Mozilla.woff2" fonts/twemoji.woff2; \
+	@id=`docker create code-golf-font`;                         \
+	    docker cp $$id:twemoji-colr/build/twemoji.woff2 fonts/; \
 	    docker rm $$id
 
 mathjax-fonts:
@@ -76,7 +76,7 @@ mathjax-fonts:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app -e GOEXPERIMENT=jsonv2 \
-	    golangci/golangci-lint:v2.6.1 golangci-lint run
+	    golangci/golangci-lint:v2.6.2 golangci-lint run
 
 	@node_modules/.bin/eslint js
 
