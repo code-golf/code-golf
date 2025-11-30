@@ -4,7 +4,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bash dash gcc make musl-dev patch
 
-ENV BIN='/usr/bin/opam' OPAMVER=2.4.1 VER=3.17.0
+ENV BIN='/usr/bin/opam' OPAMVER=2.5.0 VER=3.17.0
 
 RUN wget -qO $BIN https://github.com/ocaml/opam/releases/download/$OPAMVER/opam-$OPAMVER-x86_64-linux \
  && chmod +x $BIN
