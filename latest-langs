@@ -70,6 +70,7 @@ constant %paths = (
     'K'            => 'codeberg.org/ngn/k',
     'Knight'       => 'github.com/synt7x/knightjit',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
+    'Labyrinth'    => 'github.com/m-ender/labyrinth',
     'Lua'          => 'github.com/lua/lua/releases/latest',
     'Luau'         => 'github.com/luau-lang/luau/releases/latest',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
