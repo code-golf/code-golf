@@ -645,7 +645,7 @@ preamble = '''
     <li>No new words may be created, either horizontally or vertically, i.e.
         the letters of one word may not be adjacent to the letters of another
         word unless they overlap.
-    <li>Use capital letters for each word and a period for unused boxes.
+    <li>Use capital letters for each word and a period for unused squares.
         Separate everything with spaces.
 </ul>
 
