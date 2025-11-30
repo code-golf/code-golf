@@ -2,7 +2,7 @@ import { EditorView }    from './_codemirror';
 import diffView          from './_diff';
 import { $, $$, amount } from './_util';
 import {
-    init, langs, hole, setSolution,
+    init, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyButtons, getScorings,
@@ -60,7 +60,7 @@ $('#runBtn').onclick = closuredSubmit;
 window.onkeydown = ctrlEnter(closuredSubmit);
 
 initCopyButtons($$('[data-copy]'));
-initDeleteBtn($('#deleteBtn'), langs);
+initDeleteBtn($('#deleteBtn'));
 
 $$('#rankingsView a').forEach(a => a.onclick = e => {
     e.preventDefault();

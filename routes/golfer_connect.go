@@ -95,6 +95,20 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.AvatarURL = info.Picture
 		user.ID = info.Sub
 		user.Username = info.Nickname
+	case "gravatar":
+		var info struct {
+			AvatarURL string `json:"avatar_url"`
+			UserID    int    `json:"user_id"`
+			UserLogin string `json:"user_login"`
+		}
+
+		if err := json.UnmarshalRead(res.Body, &info); err != nil {
+			panic(err)
+		}
+
+		user.AvatarURL = info.AvatarURL
+		user.ID = strconv.Itoa(info.UserID)
+		user.Username = info.UserLogin
 	case "stack-overflow":
 		var info struct {
 			Items []struct {

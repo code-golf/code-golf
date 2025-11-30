@@ -5,7 +5,7 @@
         <OutputType>Exe</OutputType>
         <PublishReadyToRun>true</PublishReadyToRun>
         <SelfContained>true</SelfContained>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.PowerShell.Commands.Diagnostics" Version="7.5.4"/>
