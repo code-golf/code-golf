@@ -8,7 +8,7 @@ import { EditorView }              from './_codemirror';
 import diffView                    from './_diff';
 import { $, $$, amount, throttle } from './_util';
 import {
-    init, langs, hole, setSolution,
+    init, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
@@ -242,7 +242,7 @@ layout.registerComponentFactoryFunction('code', async container => {
 
     const deleteBtn = $('#deleteBtn');
     if (deleteBtn) {
-        initDeleteBtn(deleteBtn, langs);
+        initDeleteBtn(deleteBtn);
         deleteBtn.classList.toggle('hide', getHideDeleteBtn());
     }
 

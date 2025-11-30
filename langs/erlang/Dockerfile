@@ -5,7 +5,7 @@ RUN apt-get update                   \
     apt-get install --yes curl gcc libssl-dev make openssl perl
 
 # Also rebuild 05AB1E, Elixir, Gleam.
-ENV VER=28.1.1
+ENV VER=28.2
 
 WORKDIR /erlang
 
