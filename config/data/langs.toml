@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '4.93 MiB'
-version    = '01cb217'
+version    = '692eb1e'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -259,7 +259,7 @@ v Accessing arguments
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '1.00 MiB'
-version = 'ceb7888'
+version = 'eb57d7d'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -638,7 +638,7 @@ none
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '57.1 MiB'
-version = '1.19.3'
+version = '1.19.4'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -1719,7 +1719,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.22 MiB'
-version = 'SQLite 3.51.0'
+version = 'SQLite 3.51.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
