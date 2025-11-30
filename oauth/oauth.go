@@ -54,6 +54,20 @@ var Providers = map[string]*Config{
 		},
 	},
 
+	// https://gravatar.com/developers/applications
+	// https://docs.gravatar.com/api/oauth/
+	"gravatar": {
+		Name:         "Gravatar",
+		UserEndpoint: "https://api.gravatar.com/v3/me/profile",
+		Config: oauth2.Config{
+			Endpoint: oauth2.Endpoint{
+				AuthURL:  "https://public-api.wordpress.com/oauth2/authorize",
+				TokenURL: "https://public-api.wordpress.com/oauth2/token",
+			},
+			Scopes: []string{"auth", "gravatar-profile:read"},
+		},
+	},
+
 	// https://stackapps.com/apps/oauth
 	// https://api.stackexchange.com/docs/me
 	"stack-overflow": {

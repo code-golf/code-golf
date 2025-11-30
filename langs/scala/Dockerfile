@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache bash coreutils curl
 
-ENV VER=2.13.17
+ENV VER=2.13.18
 
 RUN curl -#L https://github.com/scala/scala/releases/download/v$VER/scala-$VER.tgz \
   | tar xz --directory /usr/local --strip-components 1

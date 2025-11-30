@@ -610,6 +610,20 @@ preamble = '''
     <b><code>-</code></b> when games are still in progress.
 '''
 
+['Continued Fractions']
+category = 'Mathematics'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Continued_fraction' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Simple_continued_fraction' },
+]
+experiment = 2503
+synopsis = 'Convert fractions to continued fractions.'
+preamble = '''
+<p>
+    For each fraction argument <code>a/b</code>, print its continued fraction
+    expansion.
+'''
+
 [Crossword]
 category = 'Computing'
 experiment = 1308
@@ -3924,7 +3938,7 @@ preamble = '''
 
 ['Smooth Numbers']
 experiment = 2144
-category = 'Sequence'
+category = 'Mathematics'
 links = [
     { name = 'OEIS A000079', url = '//oeis.org/A000079' },
     { name = 'OEIS A003586', url = '//oeis.org/A003586' },
@@ -3941,12 +3955,13 @@ links = [
 synopsis = 'Print all the n-smooth numbers from 1 to k inclusive.'
 preamble = '''
 <p>
-    An <i>n</i>-smooth number is a positive integer whose prime factors are all
-    less than or equal to <i>n</i>.
+    An <i>n</i>-smooth number is a positive integer whose prime factors are
+    all less than or equal to <i>n</i>.
 
 <p>
-    For each argument <code>𝑛 𝑘</code>, print all the <i>n</i>-smooth numbers
-    from 1 to <i>k</i> inclusive, separated by spaces.
+    Given the arguments <code>𝑛</code> and <code>𝑘</code>, print all the
+    <i>n</i>-smooth numbers from 1 to <i>k</i> inclusive, each on their own
+    line.
 '''
 
 [Snake]
@@ -4188,6 +4203,28 @@ name      = 'Sudoku (Fill-in)'
 redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
 
+['Taxicab Numbers']
+experiment = 914
+category = 'Sequence'
+links = [
+    { name = 'OEIS A001235', url = '//oeis.org/A001235' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Taxicab_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Taxicab_number' },
+]
+synopsis = 'Print all taxicab numbers from 1 to 100,000,000.'
+preamble = '''
+<p>
+    A taxicab number is a number that is expressible as the sum of two cubes in at least two different ways.
+
+<p>
+    For example, <b>1729 = 1<sup>3</sup> + 12<sup>3</sup> = 9<sup>3</sup> + 10<sup>3</sup></b> or
+    <b>4104 = 2<sup>3</sup> + 16<sup>3</sup> = 9<sup>3</sup> + 15<sup>3</sup></b>.
+    
+<p>
+    Print all the taxicab numbers from <b>1</b> to <b>100,000,000</b> inclusive,
+    each on their own line.
+'''
+
 ['Ten-pin Bowling']
 category = 'Gaming'
 links = [
@@ -4352,6 +4389,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
 ]
+released = 2025-12-01
 synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle.'
 preamble = '''
 <p>

@@ -1,4 +1,4 @@
-FROM node:25.1.0-bookworm-slim
+FROM node:25.2.1-trixie-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
@@ -6,7 +6,7 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
-ENV VER=397dec7
+ENV VER=cf77649
 
 WORKDIR /twemoji-colr
 
@@ -120,6 +120,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f948.svg'            `# 2nd Place Medal`              \
     '*/1f949.svg'            `# 3rd Place Medal`              \
     '*/1f961.svg'            `# Takeout Box`                  \
+    '*/1f962.svg'            `# Chopsticks`                   \
     '*/1f963.svg'            `# Bowl with Spoon`              \
     '*/1f967.svg'            `# Pie`                          \
     '*/1f96a.svg'            `# Sandwich`                     \
