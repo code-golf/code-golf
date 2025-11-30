@@ -59,12 +59,13 @@ int main(int argc, char* argv[]) {
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
 
-    int gargc = argc + 2;
+    int gargc = argc + 3;
     char** gargv = malloc(gargc * sizeof(char*));
     gargv[0] = (char*) gleam;
     gargv[1] = "run";
     gargv[2] = "--no-print-progress";
-    memcpy(&gargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    gargv[3] = "--";
+    memcpy(&gargv[4], &argv[2], (argc - 2) * sizeof(char*));
     gargv[gargc - 1] = NULL;
 
     execv(gleam, gargv);
