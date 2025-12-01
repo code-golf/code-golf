@@ -1,4 +1,4 @@
-FROM node:25.1.0-bookworm-slim
+FROM node:25.2.1-trixie-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
@@ -6,7 +6,7 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
-ENV VER=397dec7
+ENV VER=cf77649
 
 WORKDIR /twemoji-colr
 
@@ -115,6 +115,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f697.svg'            `# Automobile`                   \
     '*/1f6a2.svg'            `# Ship`                         \
     '*/1f6a9.svg'            `# Triangular Flag on Post`      \
+    '*/1f6df.svg'            `# Ring Buoy`                    \
     '*/1f910.svg'            `# Zipper-Mouth Face`            \
     '*/1f947.svg'            `# 1st Place Medal`              \
     '*/1f948.svg'            `# 2nd Place Medal`              \

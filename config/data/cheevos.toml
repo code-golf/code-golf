@@ -234,6 +234,13 @@ emoji       = '🍹'
 description = 'Solve any hole in Berry, Coconut, and Elixir.'
 
 [['Hole/Lang Specific']]
+name        = 'Ring Toss'
+emoji       = '🛟'
+description = 'Solve <a href=/tower-of-hanoi>Tower of Hanoi</a> in any nine languages containing the letter "O". '
+holes       = ['tower-of-hanoi']
+target      = 9
+
+[['Hole/Lang Specific']]
 name        = 'S-box 360'
 emoji       = '🎮'
 description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'
