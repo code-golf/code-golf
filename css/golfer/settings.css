@@ -8,7 +8,12 @@ h2 { font-size: 1.25rem }
     padding: 0;
 }
 
-#connections div { grid-row: span 2 }
+#connections div {
+    align-items: flex-start;
+    display: flex;
+    gap: .5rem;
+    grid-row: span 2;
+}
 
 #connections h3 {
     overflow: hidden;
