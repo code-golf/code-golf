@@ -1,13 +1,13 @@
 FROM alpine:3.22 AS builder
 
-RUN apk add --no-cache build-base curl python3 readline-dev
+RUN apk add --no-cache curl gcc make musl-dev python3 readline-dev
 
-ENV VER=97e0fca
+ENV VER=eb57d7d
 
 RUN curl -#L https://github.com/berry-lang/berry/archive/$VER.tar.gz \
   | tar xz --strip-components 1
 
-COPY berry.c /default/
+COPY berry.c default/
 
 RUN make && make install
 
@@ -15,7 +15,3 @@ FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-*.so.1  /lib/
 COPY --from=0 /usr/local/bin/berry /usr/bin/
-
-ENTRYPOINT ["berry"]
-
-CMD ["--version"]

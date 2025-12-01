@@ -6,19 +6,21 @@ FROM alpine:3.22 AS builder
 
 ARG VER
 
-RUN apk add --no-cache curl dash gcc gmp-dev make musl-dev
+RUN apk add --no-cache curl dash gcc gmp-dev make musl-dev patch
+
+ENV SCHEME='scheme'
+
+COPY --from=0 /boot /boot
+COPY --from=0 /usr  /usr
 
 RUN curl -#L https://www.idris-lang.org/releases/idris2-$VER.tgz \
   | tar xz --strip-components 1
 
-COPY --from=0 /boot/ta6le     /boot/ta6le
-COPY --from=0 /usr/bin/scheme /usr/bin/
+COPY idris.patch /
 
-RUN sed -i 's/$(HOME)\/.idris2/\/usr\/local/' config.mk
+RUN patch -p0 < idris.patch
 
-# Idris 2 has two major building stages: the first stage builds the compiler,
-# the second stage uses the built compiler to rebuild (parts of) the project.
-RUN SCHEME='scheme' make -j`nproc` bootstrap && make install
+RUN make -j`nproc` bootstrap && make install
 
 COPY idris.c /
 
