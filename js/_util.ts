@@ -33,6 +33,35 @@ export const charLen = (str: string) => {
     return len;
 };
 
+// Frontend version, keep in sync with views/views.go.
+export const avatar = (rawURL: string, size: number): URL => {
+    const u = new URL(rawURL);
+
+    // Set the size for every host.
+    const q = u.searchParams;
+    q.set('size', size.toString());
+
+    // Set any host specific parameters.
+    switch (u.hostname) {
+    case 'gravatar.com':
+    case 'secure.gravatar.com':
+    case 'www.gravatar.com':
+        // TODO This munging should be pushed to connection time.
+        u.hostname = 'gravatar.com';
+        u.protocol = 'https:';
+        q.delete('d');
+        q.delete('r');
+
+        q.set('default', 'identicon');
+        q.set('rating', 'PG');
+        break;
+    }
+
+    u.search = q.toString();
+
+    return u;
+};
+
 export const strokeLen = (str: string, allowedStrokes: Set<number>) => {
     let len = 0;
     for (const c of str) {

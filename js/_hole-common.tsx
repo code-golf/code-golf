@@ -1,9 +1,22 @@
-import { ASMStateField }                       from '@defasm/codemirror';
-import { $, $$, byteLen, charLen, comma, ord, strokeLen } from './_util';
-import { Vim }                                 from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions } from './_codemirror';
-import LZString                                from 'lz-string';
-import { getAllowedStrokes }                   from './lang-allowed-strokes';
+import { ASMStateField }                               from '@defasm/codemirror';
+import { $, $$, avatar, byteLen, charLen, comma, ord, strokeLen } from './_util';
+import { Vim }                                         from '@replit/codemirror-vim';
+import { EditorState, EditorView, extensions }         from './_codemirror';
+import LZString                                        from 'lz-string';
+import { getAllowedStrokes }                           from './lang-allowed-strokes';
+
+interface Lang {
+    assembly:   boolean,
+    example:    string,
+    experiment: number,
+    id:         string,
+    'logo-url': string,
+    name:       string,
+};
+
+// The currently selected language, updated by onhashchange.
+let currentLang: Lang;
+let lang: string = '';  // FIXME Legacy name for currentLang.id, remove uses.
 
 let tabLayout: boolean = false;
 
@@ -39,19 +52,8 @@ async function getHoleLangNotesContent(lang: string): Promise<string> {
     return holeLangNotesCache[lang] ?? '';
 }
 
-const renamedHoles: Record<string, string> = {
-    'billiard':                      'billiards',
-    'eight-queens':                  'n-queens',
-    'factorial-factorisation-ascii': 'factorial-factorisation',
-    'grid-packing':                  'css-grid',
-    'placeholder':                   'tutorial',
-    'sudoku-v2':                     'sudoku-fill-in',
-};
-
-const renamedLangs: Record<string, string> = {
-    lisp:  'common-lisp',
-    perl6: 'raku',
-};
+const renamedHoles: Record<string, string> = JSON.parse($('#renamed-holes').innerText);
+const renamedLangs: Record<string, string> = JSON.parse($('#renamed-langs').innerText);
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
     tabLayout = _tabLayout;
@@ -59,13 +61,14 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
     if (vimMode) Vim.defineEx('write', 'w', closuredSubmit);
 
     (onhashchange = async () => {
-        const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
+        // Kick 'em to Python if we don't know the chosen/saved language.
+        const langID = location.hash.slice(1) || localStorage.getItem('lang');
+        currentLang = langs[langID ?? ''] ?? langs['python'];
 
-        // Kick 'em to Python if we don't know the chosen language, or if there is no given language.
-        lang = hashLang && langs[hashLang] ? hashLang : 'python';
+        lang = currentLang.id;
 
         // Assembly only has bytes.
-        if (lang == 'assembly')
+        if (currentLang.assembly)
             setSolution(0);
 
         localStorage.setItem('lang', lang);
@@ -104,9 +107,9 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
     }
 }
 
-export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
+export function initDeleteBtn(deleteBtn: HTMLElement | undefined) {
     deleteBtn?.addEventListener('click', () => {
-        $('#delete-dialog b').innerText = langs[lang].name;
+        $('#delete-dialog b').innerText = currentLang.name;
         $<HTMLInputElement>('#delete-dialog [name=lang]').value = lang;
         $<HTMLInputElement>('#delete-dialog [name=text]').value = '';
         $<HTMLDialogElement>('#delete-dialog').showModal();
@@ -119,10 +122,9 @@ export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
             navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
-export const langs = JSON.parse($('#languages').innerText);
+const langs: Record<string, Lang> = JSON.parse($('#languages').innerText);
 const sortedLangs  =
-    Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
-let lang: string = '';
+    Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
 
 export function getLang() {
     return lang;
@@ -201,7 +203,7 @@ export function setState(code: string, editor: EditorView) {
                 ['fish', 'hexagony'].includes(lang)
                     ? extensions.zeroIndexedLineNumbers : [extensions.lineNumbers, extensions.bracketMatching],
                 // These languages shouldn't wrap lines.
-                ['assembly', 'fish', 'hexagony'].includes(lang)
+                (currentLang.assembly || ['fish', 'hexagony'].includes(lang))
                     ? [] : EditorView.lineWrapping,
             ],
         }),
@@ -221,7 +223,7 @@ function updateLangPicker() {
     const experimentalLangGroup = <optgroup label="Experimental"></optgroup>;
     let currentLangUnused = false;
 
-    for (const l of sortedLangs as any[]) {
+    for (const l of sortedLangs) {
         if (!getSolutionCode(l.id, 0) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
@@ -251,7 +253,7 @@ function updateLangPicker() {
     const picker = $('#picker');
     const icon   = picker.dataset.style?.includes('icon')  ?? true;
     const label  = picker.dataset.style?.includes('label') ?? true;
-    picker.replaceChildren(...sortedLangs.map((l: any) => {
+    picker.replaceChildren(...sortedLangs.map(l => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
         if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
@@ -709,7 +711,7 @@ export function updateLocalStorage(code: string) {
     const serverCode = getCurrentSolutionCode();
     const key = getAutoSaveKey(getLang(), getSolution());
     const hadLocalStorage = localStorage.getItem(key) !== null;
-    const wantLocalStorage = code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example;
+    const wantLocalStorage = code && (code !== serverCode || !getSavedInDB()) && code !== currentLang.example;
 
     if (wantLocalStorage)
         localStorage.setItem(key, code);
@@ -726,7 +728,7 @@ export function updateRestoreLinkVisibility(editor: any) {
     const restoreLink = $('#restoreLink');
     if (restoreLink instanceof HTMLAnchorElement) {
         const serverCode = getSolutionCode(lang, solution);
-        const sampleCode = langs[lang].example;
+        const sampleCode = currentLang.example;
         const currentCode = editor?.state.doc.toString();
         restoreLink.classList.toggle('hide',
             (!serverCode && currentCode !== sampleCode) || currentCode === serverCode);
@@ -744,12 +746,12 @@ export function setCodeForLangAndSolution(editor: any) {
     }
 
     setState(localStorage.getItem(getAutoSaveKey(lang, solution)) ||
-        getSolutionCode(lang, solution) || langs[lang].example, editor);
+        getSolutionCode(lang, solution) || currentLang.example, editor);
 
-    if (lang == 'assembly') scoring = 0;
+    if (currentLang.assembly) scoring = 0;
     const charsTab = $('#scoringTabs a:last-child');
     if (charsTab)
-        charsTab.classList.toggle('hide', lang == 'assembly');
+        charsTab.classList.toggle('hide', currentLang.assembly);
 
     refreshScores(editor);
 
@@ -765,7 +767,7 @@ export async function populateScores(editor: any) {
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
     const res       = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
     const rows      = res.ok ? await res.json() : [];
-    const colspan   = lang == 'assembly' ? 3 : 4;
+    const colspan   = currentLang.assembly ? 3 : 4;
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
@@ -775,7 +777,7 @@ export async function populateScores(editor: any) {
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
-                    <img src={`/golfers/${r.golfer.name}/avatar/48`}/>
+                    <img src={avatar(r.golfer.avatar_url, 48)}/>
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
@@ -785,7 +787,7 @@ export async function populateScores(editor: any) {
                         <span>{comma(r.bytes)}</span>
                     </a>}
             </td>
-            {lang == 'assembly' ? '' : <td title={tooltip(r, 'Chars')}>
+            {currentLang.assembly ? '' : <td title={tooltip(r, 'Chars')}>
                 {scoringID != 'chars' ? comma(r.chars) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
                         <span>{comma(r.chars)}</span>
@@ -829,7 +831,7 @@ export function getScorings(tr: any, editor: any) {
     const total: Scorings = {};
     const selection: Scorings = {};
 
-    if (getLang() == 'assembly')
+    if (currentLang.assembly)
         total.byte = (editor.state.field(ASMStateField) as any).head.length();
     else {
         total.byte = byteLen(code);
