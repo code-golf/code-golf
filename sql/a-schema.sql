@@ -132,7 +132,6 @@ CREATE TABLE users (
     delete       timestamp,
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
-    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     theme        theme     NOT NULL DEFAULT 'auto',
     pronouns     pronouns,
@@ -141,6 +140,8 @@ CREATE TABLE users (
     country_flag char(2)            GENERATED ALWAYS AS
         (CASE WHEN show_country THEN country END),
     uuid         uuid      NOT NULL UNIQUE DEFAULT uuidv7(),
+    started      timestamp NOT NULL GENERATED ALWAYS AS
+        (timezone('UTC', uuid_extract_timestamp(uuid))),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),             -- Can't refer yourself!
     CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
