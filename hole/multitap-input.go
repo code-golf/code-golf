@@ -33,11 +33,12 @@ var multitapMap = map[rune]string{
 }
 
 var _ = answerFunc("multitap-input", func() []Answer {
-	tests := make([]test, 100)
+	tests := make([]test, 50)
 
 	fixedTests := []struct{ words string }{
-		{"XYLOPHONE INGREDIENT EACH A"},
-		{"JUST ZERO TRAIN OPEN GUIDELINE"},
+		{"XYLOPHONE INGREDIENT EACH A VERY"},
+		{"JUST ZERO TRAIN OPEN GUIDELINE WE"},
+		{"DISAMBIGUATE PUBLIC IF MAKE QUIZ"},
 	}
 
 	for i, t := range fixedTests {
@@ -45,7 +46,7 @@ var _ = answerFunc("multitap-input", func() []Answer {
 	}
 
 	for i := len(fixedTests); i < len(tests); i++ {
-    	words := " "
+    	words := ""
     	for j := range randInt(3, 9) {
 			if j != 0 {
 			  words += " "
@@ -67,7 +68,7 @@ func multiTapConvert(text string) test {
 
 	for i, char := range text {
 		nextInput := multitapMap[char]
-		if i != 0 && (lastChar == nextInput[0] || rand.IntN(4) < 1) {
+		if i != 0 && (lastChar == nextInput[0] || randInt(0, 3) < 1) {
 			result += " "
 		}
 		result += nextInput
