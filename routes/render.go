@@ -140,7 +140,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			"form-action 'self';"+
 			"font-src 'self';"+
 			"frame-ancestors 'none';"+
-			"img-src 'self' data: avatars.githubusercontent.com;"+
+			"img-src 'self' data: avatars.githubusercontent.com"+
+			" cdn.discordapp.com gravatar.com;"+
 			"script-src 'self' 'nonce-"+args.Nonce+"';"+
 			"style-src 'self' 'unsafe-inline'",
 	)

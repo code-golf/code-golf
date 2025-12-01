@@ -4,16 +4,6 @@ RUN apk add --no-cache clang curl gd-dev giflib-dev groff llvm-dev make openssl-
 
 ENV PYVER=3.14.0 VER=1.3f
 
-WORKDIR /piet
-
-RUN curl -#L https://www.bertnase.de/npiet/npiet-$VER.tar.gz \
-  | tar xz --strip-components 1
-
-RUN ./configure && make && make install
-
-RUN wget -qO /usr/bin/ascii-piet https://raw.githubusercontent.com/dloscutoff/ascii-piet/refs/heads/master/ascii2piet.py \
- && chmod +x /usr/bin/ascii-piet
-
 WORKDIR /python
 
 RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
@@ -46,6 +36,16 @@ RUN find . -name '*.opt-[12].pyc' -delete \
           turtle.py                       \
           turtledemo                      \
           unittest
+
+WORKDIR /piet
+
+RUN curl -#L https://www.bertnase.de/npiet/npiet-$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN ./configure && make && make install
+
+RUN wget -qO /usr/bin/ascii-piet https://raw.githubusercontent.com/dloscutoff/ascii-piet/refs/heads/master/ascii2piet.py \
+ && chmod +x /usr/bin/ascii-piet
 
 COPY piet.c /
 
