@@ -31,34 +31,42 @@ int main(int argc, char* argv[]) {
     if (!(args = malloc(nbytes * sizeof(char*))))
         ERR_AND_EXIT("malloc");
 
-    strcat(args, "[");
+    if (!strcat(args, "["))
+        ERR_AND_EXIT("strcat");
 
     for (int i = 2; i < argc; i++) {
         if (i > 2)
-            strcat(args, ", ");
+            if (!strcat(args, ", "))
+                ERR_AND_EXIT("strcat");
 
-        strcat(args, "\"");
+        if (!strcat(args, "\""))
+            ERR_AND_EXIT("strcat");
 
         for (const char* c = argv[i]; *c; c++)
             switch (*c) {
                 case '\\':
-                    strcat(args, "\\\\");
+                    if (!strcat(args, "\\\\"))
+                        ERR_AND_EXIT("strcat");
                     break;
                 case '\"':
-                    strcat(args, "\\\"");
+                    if (!strcat(args, "\\\""))
+                        ERR_AND_EXIT("strcat");
                     break;
                 case '\n':
-                    strcat(args, "\\n");
+                    if (!strcat(args, "\\n"))
+                        ERR_AND_EXIT("strcat");
                     break;
                 default:
                     if (!snprintf(&args[strlen(args)], sizeof(char*), "%c", *c))
                         ERR_AND_EXIT("snprintf");
             }
 
-        strcat(args, "\"");
+        if (!strcat(args, "\""))
+            ERR_AND_EXIT("strcat");
     }
 
-    strcat(args, "]");
+    if (!strcat(args, "]"))
+        ERR_AND_EXIT("strcat");
 
     char buffer[4096];
 

@@ -132,7 +132,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'dyalog.com'        / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
         when / 'endoflife'         / { $res.&from-json[0]<latest>.match(/<(<ver>)>/).subst(/\+.*/) }
         when / 'fennel-lang'       / { $res ~~ / 'fennel-' <(<ver>)> / }
-        when / 'ftp' || 'pari'     / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
+        when / 'ftp.gnu.org'       / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'git.sr.ht'         / { $res ~~ / 'refs/' <(<ver>)> / }
         when / 'githubusercontent' / { $res ~~ / <(<ver>)> / }
@@ -140,6 +140,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'golfscript.com'    / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'          / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'npmjs.org'         / { $res.&from-json[0]<version> }
+        when / 'pari.math.u'       / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'picat-lang.org'    / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'          / { $res.&from-json<info><version> }
         when / 'sourceforge'       / { $res ~~ / 'Latest' .+? <(<ver>)> / }

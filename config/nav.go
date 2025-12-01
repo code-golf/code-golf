@@ -91,12 +91,13 @@ func initNav() {
 			},
 		},
 
-		"rankings/recent-holes": {
-			Path: "/rankings/recent-holes/{lang}/{scoring}",
-			Groups: []*LinkGroup{
-				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(false),
-			},
+		"recent/cheevos": {
+			OnePerRow: true,
+			Path:      "/recent/cheevos/{cheevo}",
+			Groups: append(
+				[]*LinkGroup{group("", "cheevo", "All")},
+				groupsCheevos()...,
+			),
 		},
 
 		"recent/solutions": {
