@@ -1,25 +1,59 @@
-
 package hole
+
+import "strings"
+
+var multitapMap = map[rune]string{
+	'A': "2",
+	'B': "22",
+	'C': "222",
+	'D': "3",
+	'E': "33",
+	'F': "333",
+	'G': "4",
+	'H': "44",
+	'I': "444",
+	'J': "5",
+	'K': "55",
+	'L': "555",
+	'M': "6",
+	'N': "66",
+	'O': "666",
+	'P': "7",
+	'Q': "77",
+	'R': "777",
+	'S': "7777",
+	'T': "8",
+	'U': "88",
+	'V': "888",
+	'W': "9",
+	'X': "99",
+	'Y': "999",
+	'Z': "9999",
+	' ': "0",
+}
 
 var _ = answerFunc("multitap-input", func() []Answer {
 	tests := make([]test, 100)
 
-	fixedTests := []struct{ words string }{}
+	fixedTests := []struct{ words string }{
+		{"XYLOPHONE INGREDIENT EACH A"},
+		{"JUST ZERO TRAIN OPEN GUIDELINE"},
+	}
 
 	for i, t := range fixedTests {
 		tests[i] = multiTapConvert(t.words)
 	}
 
 	for i := len(fixedTests); i < len(tests); i++ {
-    words := " "
-    for i := range randInt(3, 9) {
-			if i != 0 {
+    	words := " "
+    	for j := range randInt(3, 9) {
+			if j != 0 {
 			  words += " "
-	    }
-      words += randWord()
+	    	}
+      		words += randWord()
 		}
 
-		tests[i] = multiTapConvert(words)
+		tests[i] = multiTapConvert(strings.ToUpper(words))
 	}
 
 	return outputTests(shuffle(tests))
