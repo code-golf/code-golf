@@ -140,7 +140,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		    SET about = $1,
 		      country = $2,
 		     pronouns = $3,
-		  referrer_id = (SELECT id FROM users WHERE login = $4 AND id != $8),
+		  referrer_id = (SELECT id FROM users WHERE name = $4 AND id != $8),
 		 show_country = $5,
 		        theme = $6,
 		    time_zone = $7

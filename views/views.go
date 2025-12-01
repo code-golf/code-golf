@@ -41,6 +41,21 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 		return pretty.Comma(i) + " " + term
 	},
 
+	// Backend version, keep in sync with js/util.js.
+	"avatar": func(rawURL string, size int) (*url.URL, error) {
+		u, err := url.Parse(rawURL)
+		if err != nil {
+			return nil, err
+		}
+
+		// Set the avatar size.
+		q := u.Query()
+		q.Set("size", strconv.Itoa(size))
+		u.RawQuery = q.Encode()
+
+		return u, nil
+	},
+
 	"param": func(r *http.Request, key string) string {
 		value, _ := url.QueryUnescape(r.PathValue(key))
 		return value
