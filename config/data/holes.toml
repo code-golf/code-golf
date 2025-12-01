@@ -2430,6 +2430,44 @@ preamble = '''
 name     = 'Morse Encoder'
 synopsis = 'Encode alphanumeric strings into International Morse Code.'
 
+['Multitap Input']
+category = 'Transform'
+experiment = 1952
+links = [
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Multi-tap' },
+]
+synopsis = 'Convert numeric button presses to text by the Multi-tap system.'
+preamble = '''
+<p>
+    Many older mobile phone designs allow text to be entered on a numeric
+    E.161 keypad. The numbers 2-9 are labelled with letters:
+
+<ol>
+    <li>2: ABC
+    <li>3: DEF
+    <li>4: GHI
+    <li>5: JKL
+    <li>6: MNO
+    <li>7: PQRS
+    <li>8: TUV
+    <li>9: WXYZ
+</ol>
+
+<p>
+    Pressing a number key once enters the first letter shown on the button,
+    pressing it twice in a row enters the second letter shown on the button,
+    and so on. Two letters located on the same number key can be entered
+    consecutively by waiting a short period of time between entering each letter.
+    Pressing the 0 key enters a space.
+
+<p>
+    Given a sequence of button presses and pauses (represented by spaces),
+    print the equivalent text. No run of one digit will be longer than the number
+    of letters on that key. Pauses may occur between any two letters, not
+    just those on the same key.
+
+'''
+
 ['Musical Chords']
 category = 'Transform'
 links = [
