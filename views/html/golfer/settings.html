@@ -28,7 +28,11 @@
         <ol id=connections>
         {{ range .Data.Connections }}
             <li>
+            {{ with .AvatarURL }}
+                <img src="{{ avatar . 96 }}">
+            {{ else }}
                 {{ svg .Connection }}
+            {{ end }}
                 <h3>
                     <span>{{ .Connection }}/</span>
                     {{- .Username -}}

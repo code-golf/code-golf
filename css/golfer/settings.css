@@ -28,7 +28,7 @@ h2 { font-size: 1.25rem }
     grid-template-columns: min-content 1fr min-content;
 }
 
-#connections li > svg {
+#connections li > :is(img, svg) {
     background: var(--color);
     border-radius: .75rem;
     color: var(--background);
