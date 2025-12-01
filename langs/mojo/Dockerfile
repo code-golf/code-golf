@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes g++ wget
 
-ENV VER=25.6
+ENV VER=25.7
 
 RUN wget -qO- https://pixi.sh/install.sh \
   | PIXI_ARCH='x86_64' PIXI_HOME='/usr' sh
