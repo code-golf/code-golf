@@ -19,6 +19,8 @@ func golferHideBannerPOST(w http.ResponseWriter, r *http.Request) {
 	// Validate the banner is of a known form.
 	if holeID, ok := strings.CutPrefix(banner, "latest-hole-"); ok {
 		_, valid = config.HoleByID[holeID]
+	} else if langID, ok := strings.CutPrefix(banner, "latest-lang-"); ok {
+		_, valid = config.LangByID[langID]
 	} else if holeID, ok := strings.CutPrefix(banner, "upcoming-hole-"); ok {
 		_, valid = config.ExpHoleByID[holeID]
 	} else if prefix := cheevoBannerRegex.FindString(banner); prefix != "" {

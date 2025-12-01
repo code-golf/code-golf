@@ -26,7 +26,7 @@ func scoresAllGET(w http.ResponseWriter, r *http.Request) {
 		    SELECT hole,
 		           lang,
 		           scoring,
-		           login,
+		           name login,
 		           chars,
 		           bytes,
 		           submitted
@@ -380,16 +380,13 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type entry struct {
-		Bytes      *int `json:"bytes"`
-		BytesChars *int `json:"bytes_chars"`
-		Chars      *int `json:"chars"`
-		CharsBytes *int `json:"chars_bytes"`
-		Golfer     struct {
-			ID   int    `json:"id"`
-			Name string `json:"name"`
-		} `json:"golfer"`
-		Me   bool `json:"me"`
-		Rank int  `json:"rank"`
+		Bytes      *int              `json:"bytes"`
+		BytesChars *int              `json:"bytes_chars"`
+		Chars      *int              `json:"chars"`
+		CharsBytes *int              `json:"chars_bytes"`
+		Golfer     Golfer.GolferLink `json:"golfer"`
+		Me         bool              `json:"me"`
+		Rank       int               `json:"rank"`
 	}
 
 	sqlWhere, sqlLimit := "true", "$6"
@@ -428,9 +425,9 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		       AND scoring = $5
 		       AND NOT failing
 		)   SELECT bytes, bytes_chars, chars, chars_bytes, me, rank,
-		           id "golfer.id", login "golfer.name"
+		           avatar_url "golfer.avatar_url", name "golfer.name"
 		      FROM ranks
-		      JOIN users ON id = user_id
+		      JOIN golfers_with_avatars ON id = user_id
 		 LEFT JOIN other_scoring USING(user_id)
 		     WHERE `+sqlWhere+`
 		  ORDER BY row

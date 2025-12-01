@@ -28,7 +28,11 @@
         <ol id=connections>
         {{ range .Data.Connections }}
             <li>
+            {{ with .AvatarURL }}
+                <img src="{{ avatar . 96 }}">
+            {{ else }}
                 {{ svg .Connection }}
+            {{ end }}
                 <h3>
                     <span>{{ .Connection }}/</span>
                     {{- .Username -}}
@@ -38,6 +42,10 @@
                 </h3>
                 <div>
                 {{ if ne .Connection "github" }}
+                    {{ $prov := index $.Data.OAuthProviders .Connection }}
+                    <a class="btn blue" href="{{ $prov.AuthCodeURL $.Data.OAuthState }}">
+                        {{ svg "arrow-clockwise" }}<span class=wide>Refresh</span>
+                    </a>
                     <a class="btn red" href="disconnect/{{ .Connection }}">
                         {{ svg "trash" }}<span class=wide>Remove</span>
                     </a>
