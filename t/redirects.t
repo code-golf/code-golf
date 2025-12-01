@@ -16,7 +16,6 @@ for <
     GET    /billiard                             /billiards
     GET    /golfers/Bob/isbn/perl6/bytes         /golfers/Bob/isbn/raku/bytes
     GET    /rankings/cheevos                     /rankings/cheevos/all
-    GET    /rankings/recent-holes/perl6/bytes    /rankings/recent-holes/raku/bytes
     GET    /recent                               /recent/solutions/all/all/bytes
     GET    /recent/perl6                         /recent/raku
     GET    /recent/solutions/billiard/perl/bytes /recent/solutions/billiards/perl/bytes
