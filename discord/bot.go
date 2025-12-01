@@ -439,7 +439,7 @@ func logNewRecord(
 	}
 }
 
-func loadLastAnnouncement(db *sqlx.DB, channelID string) (result *RecAnnouncement) {
+func loadLastAnnouncement(db *sqlx.DB, channelID string) (announcement *RecAnnouncement) {
 	var bytes []byte
 
 	if err := db.QueryRow(
@@ -450,11 +450,8 @@ func loadLastAnnouncement(db *sqlx.DB, channelID string) (result *RecAnnouncemen
 		return
 	}
 
-	var announcement RecAnnouncement
 	if err := json.Unmarshal(bytes, &announcement); err != nil {
 		log.Println(err)
-	} else {
-		result = &announcement
 	}
 
 	return
