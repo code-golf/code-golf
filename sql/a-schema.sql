@@ -140,6 +140,7 @@ CREATE TABLE users (
     about        text      NOT NULL DEFAULT '',
     country_flag char(2)            GENERATED ALWAYS AS
         (CASE WHEN show_country THEN country END),
+    uuid         uuid      NOT NULL UNIQUE DEFAULT uuidv7(),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),             -- Can't refer yourself!
     CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
