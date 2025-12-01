@@ -59,6 +59,7 @@ COPY --from=0 /usr/bin/basename                      \
 COPY --from=0 /usr/local                             /usr/lib/erlang
 COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot \
               /usr/lib/erlang/bin/start.boot         /usr/lib/erlang/bin/
+COPY --from=0 /usr/lib/locale                        /usr/lib/locale
 
 ENTRYPOINT ["erlang"]
 

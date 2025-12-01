@@ -20,12 +20,13 @@ CREATE TYPE cheevo AS ENUM (
     'never-eat-shredded-wheat', 'off-the-grid', 'omniglot', 'omniglutton',
     'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
-    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
-    'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'texnical-know-how', 'the-watering-hole',
-    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
-    'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
-    'when-in-rome', 'x-factor', 'x86', 'zoodiac-signs'
+    'real-programmers', 'right-on', 'ring-toss', 'rm-rf', 'rtfm', 'rule-34',
+    's-box-360', 'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord',
+    'solve-quine', 'sounds-quite-nice', 'takeout', 'texnical-know-how',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'typesetter', 'under-pressure', 'up-to-eleven',
+    'vampire-byte', 'watt-are-you-doing', 'when-in-rome', 'x-factor', 'x86',
+    'zoodiac-signs'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -131,7 +132,6 @@ CREATE TABLE users (
     delete       timestamp,
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
-    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     theme        theme     NOT NULL DEFAULT 'auto',
     pronouns     pronouns,
@@ -139,6 +139,9 @@ CREATE TABLE users (
     about        text      NOT NULL DEFAULT '',
     country_flag char(2)            GENERATED ALWAYS AS
         (CASE WHEN show_country THEN country END),
+    uuid         uuid      NOT NULL UNIQUE DEFAULT uuidv7(),
+    started      timestamp NOT NULL GENERATED ALWAYS AS
+        (timezone('UTC', uuid_extract_timestamp(uuid))),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),             -- Can't refer yourself!
     CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.

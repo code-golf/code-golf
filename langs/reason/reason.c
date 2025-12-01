@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
     if (!(fp = fopen("dune-project", "w")))
         ERR_AND_EXIT("fopen");
 
-    if (fputs("(lang dune 3.19)", fp))
+    if (fputs("(lang dune 3.20)", fp))
         ERR_AND_EXIT("fputs");
 
     if (fclose(fp))

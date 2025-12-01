@@ -1,8 +1,9 @@
 import { ASMStateField }                               from '@defasm/codemirror';
-import { $, $$, avatar, byteLen, charLen, comma, ord } from './_util';
+import { $, $$, avatar, byteLen, charLen, comma, ord, strokeLen } from './_util';
 import { Vim }                                         from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions }         from './_codemirror';
 import LZString                                        from 'lz-string';
+import { getAllowedStrokes }                           from './lang-allowed-strokes';
 
 interface Lang {
     assembly:   boolean,
@@ -819,16 +820,27 @@ export async function populateScores(editor: any) {
     });
 }
 
+export interface Scorings {
+    byte?: number;
+    char?: number;
+    stroke?: number;
+}
+
 export function getScorings(tr: any, editor: any) {
     const code = tr.state.doc.toString();
-    const total: {byte?: number, char?: number} = {};
-    const selection: {byte?: number, char?: number} = {};
+    const total: Scorings = {};
+    const selection: Scorings = {};
 
     if (currentLang.assembly)
         total.byte = (editor.state.field(ASMStateField) as any).head.length();
     else {
         total.byte = byteLen(code);
         total.char = charLen(code);
+
+        const allowedStrokes = getAllowedStrokes(getLang());
+        if (allowedStrokes !== undefined) {
+            total.stroke = strokeLen(code, allowedStrokes);
+        }
 
         if (tr.selection) {
             selection.byte = 0;
@@ -838,6 +850,11 @@ export function getScorings(tr: any, editor: any) {
                 const contents = code.slice(range.from, range.to);
                 selection.byte += byteLen(contents);
                 selection.char += charLen(contents);
+
+                if (allowedStrokes !== undefined) {
+                    selection.stroke ??= 0;
+                    selection.stroke += strokeLen(contents, allowedStrokes);
+                }
             }
         }
     }
