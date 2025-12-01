@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/session"
 )
@@ -12,6 +13,10 @@ import (
 // GET /admin
 func adminGET(w http.ResponseWriter, r *http.Request) {
 	var data struct {
+		AvatarURLs []struct {
+			Count int
+			URL   *string
+		}
 		LastTested []struct {
 			Day       time.Time
 			Solutions int
@@ -21,9 +26,9 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 			Solutions int
 		}
 		Sessions []struct {
-			Country  *config.Country
+			golfer.GolferLink
+
 			LastUsed time.Time
-			Name     string
 		}
 		Tables []struct {
 			Name       null.String
@@ -33,6 +38,17 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 
 	db := session.Database(r)
 	golfer := session.Golfer(r)
+
+	if err := db.Select(
+		&data.AvatarURLs,
+		` SELECT regexp_replace(avatar_url, '(?<!/)/[^/][^?]+', '/path') url,
+		         COUNT(*)
+		    FROM connections
+		GROUP BY 1
+		ORDER BY 1 NULLS FIRST`,
+	); err != nil {
+		panic(err)
+	}
 
 	if err := db.Select(
 		&data.LastTested,
@@ -65,9 +81,9 @@ func adminGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE user_id != $1
 		       AND last_used > TIMEZONE('UTC', NOW()) - INTERVAL '1 hour'
 		  GROUP BY user_id
-		) SELECT country_flag country, last_used, login name
+		) SELECT avatar_url, country_flag, last_used, name
 		    FROM grouped_sessions
-		    JOIN users ON id = user_id
+		    JOIN golfers_with_avatars ON id = user_id
 		ORDER BY last_used DESC`,
 		golfer.ID,
 	); err != nil {
