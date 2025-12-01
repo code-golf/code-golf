@@ -18,7 +18,7 @@ func golferDisconnectGET(w http.ResponseWriter, r *http.Request) {
 		param(r, "connection"), session.Golfer(r).ID,
 	)
 
-	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+	http.Redirect(w, r, "/golfer/settings/connections", http.StatusSeeOther)
 }
 
 // GET /golfer/connect/{connection}
@@ -162,5 +162,5 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.Username,
 	)
 
-	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+	http.Redirect(w, r, "/golfer/settings/connections", http.StatusSeeOther)
 }
