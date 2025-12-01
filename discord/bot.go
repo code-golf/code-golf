@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -23,8 +22,8 @@ const minElapsedTimeToShowDate = 30 * 24 * time.Hour
 
 var (
 	bot                 *discordgo.Session
-	freshHole           *config.Hole
-	freshLang           *config.Lang
+	freshHole           = config.LatestHole
+	freshLang           = config.LatestLang
 	lastAnnouncementMap = make(map[string]*RecAnnouncement)
 	mux                 sync.Mutex
 
@@ -50,14 +49,6 @@ type RecAnnouncement struct {
 }
 
 func init() {
-	freshHole = slices.MaxFunc(config.HoleList, func(a, b *config.Hole) int {
-		return strings.Compare(a.Released.String(), b.Released.String())
-	})
-
-	freshLang = slices.MaxFunc(config.LangList, func(a, b *config.Lang) int {
-		return strings.Compare(a.Released.String(), b.Released.String())
-	})
-
 	// Is the latest lang still that fresh?
 	if time.Since(freshLang.Released.AsTime(time.UTC)) > 1000*time.Hour {
 		freshLang = nil
@@ -114,7 +105,7 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 }
 
 func getUsername(id int, db *sqlx.DB) (name string) {
-	err := db.Get(&name, "SELECT login FROM users WHERE id = $1", id)
+	err := db.Get(&name, "SELECT name FROM users WHERE id = $1", id)
 	if err != nil {
 		name = "unknown golfer"
 		log.Println(err)

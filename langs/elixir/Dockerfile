@@ -6,7 +6,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV LANG='C.UTF-8' VER=1.19.3
+ENV LANG='C.UTF-8' VER=1.19.4
 
 COPY --from=0 /usr /usr
 
@@ -17,10 +17,8 @@ RUN curl -#L https://github.com/elixir-lang/elixir/archive/v$VER.tar.gz \
 
 RUN make
 
-FROM codegolf/lang-base
+FROM codegolf/lang-erlang
 
-COPY --from=0 /                          /
-COPY --from=1 /usr/lib/locale            /usr/lib/locale
 COPY --from=1 /usr/local/bin/elixir      /usr/local/bin/
 COPY --from=1 /usr/local/lib/elixir/ebin /usr/local/lib/elixir/ebin
 
