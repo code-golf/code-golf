@@ -2,7 +2,7 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-ENV LDFLAGS='-static' VER=2.17.2
+ENV LDFLAGS='-static' VER=2.17.3
 
 RUN curl -#L https://pari.math.u-bordeaux.fr/pub/pari/unix/pari-$VER.tar.gz \
   | tar xz --strip-components 1
