@@ -62,6 +62,25 @@ export const avatar = (rawURL: string, size: number): URL => {
     return u;
 };
 
+export const strokeLen = (str: string, allowedStrokes: Set<number>) => {
+    let len = 0;
+    for (const c of str) {
+        const codePoint = c.codePointAt(0)!;
+        if (codePoint < 128 || allowedStrokes.has(codePoint))
+            len += 1;
+        // Overlong encodings are illegal in UTF-8 (each code point must be encoded
+        // by the shortest possible byte sequence), so each code point corresponds
+        // to exactly one UTF-8 byte length, that we can determine as follows.
+        else if (codePoint <= 0x07FF)
+            len += 2;
+        else if (codePoint <= 0xFFFF)
+            len += 3;
+        else
+            len += 4;
+    }
+    return len;
+};
+
 // Small util functions.
 /** Assume $ always succeeds and returns an HTMLElement */
 export function $<MatchType extends HTMLElement>(selector: string) {
