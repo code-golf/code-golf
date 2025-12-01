@@ -20,16 +20,17 @@ CREATE TYPE cheevo AS ENUM (
     'never-eat-shredded-wheat', 'off-the-grid', 'omniglot', 'omniglutton',
     'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
-    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
-    'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'texnical-know-how', 'the-watering-hole',
-    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
-    'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
-    'when-in-rome', 'x-factor', 'x86', 'zoodiac-signs'
+    'real-programmers', 'right-on', 'ring-toss', 'rm-rf', 'rtfm', 'rule-34',
+    's-box-360', 'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord',
+    'solve-quine', 'sounds-quite-nice', 'takeout', 'texnical-know-how',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'typesetter', 'under-pressure', 'up-to-eleven',
+    'vampire-byte', 'watt-are-you-doing', 'when-in-rome', 'x-factor', 'x86',
+    'zoodiac-signs'
 );
 
 CREATE TYPE connection AS ENUM (
-    'discord', 'github', 'gitlab', 'stack-overflow'
+    'discord', 'github', 'gitlab', 'gravatar', 'stack-overflow'
 );
 
 CREATE TYPE hole AS ENUM (
@@ -68,11 +69,12 @@ CREATE TYPE hole AS ENUM (
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
     'smooth-numbers', 'snake', 'spelling-numbers', 'sphenic-numbers',
     'star-wars-gpt', 'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
-    'ten-pin-bowling', 'tic-tac-toe', 'time-distance', 'tongue-twisters',
-    'topological-sort', 'tower-of-hanoi', 'transpose-sentence',
-    'trinomial-triangle', 'turtle', 'tutorial', 'united-states',
-    'vampire-numbers', 'van-eck-sequence', 'zeckendorf-representation',
-    'zodiac-signs', 'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
+    'taxicab-numbers', 'ten-pin-bowling', 'tic-tac-toe', 'time-distance',
+    'tongue-twisters', 'topological-sort', 'tower-of-hanoi',
+    'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
+    'united-states', 'vampire-numbers', 'van-eck-sequence',
+    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ',
+    'φ', '√2', '𝑒'
 );
 
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
@@ -125,12 +127,11 @@ CREATE TABLE users (
     id           int       NOT NULL PRIMARY KEY,
     admin        bool      NOT NULL DEFAULT false,
     sponsor      bool      NOT NULL DEFAULT false,
-    login        citext    NOT NULL UNIQUE,
+    name         citext    NOT NULL UNIQUE,
     time_zone    text,
     delete       timestamp,
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
-    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     theme        theme     NOT NULL DEFAULT 'auto',
     pronouns     pronouns,
@@ -138,9 +139,12 @@ CREATE TABLE users (
     about        text      NOT NULL DEFAULT '',
     country_flag char(2)            GENERATED ALWAYS AS
         (CASE WHEN show_country THEN country END),
+    uuid         uuid      NOT NULL UNIQUE DEFAULT uuidv7(),
+    started      timestamp NOT NULL GENERATED ALWAYS AS
+        (timezone('UTC', uuid_extract_timestamp(uuid))),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
-    CHECK (id != referrer_id),              -- Can't refer yourself!
-    CHECK (login ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
+    CHECK (id != referrer_id),             -- Can't refer yourself!
+    CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
 
 CREATE TABLE authors (
@@ -175,6 +179,15 @@ CREATE TABLE follows (
     PRIMARY KEY (follower_id, followee_id),
     CHECK (follower_id != followee_id)  -- Can't follow yourself!
 );
+
+-- TODO This eventually needs to not hardcode github in order to allow log in
+--      with other providers, we'll probably have a "primary connection" col
+--      on users (which also needs to be renamed to golfers one day).
+--      See https://dba.stackexchange.com/questions/112061
+CREATE VIEW golfers_with_avatars AS
+     SELECT u.*, COALESCE(avatar_url, '/icon-fill.svg') avatar_url
+       FROM users       u
+       JOIN connections c ON c.user_id = u.id AND c.connection = 'github';
 
 -- config/data/holes.toml is the canonical source of truth for hole data.
 -- This table is a shadow copy, updated on startup, used in DB queries.
@@ -332,10 +345,13 @@ CREATE MATERIALIZED VIEW rankings AS WITH strokes AS (
 ) select * from ranks join tie_count using (hole, lang, scoring, strokes);
 
 CREATE MATERIALIZED VIEW points AS WITH max_points_per_hole AS (
-    SELECT DISTINCT ON (user_id, hole, scoring) user_id, scoring, points
+    SELECT DISTINCT ON (user_id, hole, scoring)
+           points, scoring, strokes, submitted, user_id
       FROM rankings
-  ORDER BY user_id, hole, scoring, points DESC
-) SELECT user_id, scoring, SUM(points) points
+     WHERE NOT experimental
+  ORDER BY user_id, hole, scoring, points DESC, strokes
+) SELECT COUNT(*) holes, SUM(points) points, scoring,
+         SUM(strokes) strokes, MAX(submitted) submitted, user_id
     FROM max_points_per_hole
 GROUP BY user_id, scoring;
 
@@ -343,6 +359,9 @@ GROUP BY user_id, scoring;
 CREATE UNIQUE INDEX   medals_key ON   medals(user_id, hole, lang, scoring, medal);
 CREATE UNIQUE INDEX   points_key ON   points(user_id, scoring);
 CREATE UNIQUE INDEX rankings_key ON rankings(user_id, hole, lang, scoring);
+
+-- Used by /golfers/{golfer}/{hole}/{lang}/{scoring}
+CREATE INDEX ON solutions_log(user_id, hole, lang, scoring);
 
 -- Used by /stats
 CREATE INDEX solutions_hole_key ON solutions(hole, user_id) WHERE NOT failing;
@@ -356,6 +375,7 @@ ALTER MATERIALIZED VIEW points   OWNER TO "code-golf";
 ALTER MATERIALIZED VIEW rankings OWNER TO "code-golf";
 
 -- Views.
+GRANT SELECT ON golfers_with_avatars     TO "code-golf";
 GRANT SELECT ON stable_passing_solutions TO "code-golf";
 
 -- Tables.
