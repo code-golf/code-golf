@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json/v2"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"github.com/code-golf/code-golf/null"
@@ -125,6 +126,25 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.AvatarURL = info.Items[0].ProfileImage
 		user.ID = strconv.Itoa(info.Items[0].UserID)
 		user.Username = info.Items[0].DisplayName
+	}
+
+	// Tidy up avatar URLs
+	if u, _ := url.Parse(user.AvatarURL); u != nil {
+		q := u.Query()
+
+		switch u.Host {
+		case "0.gravatar.com", "gravatar.com",
+			"secure.gravatar.com", "www.gravatar.com":
+			u.Host = "gravatar.com"
+
+			// https://docs.gravatar.com/sdk/images/
+			q.Set("d", "identicon")
+			q.Set("r", "PG")
+			q.Del("s")
+		}
+
+		u.RawQuery = q.Encode()
+		user.AvatarURL = u.String()
 	}
 
 	session.Database(r).MustExec(

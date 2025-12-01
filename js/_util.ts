@@ -37,26 +37,9 @@ export const charLen = (str: string) => {
 export const avatar = (rawURL: string, size: number): URL => {
     const u = new URL(rawURL);
 
-    // Set the size for every host.
+    // Set the avatar size.
     const q = u.searchParams;
     q.set('size', size.toString());
-
-    // Set any host specific parameters.
-    switch (u.hostname) {
-    case 'gravatar.com':
-    case 'secure.gravatar.com':
-    case 'www.gravatar.com':
-        // TODO This munging should be pushed to connection time.
-        u.hostname = 'gravatar.com';
-        u.protocol = 'https:';
-        q.delete('d');
-        q.delete('r');
-
-        q.set('default', 'identicon');
-        q.set('rating', 'PG');
-        break;
-    }
-
     u.search = q.toString();
 
     return u;
