@@ -1,6 +1,6 @@
 ARG VER=3.2.2
 
-FROM node:25.1.0-trixie-slim AS builder
+FROM node:25.2.1-trixie-slim AS builder
 
 ARG VER
 
