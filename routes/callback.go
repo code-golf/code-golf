@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"encoding/json"
+	"encoding/json/v2"
 	"net/http"
 	"os"
 	"time"
@@ -27,8 +27,9 @@ func callbackDevGET(w http.ResponseWriter, r *http.Request) {
 // GET /callback
 func callbackGET(w http.ResponseWriter, r *http.Request) {
 	var user struct {
-		ID    int
-		Login string
+		AvatarURL string `json:"avatar_url"`
+		ID        int    `json:"id"`
+		Login     string `json:"login"`
 	}
 
 	cookie := http.Cookie{
@@ -55,7 +56,7 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := session.Database(r).QueryRow(
-			`SELECT COALESCE((SELECT id FROM users WHERE login = $1), COUNT(*) + 1) FROM users`,
+			`SELECT COALESCE((SELECT id FROM users WHERE name = $1), COUNT(*) + 1) FROM users`,
 			user.Login,
 		).Scan(&user.ID); err != nil {
 			panic(err)
@@ -89,7 +90,7 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 			panic(res.Status)
 		}
 
-		if err := json.NewDecoder(res.Body).Decode(&user); err != nil {
+		if err := json.UnmarshalRead(res.Body, &user); err != nil {
 			panic(err)
 		}
 	}
@@ -100,10 +101,10 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 	// Create or update a user. For now user ID == GitHub user ID.
 	// This'll need to change for true multi connection OAuth support.
 	tx.MustExec(
-		`INSERT INTO users (id, login, country, time_zone)
-		      VALUES       ($1,    $2,      $3,        $4)
+		`INSERT INTO users (id, name, country, time_zone)
+		      VALUES       ($1,   $2,      $3,        $4)
 		 ON CONFLICT       (id)
-		   DO UPDATE SET login = excluded.login,
+		   DO UPDATE SET name = excluded.name,
 		     country = COALESCE(users.country,   excluded.country),
 		   time_zone = COALESCE(users.time_zone, excluded.time_zone)`,
 		user.ID, user.Login, country, timeZone,
@@ -112,11 +113,12 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 	// Create or update a connection. For now user ID == GitHub user ID.
 	// This'll need to change for true multi connection OAuth support.
 	tx.MustExec(
-		`INSERT INTO connections (connection, id, user_id, username)
-		      VALUES             (  'github', $1,      $2,       $3)
+		`INSERT INTO connections (avatar_url, connection, id, user_id, username)
+		      VALUES             (        $1,   'github', $2,      $3,       $4)
 		 ON CONFLICT             (connection, id)
-		   DO UPDATE SET username = excluded.username`,
-		user.ID, user.ID, user.Login,
+		   DO UPDATE SET avatar_url = excluded.avatar_url,
+		                   username = excluded.username`,
+		user.AvatarURL, user.ID, user.ID, user.Login,
 	)
 
 	// Create a session, write cookie value.

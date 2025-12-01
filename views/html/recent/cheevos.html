@@ -1,0 +1,36 @@
+{{ template "header" . }}
+{{ template "recent" . }}
+
+{{ $all := eq "all" (.Request.PathValue "cheevo") }}
+
+<main id=two-pane>
+    {{ template "nav" . }}
+
+    <table class="nowrap-first-second sticky">
+        <thead>
+            <tr>
+                <th>Golfer
+                <th>Cheevo
+                <th class=right>Earned
+        <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
+        {{ range .Data }}
+            <tr {{ if eq $name .Name }} class=me {{ end }}>
+                <td>{{ template "golfer-link" . }}
+                <td>
+                {{ if $all }}
+                    <a href="{{ .Cheevo.ID }}">
+                        {{ .Cheevo.Emoji }}
+                        <span>{{ .Cheevo.Name }}</span>
+                    </a>
+                {{ else }}
+                    {{ .Cheevo.Emoji }} {{ .Cheevo.Name }}
+                {{ end }}
+                <td class=right>{{ time (.Earned.In $.Location) }}
+        {{ end }}
+    </table>
+</main>
+
+{{ template "footer" }}
