@@ -54,7 +54,7 @@ var _ = answerFunc("multitap-input", func() []Answer {
       		text += randWord()
 		}
 
-		tests[i] = multiTapConvert(strings.ToUpper(words))
+		tests[i] = multiTapConvert(strings.ToUpper(text))
 	}
 
 	return outputTests(shuffle(tests))
