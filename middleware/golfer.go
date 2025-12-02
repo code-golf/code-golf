@@ -6,15 +6,13 @@ import (
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
-	"github.com/gofrs/uuid/v5"
 )
 
 // Golfer adds the golfer to the context if logged in.
 func Golfer(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if cookie, _ := r.Cookie("__Host-session"); cookie != nil {
-			sessionID := uuid.FromStringOrNil(cookie.Value)
-			if golfer := golfer.Get(session.Database(r), sessionID); golfer != nil {
+			if golfer := golfer.Get(session.Database(r), cookie.Value); golfer != nil {
 				session.Get(r).Golfer = golfer
 
 				// Refresh the cookie.

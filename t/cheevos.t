@@ -74,6 +74,7 @@ for Q:ww<
     {off-the-grid} sudoku hexagony
     {ouroboros} quine python
     {pangramglot} pangram-grep 'brainfuck d hexagony javascript nim swift sql zig'
+    {ring-toss} tower-of-hanoi 'cobol factor fortran go groovy kotlin ocaml prolog python'
     {s-box-360} rijndael-s-box c-sharp
     {simon-sed} look-and-say sed
     {sinosphere} mahjong 'c j v'

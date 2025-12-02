@@ -167,6 +167,12 @@ BEGIN
     IF langs_for_hole @> '{berry,coconut,elixir}' THEN
         earned := earn(earned, 'piña-colada', user_id); END IF;
 
+    -- 🛟 Ring Toss
+    SELECT COUNT(*) >= 9 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN (SELECT id FROM langs WHERE experiment = 0 AND name LIKE '%O%');
+    IF hole = 'tower-of-hanoi' AND found THEN
+        earned := earn(earned, 'ring-toss', user_id); END IF;
+
     -- 🎮 S-box 360
     IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN
         earned := earn(earned, 's-box-360', user_id); END IF;

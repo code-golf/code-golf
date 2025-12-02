@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -15,9 +16,9 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		HoleID, LangID, Scoring  string
 		Pager                    *pager.Pager
 		Rows                     []struct {
-			Country                                *config.Country
+			golfer.GolferLink
+
 			Unicorn, Diamond, Gold, Silver, Bronze int
-			Name                                   string
 			Rank, Total                            int
 		}
 	}{
@@ -56,10 +57,10 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
 		         ),
 		         unicorn, diamond, gold, silver, bronze,
-		         country_flag country, login name, COUNT(*) OVER() total
+		         avatar_url, country_flag, name, COUNT(*) OVER() total
 		    FROM counts
-		    JOIN users ON id = user_id
-		ORDER BY rank, login
+		    JOIN golfers_with_avatars ON id = user_id
+		ORDER BY rank, name
 		   LIMIT $4 OFFSET $5`,
 		data.HoleID,
 		data.LangID,

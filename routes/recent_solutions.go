@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
@@ -13,14 +14,14 @@ import (
 // GET /recent/solutions/{hole}/{lang}/{scoring}
 func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
-		Country                          *config.Country
+		golfer.GolferLink
+
 		Experimental                     bool
-		Name                             string
 		Hole                             *config.Hole
 		Lang                             *config.Lang
 		Golfers, Rank, Strokes, TieCount int
 		Submitted                        time.Time
-		Time                             *time.Duration
+		Time                             time.Duration
 	}
 
 	data := struct {
@@ -49,10 +50,10 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Select(
 		&data.Rows,
-		` SELECT experimental, golfers, hole, lang, login name, strokes, rank,
-		         submitted, tie_count, time_ms * 1e6 time
+		` SELECT avatar_url, experimental, golfers, hole, lang, name,
+		         strokes, rank, submitted, tie_count, time_ms * 1e6 time
 		    FROM rankings
-		    JOIN users ON user_id = id
+		    JOIN golfers_with_avatars ON user_id = id
 		   WHERE (hole = $1 OR $1 IS NULL)
 		     AND (lang = $2 OR $2 IS NULL)
 		     AND scoring = $3
