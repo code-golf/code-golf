@@ -46,12 +46,12 @@ var _ = answerFunc("multitap-input", func() []Answer {
 	}
 
 	for i := len(fixedTests); i < len(tests); i++ {
-    	words := ""
-    	for j := range randInt(3, 9) {
+		text := ""
+		for j := range randInt(3, 9) {
 			if j != 0 {
-			  words += " "
+				text += " "
 	    	}
-      		words += randWord()
+      		text += randWord()
 		}
 
 		tests[i] = multiTapConvert(strings.ToUpper(words))
