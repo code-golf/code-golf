@@ -50,8 +50,8 @@ var _ = answerFunc("multitap-input", func() []Answer {
 		for j := range randInt(3, 9) {
 			if j != 0 {
 				text += " "
-	    	}
-      		text += randWord()
+			}
+			text += randWord()
 		}
 
 		tests[i] = multiTapConvert(strings.ToUpper(text))
