@@ -77,5 +77,3 @@ func multiTapConvert(text string) test {
 
 	return test{result, text}
 }
-
-
