@@ -1236,7 +1236,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.12 MiB'
-version    = '0.701'
+version    = '0.702'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
