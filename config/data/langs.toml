@@ -1103,8 +1103,8 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '45.6 MiB'
-version = 'V8 14.2.231.21'
+size    = '46.2 MiB'
+version = 'V8 14.3.127.16'
 website = 'https://v8.dev'
 example = '''
 // Printing
