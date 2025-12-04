@@ -197,8 +197,8 @@ BEGIN {
 
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
-size    = '1.27 MiB'
-version = '5.3.3'
+size    = '1.35 MiB'
+version = '5.3.8'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
