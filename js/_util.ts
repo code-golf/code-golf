@@ -37,29 +37,31 @@ export const charLen = (str: string) => {
 export const avatar = (rawURL: string, size: number): URL => {
     const u = new URL(rawURL);
 
-    // Set the size for every host.
+    // Set the avatar size.
     const q = u.searchParams;
     q.set('size', size.toString());
-
-    // Set any host specific parameters.
-    switch (u.hostname) {
-    case 'gravatar.com':
-    case 'secure.gravatar.com':
-    case 'www.gravatar.com':
-        // TODO This munging should be pushed to connection time.
-        u.hostname = 'gravatar.com';
-        u.protocol = 'https:';
-        q.delete('d');
-        q.delete('r');
-
-        q.set('default', 'identicon');
-        q.set('rating', 'PG');
-        break;
-    }
-
     u.search = q.toString();
 
     return u;
+};
+
+export const strokeLen = (str: string, allowedStrokes: Set<number>) => {
+    let len = 0;
+    for (const c of str) {
+        const codePoint = c.codePointAt(0)!;
+        if (codePoint < 128 || allowedStrokes.has(codePoint))
+            len += 1;
+        // Overlong encodings are illegal in UTF-8 (each code point must be encoded
+        // by the shortest possible byte sequence), so each code point corresponds
+        // to exactly one UTF-8 byte length, that we can determine as follows.
+        else if (codePoint <= 0x07FF)
+            len += 2;
+        else if (codePoint <= 0xFFFF)
+            len += 3;
+        else
+            len += 4;
+    }
+    return len;
 };
 
 // Small util functions.

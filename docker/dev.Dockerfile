@@ -1,4 +1,4 @@
-FROM golang:1.25.4-alpine3.22
+FROM golang:1.25.5-alpine3.22
 
 ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 
@@ -38,13 +38,13 @@ COPY --from=codegolf/lang-fortran      / /langs/fortran/rootfs/
 COPY --from=codegolf/lang-groovy       / /langs/groovy/rootfs/
 COPY --from=codegolf/lang-clojure      / /langs/clojure/rootfs/
 COPY --from=codegolf/lang-cjam         / /langs/cjam/rootfs/
+COPY --from=codegolf/lang-prolog       / /langs/prolog/rootfs/
 COPY --from=codegolf/lang-elixir       / /langs/elixir/rootfs/
 COPY --from=codegolf/lang-java         / /langs/java/rootfs/
 COPY --from=codegolf/lang-erlang       / /langs/erlang/rootfs/
-COPY --from=codegolf/lang-prolog       / /langs/prolog/rootfs/
 COPY --from=codegolf/lang-javascript   / /langs/javascript/rootfs/
-COPY --from=codegolf/lang-haxe         / /langs/haxe/rootfs/
 COPY --from=codegolf/lang-hy           / /langs/hy/rootfs/
+COPY --from=codegolf/lang-haxe         / /langs/haxe/rootfs/
 COPY --from=codegolf/lang-iogii        / /langs/iogii/rootfs/
 COPY --from=codegolf/lang-v            / /langs/v/rootfs/
 COPY --from=codegolf/lang-golfscript   / /langs/golfscript/rootfs/
@@ -79,8 +79,8 @@ COPY --from=codegolf/lang-rockstar     / /langs/rockstar/rootfs/
 COPY --from=codegolf/lang-hush         / /langs/hush/rootfs/
 COPY --from=codegolf/lang-awk          / /langs/awk/rootfs/
 COPY --from=codegolf/lang-c            / /langs/c/rootfs/
-COPY --from=codegolf/lang-umka         / /langs/umka/rootfs/
 COPY --from=codegolf/lang-bash         / /langs/bash/rootfs/
+COPY --from=codegolf/lang-umka         / /langs/umka/rootfs/
 COPY --from=codegolf/lang-bqn          / /langs/bqn/rootfs/
 COPY --from=codegolf/lang-algol-68     / /langs/algol-68/rootfs/
 COPY --from=codegolf/lang-rebol        / /langs/rebol/rootfs/
