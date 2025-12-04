@@ -107,7 +107,7 @@ constant %paths = (
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
-    'Zig'          => 'github.com/ziglang/zig/releases/latest',
+    'Zig'          => 'ziglang.org',
 );
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
@@ -144,6 +144,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'sourceforge'       / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'sqlite.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'swi-prolog'        / { $res ~~ / 'stable' .+? <(<ver>)> / }
+        when / 'ziglang.org'       / { $res ~~ / 'Release' .+? <(<ver>)> / }
         when / 'api.github.com'    / {
             $res.&from-json.grep(!*<prerelease>).map({ .<name> ~~ / <ver> / })
                 .sort({ Version.new: $_ }).tail;

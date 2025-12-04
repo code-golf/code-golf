@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.23 MiB'
-version    = 'Algol 68 Genie 3.10.7'
+version    = 'Algol 68 Genie 3.10.8'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -81,8 +81,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '4.93 MiB'
-version    = '692eb1e'
+size       = '4.91 MiB'
+version    = '714e284'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.6'
+version = 'Clang 21.1.7'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '118 MiB'
-version = '3.10.1'
+version = '3.10.3'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1103,8 +1103,8 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '45.6 MiB'
-version = 'V8 14.2.231.21'
+size    = '46.2 MiB'
+version = 'V8 14.3.127.16'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1236,7 +1236,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.12 MiB'
-version    = '0.701'
+version    = '0.702'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1298,7 +1298,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '299 MiB'
-version    = '2025-11'
+version    = '2025-12'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1434,10 +1434,10 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
-env     = [ 'LC_ALL=C.UTF-8' ]
-size    = '49.3 MiB'
-version = 'SWI-Prolog 9.2.9'
+args    = [ '/usr/bin/prolog', '-' ]
+env     = [ 'LANG=C.UTF-8' ]
+size    = '57.3 MiB'
+version = 'SWI-Prolog 10.0.0'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
