@@ -855,7 +855,7 @@ args     = [ '/usr/bin/groovy', '-e', '$code' ]
 env      = [ 'JAVA_HOME=/opt/java' ]
 released = 2025-08-29
 size     = '71.9 MiB'
-version  = '5.0.2'
+version  = '5.0.3'
 website  = 'https://groovy-lang.org'
 example  = '''
 // Printing
