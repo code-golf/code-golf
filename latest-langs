@@ -100,7 +100,7 @@ constant %paths = (
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
-    'Uiua'         => 'api.github.com/repos/uiua-lang/uiua/releases',
+    'Uiua'         => 'api.github.com/repos/uiua-lang/uiua/tags',
     'Umka'         => 'github.com/vtereshkov/umka-lang/releases/latest',
     'V'            => 'raw.githubusercontent.com/vlang/v/refs/heads/master/CHANGELOG.md',
     'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
@@ -146,8 +146,11 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'swi-prolog'        / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'ziglang.org'       / { $res ~~ / 'Release' .+? <(<ver>)> / }
         when / 'api.github.com'    / {
-            $res.&from-json.grep(!*<prerelease>).map({ .<name> ~~ / <ver> / })
-                .sort({ Version.new: $_ }).tail;
+            $res.&from-json.grep(
+                .ends-with('releases')
+                    ?? !*<prerelease>
+                    !! { .<name> !~~ / < dev latest > / }
+            ).map({ .<name> ~~ / <ver> / }).sort({ Version.new: $_ }).tail;
         }
         when / 'github.com'        / {
             .ends-with('/releases/latest')
