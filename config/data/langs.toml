@@ -655,7 +655,7 @@ for arg <- System.argv, do: IO.puts arg
 args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
-size     = '50.1 MiB'
+size     = '49.5 MiB'
 version  = 'OTP 28.2'
 website  = 'https://www.erlang.org'
 example  = '''
