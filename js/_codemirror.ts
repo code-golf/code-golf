@@ -178,6 +178,7 @@ export const extensions : { [key: string]: any } = {
     'haskell':       StreamLanguage.define(haskell),
     'haxe':          StreamLanguage.define(haxe),
     // TODO hexagony
+    // TODO hurl
     // TODO hush
     // TODO hy
     // TODO iogii

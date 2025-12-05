@@ -56,6 +56,7 @@ constant %paths = (
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
+    'Hurl'         => 'sr.ht/~ntietz/hurl-lang',
     'Hush'         => 'crates.io/api/v1/crates/hush',
     'Hy'           => 'pypi.org/pypi/hy/json',
     'iogii'        => 'golfscript.com/iogii/source.html',
@@ -143,6 +144,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'pypi.org'          / { $res.&from-json<info><version> }
         when / 'sourceforge'       / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'sqlite.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'sr.ht'             / { $res ~~ / 'commit/' <(<ver>)> / }
         when / 'swi-prolog'        / { $res ~~ / 'stable' .+? <(<ver>)> / }
         when / 'ziglang.org'       / { $res ~~ / 'Release' .+? <(<ver>)> / }
         when / 'api.github.com'    / {
