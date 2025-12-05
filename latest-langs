@@ -106,6 +106,7 @@ constant %paths = (
     'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
+    'WebAssembly'  => 'github.com/bytecodealliance/wasmtime/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
     'Zig'          => 'ziglang.org',
 );
