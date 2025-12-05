@@ -74,6 +74,7 @@ constant %paths = (
     'Luau'         => 'github.com/luau-lang/luau/releases/latest',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
+    'Octave'       => 'ftp.gnu.org/gnu/octave/?C=M&O=D',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
