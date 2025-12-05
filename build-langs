@@ -102,6 +102,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
                 $ver = "OpenJDK $ver" ~ ( ".0" if $ver ne $digits );
             }
             when 'JavaScript'  { $ver = "V8 $digits" }
+            when 'JSFuck'      { $ver = "Node.js $digits" }
             when 'Pascal'      { $ver = "FPC $digits" }
             when 'Prolog'      { $ver = "SWI-Prolog $digits" }
             when 'Raku'        {
