@@ -91,6 +91,7 @@ COPY --from=codegolf/lang-jq           / /langs/jq/rootfs/
 COPY --from=codegolf/lang-janet        / /langs/janet/rootfs/
 COPY --from=codegolf/lang-knight       / /langs/knight/rootfs/
 COPY --from=codegolf/lang-fennel       / /langs/fennel/rootfs/
+COPY --from=codegolf/lang-nial         / /langs/nial/rootfs/
 COPY --from=codegolf/lang-k            / /langs/k/rootfs/
 COPY --from=codegolf/lang-forth        / /langs/forth/rootfs/
 COPY --from=codegolf/lang-fish         / /langs/fish/rootfs/
