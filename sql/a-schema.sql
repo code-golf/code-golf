@@ -56,7 +56,7 @@ CREATE TYPE hole AS ENUM (
     'lucky-numbers', 'lucky-tickets', 'mahjong', 'mandelbrot', 'maze',
     'medal-tally', 'minesweeper', 'morse-decoder', 'morse-encoder',
     'musical-chords', 'n-queens', 'nfa-simulator', 'niven-numbers',
-    'niven-numbers-long', 'number-spiral', 'odd-polyomino-tiling',
+    'niven-numbers-long', 'number-spiral', 'numbrix', 'odd-polyomino-tiling',
     'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
     'p-adic-expansion', 'palindromemordnilap', 'pangram-grep',
     'partition-numbers', 'pascals-triangle', 'pernicious-numbers',
