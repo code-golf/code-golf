@@ -52,10 +52,10 @@ func apiGolferGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Get(
 		golfer,
-		`SELECT admin, id, login name, pronouns, sponsor, started,
+		`SELECT admin, id, name, pronouns, sponsor, started,
 		        CASE WHEN show_country THEN country END country
 		   FROM users
-		  WHERE login = $1`,
+		  WHERE name = $1`,
 		param(r, "golfer"),
 	); errors.Is(err, sql.ErrNoRows) {
 		golfer = nil
@@ -68,22 +68,22 @@ func apiGolferGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /api/holes
 func apiHolesGET(w http.ResponseWriter, _ *http.Request) {
-	encodeJSON(w, config.HoleList)
+	encodeJSON(w, config.AllHoleList)
 }
 
 // GET /api/langs/{lang}
 func apiHoleGET(w http.ResponseWriter, r *http.Request) {
-	encodeJSON(w, config.HoleByID[param(r, "hole")])
+	encodeJSON(w, config.AllHoleByID[param(r, "hole")])
 }
 
 // GET /api/langs
 func apiLangsGET(w http.ResponseWriter, _ *http.Request) {
-	encodeJSON(w, config.LangList)
+	encodeJSON(w, config.AllLangList)
 }
 
 // GET /api/langs/{lang}
 func apiLangGET(w http.ResponseWriter, r *http.Request) {
-	encodeJSON(w, config.LangByID[param(r, "lang")])
+	encodeJSON(w, config.AllLangByID[param(r, "lang")])
 }
 
 // GET /api/notes
@@ -211,7 +211,7 @@ func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).SelectContext(
 		r.Context(),
 		&rows,
-		` SELECT bytes, chars, login golfer, hole, lang, scoring, submitted
+		` SELECT bytes, chars, name golfer, hole, lang, scoring, submitted
 		    FROM solutions_log
 		    JOIN users ON id = user_id
 		   WHERE hole = $1 AND lang = $2
@@ -316,12 +316,12 @@ func apiSuggestionsGolfersGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).QueryRow(
 		`WITH golfers AS (
-		    SELECT login
+		    SELECT name
 		      FROM users
-		     WHERE strpos(login, $1) > 0 AND login != $2
-		  ORDER BY login
+		     WHERE strpos(name, $1) > 0 AND name != $2
+		  ORDER BY name
 		     LIMIT 10
-		) SELECT COALESCE(json_agg(login), '[]') FROM golfers`,
+		) SELECT COALESCE(json_agg(name), '[]') FROM golfers`,
 		r.FormValue("q"),
 		r.FormValue("ignore"),
 	).Scan(&json); err != nil {

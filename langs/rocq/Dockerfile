@@ -1,12 +1,12 @@
-ARG MLVER=5.3 OPAMHOME=/home/opam/.opam/$MLVER
+ARG MLVER=5.4 OPAMHOME=/home/opam/.opam/$MLVER
 
-FROM ocaml/opam:alpine-3.21-ocaml-$MLVER AS builder
+FROM ocaml/opam:alpine-3.22-ocaml-$MLVER AS builder
 
 RUN sudo apk add --no-cache gmp-dev linux-headers
 
-ENV VER=9.0.0
+ENV VER=9.1.0
 
-RUN opam pin -j`nproc` add rocq-prover $VER
+RUN opam pin -j`nproc` add rocq-core $VER
 
 COPY rocq.c /
 

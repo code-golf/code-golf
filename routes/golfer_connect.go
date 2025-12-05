@@ -1,8 +1,9 @@
 package routes
 
 import (
-	"encoding/json"
+	"encoding/json/v2"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"github.com/code-golf/code-golf/null"
@@ -17,7 +18,7 @@ func golferDisconnectGET(w http.ResponseWriter, r *http.Request) {
 		param(r, "connection"), session.Golfer(r).ID,
 	)
 
-	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+	http.Redirect(w, r, "/golfer/settings/connections", http.StatusSeeOther)
 }
 
 // GET /golfer/connect/{connection}
@@ -58,44 +59,102 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	var user struct{ Discriminator, ID, Username string }
+	var user struct{ AvatarURL, Discriminator, ID, Username string }
 
 	switch conn {
 	case "discord":
-		if err := json.NewDecoder(res.Body).Decode(&user); err != nil {
+		var info struct {
+			Avatar        string `json:"avatar"`
+			Discriminator string `json:"discriminator"`
+			ID            string `json:"id"`
+			Username      string `json:"username"`
+		}
+
+		if err := json.UnmarshalRead(res.Body, &info); err != nil {
 			panic(err)
 		}
+
+		if info.Avatar != "" {
+			user.AvatarURL = "https://cdn.discordapp.com/avatars/" +
+				info.ID + "/" + info.Avatar
+		}
+
+		user.Discriminator = info.Discriminator
+		user.ID = info.ID
+		user.Username = info.Username
 	case "gitlab":
-		var info struct{ Nickname, Sub string }
+		var info struct {
+			Nickname string `json:"nickname"`
+			Picture  string `json:"picture"`
+			Sub      string `json:"sub"`
+		}
 
-		if err := json.NewDecoder(res.Body).Decode(&info); err != nil {
+		if err := json.UnmarshalRead(res.Body, &info); err != nil {
 			panic(err)
 		}
 
+		user.AvatarURL = info.Picture
 		user.ID = info.Sub
 		user.Username = info.Nickname
+	case "gravatar":
+		var info struct {
+			AvatarURL string `json:"avatar_url"`
+			UserID    int    `json:"user_id"`
+			UserLogin string `json:"user_login"`
+		}
+
+		if err := json.UnmarshalRead(res.Body, &info); err != nil {
+			panic(err)
+		}
+
+		user.AvatarURL = info.AvatarURL
+		user.ID = strconv.Itoa(info.UserID)
+		user.Username = info.UserLogin
 	case "stack-overflow":
 		var info struct {
 			Items []struct {
-				DisplayName string `json:"display_name"`
-				UserID      int    `json:"user_id"`
-			}
+				DisplayName  string `json:"display_name"`
+				ProfileImage string `json:"profile_image"`
+				UserID       int    `json:"user_id"`
+			} `json:"items"`
 		}
 
-		if err := json.NewDecoder(res.Body).Decode(&info); err != nil {
+		if err := json.UnmarshalRead(res.Body, &info); err != nil {
 			panic(err)
 		}
 
+		user.AvatarURL = info.Items[0].ProfileImage
 		user.ID = strconv.Itoa(info.Items[0].UserID)
 		user.Username = info.Items[0].DisplayName
 	}
 
+	// Tidy up avatar URLs
+	if u, _ := url.Parse(user.AvatarURL); u != nil {
+		q := u.Query()
+
+		switch u.Host {
+		case "0.gravatar.com", "gravatar.com",
+			"secure.gravatar.com", "www.gravatar.com":
+			u.Host = "gravatar.com"
+
+			// https://docs.gravatar.com/sdk/images/
+			q.Set("d", "identicon")
+			q.Set("r", "PG")
+			q.Del("s")
+		}
+
+		u.RawQuery = q.Encode()
+		user.AvatarURL = u.String()
+	}
+
 	session.Database(r).MustExec(
-		`INSERT INTO connections (connection, discriminator, id, user_id, username)
-		      VALUES             (        $1,            $2, $3,      $4,       $5)
+		`INSERT INTO connections (avatar_url, connection, discriminator, id, user_id, username)
+		      VALUES             (        $1,         $2,            $3, $4,      $5,       $6)
 		 ON CONFLICT             (connection, id)
-		   DO UPDATE SET discriminator = excluded.discriminator,
-		                      username = excluded.username`,
+		   DO UPDATE SET avatar_url = excluded.avatar_url,
+		              discriminator = excluded.discriminator,
+		                   username = excluded.username`,
+		null.NullIfZero(user.AvatarURL),
 		conn,
 		null.NullIfZero(user.Discriminator),
 		user.ID,
@@ -103,5 +162,5 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.Username,
 	)
 
-	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+	http.Redirect(w, r, "/golfer/settings/connections", http.StatusSeeOther)
 }

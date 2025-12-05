@@ -50,14 +50,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount proc");
 
-    // Clobber /proc/meminfo. It can be used to inject state. Kotlin doesn't like this.
-    if (strcmp(argv[0], "/usr/bin/kotlin") != 0)
-        if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
-            ERR_AND_EXIT("mount /proc/meminfo");
+    // Clobber /proc/meminfo. It can be used to inject state.
+    if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
+        ERR_AND_EXIT("mount /proc/meminfo");
 
-    // Clobber /proc/stat. It can be used to inject state. Kotlin, Raku, & V don't like this.
-    if (strcmp(argv[0], "/usr/bin/kotlin") != 0
-     && strcmp(argv[0], "/usr/bin/raku")   != 0
+    // Clobber /proc/stat. It can be used to inject state. Raku & V don't like this.
+    if (strcmp(argv[0], "/usr/bin/raku")   != 0
      && strcmp(argv[0], "/usr/bin/V")      != 0)
         if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
             ERR_AND_EXIT("mount /proc/stat");

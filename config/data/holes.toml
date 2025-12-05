@@ -338,6 +338,31 @@ preamble = '''
 '''
 redirects = ["billiard"]
 
+['Binary Lambda Calculus']
+category = 'Computing'
+experiment = 1567
+links = [
+    { name = 'Esolang Wiki', url = '//esolangs.org/wiki/Binary_lambda_calculus' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Universal_Lambda_Machine' },
+]
+synopsis = 'Normalize a binary lambda calculus expression.'
+preamble = '''
+<p>
+    Binary lambda calculus is a compact representation for expressions in
+    lambda calculus.
+
+<p>
+    <code>00</code> denotes a lambda, <code>01</code> denotes application, and
+    <code>1...10</code> with x 1s denotes the argument of the xth-innermost
+    lambda containing it. For example, <code>00000110110</code> denotes
+    <code>λx.λy.y x</code>.
+
+<p>
+    Given a list of binary lambda calculus expressions, output their normal
+    forms. You can assume that there are no infinite loops in the inputs.
+'''
+
+
 [brainfuck]
 category = 'Computing'
 links = [
@@ -583,6 +608,71 @@ preamble = '''
     Additionally, print <b><code>Draw</code></b> if no row of four connected
     checkers is complete when both players have used all their checkers; or
     <b><code>-</code></b> when games are still in progress.
+'''
+
+['Continued Fractions']
+category = 'Mathematics'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Continued_fraction' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Simple_continued_fraction' },
+]
+experiment = 2503
+synopsis = 'Convert fractions to continued fractions.'
+preamble = '''
+<p>
+    For each fraction argument <code>a/b</code>, print its continued fraction
+    expansion.
+'''
+
+[Crossword]
+category = 'Computing'
+experiment = 1308
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Crossword' },
+]
+output-delimiter = "\n\n"
+synopsis = 'Print valid crossword puzzles.'
+preamble = '''
+<p>
+    Each argument contains a variable number of words, separated by spaces. Use
+    the individual words to create a ten-by-ten crossword puzzle that meets the
+    following requirements:
+
+<ul>
+    <li>You must use all the words.
+    <li>Words can be formed horizontally or vertically, but not diagonally.
+    <li>Each word must overlap with at least one other word.
+    <li>No new words may be created, either horizontally or vertically, i.e.
+        the letters of one word may not be adjacent to the letters of another
+        word unless they overlap.
+    <li>Use capital letters for each word and a period for unused squares.
+        Separate everything with spaces.
+</ul>
+
+<p>
+    For example, consider the following argument:
+
+<pre>freeze arm waffle love mad federal aura one</pre>
+
+<p>
+    If you take the above restrictions into account, the crossword below is one
+    of <i>many</i> valid possibilities.
+
+<pre>
+. W A F F L E . . .
+. . R . E . . . . .
+. . M A D . . . . .
+. . . . E . . . . .
+. . . . R . . . . .
+. A U R A . . . . .
+. . . . L O V E . .
+. . . . . N . . . .
+F R E E Z E . . . .
+. . . . . . . . . .
+</pre>
+
+<p>
+    For each argument, print any valid crossword puzzle.
 '''
 
 ['CSS Colors']
@@ -2203,12 +2293,13 @@ preamble = '''
 '''
 
 [Minesweeper]
-experiment = 1025
 category = 'Gaming'
+released = 2025-11-01
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Minesweeper_game' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
 ]
-synopsis = 'Print solved boards in Minesweeper games.'
+synopsis = 'Print solved Minesweeper boards.'
 preamble = '''
 <p>
     Minesweeper is a video game in which the player must clear a board without
@@ -2217,12 +2308,13 @@ preamble = '''
 
 <p>
     Each argument represents a ten-by-ten board with thirteen mine tiles,
-    denoted by <code><b>M</b></code>. Replace the safe tiles, denoted by
-    <code><b>X</b></code>, with the number of adjacent mines.
+    denoted by <code><b>X</b></code>, and the rest being safe tiles, denoted
+    by <code><b>_</b></code>.
 
 <p>
-    Print a solved Minesweeper board for each argument, separated by newlines,
-    and replace each mine with <code><b>X</b></code> as if it weren't detonated.
+    Print a solved Minesweeper board for each argument, separated by blank
+    lines. Replace each mine with <code><b>F</b></code> as if it were flagged.
+    And replace each safe tile with the number of adjacent mines.
 '''
 
 ['Morse Decoder']
@@ -2834,10 +2926,11 @@ preamble = '''
 
 [['Pascal’s Triangle'.variants]]
 name = 'Trinomial Triangle'
-experiment = 1117
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
+    { name = 'OEIS A027907', url = '//oeis.org/A027907' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
 ]
+released = 2025-10-01
 synopsis = 'Print the first 20 rows of the trinomial triangle.'
 preamble = '''
 <p>
@@ -3845,7 +3938,7 @@ preamble = '''
 
 ['Smooth Numbers']
 experiment = 2144
-category = 'Sequence'
+category = 'Mathematics'
 links = [
     { name = 'OEIS A000079', url = '//oeis.org/A000079' },
     { name = 'OEIS A003586', url = '//oeis.org/A003586' },
@@ -3862,12 +3955,13 @@ links = [
 synopsis = 'Print all the n-smooth numbers from 1 to k inclusive.'
 preamble = '''
 <p>
-    An <i>n</i>-smooth number is a positive integer whose prime factors are all
-    less than or equal to <i>n</i>.
+    An <i>n</i>-smooth number is a positive integer whose prime factors are
+    all less than or equal to <i>n</i>.
 
 <p>
-    For each argument <code>𝑛 𝑘</code>, print all the <i>n</i>-smooth numbers
-    from 1 to <i>k</i> inclusive, separated by spaces.
+    Given the arguments <code>𝑛</code> and <code>𝑘</code>, print all the
+    <i>n</i>-smooth numbers from 1 to <i>k</i> inclusive, each on their own
+    line.
 '''
 
 [Snake]
@@ -3964,10 +4058,16 @@ synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
 preamble = '''
 <p>
     You are given a series of inputs. Each input contains a text <b>corpus</b>
-    and a dozen <b>prompts</b> on subsequent lines. For each prompt, output the
-    most likely next word in the corpus by frequency (aka <b>mode</b>). If
-    there is more than one mode, output the first encountered in the corpus. In
-    this problem, each corpus is formed by concatenating two
+    and 12 <b>prompt</b> words on subsequent lines.
+    For each prompt, output the word which most frequently follows it in the corpus.
+    In case of a tie, print the one whose first follow-on occurrence comes earliest.
+<p>
+    For example, suppose the corpus is "code golf and golf and code"
+    and the prompt is "and".
+    Both "golf" and "code" follow the word "and" maximally frequently (once), but "golf"
+    <em>does so first</em>, and so the output is "golf".
+<p>
+    In this problem, each corpus is formed by concatenating two
     <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
     (separated by one space).
 '''
@@ -4102,6 +4202,28 @@ preamble = '''
 name      = 'Sudoku (Fill-in)'
 redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
+
+['Taxicab Numbers']
+experiment = 914
+category = 'Sequence'
+links = [
+    { name = 'OEIS A001235', url = '//oeis.org/A001235' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Taxicab_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Taxicab_number' },
+]
+synopsis = 'Print all taxicab numbers from 1 to 100,000,000.'
+preamble = '''
+<p>
+    A taxicab number is a number that is expressible as the sum of two cubes in at least two different ways.
+
+<p>
+    For example, <b>1729 = 1<sup>3</sup> + 12<sup>3</sup> = 9<sup>3</sup> + 10<sup>3</sup></b> or
+    <b>4104 = 2<sup>3</sup> + 16<sup>3</sup> = 9<sup>3</sup> + 15<sup>3</sup></b>.
+    
+<p>
+    Print all the taxicab numbers from <b>1</b> to <b>100,000,000</b> inclusive,
+    each on their own line.
+'''
 
 ['Ten-pin Bowling']
 category = 'Gaming'
@@ -4258,6 +4380,30 @@ preamble = '''
 <p>
     This is similar to the <code>tsort</code> utility, except that output nodes
     are separated with spaces instead of newlines.
+'''
+
+['Tower of Hanoi']
+category = 'Art'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
+]
+released = 2025-12-01
+synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle.'
+preamble = '''
+<p>
+    Tower of Hanoi is a puzzle consisting of three poles, and a set amount of
+    disks on the very left pole stacked from biggest diameter on the bottom,
+    to smallest on the top. The goal is to move all of the disks from the left
+    pole to the right pole with the restrictions of only moving the top disk
+    of a pole, and being forbidden to stack a bigger disk onto a smaller disk.
+    With N disks, there's always a unique optimal solution with 2**N - 1 steps.
+
+<p>
+    Print out all the steps of the optimal solution to solve a Tower of Hanoi
+    puzzle consisting of nine disks. Each step describes the number of the
+    starting pole and the pole it goes to. (i.e: 1 -> 3 would mean put top
+    disk from Pole 1 onto Pole 3.)
 '''
 
 ['Transpose Sentence']
