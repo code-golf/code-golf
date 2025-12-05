@@ -2436,13 +2436,25 @@ experiment = 1952
 links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Multi-tap' },
 ]
-synopsis = 'Convert numeric button presses to text by the Multi-tap system.'
+data = '''
+{
+    "A": "2", "B": "22", "C": "222",
+	"D": "3", "E": "33", "F": "333",
+	"G": "4", "H": "44", "I": "444",
+	"J": "5", "K": "55", "L": "555",
+	"M": "6", "N": "66", "O": "666",
+	"P": "7", "Q": "77", "R": "777", "S": "7777",
+	"T": "8", "U": "88", "V": "888",
+	"W": "9", "X": "99", "Y": "999", "Z": "9999",
+	" ": "0"
+}'''
+synopsis = 'Convert numeric button presses to text by the multi-tap system.'
 preamble = '''
 <p>
     Many older mobile phone designs allow text to be entered on a numeric
-    E.161 keypad. The numbers 2-9 are labelled with letters:
+    E.161 keypad. The numbers 2-9 are labeled with letters:
 
-<ol>
+<ul>
     <li>2: ABC
     <li>3: DEF
     <li>4: GHI
@@ -2451,7 +2463,7 @@ preamble = '''
     <li>7: PQRS
     <li>8: TUV
     <li>9: WXYZ
-</ol>
+</ul>
 
 <p>
     Pressing a number key once enters the first letter shown on the button,
