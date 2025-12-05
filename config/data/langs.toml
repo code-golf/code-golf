@@ -1411,6 +1411,31 @@ main(Args) =>
     end.
 '''
 
+[Pony]
+args       = [ '/usr/bin/pony', '-' ]
+experiment = 90
+size       = '370 MiB'
+version    = '0.60.4'
+website    = 'https://www.ponylang.io'
+example    = '''
+use "collections"
+
+actor Main
+  new create(env: Env) =>
+    // Printing
+    env.out.print("Hello, World!")
+
+    // Looping
+    for i in Range(0, 10) do
+        env.out.print(i.string())
+    end
+
+    // Accessing arguments
+    for i in Range(1, env.args.size()) do
+        env.out.print((try env.args(i)? end).string())
+    end
+'''
+
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
