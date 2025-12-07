@@ -1456,7 +1456,7 @@ example = '''
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
 size    = '30.5 MiB'
-version = '3.14.1'
+version = '3.14.2'
 website = 'https://www.python.org'
 example = '''
 import sys
