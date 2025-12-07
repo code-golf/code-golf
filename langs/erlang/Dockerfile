@@ -12,12 +12,42 @@ WORKDIR /erlang
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN ./configure            \
-    --enable-m64-build     \
-    --prefix=/usr          \
-    --without-termcap      \
- && make -j`nproc` release \
- && make install           \
+RUN ./configure             \
+    --disable-jit           \
+    --enable-m64-build      \
+    --prefix=/usr           \
+    --without-asn1          \
+    --without-common_test   \
+    --without-crypto        \
+    --without-debugger      \
+    --without-dialyzer      \
+    --without-diameter      \
+    --without-edoc          \
+    --without-eldap         \
+    --without-erl_docgen    \
+    --without-et            \
+    --without-eunit         \
+    --without-ftp           \
+    --without-inets         \
+    --without-javac         \
+    --without-jinterface    \
+    --without-megaco        \
+    --without-mnesia        \
+    --without-observer      \
+    --without-odbc          \
+    --without-os_mon        \
+    --without-publickey     \
+    --without-reltool       \
+    --without-runtime_tools \
+    --without-snmp          \
+    --without-ssh           \
+    --without-ssl           \
+    --without-syntax_tools  \
+    --without-termcap       \
+    --without-tftp          \
+    --without-wx            \
+    --without-xmerl         \
+ && make -j release install \
  && strip /usr/bin/escript
 
 WORKDIR /usr/lib/erlang/lib
@@ -53,6 +83,7 @@ COPY --from=0 /lib64/ld-linux-x86-64.so.2            /lib64/
 COPY --from=0 /usr/bin/basename                      \
               /usr/bin/dirname                       \
               /usr/bin/erl                           \
+              /usr/bin/erlc                          \
               /usr/bin/erlang                        \
               /usr/bin/escript                       /usr/bin/
 COPY --from=0 /usr/local                             /usr/lib/erlang
@@ -61,5 +92,3 @@ COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot \
 COPY --from=0 /usr/lib/locale                        /usr/lib/locale
 
 ENTRYPOINT ["erlang"]
-
-CMD ["--version"]
