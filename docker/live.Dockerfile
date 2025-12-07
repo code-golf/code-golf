@@ -1,4 +1,4 @@
-FROM golang:1.25.5-alpine3.22
+FROM golang:1.25.5-alpine3.23
 
 ENV CGO_ENABLED=0 GOAMD64=v4 GOEXPERIMENT=jsonv2 GOPATH=
 
@@ -56,9 +56,9 @@ COPY --from=codegolf/lang-d            / /langs/d/rootfs/
 COPY --from=codegolf/lang-ocaml        / /langs/ocaml/rootfs/
 COPY --from=codegolf/lang-scala        / /langs/scala/rootfs/
 COPY --from=codegolf/lang-coconut      / /langs/coconut/rootfs/
-COPY --from=codegolf/lang-civet        / /langs/civet/rootfs/
 COPY --from=codegolf/lang-coffeescript / /langs/coffeescript/rootfs/
 COPY --from=codegolf/lang-stax         / /langs/stax/rootfs/
+COPY --from=codegolf/lang-civet        / /langs/civet/rootfs/
 COPY --from=codegolf/lang-vyxal        / /langs/vyxal/rootfs/
 COPY --from=codegolf/lang-raku         / /langs/raku/rootfs/
 COPY --from=codegolf/lang-gleam        / /langs/gleam/rootfs/

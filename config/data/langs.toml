@@ -396,8 +396,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '81.3 MiB'
-version = '0.11.0'
+size    = '78.9 MiB'
+version = '0.11.1'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -432,7 +432,7 @@ eaN*
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
 size    = '64.3 MiB'
-version = 'Babashka 1.12.212'
+version = 'Babashka 1.12.213'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -1456,7 +1456,7 @@ example = '''
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
 size    = '30.5 MiB'
-version = '3.14.1'
+version = '3.14.2'
 website = 'https://www.python.org'
 example = '''
 import sys
