@@ -16,37 +16,12 @@ RUN ./configure             \
     --disable-jit           \
     --enable-m64-build      \
     --prefix=/usr           \
-    --without-asn1          \
-    --without-common_test   \
     --without-crypto        \
-    --without-debugger      \
-    --without-dialyzer      \
-    --without-diameter      \
-    --without-edoc          \
-    --without-eldap         \
-    --without-erl_docgen    \
-    --without-et            \
-    --without-eunit         \
-    --without-ftp           \
-    --without-inets         \
     --without-javac         \
     --without-jinterface    \
-    --without-megaco        \
-    --without-mnesia        \
-    --without-observer      \
     --without-odbc          \
-    --without-os_mon        \
-    --without-publickey     \
-    --without-reltool       \
-    --without-runtime_tools \
-    --without-snmp          \
-    --without-ssh           \
-    --without-ssl           \
-    --without-syntax_tools  \
     --without-termcap       \
-    --without-tftp          \
     --without-wx            \
-    --without-xmerl         \
  && make -j release install \
  && strip /usr/bin/escript
 
