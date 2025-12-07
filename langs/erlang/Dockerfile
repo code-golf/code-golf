@@ -83,8 +83,8 @@ COPY --from=0 /lib64/ld-linux-x86-64.so.2            /lib64/
 COPY --from=0 /usr/bin/basename                      \
               /usr/bin/dirname                       \
               /usr/bin/erl                           \
-              /usr/bin/erlc                          \
               /usr/bin/erlang                        \
+              /usr/bin/erlc                          \
               /usr/bin/escript                       /usr/bin/
 COPY --from=0 /usr/local                             /usr/lib/erlang
 COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot \
