@@ -1911,7 +1911,7 @@ for arg in os.args[1..] {
 args       = [ '/usr/bin/vala', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1354
-size       = '99.6 MiB'
+size       = '104 MiB'
 version    = '0.56.18'
 website    = 'https://vala.dev'
 example    = '''
