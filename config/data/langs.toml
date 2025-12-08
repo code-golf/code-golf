@@ -449,7 +449,7 @@ example = '''
 
 [COBOL]
 args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.21 MiB'
+size    = '4.22 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -1911,7 +1911,7 @@ for arg in os.args[1..] {
 args       = [ '/usr/bin/vala', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1354
-size       = '99.6 MiB'
+size       = '99.7 MiB'
 version    = '0.56.18'
 website    = 'https://vala.dev'
 example    = '''
