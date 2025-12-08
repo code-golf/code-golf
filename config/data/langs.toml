@@ -1495,7 +1495,7 @@ foreach string arg in (ARGV)
 [R]
 args       = [ '/usr/bin/R', '-' ]
 args-quine = [ '/usr/bin/R', '-e', "source('stdin')" ]
-size       = '30.6 MiB'
+size       = '31.0 MiB'
 version    = '4.5.2'
 website    = 'https://www.r-project.org'
 example    = '''
