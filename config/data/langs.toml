@@ -1214,7 +1214,7 @@ for (arg in args)
 
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '362 KiB'
+size    = '383 KiB'
 version = '5.4.8'
 website = 'https://www.lua.org'
 example = '''
