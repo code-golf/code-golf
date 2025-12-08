@@ -19,5 +19,5 @@ func init() {
 
 	judge("crossword", oneOfPerOutputJudge(func(words string) []string {
 		return crosswords[words]
-	}, true))
+	}, false))
 }
