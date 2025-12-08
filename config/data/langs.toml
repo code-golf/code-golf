@@ -1975,7 +1975,7 @@ example    = '''
 
 [Wren]
 args    = [ '/usr/bin/wren', '-' ]
-size    = '505 KiB'
+size    = '517 KiB'
 version = '0.4.0'
 website = 'https://wren.io'
 example = '''
