@@ -752,7 +752,7 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '73.1 MiB'
+size    = '78.1 MiB'
 version = 'GNU Fortran 15.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
