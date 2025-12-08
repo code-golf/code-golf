@@ -133,12 +133,25 @@ constant %paths = (
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
 
+sub progress($cur) {
+    constant $len = 72;
+
+    my $tot = @langs.unique || %langs;
+    my $bar = $cur * $len div $tot;
+
+    return sprintf "%s%6.1f%% ", "#" x $bar ~ " " x ($len - $bar), $cur * 100 / $tot;
+}
+
 # Dotted decimal, hyphenated date, or Git SHA.
 my regex ver { \d+ ( <[+.-]> \d+ )+ | <xdigit> ** 7..* }
 
-for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
+my $buffer = "\r\e[K";
+
+for %langs{ @langs.unique || * }:p.sort(*.key.fc).kv -> $i, (:key($name), :value(%lang)) {
     # Catch exceptions and carry on to the next lang.
     CATCH { default { note "$name: $_" } }
+
+    print "\r\e[K" ~ progress($i + 1);
 
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
@@ -191,6 +204,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $match = $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new;
     my $code  = $new eq '?' ?? 33 !! $match ?? 32 !! 31;
 
-    printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new
+    $buffer ~= sprintf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new
         if $all || @langs.elems || !$match;
 }
+
+print $buffer;
