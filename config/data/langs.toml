@@ -506,7 +506,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffee', '/proc/self/fd/0' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '80.7 MiB'
+size       = '78.2 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
