@@ -3,7 +3,7 @@ FROM alpine:3.23 AS builder
 RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/testing \
     --no-cache curl gcc libffi-dev linux-headers make musl-dev pypy
 
-ENV LDFLAGS='-static' PYVER=3.11-v7.3.19 VER=96b1cfc
+ENV LDFLAGS='-static' PYVER=3.11-v7.3.20 VER=96b1cfc
 
 RUN curl -#L https://downloads.python.org/pypy/pypy$PYVER-src.tar.bz2 \
   | tar xj --strip-components 1
