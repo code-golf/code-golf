@@ -712,7 +712,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '695 KiB'
+size       = '716 KiB'
 version    = '1.6.0'
 website    = 'https://fennel-lang.org'
 example    = '''
