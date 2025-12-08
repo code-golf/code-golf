@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/testing \
     --no-cache curl gcc libffi-dev linux-headers make musl-dev pypy
