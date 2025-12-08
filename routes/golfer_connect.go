@@ -133,13 +133,16 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		q := u.Query()
 
 		switch u.Host {
+		// Gravatar - https://docs.gravatar.com/sdk/images/
 		case "0.gravatar.com", "gravatar.com",
 			"secure.gravatar.com", "www.gravatar.com":
 			u.Host = "gravatar.com"
 
-			// https://docs.gravatar.com/sdk/images/
 			q.Set("d", "identicon")
 			q.Set("r", "PG")
+			q.Del("s")
+		// Stack Overflow
+		case "i.sstatic.net":
 			q.Del("s")
 		}
 
