@@ -1121,7 +1121,7 @@ for (let arg of arguments)
 
 [jq]
 args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
-size    = '989 KiB'
+size    = '1.03 MiB'
 version = '1.8.1'
 website = 'https://jqlang.github.io/jq/'
 example = '''
