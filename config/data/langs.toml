@@ -1690,7 +1690,7 @@ example = '''
 
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
-size    = '244 KiB'
+size    = '245 KiB'
 version = 'GNU sed 4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
