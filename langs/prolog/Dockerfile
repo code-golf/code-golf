@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache cmake curl g++ ncurses-dev ninja zlib-dev
 
@@ -30,7 +30,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/prolog -s /prolog.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
+COPY --from=0 /lib/ld-musl-*.so.1       /lib/
 COPY --from=0 /usr/bin/prolog           \
               /usr/bin/swipl            /usr/bin/
 COPY --from=0 /usr/lib/libncursesw.so.6 \
