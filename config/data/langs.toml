@@ -449,7 +449,7 @@ example = '''
 
 [COBOL]
 args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.22 MiB'
+size    = '4.25 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -614,7 +614,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egel', '-' ]
 experiment = 1434
-size       = '7.41 MiB'
+size       = '7.50 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -752,7 +752,7 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '73.1 MiB'
+size    = '78.1 MiB'
 version = 'GNU Fortran 15.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -1275,7 +1275,7 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '86.8 MiB'
+size    = '66.9 MiB'
 version = '5.4.0'
 website = 'https://ocaml.org'
 example = '''
@@ -1297,7 +1297,7 @@ Sys.argv
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '299 MiB'
+size       = '297 MiB'
 version    = '2025-12'
 website    = 'https://odin-lang.org'
 example    = '''
@@ -1476,7 +1476,7 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '17.5 MiB'
+size       = '17.6 MiB'
 version    = '2.2.0'
 website    = 'https://qore.org'
 example    = '''
@@ -1674,7 +1674,7 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '7.43 MiB'
+size    = '7.47 MiB'
 version = 'Chez Scheme 10.3.0'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
@@ -1745,7 +1745,7 @@ SELECT arg FROM argv;
 [Squirrel]
 args       = [ '/usr/bin/squirrel', '-' ]
 experiment = 1598
-size       = '3.96 MiB'
+size       = '4.00 MiB'
 version    = '3.2'
 website    = 'http://squirrel-lang.org'
 example    = '''
@@ -1911,7 +1911,7 @@ for arg in os.args[1..] {
 args       = [ '/usr/bin/vala', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1354
-size       = '99.7 MiB'
+size       = '104 MiB'
 version    = '0.56.18'
 website    = 'https://vala.dev'
 example    = '''
