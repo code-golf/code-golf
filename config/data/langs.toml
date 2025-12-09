@@ -449,7 +449,7 @@ example = '''
 
 [COBOL]
 args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.21 MiB'
+size    = '4.22 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -1275,7 +1275,7 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '65.7 MiB'
+size    = '86.8 MiB'
 version = '5.4.0'
 website = 'https://ocaml.org'
 example = '''
