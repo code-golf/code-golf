@@ -872,7 +872,7 @@ for (arg in args)
 [Harbour]
 args       = [ '/usr/bin/harbour', '-' ]
 experiment = 1614
-size       = '2.33 MiB'
+size       = '2.75 MiB'
 version    = '3.0.0'
 website    = 'https://harbour.github.io'
 example    = '''
