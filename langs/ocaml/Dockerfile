@@ -13,7 +13,6 @@ RUN ./configure               \
     --disable-ocamldoc        \
     --disable-ocamlobjinfo    \
     --disable-ocamltest       \
-    --disable-shared          \
     --disable-stdlib-manpages \
     --disable-systhreads      \
     --enable-static           \

@@ -1275,7 +1275,7 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '66.9 MiB'
+size    = '79.5 MiB'
 version = '5.4.0'
 website = 'https://ocaml.org'
 example = '''
