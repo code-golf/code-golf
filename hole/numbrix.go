@@ -191,9 +191,5 @@ func solveNumbrix(puzzle *[boardSize][boardSize]int) bool {
 
 	puzzle[i][j] = 1
 
-	if dfs(i, j, 2) {
-		return true
-	}
-
-	return false
+	return dfs(i, j, 2)
 }
