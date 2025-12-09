@@ -49,9 +49,9 @@ COPY --from=0 /usr/lib/crt1.o                  \
               /usr/lib/libxml2.so.2            \
               /usr/lib/libz.so.1               \
               /usr/lib/libzstd.so.1            /usr/lib/
-COPY --from=0 /usr/lib/gcc/*/14.2.0/crtbegin.o \
-              /usr/lib/gcc/*/14.2.0/crtend.o   \
-              /usr/lib/gcc/*/14.2.0/libgcc.a   /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/
+COPY --from=0 /usr/lib/gcc/*/15.2.0/crtbegin.o \
+              /usr/lib/gcc/*/15.2.0/crtend.o   \
+              /usr/lib/gcc/*/15.2.0/libgcc.a   /usr/lib/gcc/x86_64-alpine-linux-musl/15.2.0/
 COPY --from=0 /usr/local/lib/odin              /usr/local/bin/
 COPY --from=0 /usr/local/bin/base              /usr/local/bin/base
 COPY --from=0 /usr/local/bin/core              /usr/local/bin/core
