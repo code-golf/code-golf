@@ -645,7 +645,7 @@ preamble = '''
     <li>No new words may be created, either horizontally or vertically, i.e.
         the letters of one word may not be adjacent to the letters of another
         word unless they overlap.
-    <li>Use capital letters for each word and a period for unused boxes.
+    <li>Use capital letters for each word and a period for unused squares.
         Separate everything with spaces.
 </ul>
 
@@ -2430,6 +2430,56 @@ preamble = '''
 name     = 'Morse Encoder'
 synopsis = 'Encode alphanumeric strings into International Morse Code.'
 
+['Multitap Input']
+category = 'Transform'
+experiment = 1952
+links = [
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Multi-tap' },
+]
+data = '''
+{
+    "A": "2", "B": "22", "C": "222",
+	"D": "3", "E": "33", "F": "333",
+	"G": "4", "H": "44", "I": "444",
+	"J": "5", "K": "55", "L": "555",
+	"M": "6", "N": "66", "O": "666",
+	"P": "7", "Q": "77", "R": "777", "S": "7777",
+	"T": "8", "U": "88", "V": "888",
+	"W": "9", "X": "99", "Y": "999", "Z": "9999",
+	" ": "0"
+}'''
+synopsis = 'Convert numeric button presses to text by the multi-tap system.'
+preamble = '''
+<p>
+    Many older mobile phone designs allow text to be entered on a numeric
+    E.161 keypad. The numbers 2-9 are labeled with letters:
+
+<ul>
+    <li>2: ABC
+    <li>3: DEF
+    <li>4: GHI
+    <li>5: JKL
+    <li>6: MNO
+    <li>7: PQRS
+    <li>8: TUV
+    <li>9: WXYZ
+</ul>
+
+<p>
+    Pressing a number key once enters the first letter shown on the button,
+    pressing it twice in a row enters the second letter shown on the button,
+    and so on. Two letters located on the same number key can be entered
+    consecutively by waiting a short period of time between entering each letter.
+    Pressing the 0 key enters a space.
+
+<p>
+    Given a sequence of button presses and pauses (represented by spaces),
+    print the equivalent text. No run of one digit will be longer than the number
+    of letters on that key. Pauses may occur between any two letters, not
+    just those on the same key.
+
+'''
+
 ['Musical Chords']
 category = 'Transform'
 links = [
@@ -3955,12 +4005,13 @@ links = [
 synopsis = 'Print all the n-smooth numbers from 1 to k inclusive.'
 preamble = '''
 <p>
-    An <i>n</i>-smooth number is a positive integer whose prime factors are all
-    less than or equal to <i>n</i>.
+    An <i>n</i>-smooth number is a positive integer whose prime factors are
+    all less than or equal to <i>n</i>.
 
 <p>
-    For each argument <code>𝑛 𝑘</code>, print all the <i>n</i>-smooth numbers
-    from 1 to <i>k</i> inclusive, separated by spaces.
+    Given the arguments <code>𝑛</code> and <code>𝑘</code>, print all the
+    <i>n</i>-smooth numbers from 1 to <i>k</i> inclusive, each on their own
+    line.
 '''
 
 [Snake]
@@ -4202,6 +4253,28 @@ name      = 'Sudoku (Fill-in)'
 redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
 
+['Taxicab Numbers']
+experiment = 914
+category = 'Sequence'
+links = [
+    { name = 'OEIS A001235', url = '//oeis.org/A001235' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Taxicab_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Taxicab_number' },
+]
+synopsis = 'Print all taxicab numbers from 1 to 100,000,000.'
+preamble = '''
+<p>
+    A taxicab number is a number that is expressible as the sum of two cubes in at least two different ways.
+
+<p>
+    For example, <b>1729 = 1<sup>3</sup> + 12<sup>3</sup> = 9<sup>3</sup> + 10<sup>3</sup></b> or
+    <b>4104 = 2<sup>3</sup> + 16<sup>3</sup> = 9<sup>3</sup> + 15<sup>3</sup></b>.
+    
+<p>
+    Print all the taxicab numbers from <b>1</b> to <b>100,000,000</b> inclusive,
+    each on their own line.
+'''
+
 ['Ten-pin Bowling']
 category = 'Gaming'
 links = [
@@ -4360,12 +4433,12 @@ preamble = '''
 '''
 
 ['Tower of Hanoi']
-experiment = 2275
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
 ]
+released = 2025-12-01
 synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle.'
 preamble = '''
 <p>
