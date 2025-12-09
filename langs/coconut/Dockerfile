@@ -1,16 +1,17 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache curl gcc libffi-dev make musl-dev openssl-dev zlib-dev
+RUN apk add --no-cache clang curl llvm-dev make openssl-dev
 
-ENV PYVER=3.13.7 VER=3.1.2
+ENV PYVER=3.13.9 VER=3.1.2
 
 RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
   | tar xJ --strip-components 1
 
-RUN CC='cc' ./configure        \
+RUN CC='clang' ./configure     \
     --disable-test-modules     \
     --prefix=/usr              \
     --with-lto=thin            \
+    --with-tail-call-interp    \
     --without-static-libpython \
  && make -j`nproc` install     \
  && strip /usr/bin/python3.13  \
