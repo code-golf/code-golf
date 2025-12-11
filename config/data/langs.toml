@@ -348,7 +348,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '111 MiB'
-version = 'C# 14.0 on .NET 10.0.0'
+version = 'C# 14.0 on .NET 10.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -674,7 +674,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.0'
+version = 'F# 10.0 on .NET 10.0.1'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -964,7 +964,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '7.69 MiB'
+size    = '7.71 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -1416,7 +1416,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '137 MiB'
-version    = 'PowerShell 7.5.4 on .NET 10.0.0'
+version    = 'PowerShell 7.5.4 on .NET 10.0.1'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1593,7 +1593,7 @@ end
 [Rockstar]
 args      = [ '/usr/bin/rockstarwrapper', '-' ]
 redirects = [ 'rockstar-2' ]
-size      = '3.93 MiB'
+size      = '3.92 MiB'
 version   = '2.0.31'
 website   = 'https://codewithrockstar.com'
 example   = '''
