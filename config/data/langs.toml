@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '75.1 MiB'
+size    = '74.9 MiB'
 version = '1.13.0'
 website = 'https://gleam.run'
 example = '''
@@ -992,7 +992,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.30 MiB'
+size       = '2.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1633,8 +1633,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '406 MiB'
-version = '1.91.1'
+size    = '407 MiB'
+version = '1.92.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1846,7 +1846,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.1 MiB'
+size       = '19.0 MiB'
 version    = '0.17.3'
 website    = 'https://www.uiua.org'
 example    = '''
