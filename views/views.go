@@ -48,9 +48,14 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 			return nil, err
 		}
 
-		// Set the avatar size.
+		// Set the avatar size. Most support "s" and "size", but i.sstatic.net
+		// only supports "s" and cdn.discordapp.com only supports "size".
 		q := u.Query()
-		q.Set("size", strconv.Itoa(size))
+		if u.Host == "cdn.discordapp.com" {
+			q.Set("size", strconv.Itoa(size))
+		} else {
+			q.Set("s", strconv.Itoa(size))
+		}
 		u.RawQuery = q.Encode()
 
 		return u, nil
