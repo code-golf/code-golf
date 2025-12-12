@@ -2,7 +2,7 @@ package hole
 
 import "time"
 
-func dayOfWeek() []Run {
+var _ = answerFunc("day-of-week", func() []Answer {
 	tests := fixedTests("day-of-week")
 
 	var years []int
@@ -26,4 +26,4 @@ func dayOfWeek() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

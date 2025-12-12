@@ -4,32 +4,27 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
 
 // GET /rankings/medals/{hole}/{lang}
 func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
-		Country                             config.NullCountry
-		Name                                string
-		Rank, Diamond, Gold, Silver, Bronze int
-	}
-
 	data := struct {
 		Hole, PrevHole, NextHole *config.Hole
 		HoleID, LangID, Scoring  string
-		Holes                    []*config.Hole
-		Langs                    []*config.Lang
 		Pager                    *pager.Pager
-		Rows                     []row
+		Rows                     []struct {
+			golfer.GolferLink
+
+			Unicorn, Diamond, Gold, Silver, Bronze int
+			Rank, Total                            int
+		}
 	}{
 		HoleID:  param(r, "hole"),
-		Holes:   config.HoleList,
 		LangID:  param(r, "lang"),
-		Langs:   config.LangList,
 		Pager:   pager.New(r),
-		Rows:    make([]row, 0, pager.PerPage),
 		Scoring: param(r, "scoring"),
 	}
 
@@ -44,9 +39,11 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
-	rows, err := session.Database(r).Query(
+	if err := session.Database(r).Select(
+		&data.Rows,
 		`WITH counts AS (
 		    SELECT user_id,
+		           COUNT(*) FILTER (WHERE medal = 'unicorn') unicorn,
 		           COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
 		           COUNT(*) FILTER (WHERE medal = 'gold'   ) gold,
 		           COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
@@ -59,49 +56,23 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		) SELECT RANK() OVER(
 		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
 		         ),
-		         country_flag,
-		         login,
-		         diamond,
-		         gold,
-		         silver,
-		         bronze,
-		         COUNT(*) OVER()
+		         unicorn, diamond, gold, silver, bronze,
+		         avatar_url, country_flag, name, COUNT(*) OVER() total
 		    FROM counts
-		    JOIN users ON id = user_id
-		ORDER BY rank, login
+		    JOIN golfers_with_avatars ON id = user_id
+		ORDER BY rank, name
 		   LIMIT $4 OFFSET $5`,
 		data.HoleID,
 		data.LangID,
 		data.Scoring,
 		pager.PerPage,
 		data.Pager.Offset,
-	)
-	if err != nil {
+	); err != nil {
 		panic(err)
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var r row
-
-		if err := rows.Scan(
-			&r.Rank,
-			&r.Country,
-			&r.Name,
-			&r.Diamond,
-			&r.Gold,
-			&r.Silver,
-			&r.Bronze,
-			&data.Pager.Total,
-		); err != nil {
-			panic(err)
-		}
-
-		data.Rows = append(data.Rows, r)
-	}
-
-	if err := rows.Err(); err != nil {
-		panic(err)
+	if len(data.Rows) > 0 {
+		data.Pager.Total = data.Rows[0].Total
 	}
 
 	if data.Pager.Calculate() {
@@ -126,7 +97,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		description += " in " + data.Scoring
 	}
 
-	description += "."
+	description += ". Ranked by golds, then diamonds, then silvers, then bronzes."
 
 	render(w, r, "rankings/medals", data, "Rankings: Medals", description)
 }

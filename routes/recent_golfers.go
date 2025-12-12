@@ -5,67 +5,41 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // GET /recent/golfers
 func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
-	type golfer struct {
-		Cheevos int
-		Country config.NullCountry
-		Name    string
+	var data []struct {
+		golfer.GolferLink
+
+		Cheevos config.Cheevos
 		Date    time.Time
-		Langs   []string
+		Langs   config.Langs
 	}
 
-	data := struct {
-		Cheevos int
-		Golfers []golfer
-	}{len(config.CheevoList), make([]golfer, 0, pager.PerPage)}
-
-	rows, err := session.Database(r).Query(
+	if err := session.Database(r).Select(
+		&data,
 		`WITH langs AS (
 		    SELECT user_id, array_agg(DISTINCT lang) langs
 		      FROM solutions
 		     WHERE NOT failing
 		  GROUP BY user_id
-		), recent AS (
-		    SELECT user_id, COUNT(*) cheevos, MIN(earned) date
-		      FROM trophies
+		), cheevos AS (
+		    SELECT user_id, array_agg(cheevo ORDER BY cheevo) cheevos, MIN(earned) date
+		      FROM cheevos
 		  GROUP BY user_id
 		  ORDER BY date DESC
 		     LIMIT $1
-		)  SELECT country_flag, cheevos, date, login, langs
-		     FROM recent
-		     JOIN users ON id = user_id
+		)  SELECT avatar_url, country_flag, cheevos, date, name, langs
+		     FROM cheevos
+		     JOIN golfers_with_avatars ON id = user_id
 		LEFT JOIN langs USING (user_id)
 		 ORDER BY date DESC`,
 		pager.PerPage,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var g golfer
-
-		if err := rows.Scan(
-			&g.Country,
-			&g.Cheevos,
-			&g.Date,
-			&g.Name,
-			pq.Array(&g.Langs),
-		); err != nil {
-			panic(err)
-		}
-
-		data.Golfers = append(data.Golfers, g)
-	}
-
-	if err := rows.Err(); err != nil {
+	); err != nil {
 		panic(err)
 	}
 

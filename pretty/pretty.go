@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// Bytes returns a string of integer bytes formatted as B/KiB/MiB.
+// Bytes returns a string of integer bytes formatted as B/KiB/MiB/GiB.
 func Bytes(b int) string {
 	const unit = 1024
 	if b < unit {
@@ -19,7 +19,7 @@ func Bytes(b int) string {
 		exp++
 	}
 
-	return fmt.Sprintf("%.1f %ciB", float64(b)/float64(div), "KM"[exp])
+	return fmt.Sprintf("%.1f %ciB", float64(b)/float64(div), "KMG"[exp])
 }
 
 // Comma returns a string of an integer with thousand separators.
@@ -32,6 +32,14 @@ func Comma(i int) string {
 	default:
 		return fmt.Sprint(i)
 	}
+}
+
+// Duration returns a HTML <time> tag of a time.Duration in milliseconds.
+func Duration(d time.Duration) template.HTML {
+	return template.HTML(fmt.Sprintf(
+		`<time datetime="PT%gS">%sms</time>`,
+		d.Seconds(), Comma(int(d.Milliseconds()))),
+	)
 }
 
 // Ordinal returns the ordinal of an integer.
@@ -60,11 +68,11 @@ func Ordinal(i int) string {
 //	  2 mins ago
 //	         ...
 //	 59 mins ago
-//	 an hour ago
+//	119 mins ago
 //	 2 hours ago
 //	         ...
 //	23 hours ago
-//	   a day ago
+//	47 hours ago
 //	  2 days ago
 //	         ...
 //	 28 days ago
@@ -78,7 +86,7 @@ func Time(t time.Time) template.HTML {
 
 	sb.WriteString(t.Format(
 		"<time datetime=" + time.RFC3339Nano +
-			` title="2 Jan 2006 15:04:05.000000 MST">`,
+			` title="2 Jan 2006 15:04:05.999999 MST">`,
 	))
 
 	diff := time.Until(t)
@@ -91,14 +99,10 @@ func Time(t time.Time) template.HTML {
 		switch {
 		case diff < 2*time.Minute:
 			sb.WriteString("a min")
-		case diff < time.Hour:
-			fmt.Fprintf(&sb, "%d mins", diff/time.Minute)
 		case diff < 2*time.Hour:
-			sb.WriteString("an hour")
-		case diff < day:
-			fmt.Fprintf(&sb, "%d hours", diff/time.Hour)
+			fmt.Fprintf(&sb, "%d mins", diff/time.Minute)
 		case diff < 2*day:
-			sb.WriteString("a day")
+			fmt.Fprintf(&sb, "%d hours", diff/time.Hour)
 		default:
 			fmt.Fprintf(&sb, "%d days", diff/day)
 		}

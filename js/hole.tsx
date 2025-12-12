@@ -1,30 +1,32 @@
-import { EditorView }   from './_codemirror';
-import diffView         from './_diff';
-import { $, $$, comma } from './_util';
+import { EditorView }    from './_codemirror';
+import diffView          from './_diff';
+import { $, $$, amount } from './_util';
 import {
-    init, langs, hole, setSolution,
+    init, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyJSONBtn, initOutputDiv, getScorings, replaceUnprintablesInOutput,
+    initDeleteBtn, initCopyButtons, getScorings,
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
+    Scorings,
 } from './_hole-common';
+import UnprintableElement from './_unprintable';
 
 const editor = new EditorView({
     dispatch: tr => {
         const result = editor.update([tr]) as unknown;
 
         const code = tr.state.doc.toString();
-        const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
-        const scoringKeys = ['byte', 'char'] as const;
+        const scorings: {total: Scorings, selection?: Scorings} = getScorings(tr, editor);
+        const scoringKeys = ['byte', 'char', 'stroke'] as const;
 
         $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
 
         function formatScore(scoring: any) {
             return scoringKeys
                 .filter(s => s in scoring)
-                .map(s => `${comma(scoring[s])} ${s}${scoring[s] != 1 ? 's' : ''}`)
+                .map(s => amount(scoring[s], s))
                 .join(', ');
         }
 
@@ -43,7 +45,6 @@ const editor = new EditorView({
 editor.contentDOM.setAttribute('data-gramm', 'false');  // Disable Grammarly.
 
 init(false, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
-initOutputDiv($('#out div'));
 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
@@ -59,8 +60,8 @@ const closuredSubmit = () => submit(editor, updateReadonlyPanels);
 $('#runBtn').onclick = closuredSubmit;
 window.onkeydown = ctrlEnter(closuredSubmit);
 
-initCopyJSONBtn($('#copy'));
-initDeleteBtn($('#deleteBtn'), langs);
+initCopyButtons($$('[data-copy]'));
+initDeleteBtn($('#deleteBtn'));
 
 $$('#rankingsView a').forEach(a => a.onclick = e => {
     e.preventDefault();
@@ -85,11 +86,10 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
 
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
-    $('#out div').innerText = data.Out;
-    $('#out div').innerHTML = replaceUnprintablesInOutput($('#out div').innerHTML);
+    $('#out div').replaceChildren(UnprintableElement.escape(data.Out));
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
-    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.MultisetDelimiter, data.ItemDelimiter);
+    const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.OutputDelimiter, data.MultisetItemDelimiter);
     $('#diff-content').replaceChildren(diff);
     $('#diff').classList.toggle('hide', !diff);
 }

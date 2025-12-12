@@ -40,12 +40,12 @@ let compile(checker: FSharpChecker) (codeFile: string) (assemblyPath: string) =
             "-r:/usr/bin/netstandard.dll";
             "--nowin32manifest";
         |]
-    let info, result =
+    let info, ex =
         checker.Compile(compileArgs)
         |> Async.RunSynchronously
     info |> Seq.iter (fprintfn stderr "%O")
-    if result <> 0 then
-        Environment.Exit result
+    if ex.IsSome then
+        Environment.Exit 1
 
 [<EntryPoint>]
 let main args =

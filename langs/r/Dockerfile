@@ -1,40 +1,73 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache R=4.4.0-r0 build-base curl perl
+RUN apk add --no-cache build-base bzip2-dev curl curl-dev gettext-dev \
+                       gfortran pcre2-dev perl tzdata xz-dev zlib-dev
 
-RUN curl https://busybox.net/downloads/busybox-1.36.1.tar.bz2 | tar xj \
- && mv busybox-* busybox
+ENV VER=4.5.2
 
-COPY busybox-config busybox/.config
+RUN curl -#L https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz \
+  | tar xJ --strip-components 1
 
-RUN cd busybox && make install
+RUN ./configure                      \
+    --disable-byte-compiled-packages \
+    --disable-java                   \
+    --enable-R-shlib                 \
+    --enable-fast-install            \
+    --enable-lto                     \
+    --prefix=/usr                    \
+    --without-readline               \
+    --without-recommended-packages   \
+    --without-x                      \
+ && make -j`nproc` && make install
+
+RUN strip /usr/lib/R/lib/libR.so     \
+          /usr/lib/R/lib/libRblas.so \
+          /usr/lib/R/lib/libRlapack.so
+
+WORKDIR /busybox
+
+RUN curl -#L https://busybox.net/downloads/busybox-1.36.1.tar.bz2 \
+  | tar xj --strip-components 1
+
+COPY busybox-config .config
+
+RUN make install
 
 FROM codegolf/lang-base
 
-COPY --from=0 /busybox/_install/bin      /bin
-COPY --from=0 /etc/R                     /etc/R
-COPY --from=0 /lib/ld-musl-x86_64.so.1   \
-              /lib/libz.so.1             /lib/
-COPY --from=0 /busybox/_install/usr/bin  /usr/bin
-COPY --from=0 /usr/bin/R                 \
-              /usr/bin/Rscript           /usr/bin/
-COPY --from=0 /usr/lib/R                 /usr/lib/R
-COPY --from=0 /usr/lib/libbz2.so.1       \
-              /usr/lib/libdeflate.so.0   \
-              /usr/lib/libgcc_s.so.1     \
-              /usr/lib/libgfortran.so.5  \
-              /usr/lib/libgomp.so.1      \
-              /usr/lib/libicudata.so.74  \
-              /usr/lib/libicui18n.so.74  \
-              /usr/lib/libicuuc.so.74    \
-              /usr/lib/liblzma.so.5      \
-              /usr/lib/libncursesw.so.6  \
-              /usr/lib/libopenblas.so.3  \
-              /usr/lib/libpcre2-8.so.0   \
-              /usr/lib/libquadmath.so.0  \
-              /usr/lib/libreadline.so.8  \
-              /usr/lib/libstdc++.so.6    /usr/lib/
+COPY --from=0 /busybox/_install/bin        /bin
+COPY --from=0 /lib/ld-musl-*.so.1          /lib/
+COPY --from=0 /busybox/_install/usr/bin    /usr/bin
+COPY --from=0 /usr/bin/printf              /usr/bin/
+COPY --from=0 /usr/bin/Rscript             /usr/bin/R
+COPY --from=0 /usr/lib/libbz2.so.1         \
+              /usr/lib/libgcc_s.so.1       \
+              /usr/lib/libgfortran.so.5    \
+              /usr/lib/libgomp.so.1        \
+              /usr/lib/libintl.so.8        \
+              /usr/lib/liblzma.so.5        \
+              /usr/lib/libpcre2-8.so.0     \
+              /usr/lib/libquadmath.so.0    \
+              /usr/lib/libz.so.1           \
+              /usr/lib/libzstd.so.1        /usr/lib/
+COPY --from=0 /usr/lib/R/bin/R             \
+              /usr/lib/R/bin/Rscript       /usr/lib/R/bin/
+COPY --from=0 /usr/lib/R/bin/exec/R        /usr/lib/R/bin/exec/
+COPY --from=0 /usr/lib/R/etc/Renviron      \
+              /usr/lib/R/etc/ldpaths       \
+              /usr/lib/R/etc/repositories  /usr/lib/R/etc/
+COPY --from=0 /usr/lib/R/lib/libR.so       \
+              /usr/lib/R/lib/libRblas.so   \
+              /usr/lib/R/lib/libRlapack.so /usr/lib/R/lib/
+COPY --from=0 /usr/lib/R/library/base      /usr/lib/R/library/base
+COPY --from=0 /usr/lib/R/library/compiler  /usr/lib/R/library/compiler
+COPY --from=0 /usr/lib/R/library/datasets  /usr/lib/R/library/datasets
+COPY --from=0 /usr/lib/R/library/grDevices /usr/lib/R/library/grDevices
+COPY --from=0 /usr/lib/R/library/graphics  /usr/lib/R/library/graphics
+COPY --from=0 /usr/lib/R/library/methods   /usr/lib/R/library/methods
+COPY --from=0 /usr/lib/R/library/stats     /usr/lib/R/library/stats
+COPY --from=0 /usr/lib/R/library/utils     /usr/lib/R/library/utils
 
-ENTRYPOINT ["Rscript"]
+ENTRYPOINT ["R"]
 
 CMD ["--version"]

@@ -1,36 +1,34 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
-<svg>{{ range .Langs }}{{ svg .ID }}{{ end }}</svg>
-
 <main>
-    <table class="nowrap-first-second sticky">
+    <table class="nowrap-first-second-third sticky">
         <thead>
             <tr>
                 <th>Golfer
                 <th>Languages
-                <th class="right wide">Cheevos
+                <th class=wide>Cheevos
                 <th class=right>Date
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
-        {{ range .Data.Golfers }}
+        {{ range .Data }}
             <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ template "golfer-link" . }}
                 <td>
                     <div>
-                    {{ range .Langs }}
-                        {{ with index $.Langs . }}
-                            <svg>
-                                <title>{{ .Name }}</title>
-                                <use href="#{{ .ID }}"/>
-                            </svg>
-                        {{ end }}
+                    {{ range .Langs }}{{ svg .ID "title" .Name }}{{ end }}
+                    </div>
+                <td class=wide>
+                    <div>
+                    {{ range .Cheevos }}
+                        <span title="{{ .Name }} - {{ .Description }}">
+                            {{ .Emoji }}
+                        </span>
                     {{ end }}
                     </div>
-                <td class="right wide">{{ .Cheevos }} / {{ $.Data.Cheevos }}
-                <td class=right>{{ time .Date }}
+                <td class=right>{{ time (.Date.In $.Location) }}
         {{ end }}
     </table>
 </main>

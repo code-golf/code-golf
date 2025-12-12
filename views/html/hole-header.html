@@ -1,22 +1,48 @@
+<div class=hide>{{ svg "flask" "id" "flask" }}</div><!-- For JS lang picker -->
+
+{{ if .Data.Hole.Experiment }}
+    <div {{ if eq .Data.Hole.ID "tutorial" }} class=info {{ else }} class=alert {{ end }}>
+        {{ if eq .Data.Hole.ID "tutorial" }}
+            {{ svg "info-circle" }}
+            <p>
+                <b>Tutorial</b> is a rather unique hole. It's designed to be very
+                simple and a good introduction for new golfers. It won't
+                contribute to scoring.
+        {{ else }}
+            {{ svg "flask" }}
+            <p>
+                This hole is experimental, passing requirements may change.
+                Solutions won't contribute to scoring until the hole goes live.
+        {{ end }}
+    {{ if ne .Data.Hole.Experiment -1 }}
+        <p>
+            Please leave feedback on the
+            <a href="//github.com/code-golf/code-golf/issues/{{ .Data.Hole.Experiment }}">
+                GitHub issue</a>.
+    {{ end }}
+    </div>
+{{ else if not .Golfer }}
+    <div class=alert>
+        {{ svg "exclamation" }}
+        <p>
+            Please
+            <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
+            in order to save solutions and appear on the leaderboards.
+            New here? Check out the <a href=tutorial>Tutorial hole</a>.
+    </div>
+{{ end }}
+
 <header id=page-header>
 {{ with .Data.Authors }}
     <dialog id=authors-dialog>
         <div>
             <h1>{{ $.Data.Hole.Name }} Authors</h1>
-            <ul>
-            {{ range . }}
-                <li>
-                    <a href="/golfers/{{ . }}">
-                        <img src="/golfers/{{ . }}/avatar/48">
-                        {{ . }}
-                    </a>
-            {{ end }}
-            </ul>
+            <ul>{{ range . }}<li>{{ template "golfer-link" . }}{{ end }}</ul>
         </div>
     </dialog>
     <button data-dialog=authors-dialog id=authors-btn>
     {{ range . }}
-        <img src="/golfers/{{ . }}/avatar/72">
+        <img src="{{ avatar .AvatarURL 72 }}">
     {{ end }}
     </button>
 {{ end }}

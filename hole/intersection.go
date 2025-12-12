@@ -52,7 +52,7 @@ func boxGen() bbox {
 	}
 }
 
-func intersection() []Run {
+var _ = answerFunc("intersection", func() []Answer {
 	var tests []test
 
 	//// default cases
@@ -139,11 +139,11 @@ func intersection() []Run {
 						(y == 5 && h > 1) || (y == 6 && h > 1) {
 						continue
 					}
-					if rand.Float32() > 0.5 { // randomly add test ?
+					if randBool() { // randomly add test ?
 						b := bbox{x: x, y: y, w: w, h: h}
 
 						var in string
-						if rand.Float32() > 0.5 { // randomly flip input
+						if randBool() { // randomly flip input
 							in = b.String() + " " + strbigbox
 						} else {
 							in = strbigbox + " " + b.String()
@@ -160,4 +160,4 @@ func intersection() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

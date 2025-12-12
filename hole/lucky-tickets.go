@@ -58,7 +58,7 @@ func sumDigits(number, base int64) (result int64) {
 	return result
 }
 
-func luckyTickets() []Run {
+var _ = answerFunc("lucky-tickets", func() []Answer {
 	var tickets [40]ticket
 
 	// Add all fixed test cases.
@@ -74,7 +74,7 @@ func luckyTickets() []Run {
 		halfValue := iPow(int64(base), int64(digits/2))
 		maxSum := (base - 1) * digits / 2
 		counts := make([]int64, maxSum+1)
-		for j := int64(0); j < halfValue; j++ {
+		for j := range halfValue {
 			counts[sumDigits(j, int64(base))]++
 		}
 
@@ -99,4 +99,4 @@ func luckyTickets() []Run {
 
 	const argc = 20 // Preserve original argc
 	return outputTests(tests[:argc], tests[len(tests)-argc:])
-}
+})

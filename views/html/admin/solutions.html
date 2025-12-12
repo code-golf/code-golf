@@ -15,6 +15,7 @@
             <option value={{ .ID }}
                 {{ if eq .ID ($.Request.FormValue "hole") }}selected{{ end }}>
                 {{ .Name }}
+                {{ if .Experiment }}(exp.){{ end }}
         {{ end }}
         </select>
 
@@ -25,6 +26,7 @@
             <option value={{ .ID }}
                 {{ if eq .ID ($.Request.FormValue "lang") }}selected{{ end }}>
                 {{ .Name }}
+                {{ if .Experiment }}(exp.){{ end }}
         {{ end }}
         </select>
 
@@ -36,9 +38,13 @@
         <input {{ if eq "on" (.Request.FormValue "failing") }}checked{{ end }}
             id=failing name=failing type=checkbox>
 
-        <label for=failing>No New Failures</label>
+        <label for=no-new-failures>No New Failures</label>
         <input {{ if eq "on" (.Request.FormValue "no-new-failures") }}checked{{ end }}
             id=no-new-failures name=no-new-failures type=checkbox>
+
+        <label for=old-lang-digests>Old Lang Digests</label>
+        <input {{ if eq "on" (.Request.FormValue "old-lang-digests") }}checked{{ end }}
+            id=old-lang-digests name=old-lang-digests type=checkbox>
 
         <label for=tested-from>Last Tested</label>
         <span>

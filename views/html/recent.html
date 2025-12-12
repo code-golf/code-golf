@@ -10,7 +10,7 @@
         </a>
         <a class="btn purple"
             href='/{{ .Data.Hole.ID }}{{ if ne .Data.LangID "all" }}#{{ .Data.LangID }}{{ end }}'>
-            {{ svg "play-light" }} Play Hole
+            {{ svg "play" }} Play Hole
         </a>
         <a class="btn orange"
             href="/{{ .Name }}/{{ .Data.NextHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
@@ -22,15 +22,19 @@
 </h1>
 
 <nav class=tabs>
-    <a {{ if ne .Path "/recent/golfers" }}
-        href=/recent/golfers
-    {{ end }}>
+    <a {{ if hasPrefix .Path "/recent/cheevos/" }} class=on {{ end }}
+        href=/recent/cheevos/all>
+        <span class=wide>Achievements</span>
+        <span class=thin>Cheevos</span>
+    </a>
+
+    <a {{ if eq .Path "/recent/golfers" }} class=on {{ end }}
+        href=/recent/golfers>
         Golfers
     </a>
 
-    <a {{ if not (hasPrefix .Path "/recent/solutions/") }}
-        href=/recent/solutions/all/all/bytes
-    {{ end }}>
+    <a {{ if hasPrefix .Path "/recent/solutions/" }} class=on {{ end }}
+        href=/recent/solutions/all/all/bytes>
         Solutions
     </a>
 </nav>

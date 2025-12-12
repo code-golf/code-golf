@@ -10,7 +10,7 @@
         </a>
         <a class="btn purple"
             href='/{{ .Data.Hole.ID }}{{ if ne .Data.LangID "all" }}#{{ .Data.LangID }}{{ end }}'>
-            {{ svg "play-light" }} Play Hole
+            {{ svg "play" }} Play Hole
         </a>
         <a class="btn orange"
             href="/{{ .Name }}/{{ .Data.NextHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
@@ -24,39 +24,29 @@
 <p>{{ .Description }}
 
 <nav class=tabs>
-    <a {{ if not (hasPrefix .Path "/rankings/cheevos/") }}
-        href=/rankings/cheevos/all
-    {{ end }}>
-        Cheevos
+    <a {{ if hasPrefix .Path "/rankings/cheevos/" }} class=on {{ end }}
+        href=/rankings/cheevos/all>
+        <span class=wide>Achievements</span>
+        <span class=thin>Cheevos</span>
     </a>
 
-    <a {{ if not (hasPrefix .Path "/rankings/holes/") }}
-        href=/rankings/holes/all/all/bytes
-    {{ end }}>
+    <a {{ if hasPrefix .Path "/rankings/holes/" }} class=on {{ end }}
+        href=/rankings/holes/all/all/bytes>
         Holes
     </a>
 
-    <a {{ if not (hasPrefix .Path "/rankings/recent-holes/") }}
-        href=/rankings/recent-holes/all/bytes
-    {{ end }}>
-        Recent Holes
+    <a {{ if hasPrefix .Path "/rankings/langs/" }} class=on {{ end }}
+        href=/rankings/langs/all/bytes>
+        Lang<span class=wide>uage</span>s
     </a>
 
-    <a {{ if not (hasPrefix .Path "/rankings/langs/") }}
-        href=/rankings/langs/all/bytes
-    {{ end }}>
-        Langs
-    </a>
-
-    <a {{ if not (hasPrefix .Path "/rankings/medals/") }}
-        href=/rankings/medals/all/all/all
-    {{ end }}>
+    <a {{ if hasPrefix .Path "/rankings/medals/" }} class=on {{ end }}
+        href=/rankings/medals/all/all/all>
         Medals
     </a>
 
-    <a {{ if not (hasPrefix .Path "/rankings/misc/") }}
-        href=/rankings/misc/diamond-deltas
-    {{ end }}>
-        Misc
+    <a {{ if hasPrefix .Path "/rankings/misc/" }} class=on {{ end }}
+        href=/rankings/misc/diamond-deltas>
+        Misc<span class=wide>ellaneous</span>
     </a>
 </nav>

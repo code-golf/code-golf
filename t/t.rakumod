@@ -24,7 +24,14 @@ sub dbh is export {
 # Create a new Golfer, log them in, and return the session ID.
 # If called with no DB handle then it'll implicitly connect & truncate tables.
 sub new-golfer(:$dbh = dbh, :$id = 1, :$name = 'Bob') is export {
-    $dbh.execute('INSERT INTO users (id, login) VALUES ($1, $2)', $id, $name);
+    $dbh.execute('INSERT INTO users (id, name) VALUES ($1, $2)', $id, $name);
+
+    $dbh.execute(
+        ｢INSERT INTO connections (id, connection, user_id, username)
+              VALUES             ($1,   'github',      $2,       $3)｣,
+        $id, $id, $name,
+    );
+
     $dbh.execute('INSERT INTO sessions (user_id) VALUES ($1) RETURNING id', $id).row.head;
 }
 
@@ -32,7 +39,7 @@ sub new-golfer(:$dbh = dbh, :$id = 1, :$name = 'Bob') is export {
 sub post-solution(:$code, :$hole = 'fizz-buzz', :$lang = 'raku', :$session = '') is export {
     $client.post(
         'https://app/solution',
-        content => to-json({ Code => $code, Hole => $hole, Lang => $lang }),
+        content => to-json({ :$code, :$hole, :$lang }),
         headers => { cookie => "__Host-session=$session" },
     )<content>.decode.&from-json;
 }

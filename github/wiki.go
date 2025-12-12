@@ -62,12 +62,18 @@ func Wiki(db *sqlx.DB) error {
 			slug = "langs/" + slug
 			section = "Languages"
 			name = lang.Name
+		} else if slug == "constraint-specifications" {
+			name = "Constraint Specifications"
 		} else if slug == "hole-specific-tips" {
 			name = "Hole Specific Tips"
+		} else if slug == "home" {
+			slug = ""
 		} else if slug == "other-sites" {
 			name = "Other Sites"
 		} else if slug == "spigot-algorithms" {
 			name = "Spigot Algorithms"
+		} else if slug == "tutorial" {
+			name = "Tutorial"
 		} else {
 			continue
 		}

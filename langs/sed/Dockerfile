@@ -1,17 +1,21 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev
 
-RUN curl https://ftp.gnu.org/gnu/sed/sed-4.9.tar.xz | tar xJ
+ENV LDFLAGS='-static' VER=4.9
 
-RUN cd sed-4.9                                 \
- && ./configure --enable-lto LDFLAGS="-static" \
- && make                                       \
- && strip sed/sed
+RUN curl -#L https://ftpmirror.gnu.org/gnu/sed/sed-$VER.tar.xz \
+  | tar xJ --strip-components 1
 
-FROM codegolf/lang-base-no-proc
+RUN ./configure   \
+    --enable-lto  \
+    --prefix=/usr \
+ && make install  \
+ && strip /usr/bin/sed
 
-COPY --from=0 /sed-4.9/sed/sed /usr/bin/
+FROM codegolf/lang-base
+
+COPY --from=0 /usr/bin/sed /usr/bin/
 
 ENTRYPOINT ["sed"]
 

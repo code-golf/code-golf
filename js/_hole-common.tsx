@@ -1,18 +1,46 @@
-import { ASMStateField }                       from '@defasm/codemirror';
-import { $, $$, byteLen, charLen, comma, ord } from './_util';
-import { Vim }                                 from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions } from './_codemirror';
-import LZString                                from 'lz-string';
+import { ASMStateField }                               from '@defasm/codemirror';
+import { $, $$, avatar, byteLen, charLen, comma, ord, strokeLen } from './_util';
+import { Vim }                                         from '@replit/codemirror-vim';
+import { EditorState, EditorView, extensions }         from './_codemirror';
+import LZString                                        from 'lz-string';
+import { getAllowedStrokes }                           from './lang-allowed-strokes';
+
+interface Lang {
+    assembly:   boolean,
+    example:    string,
+    experiment: number,
+    id:         string,
+    'logo-url': string,
+    name:       string,
+};
+
+// The currently selected language, updated by onhashchange.
+let currentLang: Lang;
+let lang: string = '';  // FIXME Legacy name for currentLang.id, remove uses.
 
 let tabLayout: boolean = false;
 
 const langWikiCache: Record<string, string | null> = {};
 async function getLangWikiContent(lang: string): Promise<string> {
     if (!(lang in langWikiCache)) {
-        const resp  = await fetch(`/api/wiki/langs/${lang}`);
-        langWikiCache[lang] = resp.status === 200 ? (await resp.json()).content : null;
+        langWikiCache[lang] = await _getLangWikiContent(lang);
     }
     return langWikiCache[lang] ?? 'No data for current lang.';
+}
+async function _getLangWikiContent(lang: string): Promise<string | null> {
+    const resp  = await fetch(`/api/wiki/langs/${lang}`);
+    const {content, title} = await resp.json() as {content: string, title: string};
+    if (resp.status !== 200) {
+        return null;
+    }
+    const header = (<p id={`lang-wiki-${lang}`}>
+        Wiki: {title}{' '}
+        <a href={`/wiki/langs/${lang}`} target="_blank">
+            (open in new tab)
+        </a>
+        .
+    </p>).outerHTML;
+    return header + content;
 }
 
 const holeLangNotesCache: Record<string, string | null> = {};
@@ -24,16 +52,8 @@ async function getHoleLangNotesContent(lang: string): Promise<string> {
     return holeLangNotesCache[lang] ?? '';
 }
 
-const renamedHoles: Record<string, string> = {
-    'billiard':                      'billiards',
-    'eight-queens':                  'n-queens',
-    'factorial-factorisation-ascii': 'factorial-factorisation',
-    'grid-packing':                  'css-grid',
-};
-
-const renamedLangs: Record<string, string> = {
-    perl6: 'raku',
-};
+const renamedHoles: Record<string, string> = JSON.parse($('#renamed-holes').innerText);
+const renamedLangs: Record<string, string> = JSON.parse($('#renamed-langs').innerText);
 
 export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSolution: any, updateReadonlyPanels: any, getEditor: () => any) {
     tabLayout = _tabLayout;
@@ -41,13 +61,14 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
     if (vimMode) Vim.defineEx('write', 'w', closuredSubmit);
 
     (onhashchange = async () => {
-        const hashLang = location.hash.slice(1) || localStorage.getItem('lang');
+        // Kick 'em to Python if we don't know the chosen/saved language.
+        const langID = location.hash.slice(1) || localStorage.getItem('lang');
+        currentLang = langs[langID ?? ''] ?? langs['python'];
 
-        // Kick 'em to Python if we don't know the chosen language, or if there is no given language.
-        lang = hashLang && langs[hashLang] ? hashLang : 'python';
+        lang = currentLang.id;
 
         // Assembly only has bytes.
-        if (lang == 'assembly')
+        if (currentLang.assembly)
             setSolution(0);
 
         localStorage.setItem('lang', lang);
@@ -86,44 +107,29 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
     }
 }
 
-export function initDeleteBtn(deleteBtn: HTMLElement | undefined, langs: any) {
+export function initDeleteBtn(deleteBtn: HTMLElement | undefined) {
     deleteBtn?.addEventListener('click', () => {
-        $('#delete-dialog b').innerText = langs[lang].name;
+        $('#delete-dialog b').innerText = currentLang.name;
         $<HTMLInputElement>('#delete-dialog [name=lang]').value = lang;
         $<HTMLInputElement>('#delete-dialog [name=text]').value = '';
         $<HTMLDialogElement>('#delete-dialog').showModal();
     });
 }
 
-export function initOutputDiv(outputDiv: HTMLElement | undefined) {
-    outputDiv?.addEventListener('copy', event => {
-        const selection = document.getSelection();
-        if (selection?.rangeCount !== undefined && selection.rangeCount > 0) {
-            let text = '';
-            for (let index = 0; index < selection.rangeCount; index++) {
-                text += replacePlaceholdersInRange(selection, selection.getRangeAt(index));
-            }
-            event.clipboardData?.setData('text/plain', text);
-            event.preventDefault();
-        }
-    });
+export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
+    for (const btn of buttons)
+        btn.onclick = () =>
+            navigator.clipboard.writeText(btn.dataset.copy!);
 }
 
-export function initCopyJSONBtn(copyBtn: HTMLElement | undefined) {
-    copyBtn?.addEventListener('click', () =>
-        navigator.clipboard.writeText($('#data').innerText));
-}
-
-export const langs = JSON.parse($('#langs').innerText);
+const langs: Record<string, Lang> = JSON.parse($('#languages').innerText);
 const sortedLangs  =
-    Object.values(langs).sort((a: any, b: any) => a.name.localeCompare(b.name));
-let lang: string = '';
+    Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
 
 export function getLang() {
     return lang;
 }
 
-const experimental = JSON.parse($('#experimental').innerText);
 export const hole         = decodeURI(location.pathname.slice(1));
 const scorings     = ['Bytes', 'Chars'];
 const solutions    = JSON.parse($('#solutions').innerText);
@@ -142,12 +148,12 @@ let hideDeleteBtn: boolean = false;
 // The savedInDB state is used to avoid saving solutions in localStorage when
 // those solutions match the solutions in the database. It's used to avoid
 // restoring a solution from localStorage when the user has improved that
-// solution on a different browser. Assume the user is logged-in by default
-// for non-experimental holes. At this point, it doesn't matter whether the
+// solution on a different browser. Assume the user is logged-in by default.
+// At this point, it doesn't matter whether the
 // user is actually logged-in, because solutions dictionaries will be empty
 // for users who aren't logged-in, so the savedInDB state won't be used.
 // By the time they are non-empty, the savedInDB state will have been updated.
-let savedInDB = !experimental;
+let savedInDB = true;
 
 export function getSavedInDB() {
     return savedInDB;
@@ -195,9 +201,9 @@ export function setState(code: string, editor: EditorView) {
                 extensions[lang as keyof typeof extensions] ?? [],
                 // These languages shouldn't match brackets.
                 ['fish', 'hexagony'].includes(lang)
-                    ? [] : extensions.bracketMatching,
+                    ? extensions.zeroIndexedLineNumbers : [extensions.lineNumbers, extensions.bracketMatching],
                 // These languages shouldn't wrap lines.
-                ['assembly', 'fish', 'hexagony'].includes(lang)
+                (currentLang.assembly || ['fish', 'hexagony'].includes(lang))
                     ? [] : EditorView.lineWrapping,
             ],
         }),
@@ -214,17 +220,21 @@ export function setCode(code: string, editor: EditorView | null) {
 function updateLangPicker() {
     const selectNodes: Node[] = [];
     const langSelect = <select><option value="">Other</option></select>;
+    const experimentalLangGroup = <optgroup label="Experimental"></optgroup>;
     let currentLangUnused = false;
 
-    for (const l of sortedLangs as any[]) {
+    for (const l of sortedLangs) {
         if (!getSolutionCode(l.id, 0) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
-            const suffix = l.experiment ? ' (exp.)' : '';
-            langSelect.appendChild(<option value={l.id}>{l.name}{suffix}</option>);
+            const parent = l.experiment ? experimentalLangGroup : langSelect;
+            parent.appendChild(<option value={l.id}>{l.name}</option>);
             currentLangUnused ||= lang == l.id;
         }
     }
+
+    if (experimentalLangGroup.childElementCount > 0)
+        langSelect.appendChild(experimentalLangGroup);
 
     if (langSelect.childElementCount > 1) {
         langSelect.addEventListener('change', (e: Event) => {
@@ -243,10 +253,10 @@ function updateLangPicker() {
     const picker = $('#picker');
     const icon   = picker.dataset.style?.includes('icon')  ?? true;
     const label  = picker.dataset.style?.includes('label') ?? true;
-    picker.replaceChildren(...sortedLangs.map((l: any) => {
+    picker.replaceChildren(...sortedLangs.map(l => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
-        if (icon)  tab.append(<svg><use href={'#'+l.id}/></svg>);
+        if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
         if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
@@ -311,8 +321,8 @@ export async function refreshScores(editor: any) {
     else
         $('#solutionPicker').classList.add('hide');
 
-    // Hide the delete button for exp holes or if we have no solutions.
-    hideDeleteBtn = experimental || (!dbBytes && !dbChars);
+    // Hide the delete button if we have no solutions.
+    hideDeleteBtn = !dbBytes && !dbChars;
     $('#deleteBtn')?.classList.toggle('hide', hideDeleteBtn);
 
     await populateScores(editor);
@@ -353,8 +363,8 @@ export interface RankUpdate {
 
 export interface Run {
     answer: string,
-    multiset_delimiter: string,
-    item_delimiter: string,
+    output_delimiter: string,
+    multiset_item_delimiter: string,
     args: string[],
     exit_code: number,
     pass: boolean,
@@ -370,12 +380,13 @@ export interface ReadonlyPanelsData {
     Exp: string,
     Err: string,
     Argv: string[],
-    MultisetDelimiter: string,
-    ItemDelimiter: string
+    OutputDelimiter: string,
+    MultisetItemDelimiter: string
 }
 
 export interface SubmitResponse {
     cheevos:      { emoji: string, name: string }[],
+    experimental: boolean,
     logged_in:    boolean,
     rank_updates: RankUpdate[],
     runs:         Run[]
@@ -401,8 +412,7 @@ const scorePopups = (updates: RankUpdate[]) => {
     const rank = [0, 0];
     let newSolution = false;
 
-    for (const i of [0, 1] as const) {
-        const update = updates[i];
+    for (const [i, update] of updates.entries()) {
         if (update.to.strokes) {
             const newBest = update.oldBestStrokes != null ?
                 Math.min(update.oldBestStrokes, update.to.strokes) :
@@ -484,14 +494,13 @@ const scorePopups = (updates: RankUpdate[]) => {
     return nodes.length > 1 ? [<div>{nodes}</div>] : [];
 };
 
-const diamondPopups = (updates: RankUpdate[]) => {
+const diamondPopups = (updates: RankUpdate[], experimental: boolean) => {
     const popups: Node[] = [];
 
     const newDiamonds: string[] = [];
     const matchedDiamonds: string[] = [];
 
-    for (const i of [0, 1] as const) {
-        const update = updates[i];
+    for (const update of updates) {
         if (update.to.rank !== 1) {
             continue;
         }
@@ -511,15 +520,16 @@ const diamondPopups = (updates: RankUpdate[]) => {
     }
 
     if (newDiamonds.length) {
+        // There's a limit to the width of the popups, so the header is simplified for expermental diamonds.
         popups.push(<div>
-            <h3>Diamond Earned</h3>
+            <h3>{experimental ? 'Experimental Diamond' : 'Diamond Earned'}</h3>
             <p>New {newDiamonds.join('/')} 💎!</p>
         </div>);
     }
 
     if (matchedDiamonds.length) {
         popups.push(<div>
-            <h3>Diamond Matched</h3>
+            <h3>{experimental ? 'Experimental Diamond' : 'Diamond Matched'}</h3>
             <p>Matched {matchedDiamonds.join('/')} 💎!</p>
         </div>);
     }
@@ -558,7 +568,7 @@ export async function submit(
     }
 
     const data = await res.json() as SubmitResponse;
-    savedInDB = data.logged_in && !experimental;
+    savedInDB = data.logged_in;
 
     if (submissionID != latestSubmissionID)
         return false;
@@ -624,8 +634,8 @@ export async function submit(
             Exp: run.answer,
             Err: run.stderr,
             Out: run.stdout,
-            MultisetDelimiter: run.multiset_delimiter,
-            ItemDelimiter: run.item_delimiter,
+            OutputDelimiter: run.output_delimiter,
+            MultisetItemDelimiter: run.multiset_item_delimiter,
         });
 
         const ms = Math.round(run.time_ns / 10**6);
@@ -684,7 +694,7 @@ export async function submit(
     // Show popups.
     $('#popups').replaceChildren(
         ...scorePopups(data.rank_updates),
-        ...diamondPopups(data.rank_updates),
+        ...diamondPopups(data.rank_updates, data.experimental),
         ...data.cheevos.map(c => <div>
             <h3>Achievement Earned!</h3>
             { c.emoji }<p>{ c.name }</p>
@@ -701,7 +711,7 @@ export function updateLocalStorage(code: string) {
     const serverCode = getCurrentSolutionCode();
     const key = getAutoSaveKey(getLang(), getSolution());
     const hadLocalStorage = localStorage.getItem(key) !== null;
-    const wantLocalStorage = code && (code !== serverCode || !getSavedInDB()) && code !== langs[getLang()].example;
+    const wantLocalStorage = code && (code !== serverCode || !getSavedInDB()) && code !== currentLang.example;
 
     if (wantLocalStorage)
         localStorage.setItem(key, code);
@@ -718,7 +728,7 @@ export function updateRestoreLinkVisibility(editor: any) {
     const restoreLink = $('#restoreLink');
     if (restoreLink instanceof HTMLAnchorElement) {
         const serverCode = getSolutionCode(lang, solution);
-        const sampleCode = langs[lang].example;
+        const sampleCode = currentLang.example;
         const currentCode = editor?.state.doc.toString();
         restoreLink.classList.toggle('hide',
             (!serverCode && currentCode !== sampleCode) || currentCode === serverCode);
@@ -736,12 +746,12 @@ export function setCodeForLangAndSolution(editor: any) {
     }
 
     setState(localStorage.getItem(getAutoSaveKey(lang, solution)) ||
-        getSolutionCode(lang, solution) || langs[lang].example, editor);
+        getSolutionCode(lang, solution) || currentLang.example, editor);
 
-    if (lang == 'assembly') scoring = 0;
+    if (currentLang.assembly) scoring = 0;
     const charsTab = $('#scoringTabs a:last-child');
     if (charsTab)
-        charsTab.classList.toggle('hide', lang == 'assembly');
+        charsTab.classList.toggle('hide', currentLang.assembly);
 
     refreshScores(editor);
 
@@ -757,7 +767,7 @@ export async function populateScores(editor: any) {
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
     const res       = await fetch(`/api/mini-rankings${path}/${view}` + (tabLayout ? '?long=1' : ''));
     const rows      = res.ok ? await res.json() : [];
-    const colspan   = lang == 'assembly' ? 3 : 4;
+    const colspan   = currentLang.assembly ? 3 : 4;
 
     $<HTMLAnchorElement>('#allLink').href = '/rankings/holes' + path;
 
@@ -767,35 +777,31 @@ export async function populateScores(editor: any) {
             <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
             <td>
                 <a href={`/golfers/${r.golfer.name}`}>
-                    <img src={`/golfers/${r.golfer.name}/avatar/48`}/>
+                    <img src={avatar(r.golfer.avatar_url, 48)}/>
                     <span>{r.golfer.name}</span>
                 </a>
             </td>
-            <td data-tooltip={tooltip(r, 'Bytes')}>
+            <td title={tooltip(r, 'Bytes')}>
                 {scoringID != 'bytes' ? comma(r.bytes) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/bytes`}>
                         <span>{comma(r.bytes)}</span>
                     </a>}
             </td>
-            {lang == 'assembly' ? '' : <td data-tooltip={tooltip(r, 'Chars')}>
+            {currentLang.assembly ? '' : <td title={tooltip(r, 'Chars')}>
                 {scoringID != 'chars' ? comma(r.chars) :
                     <a href={`/golfers/${r.golfer.name}/${hole}/${lang}/chars`}>
                         <span>{comma(r.chars)}</span>
                     </a>}
             </td>}
         </tr>): <tr><td colspan={colspan}>(Empty)</td></tr>
-    }{
-        // Padding.
-        tabLayout ? [] : [...Array(7 - rows.length).keys()].map(() =>
-            <tr><td colspan={colspan}>&nbsp;</td></tr>)
     }</tbody>);
 
-    if (tabLayout) {
-        if (view === 'me')
-            $('.me')?.scrollIntoView({block: 'center'});
-        else
-            $('#scores-wrapper').scrollTop = 0;
-    }
+    // Scroll the rankings to the top or the "me" row if applicable.
+    const me            = $('.me');
+    const scoresWrapper = $('#scores-wrapper');
+    scoresWrapper.scrollTop = (view === 'me' && me)
+        ? me.offsetTop + (me.offsetHeight / 2) - (scoresWrapper.offsetHeight / 2)
+        : 0;
 
     $$<HTMLAnchorElement>('#scoringTabs a').forEach((tab, i) => {
         if (tab.innerText == scorings[scoring]) {
@@ -814,16 +820,27 @@ export async function populateScores(editor: any) {
     });
 }
 
+export interface Scorings {
+    byte?: number;
+    char?: number;
+    stroke?: number;
+}
+
 export function getScorings(tr: any, editor: any) {
     const code = tr.state.doc.toString();
-    const total: {byte?: number, char?: number} = {};
-    const selection: {byte?: number, char?: number} = {};
+    const total: Scorings = {};
+    const selection: Scorings = {};
 
-    if (getLang() == 'assembly')
+    if (currentLang.assembly)
         total.byte = (editor.state.field(ASMStateField) as any).head.length();
     else {
         total.byte = byteLen(code);
         total.char = charLen(code);
+
+        const allowedStrokes = getAllowedStrokes(getLang());
+        if (allowedStrokes !== undefined) {
+            total.stroke = strokeLen(code, allowedStrokes);
+        }
 
         if (tr.selection) {
             selection.byte = 0;
@@ -833,51 +850,16 @@ export function getScorings(tr: any, editor: any) {
                 const contents = code.slice(range.from, range.to);
                 selection.byte += byteLen(contents);
                 selection.char += charLen(contents);
+
+                if (allowedStrokes !== undefined) {
+                    selection.stroke ??= 0;
+                    selection.stroke += strokeLen(contents, allowedStrokes);
+                }
             }
         }
     }
 
     return (selection.byte || selection.char) ? {total, selection} : {total};
-}
-
-export function replaceUnprintablesInOutput(output: string) {
-    return output.replace(/[\x00-\x08\x0B-\x1F\x7F]/g,
-        x => `<span title=${'\\u' + x.charCodeAt(0).toString(16)}>•</span>`);
-}
-
-// Extracts the text, replacing any unprintable placeholders with the actual text.
-function replacePlaceholdersInRange(selection: Selection, range: Range) {
-    let containers = [];
-    if (range.startContainer === range.endContainer) {
-        if (range.startContainer.parentElement instanceof HTMLSpanElement) {
-            containers.push(range.startContainer.parentElement);
-        }
-        else {
-            containers.push(range.startContainer);
-        }
-    }
-    else {
-        containers = Array.from(range.commonAncestorContainer.childNodes).filter(node => selection.containsNode(node, true));
-    }
-
-    let text = '';
-    for (const container of containers) {
-        if (container instanceof HTMLSpanElement) {
-            // Decode placeholder character.
-            text += String.fromCharCode(parseInt(container.title.substring(2), 16));
-        }
-        else if (container instanceof HTMLBRElement) {
-            text += '\n';
-        }
-        else {
-            const childText = container.textContent || '';
-            const start = container === containers[0] ? range.startOffset : 0;
-            const end = container === containers[containers.length - 1] ? range.endOffset : childText.length;
-            text += childText.substring(start, end);
-        }
-    }
-
-    return text;
 }
 
 export function ctrlEnter(func: Function) {

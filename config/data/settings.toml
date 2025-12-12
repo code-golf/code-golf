@@ -1,7 +1,32 @@
+[['golfer/cheevos']]
+id      = 'show-cheevos'
+name    = 'Show Achievements'
+options = [
+    { id = 'all',      name = 'All' },
+    { id = 'earned',   name = 'Earned' },
+    { id = 'unearned', name = 'Unearned' },
+]
+
+[['golfer/code-search']]
+id      = 'hole'
+options = [ { id = 'all', name = 'All Holes' } ]
+
+[['golfer/code-search']]
+id      = 'lang'
+options = [ { id = 'all', name = 'All Languages' } ]
+
 [['golfer/profile']]
 id      = 'followed-golfers-in-feed'
 name    = 'Show Followed Golfers in Feed'
 default = true
+
+[[hole]]
+id      = 'editor-keymap'
+name    = 'Editor Keymap'
+options = [
+    { id = 'default', name = 'Default' },
+    { id = 'vim',     name = 'Vim' },
+]
 
 [[hole]]
 id   = 'lang-picker-style'

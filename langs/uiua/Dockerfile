@@ -1,13 +1,28 @@
-FROM rust:1.81.0-alpine3.20 AS builder
+FROM rust:1.92.0-slim-trixie AS builder
 
-RUN apk add --no-cache build-base linux-headers
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl
 
-RUN cargo install uiua --version 0.12.3
+ENV CRT='x86_64-unknown-linux-musl' VER=0.17.3
+
+RUN curl -#L https://github.com/uiua-lang/uiua/archive/refs/tags/$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN rustup target add $CRT \
+ && cargo add ffi
+
+RUN cargo install         \
+    --features binary     \
+    --no-default-features \
+    --path /              \
+    --root /usr           \
+    --target $CRT         \
+ && strip /usr/bin/uiua
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /usr/local/cargo/bin/uiua /usr/bin/
+COPY --from=0 /usr/bin/uiua /usr/bin/
 
 ENTRYPOINT ["uiua"]
 

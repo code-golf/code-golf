@@ -157,22 +157,22 @@ The default when you `make dev` is that the docker images will be built with arm
 
 You may be able to use some languages without building them locally.
 Here is a list of some of the languages that are able to run the sample code, without rebuilding individual docker containers:
-AWK
-Bash
-Berry
-Lua
-Perl
-PHP
-Python
-Raku
-Ruby
-sed
-SQL
-Wren
+* AWK
+* Bash
+* Berry
+* Lua
+* Perl
+* PHP
+* Python
+* Raku
+* Ruby
+* sed
+* SQL
+* Wren
 
 For other languages, you will need to build them locally. For example:
 ```
-$ ./build-langs --no-push C
+$ ./build-langs --no-push C Go JavaScript
 ```
 
 Otherwise, you may see the following error:

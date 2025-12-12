@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/oauth"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // GET /golfers/{golfer}
@@ -15,14 +15,14 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	const limit = 100
 
 	type row struct {
-		Cheevos      []*config.Cheevo
-		Date, Golfer string
-		Hole         *config.Hole
-		Lang         *config.Lang
+		AvatarURL, Date, Golfer string
+		Cheevos                 []*config.Cheevo
+		Hole                    *config.Hole
+		Lang                    *config.Lang
 	}
 
 	db := session.Database(r)
-	golfer := session.GolferInfo(r)
+	golferInfo := session.GolferInfo(r)
 
 	location := time.UTC
 	followedGolfersInFeed := true
@@ -35,22 +35,22 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		CategoryOverview map[string]map[string]int
 		Connections      []oauth.Connection
-		Followers        []string
+		Followers        []golfer.GolferLink
 		Following        []struct {
+			golfer.GolferLink
+
 			Bytes, Chars, Rank int
-			Country            config.NullCountry
-			Name               string
 		}
-		Langs          []*config.Lang
+		Langs []struct {
+			Lang                          *config.Lang
+			RankBytes, RankChars, RankMin *int
+		}
 		OAuthProviders map[string]*oauth.Config
-		Trophies       map[string]map[string]int
 		Wall           []row
 	}{
 		CategoryOverview: map[string]map[string]int{"bytes": {}, "chars": {}},
-		Connections:      oauth.GetConnections(db, golfer.ID, true),
-		Langs:            config.LangList,
+		Connections:      oauth.GetConnections(db, golferInfo.ID, true),
 		OAuthProviders:   oauth.Providers,
-		Trophies:         map[string]map[string]int{},
 		Wall:             make([]row, 0, limit),
 	}
 
@@ -60,11 +60,11 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		`WITH data AS (
 		 -- Cheevos
 		    SELECT earned     date,
-		           trophy     cheevo,
+		           cheevo     cheevo,
 		           NULL::hole hole,
 		           NULL::lang lang,
 		           user_id
-		      FROM trophies
+		      FROM cheevos
 		     WHERE CASE WHEN $1 THEN user_id = ANY(following($2, $3))
 		                        ELSE user_id = $2
 		           END
@@ -89,12 +89,12 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		                        ELSE user_id = $2
 		           END
 		  GROUP BY user_id, hole, lang
-		) SELECT cheevo, date, login, hole, lang
-		    FROM data JOIN users ON id = user_id
-		ORDER BY date DESC, login LIMIT $4`,
+		) SELECT cheevo, date, avatar_url, name, hole, lang
+		    FROM data JOIN golfers_with_avatars ON id = user_id
+		ORDER BY date DESC, name LIMIT $4`,
 		followedGolfersInFeed,
-		golfer.ID,
-		golfer.FollowLimit(),
+		golferInfo.ID,
+		golferInfo.FollowLimit(),
 		limit,
 	)
 	if err != nil {
@@ -108,7 +108,9 @@ rows:
 		var time time.Time
 
 		var r row
-		if err := rows.Scan(&cheevo, &time, &r.Golfer, &r.Hole, &r.Lang); err != nil {
+		if err := rows.Scan(
+			&cheevo, &time, &r.AvatarURL, &r.Golfer, &r.Hole, &r.Lang,
+		); err != nil {
 			panic(err)
 		}
 
@@ -142,14 +144,14 @@ rows:
 		`WITH max_points_per_hole AS (
 		    SELECT DISTINCT ON (hole, scoring) hole, scoring, points
 		      FROM rankings
-		     WHERE user_id = $1
+		     WHERE user_id = $1 AND NOT experimental
 		  ORDER BY hole, scoring, points DESC
 		) SELECT $2::hstore->hole::text category,
 		         ROUND(AVG((points)))   points,
 		         scoring                scoring
 		    FROM max_points_per_hole
 		GROUP BY scoring, category`,
-		golfer.ID,
+		golferInfo.ID,
 		config.HoleCategoryHstore,
 	); err != nil {
 		panic(err)
@@ -164,68 +166,59 @@ rows:
 		data.CategoryOverview[cat.Scoring][cat.Category] = cat.Points
 	}
 
-	rows, err = db.Query(
+	if err := db.Select(
+		&data.Langs,
 		`WITH ranks AS (
 		    SELECT user_id, scoring, lang,
 		           RANK() OVER (PARTITION BY scoring, lang
 		                            ORDER BY SUM(points_for_lang) DESC)
 		      FROM rankings
+		     WHERE NOT experimental
 		  GROUP BY user_id, scoring, lang
-		) SELECT lang, scoring, rank FROM ranks WHERE user_id = $1`,
-		golfer.ID,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var lang, scoring string
-		var rank int
-
-		if err := rows.Scan(&lang, &scoring, &rank); err != nil {
-			panic(err)
-		}
-
-		if _, ok := data.Trophies[lang]; !ok {
-			data.Trophies[lang] = map[string]int{}
-		}
-
-		data.Trophies[lang][scoring] = rank
-	}
-
-	if err := rows.Err(); err != nil {
+		) SELECT lang,
+		         any_value(rank) FILTER (WHERE scoring = 'bytes') rank_bytes,
+		         any_value(rank) FILTER (WHERE scoring = 'chars') rank_chars,
+		         min(rank)                                        rank_min
+		    FROM ranks
+		    JOIN langs ON lang = id
+		   WHERE user_id = $1
+		GROUP BY lang
+		ORDER BY rank_min, any_value(name)`,
+		golferInfo.ID,
+	); err != nil {
 		panic(err)
 	}
 
 	if err := db.Select(
 		&data.Following,
 		`WITH follows AS (
-		    SELECT country_flag country, login name,
+		    SELECT avatar_url, country_flag, name,
 		           COALESCE((SELECT points FROM points
 		              WHERE scoring = 'bytes' AND user_id = id), 0) bytes,
 		           COALESCE((SELECT points FROM points
 		              WHERE scoring = 'chars' AND user_id = id), 0) chars
-		      FROM users
+		      FROM golfers_with_avatars
 		     WHERE id = ANY(following($1, $2))
 		) SELECT *, RANK() OVER (ORDER BY bytes DESC, chars DESC)
 		    FROM follows
 		ORDER BY rank, name`,
-		golfer.ID,
-		golfer.FollowLimit(),
+		golferInfo.ID,
+		golferInfo.FollowLimit(),
 	); err != nil {
 		panic(err)
 	}
 
-	if err := db.QueryRow(
-		`SELECT array_agg(login ORDER BY login)
-		   FROM follows
-		   JOIN users ON id = follower_id
-		  WHERE followee_id = $1`,
-		golfer.ID,
-	).Scan(pq.Array(&data.Followers)); err != nil {
+	if err := db.Select(
+		&data.Followers,
+		` SELECT avatar_url, name
+		    FROM follows
+		    JOIN golfers_with_avatars ON id = follower_id
+		   WHERE followee_id = $1
+		ORDER BY name`,
+		golferInfo.ID,
+	); err != nil {
 		panic(err)
 	}
 
-	render(w, r, "golfer/profile", data, golfer.Name)
+	render(w, r, "golfer/profile", data, golferInfo.Name)
 }

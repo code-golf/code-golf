@@ -1,8 +1,6 @@
 package routes
 
 import (
-	"crypto/rand"
-	"encoding/base64"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -13,23 +11,6 @@ func cookie(r *http.Request, name string) (value string) {
 		value = c.Value
 	}
 	return
-}
-
-// Generate a random string for CSP & OAuth state.
-//
-// The generated value SHOULD be at least 128 bits long (before encoding), and
-// SHOULD be generated via a cryptographically secure random number generator.
-// https://w3c.github.io/webappsec-csp/#security-nonces
-//
-// TODO Replace call sites with crypto/rand.Text() once it ships (prob 1.24).
-// https://github.com/golang/go/issues/67057
-func nonce() string {
-	nonce := make([]byte, 16)
-	if _, err := rand.Read(nonce); err != nil {
-		panic(err)
-	}
-
-	return base64.StdEncoding.EncodeToString(nonce)
 }
 
 func param(r *http.Request, key string) string {
@@ -44,6 +25,11 @@ func redir(templateURL string) http.HandlerFunc {
 			// slice to remove the surrounding {}
 			return param(r, s[1:len(s)-1])
 		})
+
+		if r.URL.RawQuery != "" {
+			url += "?" + r.URL.RawQuery
+		}
+
 		http.Redirect(w, r, url, http.StatusPermanentRedirect)
 	}
 }

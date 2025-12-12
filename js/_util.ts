@@ -33,6 +33,38 @@ export const charLen = (str: string) => {
     return len;
 };
 
+// Frontend version, keep in sync with views/views.go.
+export const avatar = (rawURL: string, size: number): URL => {
+    const u = new URL(rawURL);
+
+    // Set the avatar size. Most support "s" and "size", but i.sstatic.net
+    // only supports "s" and cdn.discordapp.com only supports "size".
+    const q = u.searchParams;
+    q.set(u.host == 'cdn.discordapp.com' ? 'size' : 's', size.toString());
+    u.search = q.toString();
+
+    return u;
+};
+
+export const strokeLen = (str: string, allowedStrokes: Set<number>) => {
+    let len = 0;
+    for (const c of str) {
+        const codePoint = c.codePointAt(0)!;
+        if (codePoint < 128 || allowedStrokes.has(codePoint))
+            len += 1;
+        // Overlong encodings are illegal in UTF-8 (each code point must be encoded
+        // by the shortest possible byte sequence), so each code point corresponds
+        // to exactly one UTF-8 byte length, that we can determine as follows.
+        else if (codePoint <= 0x07FF)
+            len += 2;
+        else if (codePoint <= 0xFFFF)
+            len += 3;
+        else
+            len += 4;
+    }
+    return len;
+};
+
 // Small util functions.
 /** Assume $ always succeeds and returns an HTMLElement */
 export function $<MatchType extends HTMLElement>(selector: string) {
@@ -44,13 +76,16 @@ export function $$<MatchType extends HTMLElement>(selector: string) {
 }
 export const comma = (i: number | undefined) => i?.toLocaleString('en');
 
+export const amount = (n: number, singular: string, plural?: string) =>
+    `${comma(n)} ${n === 1 ? singular : plural ?? singular + 's'}`;
+
 /**
- * Debounce in the following sense:
+ * Throttle in the following sense:
  *  - never fire more than once in any consecutive `interval` ms
  *  - always fire at least once within the first `interval` ms after the call
  *  - always fire as soon as possible, subject to these restrictions
  */
-export function debounce(fn: () => void, interval: number) {
+export function throttle(fn: () => void, interval: number) {
     let pendingTimeout: number | undefined;
     let needsAnother = false;
     return () => {
@@ -65,5 +100,16 @@ export function debounce(fn: () => void, interval: number) {
             }, interval);
             fn();
         }
+    };
+}
+
+/**
+ * Fire once when `timeout` ms has passed since the last input.
+ */
+export function debounce(func: () => void, timeout = 500) {
+    let timer: number | undefined;
+    return () => {
+        clearTimeout(timer);
+        timer = setTimeout(func, timeout);
     };
 }

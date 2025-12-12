@@ -35,8 +35,7 @@ aside > h3 {
     background: var(--color);
     line-height: 2rem;
     padding: .5rem 0;
-    transform: rotate(.5turn);
-    writing-mode: vertical-rl;
+    writing-mode: sideways-lr;
 }
 
 canvas {
@@ -51,19 +50,39 @@ main .info {
     padding: .5rem;
 }
 
-section {
-    display: grid;
-    grid-template: auto 1fr / 1fr 17rem;
-}
-
-section header {
-    align-items: center;
+#editor-and-rankings {
     display: flex;
-    justify-content: space-between;
-    padding-right: .5rem;
-}
+    gap: 1rem;
+    height: 20rem;
 
-.cm-editor { height: 100% }
+    > div {
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+
+        > div {
+            border: 1px solid var(--color);
+            border-top-width: 2px;
+            flex: 1;
+            overflow: auto;
+        }
+
+        > header {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            padding-right: .5rem;
+        }
+    }
+
+    #editor { flex: 1 }
+
+    #rankings {
+        width: 17rem;
+
+        > div { border-bottom: 0 }
+    }
+}
 
 .cm-editor input {
     color: inherit;
@@ -115,18 +134,20 @@ section header {
     margin-left: -.75rem;
 }
 
-#copy + span {
-    opacity: 0;
-    transition: all 2s;
-}
+[data-copy] {
+    display: inline;
 
-#copy:active + span {
-    opacity: 1;
-    padding-left: 1rem;
-    transition: all 0s;
-}
+    + span {
+        opacity: 0;
+        transition: all 2s;
+    }
 
-#copy { display: inline }
+    &:active + span {
+        opacity: 1;
+        padding-left: 1rem;
+        transition: all 0s;
+    }
+}
 
 #diff:not(:empty),
 #diff-content {
@@ -174,15 +195,6 @@ section header {
 #diff .diff-char-addition { background-color: var(--green) }
 #diff .diff-skip          { background-color: var(--blue) }
 
-#editor {
-    border: 1px solid var(--color);
-    border-right-width: 0;
-    border-top-width: 2px;
-    grid-row: span 2;
-    height: calc((2rem + 1px) * 8 + 2px);
-    overflow-x: hidden;
-}
-
 #emojify {
     display: grid;
     gap: .5rem;
@@ -198,10 +210,18 @@ section header {
     padding: .25rem .4rem;
 }
 
+#info-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    /* Hide container when it doesn't have a direct child that isn't hidden */
+    &:not(:has(> :not(.hide))) { display: none }
+}
+
 #rankingsView {
     background: var(--color);
     border: 1px solid var(--color);
-    border-top: 0;
     gap: 1px;
 }
 
@@ -231,10 +251,7 @@ section header {
     text-align: right;
 }
 
-#scores {
-    border-top: 2px solid var(--color);
-    height: 100%;
-}
+#scores { border: 0 }
 
 /* Shrink the padding compared to a normal table */
 #scores td               { padding: 0 .25rem }
@@ -246,6 +263,11 @@ section header {
 #scores .bytes td:nth-child(4),
 #scores .chars td:nth-child(3) { color: var(--grey) }
 
+#scores td {
+    border-left: 0;
+    border-right: 0;
+}
+
 #status {
     align-items: center;
     display: grid;
@@ -254,7 +276,10 @@ section header {
     padding: 1rem;
 }
 
-#strokes { font-weight: bold }
+#strokes {
+    font-weight: bold;
+    padding: .375rem 0;
+}
 
 /* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
                             .tables-4col { columns: 4 }
@@ -285,15 +310,7 @@ thead { user-select: none }
     width: 100%;
 }
 
-@media (max-width: 34rem) {
-    section, #status { grid-template-columns: 1fr }
-
-    section header { padding: 0 }
-
-    #editor { border-width: 1px }
-
-    #thirdParty:empty { display: none }
-}
+@media (max-width: 34rem) { #thirdParty:empty { display: none } }
 
 .run-result-btn {
     border: none;
@@ -348,6 +365,12 @@ h2 {
 
 .show-whitespace :is(.cm-highlightSpace, .cm-highlightTab) { opacity: .5 }
 
+.cm-highlightSpace {
+    /* The default whitespace circle is too big.
+       The built in styling has a higher specificity, since it also uses an internal class `.ͼ1`. */
+    background-image: radial-gradient(circle 0.5rem at 50% 55%, #aaa 20%, transparent 5%) !important;
+}
+
 #diffKindSettings {
     margin: 0.5rem;
 }
@@ -386,9 +409,5 @@ h2 {
     display: none;
 }
 
-.pass.lastSubmittedCode #editor {
-    border-color: var(--green);
-}
-.fail.lastSubmittedCode #editor {
-    border-color: var(--red);
-}
+.pass.lastSubmittedCode .cm-editor { border-color: var(--green) !important }
+.fail.lastSubmittedCode .cm-editor { border-color: var(--red)   !important }

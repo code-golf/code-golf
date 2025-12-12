@@ -1,31 +1,26 @@
-# FIXME Using alpine causes a 5s timeout with no net, musl DNS???
-# <1s docker run --rm --net none elixir:slim
-# >5s docker run --rm --net none elixir:alpine
+FROM codegolf/lang-erlang
 
-FROM elixir:1.17.3-slim AS builder
+FROM debian:trixie-slim AS builder
 
-FROM codegolf/lang-base
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl make
 
-COPY --from=0 /bin/readlink                             \
-              /bin/sed                                  \
-              /bin/sh                                   /bin/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2               /lib64/
-COPY --from=0 /usr/bin/basename                         \
-              /usr/bin/dirname                          /usr/bin/
-COPY --from=0 /usr/lib/locale                           /usr/lib/locale
-COPY --from=0 /usr/lib/x86_64-linux-gnu/libacl.so.1     \
-              /usr/lib/x86_64-linux-gnu/libc.so.6       \
-              /usr/lib/x86_64-linux-gnu/libdl.so.2      \
-              /usr/lib/x86_64-linux-gnu/libgcc_s.so.1   \
-              /usr/lib/x86_64-linux-gnu/libm.so.6       \
-              /usr/lib/x86_64-linux-gnu/libpcre2-8.so.0 \
-              /usr/lib/x86_64-linux-gnu/libpthread.so.0 \
-              /usr/lib/x86_64-linux-gnu/librt.so.1      \
-              /usr/lib/x86_64-linux-gnu/libselinux.so.1 \
-              /usr/lib/x86_64-linux-gnu/libstdc++.so.6  \
-              /usr/lib/x86_64-linux-gnu/libtinfo.so.6   /usr/lib/x86_64-linux-gnu/
-COPY --from=0 /usr/local/bin                            /usr/local/bin
-COPY --from=0 /usr/local/lib                            /usr/local/lib
+ENV LANG='C.UTF-8' VER=1.19.4
+
+COPY --from=0 /usr /usr
+
+WORKDIR /usr/local
+
+RUN curl -#L https://github.com/elixir-lang/elixir/archive/v$VER.tar.gz \
+  | tar xz --strip-components 1
+
+RUN make
+
+FROM codegolf/lang-erlang
+
+COPY --from=1 /usr/local/bin/elixir      /usr/local/bin/
+COPY --from=1 /usr/local/lib/elixir/ebin /usr/local/lib/elixir/ebin
 
 ENTRYPOINT ["elixir"]
 

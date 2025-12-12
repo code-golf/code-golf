@@ -8,7 +8,10 @@ import (
 	"strings"
 )
 
-type NavLink struct{ Emoji, Name, Slug, Path string }
+type NavLink struct {
+	Emoji, Name, Slug, Path string
+	Heading                 bool
+}
 
 type LinkGroup struct {
 	Links      []*NavLink
@@ -25,7 +28,7 @@ var Nav map[string]*Navigaton
 
 // TODO OnePerRow needs a better name because it also means a single dropdown,
 // maybe something like unified/single namespace.
-func init() {
+func initNav() {
 	Nav = map[string]*Navigaton{
 		"golfer/settings": {
 			OnePerRow: true,
@@ -35,10 +38,10 @@ func init() {
 					Slug: "page",
 					Links: []*NavLink{
 						{Name: "General", Path: "/golfer/settings"},
-						{Name: "Export Data", Slug: "export-data"},
-						{Name: "Delete Account", Slug: "delete-account"},
+						{Name: "Connections", Slug: "connections"},
 					},
 				},
+				group("Manage Data", "page", "Export Data", "Delete Account"),
 			},
 		},
 
@@ -55,8 +58,8 @@ func init() {
 			Path: "/rankings/holes/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(),
-				groupHoles(),
+				groupLangs(true),
+				groupHoles(true),
 			},
 		},
 
@@ -64,7 +67,7 @@ func init() {
 			Path: "/rankings/langs/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(),
+				groupLangs(false),
 			},
 		},
 
@@ -72,8 +75,8 @@ func init() {
 			Path: "/rankings/medals/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "All", "Bytes", "Chars"),
-				groupLangs(),
-				groupHoles(),
+				groupLangs(false),
+				groupHoles(false),
 			},
 		},
 
@@ -88,20 +91,21 @@ func init() {
 			},
 		},
 
-		"rankings/recent-holes": {
-			Path: "/rankings/recent-holes/{lang}/{scoring}",
-			Groups: []*LinkGroup{
-				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(),
-			},
+		"recent/cheevos": {
+			OnePerRow: true,
+			Path:      "/recent/cheevos/{cheevo}",
+			Groups: append(
+				[]*LinkGroup{group("", "cheevo", "All")},
+				groupsCheevos()...,
+			),
 		},
 
 		"recent/solutions": {
 			Path: "/recent/solutions/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(),
-				groupHoles(),
+				groupLangs(true),
+				groupHoles(true),
 			},
 		},
 
@@ -113,6 +117,7 @@ func init() {
 					Slug: "page",
 					Links: []*NavLink{
 						{Name: "Overview", Path: "/stats"},
+						{Name: "Achievements", Slug: "cheevos"},
 						{Name: "Countries", Slug: "countries"},
 						{Name: "Golfers", Slug: "golfers"},
 						{Name: "Holes", Slug: "holes"},
@@ -200,7 +205,7 @@ func groupsCheevos() (groups []*LinkGroup) {
 	return
 }
 
-func groupHoles() *LinkGroup {
+func groupHoles(includeExperimental bool) *LinkGroup {
 	group := group("Hole", "hole", "All")
 
 	for _, hole := range HoleList {
@@ -210,10 +215,24 @@ func groupHoles() *LinkGroup {
 		})
 	}
 
+	if includeExperimental {
+		group.Links = append(group.Links, &NavLink{
+			Heading: true,
+			Name:    "Experimental Hole",
+		})
+
+		for _, hole := range ExpHoleList {
+			group.Links = append(group.Links, &NavLink{
+				Name: hole.Name,
+				Slug: hole.ID,
+			})
+		}
+	}
+
 	return group
 }
 
-func groupLangs() *LinkGroup {
+func groupLangs(includeExperimental bool) *LinkGroup {
 	group := group("Language", "lang", "All")
 
 	for _, lang := range LangList {
@@ -221,6 +240,20 @@ func groupLangs() *LinkGroup {
 			Name: lang.Name,
 			Slug: lang.ID,
 		})
+	}
+
+	if includeExperimental {
+		group.Links = append(group.Links, &NavLink{
+			Heading: true,
+			Name:    "Experimental Language",
+		})
+
+		for _, lang := range ExpLangList {
+			group.Links = append(group.Links, &NavLink{
+				Name: lang.Name,
+				Slug: lang.ID,
+			})
+		}
 	}
 
 	return group

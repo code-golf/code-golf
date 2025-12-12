@@ -1,23 +1,41 @@
+version = '2'
+
+[formatters]
+enable = [
+    'gofmt',
+    'goimports',
+]
+
+# https://golangci-lint.run/usage/linters/
 [linters]
-disable-all = true
+default = 'none'
 enable = [
     'bodyclose',
-    'goimports',
-    'gosimple',
+    'canonicalheader',
     'govet',
     'ineffassign',
     'revive',
     'rowserrcheck',
     'staticcheck',
-    'typecheck',
     'unconvert',
-    'unparam',
     'unused',
 ]
 
-[linters-settings]
-revive.rules = [
+# Revive - https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md
+settings.revive.rules = [
     { name = 'increment-decrement' },
     { name = 'unnecessary-stmt' },
+    { name = 'use-any' },
+    { name = 'var-declaration' },
     { name = 'var-naming' },
+]
+
+# Staticcheck - https://staticcheck.dev/docs/checks/
+settings.staticcheck.checks = [
+    # Defaults - https://staticcheck.dev/docs/configuration/options/#checks
+    'all', '-ST1000', '-ST1003', '-ST1016', '-ST1020', '-ST1021', '-ST1022',
+
+    '-QF1001', # Apply De Morgan’s law
+    '-QF1003', # Convert if/else-if chain to tagged switch
+    '-QF1005', # Expand call to math.Pow
 ]

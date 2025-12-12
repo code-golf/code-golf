@@ -1,30 +1,26 @@
 package hole
 
-import "testing"
+import (
+	"testing"
 
-func BenchmarkArrows(b *testing.B)          { benchHole(b, arrows) }
-func BenchmarkISBN(b *testing.B)            { benchHole(b, isbn) }
-func BenchmarkOrdinalNumbers(b *testing.B)  { benchHole(b, ordinalNumbers) }
-func BenchmarkSpellingNumbers(b *testing.B) { benchHole(b, spellingNumbers) }
+	"github.com/code-golf/code-golf/config"
+)
 
-func BenchmarkArabicToRoman(b *testing.B) {
-	benchHole(b, func() []Run { return arabicToRoman(false) })
-}
+func BenchmarkArabicToRoman(b *testing.B)   { benchHole(b, "arabic-to-roman") }
+func BenchmarkArrows(b *testing.B)          { benchHole(b, "arrows") }
+func BenchmarkISBN(b *testing.B)            { benchHole(b, "isbn") }
+func BenchmarkOrdinalNumbers(b *testing.B)  { benchHole(b, "ordinal-numbers") }
+func BenchmarkRomanToArabic(b *testing.B)   { benchHole(b, "roman-to-arabic") }
+func BenchmarkSet(b *testing.B)             { benchHole(b, "set") }
+func BenchmarkSIUnits(b *testing.B)         { benchHole(b, "si-units") }
+func BenchmarkSpellingNumbers(b *testing.B) { benchHole(b, "spelling-numbers") }
+func BenchmarkSudoku(b *testing.B)          { benchHole(b, "sudoku") }
+func BenchmarkSudokuFillIn(b *testing.B)    { benchHole(b, "sudoku-fill-in") }
 
-func BenchmarkRomanToArabic(b *testing.B) {
-	benchHole(b, func() []Run { return arabicToRoman(true) })
-}
+func benchHole(b *testing.B, id string) {
+	answerFunc := config.AllHoleByID[id].AnswerFunc
 
-func BenchmarkSudoku(b *testing.B) {
-	benchHole(b, func() []Run { return sudoku(false) })
-}
-
-func BenchmarkSudokuV2(b *testing.B) {
-	benchHole(b, func() []Run { return sudoku(true) })
-}
-
-func benchHole(b *testing.B, hole func() []Run) {
-	for range b.N {
-		hole()
+	for b.Loop() {
+		answerFunc()
 	}
 }

@@ -1,11 +1,9 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-<svg>{{ svg "exclamation-circle" }}{{ svg "play-light" }}</svg>
-
 <main>
-    <nav class=tabs>
-        <div>
+    <nav>
+        <div class=tabs>
         {{ range .Data.Displays }}
             <a {{ if ne . $.Data.Display }}
                 href="../../{{ . }}/{{ $.Data.Scope }}/{{ $.Data.Scoring }}"
@@ -14,7 +12,7 @@
             </a>
         {{ end }}
         </div>
-        <div>
+        <div class=tabs>
         {{ range .Data.Scopes }}
             <a {{ if ne . $.Data.Scope }}
                 href="../{{ . }}/{{ $.Data.Scoring }}"
@@ -23,7 +21,7 @@
             </a>
         {{ end }}
         </div>
-        <div>
+        <div class=tabs>
         {{ range .Data.Scorings }}
             <a {{ if ne . $.Data.Scoring }} href="{{ . }}" {{ end }}>
                 {{ title . }}
@@ -35,65 +33,67 @@
     <div id=holes-wrapper>
         <div id=holes style="--langs: {{ len .Data.LangsUsed }}">
             <div></div>
-            {{ range .Data.Langs }}
-                {{ if (index $.Data.LangsUsed .ID) }}
+            {{ range .Data.Langs -}}
+                {{- if (index $.Data.LangsUsed .ID) -}}
                     <div class=lang title="{{ .Name }}">{{ svg .ID }}</div>
-                {{ end }}
-            {{ end }}
+                {{- end -}}
+            {{- end -}}
 
-        {{ range $i, $hole := .Data.Holes }}
-            {{ $holeRanks := index $.Data.Rankings $hole.ID }}
-            {{ if not $holeRanks }}{{ continue }}{{ end }}
+        {{- range $i, $hole := .Data.Holes -}}
+            {{- $holeRanks := index $.Data.Rankings $hole.ID -}}
+            {{- if not $holeRanks }}{{ continue }}{{ end }}
 
             <div class=hole>{{ .Name }}</div>
-            {{ range $j, $lang := $.Data.Langs }}
-                {{ if not (index $.Data.LangsUsed $lang.ID) }}
-                    {{ continue }}
-                {{ end }}
+            {{ range $j, $lang := $.Data.Langs -}}
+                {{- if not (index $.Data.LangsUsed $lang.ID) -}}
+                    {{- continue -}}
+                {{- end -}}
 
-                {{ $r := index $holeRanks $lang.ID }}
+                {{- $r := index $holeRanks $lang.ID -}}
 
-                {{ if and $r (not $r.Failing) }}{{ with $r }}
-                    {{ $color := "green" }}
-                    {{ if eq $.Data.Display "points" }}
-                        {{      if ge .Points 950 }}{{ $color = "yellow" }}
-                        {{ else if ge .Points 900 }}{{ $color = "orange" }}
-                        {{ else if ge .Points 800 }}{{ $color = "red"    }}
-                        {{ else if ge .Points 700 }}{{ $color = "purple" }}
-                        {{ else if ge .Points 500 }}{{ $color = "blue"   }}
-                        {{ end }}
-                    {{ else }}
-                        {{      if le .Rank   1 }}{{ $color = "yellow" }}
-                        {{ else if le .Rank   2 }}{{ $color = "orange" }}
-                        {{ else if le .Rank   3 }}{{ $color = "red"    }}
-                        {{ else if le .Rank  10 }}{{ $color = "purple" }}
-                        {{ else if le .Rank 100 }}{{ $color = "blue"   }}
-                        {{ end }}
-                    {{ end }}
+                {{- if and $r (not $r.Failing) }}{{ with $r -}}
+                    {{- $color := "green" -}}
+                    {{- if eq $.Data.Display "points" -}}
+                        {{-      if ge .Points 950 }}{{ $color = "yellow" -}}
+                        {{- else if ge .Points 900 }}{{ $color = "orange" -}}
+                        {{- else if ge .Points 800 }}{{ $color = "red"    -}}
+                        {{- else if ge .Points 700 }}{{ $color = "purple" -}}
+                        {{- else if ge .Points 500 }}{{ $color = "blue"   -}}
+                        {{- end }}
+                    {{- else }}
+                        {{-      if le .Rank   1 }}{{ $color = "yellow" -}}
+                        {{- else if le .Rank   2 }}{{ $color = "orange" -}}
+                        {{- else if le .Rank   3 }}{{ $color = "red"    -}}
+                        {{- else if le .Rank  10 }}{{ $color = "purple" -}}
+                        {{- else if le .Rank 100 }}{{ $color = "blue"   -}}
+                        {{- end -}}
+                    {{- end -}}
                     <a class="{{ $lang.ID }} {{ $color }}"
                         href="../../../{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}"
                 data-tooltip="{{ comma .Rank }}{{ ord .Rank }} of {{ comma .Golfers }} golfers"
            data-wide-tooltip>
-                    {{ if eq $.Data.Display "points" }}
-                        {{ comma .Points }}
-                    {{ else if and (eq .Rank 1) (eq .TieCount 1) }}
+                    {{- if eq $.Data.Display "points" -}}
+                        {{- comma .Points -}}
+                    {{- else if .IsUnicorn -}}
+                        🦄
+                    {{- else if and (eq .Rank 1) (eq .TieCount 1) -}}
                         💎
-                    {{ else }}
+                    {{- else -}}
                         <span>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup></span>
-                    {{ end }}
+                    {{- end -}}
                     </a>
-                {{ end }}{{ else if $r }}
+                {{- end }}{{ else if $r -}}
                     <a class="{{ $lang.ID }} dark-grey"
                         href="../../../{{ $hole.ID }}/{{ $lang.ID }}/{{ $.Data.Scoring }}">
-                        <svg><use href="#exclamation"/></svg>
+                        {{ svg "exclamation" }}
                     </a>
-                {{ else }}
+                {{- else -}}
                     <a class="{{ $lang.ID }} grey"
                         href="/{{ $hole.ID }}#{{ $lang.ID }}">
-                        <svg><use href="#play"/></svg>
+                        {{ svg "play" }}
                     </a>
-                {{ end }}
-            {{ end }}
+                {{- end -}}
+            {{- end }}
         {{ end }}
         </div>
         <div>{{/* Absolutely positioned top left black cell */}}</div>

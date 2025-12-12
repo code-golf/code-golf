@@ -14,7 +14,7 @@ var repeatingFractions = [...]struct{ p, q int }{
 	{87, 9}, {97, 6}, {97, 7}, {98, 49}, {99, 1}, {99, 3},
 }
 
-func repeatingDecimals() []Run {
+var _ = answerFunc("repeating-decimals", func() []Answer {
 	tests := make([]test, 100)
 
 	for i, fraction := range repeatingFractions {
@@ -26,7 +26,7 @@ func repeatingDecimals() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})
 
 func repeatingDecimalsTest(p, q int) test {
 	in := fmt.Sprint(p, "/", q)

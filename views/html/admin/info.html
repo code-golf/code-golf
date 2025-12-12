@@ -4,6 +4,17 @@
 <main>
     <table class="nowrap-first sticky">
         <thead>
+            <th>Avatar URL
+            <th>Count
+        <tbody>
+        {{ range .Data.AvatarURLs }}
+            <tr>
+                <td>{{ .URL }}
+                <td>{{ comma .Count }}
+        {{ end }}
+    </table>
+    <table class="nowrap-first sticky">
+        <thead>
             <th>Golfer
             <th>Last Used
         <tbody>
@@ -27,17 +38,41 @@
                 <td>{{ bytes .Size }}
         {{ end }}
     </table>
-    <table class="nowrap-first sticky">
-        <thead>
-            <th>Last Tested
-            <th>Solutions
-        <tbody>
-        {{ range .Data.LastTested }}
-            <tr>
-                <td>{{ .Day.Format "2006-01-02" }}
-                <td>{{ comma .Solutions }}
-        {{ end }}
-    </table>
+    <div>
+    {{ if len .Data.OldLangDigests }}
+        <table class="nowrap-first sticky">
+            <thead>
+                <th>Old Lang Digest
+                <th>Solutions
+            <tbody>
+            {{ range .Data.OldLangDigests }}
+                <tr>
+                    <td>
+                        <a href="/admin/solutions?lang={{ .Lang.ID }}&no-new-failures=on&old-lang-digests=on">
+                            {{ svg .Lang.ID }}
+                            <span>{{ .Lang.Name }}</span>
+                        </a>
+                    <td>{{ comma .Solutions }}
+            {{ end }}
+        </table>
+    {{ end }}
+        <table class="nowrap-first sticky">
+            <thead>
+                <th>Last Tested
+                <th>Solutions
+            <tbody>
+            {{ range .Data.LastTested }}
+                <tr>
+                    <td>
+                    {{ with .Day.Format "2006-01-02" }}
+                        <a href="/admin/solutions?no-new-failures=on&tested-from={{ . }}&tested-to={{ . }}">
+                            <span>{{ . }}</span>
+                        </a>
+                    {{ end }}
+                    <td>{{ comma .Solutions }}
+            {{ end }}
+        </table>
+    </div>
 </main>
 
 {{ template "footer" }}

@@ -2,11 +2,11 @@
     {{ $me := and $.Golfer (eq $.Golfer.ID .ID) }}
 
     <div class=grid id=profile>
-        <img src="/golfers/{{ .Name }}/avatar/176">
+        <img src="{{ avatar .AvatarURL 176 }}">
         <h1 title="{{ .Name }}{{ with .Pronouns.V }} ({{ . }}){{ end }}">
             {{ .Name }}
             {{ with .Pronouns.V }}<span id=pronouns>({{ . }})</span>{{ end }}
-        {{ with .Country.Country }}
+        {{ with .CountryFlag }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
@@ -78,14 +78,14 @@
     {{ with len .HolesAuthored }}
         <button data-dialog=holes-authored-dialog>
             <p>📚
-            <p class=purple>{{ . }} Hole{{ if gt . 1 }}s{{ end }} Authored
+            <p class=purple>{{ amount . "Hole" }} Authored
         </button>
     {{ end }}
 
     {{ with len .Referrals }}
         <button data-dialog=referrals-dialog>
             <p>📣
-            <p class=purple>{{ . }} Referral{{ if gt . 1 }}s{{ end }}
+            <p class=purple>{{ amount . "Referral" }}
         </button>
     {{ end }}
 
@@ -122,6 +122,10 @@
         </a>
 
     {{ if $me }}
+        <a {{ if ne $.Path "/golfer/code-search" }} href=/golfer/code-search {{ end }}>
+            Code Search
+        </a>
+        
         <a {{ if not (hasPrefix $.Path "/golfer/settings") }} href=/golfer/settings {{ end }}>
             Site Settings
         </a>
@@ -131,15 +135,15 @@
     {{ with .HolesAuthored }}
         <dialog id=holes-authored-dialog>
             <div>
-                <h1>Holes Authored</h1>
+                <h1>{{ amount (len .) "Hole" }} Authored</h1>
                 <ul>
-                {{ range . }}{{ with index $.Holes . }}
+                {{ range . }}
                     <li>
                         <a href="/{{ .ID }}">
                             {{ svg .CategoryIcon }}
                             {{ .Name }}
                         </a>
-                {{ end }}{{ end }}
+                {{ end }}
                 </ul>
             </div>
         </dialog>
@@ -148,15 +152,9 @@
     {{ with .Referrals }}
         <dialog id=referrals-dialog>
             <div>
-                <h1>Referrals</h1>
+                <h1>{{ amount (len .) "Referral" }}</h1>
                 <ul>
-                {{ range . }}
-                    <li>
-                        <a href="/golfers/{{ . }}">
-                            <img loading=lazy src="/golfers/{{ . }}/avatar/48">
-                            {{ . }}
-                        </a>
-                {{ end }}
+                    {{ range . }}<li>{{ template "golfer-link" . }}{{ end }}
                 </ul>
             </div>
         </dialog>

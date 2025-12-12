@@ -166,7 +166,7 @@ func generateNFA() string {
 			inputNFA.WriteByte(' ')
 		}
 
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			inputNFA.WriteByte('F')
 		} else {
 			inputNFA.WriteByte(' ')
@@ -214,7 +214,7 @@ func generateNFA() string {
 	return inputNFA.String()
 }
 
-func nfaSimulator() []Run {
+var _ = answerFunc("nfa-simulator", func() []Answer {
 	args := []string{
 		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 | ∅ | ∅ | ∅ |\nacbcab\nε\nacbca",
 		"    | a | b | c |\n→ 0 |{0}|{0}|{0,1}| \n  1 |{2}| ∅ |  ∅ |\n  2 | ∅ |{3}|  ∅ |\n F3 |{3}|{3}|{3}|\nacbcababc",
@@ -242,10 +242,10 @@ func nfaSimulator() []Run {
 		results = append(results, solveNFA(dfa))
 	}
 
-	rand.Shuffle(len(args), func(i, j int) {
-		args[i], args[j] = args[j], args[i]
-		results[i], results[j] = results[j], results[i]
-	})
+	tests := make([]test, len(args))
+	for i := range tests {
+		tests[i] = test{args[i], results[i]}
+	}
 
-	return []Run{{Args: args, Answer: strings.Join(results, "\n\n")}}
-}
+	return outputTestsWithSep("\n\n", shuffle(tests))
+})

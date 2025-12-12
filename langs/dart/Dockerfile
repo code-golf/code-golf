@@ -1,23 +1,48 @@
-FROM dart:3.5.2-sdk AS builder
+FROM debian:trixie-slim AS builder
+
+RUN apt-get update                   \
+ && DEBIAN_FRONTEND='noninteractive' \
+    apt-get install --yes curl g++ git ninja-build python3
+
+ENV PATH=/depot_tools:$PATH VER=3.10.4
+
+RUN git clone --progress https://chromium.googlesource.com/chromium/tools/depot_tools
+
+WORKDIR /dart
+
+RUN fetch --force dart
+
+WORKDIR /dart/sdk
+
+# Remove this conflicting folder so that `gclient` can
+# sync dependencies with the SDK version after checkout.
+RUN rm -r third_party/perfetto
+
+RUN git checkout $VER \
+ && gclient sync -D
+
+RUN gn gen out --args='         \
+    dart_include_wasm_opt=false \
+    dart_platform_sdk=true      \
+    dart_runtime_mode="release" \
+    dart_sdk_output=""          \
+    dart_version_git_info=false \
+    is_debug=false              \
+    is_product=true             \
+    target_cpu="x64"'           \
+ && ninja -C out create_sdk     \
+ && strip out/bin/dart          \
+          out/bin/dartvm
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/cat /bin/sh                      /bin/
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
-              /lib/x86_64-linux-gnu/libdl.so.2      \
-              /lib/x86_64-linux-gnu/libm.so.6       \
-              /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /usr/lib/dart/bin/dart                /usr/lib/dart/bin/
-COPY --from=0 /usr/lib/dart/include                 /usr/lib/dart/include
-COPY --from=0 /usr/lib/dart/lib                     /usr/lib/dart/lib
-
-COPY --from=0 /usr/lib/dart/bin/snapshots/dartdev.dart.snapshot        \
-              /usr/lib/dart/bin/snapshots/kernel-service.dart.snapshot \
-              /usr/lib/dart/bin/snapshots/kernel_worker.dart.snapshot  \
-              /usr/lib/dart/bin/snapshots/
-
-COPY dart /usr/bin/
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                          \
+              /lib/x86_64-linux-gnu/libm.so.6                          /lib/
+COPY --from=0 /lib64/ld-linux-x86-64.so.2                              /lib64/
+COPY --from=0 /dart/sdk/out/bin/dart /dart/sdk/out/bin/dartvm          /usr/bin/
+COPY --from=0 /dart/sdk/out/bin/snapshots/kernel-service.dart.snapshot /usr/bin/snapshots/
+COPY --from=0 /dart/sdk/out/include                                    /usr/include
+COPY --from=0 /dart/sdk/out/lib                                        /usr/lib
 
 ENTRYPOINT ["dart"]
 

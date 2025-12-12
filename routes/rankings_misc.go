@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -16,11 +17,13 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Pager *pager.Pager
 		Rows  []struct {
+			golfer.GolferLink
+
 			Bytes, Chars, Count, Rank, Total int
-			Country                          config.NullCountry `db:"country_flag"`
-			Hole, Lang, Scoring              string
+			Hole                             *config.Hole
+			Lang                             *config.Lang
 			Me                               bool
-			Name                             string `db:"login"`
+			Scoring                          string
 			Submitted                        time.Time
 		}
 	}{Pager: pager.New(r)}
@@ -31,41 +34,43 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	case "diamond-deltas":
 		desc = "Deltas between diamonds and silvers."
 		sql = `WITH diamonds AS (
-			    SELECT * FROM rankings WHERE rank = 1 AND tie_count = 1
+			    SELECT *
+			      FROM rankings
+			     WHERE rank = 1 AND tie_count = 1 AND NOT experimental
 			), silvers AS (
 			    SELECT DISTINCT hole, lang, scoring, strokes
 			      FROM rankings
-			     WHERE rank = 2
-			) SELECT country_flag, hole, lang, login, scoring,
+			     WHERE rank = 2 AND NOT experimental
+			) SELECT avatar_url, country_flag, hole, lang, name, scoring,
 			         silvers.strokes - diamonds.strokes count,
 			         RANK() OVER(ORDER BY silvers.strokes - diamonds.strokes DESC),
 			         COUNT(*) OVER () total
 			    FROM diamonds
 			    JOIN silvers USING (hole, lang, scoring)
-			    JOIN users ON id = user_id
+			    JOIN golfers_with_avatars ON id = user_id
 			ORDER BY rank, scoring
 			   LIMIT $1 OFFSET $2`
 	case "followers":
 		desc = "Total followers."
 		sql = `WITH followers AS (
 			    SELECT followee_id, COUNT(*) FROM follows GROUP BY followee_id
-			) SELECT count, country_flag, login,
+			) SELECT avatar_url, count, country_flag, name,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM followers
-			    JOIN users ON id = followee_id
-			ORDER BY rank, login
+			    JOIN golfers_with_avatars ON id = followee_id
+			ORDER BY rank, name
 			   LIMIT $1 OFFSET $2`
 	case "holes-authored":
 		desc = "Total holes authored."
 		sql = `WITH holes AS (
 			    SELECT user_id, COUNT(*) FROM authors GROUP BY user_id
-			) SELECT count, country_flag, login,
+			) SELECT avatar_url, count, country_flag, name,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM holes
-			    JOIN users ON id = user_id
-			ORDER BY rank, login
+			    JOIN golfers_with_avatars ON id = user_id
+			ORDER BY rank, name
 			   LIMIT $1 OFFSET $2`
 	case "most-tied-golds":
 		args = append(args, session.Golfer(r))
@@ -88,24 +93,24 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			desc = "🦄 Oldest unicorns (uncontested solves)."
 		}
 
-		sql = `SELECT country_flag, hole, lang, login, scoring, submitted,
+		sql = `SELECT avatar_url, country_flag, hole, lang, name, scoring, submitted,
 			         RANK() OVER(ORDER BY submitted),
 			         COUNT(*) OVER () total
 			    FROM medals
-			    JOIN users ON id = user_id
+			    JOIN golfers_with_avatars ON id = user_id
 			   WHERE medal = $3
-			ORDER BY rank, hole, lang, scoring, login
+			ORDER BY rank, hole, lang, scoring, name
 			   LIMIT $1 OFFSET $2`
 	case "referrals":
 		desc = "Total referrals."
 		sql = `WITH referrals AS (
 			    SELECT referrer_id, COUNT(*) FROM users GROUP BY referrer_id
-			) SELECT count, country_flag, login,
+			) SELECT avatar_url, count, country_flag, name,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM referrals
-			    JOIN users ON id = referrals.referrer_id
-			ORDER BY rank, login
+			    JOIN golfers_with_avatars ON id = referrals.referrer_id
+			ORDER BY rank, name
 			   LIMIT $1 OFFSET $2`
 	case "solutions":
 		desc = "Total solutions."
@@ -117,12 +122,12 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			      FROM solutions
 			     WHERE NOT failing
 			  GROUP BY user_id
-			) SELECT bytes, chars, count, country_flag, login,
+			) SELECT avatar_url, bytes, chars, count, country_flag, name,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM solutions
-			    JOIN users ON id = user_id
-			ORDER BY rank, bytes, chars, login
+			    JOIN golfers_with_avatars ON id = user_id
+			ORDER BY rank, bytes, chars, name
 			   LIMIT $1 OFFSET $2`
 	default:
 		w.WriteHeader(http.StatusNotFound)

@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"cmp"
 	"database/sql"
+	"embed"
 	"encoding/json"
 	"html/template"
+	"reflect"
 	"slices"
 	"strings"
 	templateTxt "text/template"
@@ -14,6 +16,9 @@ import (
 	"github.com/lib/pq/hstore"
 	"github.com/pelletier/go-toml/v2"
 )
+
+//go:embed hole-answers
+var answers embed.FS
 
 var (
 	// Standard holes.
@@ -28,43 +33,52 @@ var (
 	AllHoleByID = map[string]*Hole{}
 	AllHoleList []*Hole
 
-	// Ten most recent holes, used for /rankings/recent-holes.
-	RecentHoles []*Hole
-
 	// A map of hole ID to category for passing to SQL queries.
 	HoleCategoryHstore = hstore.Hstore{Map: map[string]sql.NullString{}}
+
+	// Aliases & Redirects
+	HoleAliases   = map[string]string{}
+	HoleRedirects = map[string]string{}
+
+	// Latest stable hole.
+	LatestHole *Hole
 )
 
 type Link struct {
 	Name string `json:"name"`
 	URL  string `json:"url"`
-	V    []int  `json:"-"`
 }
 
 type Hole struct {
-	CaseFold                    bool             `json:"-" toml:"case-fold"`
-	Categories                  []string         `json:"-"`
-	Category                    string           `json:"category"`
-	CategoryColor, CategoryIcon string           `json:"-"`
-	Data                        template.JS      `json:"-"`
-	Experiment                  int              `json:"-"`
-	ID                          string           `json:"id"`
-	ItemDelimiter               string           `json:"-" toml:"item-delimiter"`
-	MultisetDelimiter           string           `json:"-" toml:"multiset-delimiter"`
-	Links                       []Link           `json:"links"`
-	Name                        string           `json:"name"`
-	Preamble                    template.HTML    `json:"preamble"`
-	Released                    toml.LocalDate   `json:"released"`
-	Releases                    []toml.LocalDate `json:"-"`
-	Synopsis                    string           `json:"synopsis"`
-	Variants                    []*Hole          `json:"-"`
+	Aliases, Redirects          []string       `json:"-"`
+	Answer                      string         `json:"-"`
+	AnswerFunc                  HoleAnswerFunc `json:"-"`
+	CaseFold                    bool           `json:"-" toml:"case-fold"`
+	Category                    string         `json:"category"`
+	CategoryColor, CategoryIcon string         `json:"-"`
+	Data                        template.JS    `json:"-"`
+	DataMap                     ordered.Map    `json:"-"`
+	Experiment                  int            `json:"experiment,omitzero"`
+	ID                          string         `json:"id"`
+	MultisetItemDelimiter       string         `json:"-" toml:"multiset-item-delimiter"`
+	OutputDelimiter             string         `json:"-" toml:"output-delimiter"`
+	Links                       []Link         `json:"links,omitempty"`
+	Name                        string         `json:"name"`
+	Preamble                    template.HTML  `json:"preamble"`
+	Released                    toml.LocalDate `json:"released"`
+	Synopsis                    string         `json:"synopsis"`
+	Variants                    []*Hole        `json:"-"`
 }
 
-func init() {
-	var holes map[string]*struct {
-		Hole
-		Variants []string
-	}
+type HoleAnswer struct {
+	Args   []string
+	Answer string
+}
+
+type HoleAnswerFunc func() []HoleAnswer
+
+func initHoles() {
+	var holes map[string]*Hole
 	unmarshal("data/holes.toml", &holes)
 
 	funcs := template.FuncMap{
@@ -73,101 +87,80 @@ func init() {
 	}
 
 	// Expand variants.
+	copyFields := []string{
+		"Category", "Data", "Links", "Preamble", "Released", "Synopsis", "Variants"}
 	for name, hole := range holes {
-		// Don't process holes without variants or already processed variants.
-		if len(hole.Variants) == 0 || len(hole.Hole.Variants) != 0 {
+		hole.Name = name
+
+		if len(hole.Variants) == 0 {
 			continue
 		}
 
-		// Delete the original meta hole.
-		delete(holes, name)
+		// Prepend the current hole as a variant.
+		hole.Variants = slices.Insert(hole.Variants, 0, hole)
 
-		// Parse the templated preamble.
-		preamble, err := template.New("").Funcs(funcs).Parse(string(hole.Preamble))
-		if err != nil {
-			panic(err)
-		}
-
-		// Parse the templated synopsis.
-		synopsis, err := templateTxt.New("").Funcs(funcs).Parse(hole.Synopsis)
-		if err != nil {
-			panic(err)
-		}
-
-		var variants []*Hole
-		for i, variant := range hole.Variants {
-			hole := *hole
-
-			// Process the templated preamble with the current variant.
-			var b bytes.Buffer
-			if err := preamble.Execute(&b, variant); err != nil {
-				panic(err)
-			}
-			hole.Preamble = template.HTML(b.String())
-
-			// Process the templated synopsis with the current variant.
-			b.Reset()
-			if err := synopsis.Execute(&b, variant); err != nil {
-				panic(err)
-			}
-			hole.Synopsis = b.String()
-
-			holes[variant] = &hole
-			variants = append(variants, &hole.Hole)
-
-			if len(hole.Categories) > 0 {
-				hole.Category = hole.Categories[i]
+		src := reflect.ValueOf(hole).Elem()
+		for _, variant := range hole.Variants {
+			// Already been processed.
+			if _, ok := holes[variant.Name]; ok {
+				continue
 			}
 
-			if len(hole.Releases) > 0 {
-				hole.Released = hole.Releases[i]
+			// Copy any fields missing in the variant from the hole.
+			dst := reflect.ValueOf(variant).Elem()
+			for _, field := range copyFields {
+				if dst.FieldByName(field).IsZero() {
+					dst.FieldByName(field).Set(src.FieldByName(field))
+				}
 			}
-		}
 
-		// Reference the variants from each variant.
-		for _, variant := range variants {
-			variant.Variants = variants
+			holes[variant.Name] = variant
 		}
 	}
 
 	for name, hole := range holes {
 		hole.ID = ID(name)
-		hole.Name = name
 
-		// FIXME Variants can't yet have different experiment IDs.
-		if hole.ID == "gray-code-encoder" {
-			hole.Experiment = 1157
+		// Aliases.
+		for _, alias := range hole.Aliases {
+			HoleAliases[alias] = hole.ID
 		}
 
-		// Process the templated preamble with the data.
+		// Redirects.
+		for _, redirect := range hole.Redirects {
+			HoleRedirects[redirect] = hole.ID
+		}
+
+		// Answers.
+		// ¯\_(ツ)_/¯ cannot embed file hole-answers/√2.txt: invalid name √2.txt
+		if b, err := answers.ReadFile(
+			"hole-answers/" + strings.Replace(hole.ID, "√2", "root-2", 1) + ".txt",
+		); err == nil {
+			hole.Answer = string(bytes.TrimSuffix(b, []byte{'\n'}))
+		}
+
+		// Unmarshall any data into an ordered map.
 		if hole.Data != "" {
-			t, err := template.New("").Parse(string(hole.Preamble))
-			if err != nil {
+			if err := json.Unmarshal([]byte(hole.Data), &hole.DataMap); err != nil {
 				panic(err)
 			}
-
-			var data ordered.Map
-			if err := json.Unmarshal([]byte(hole.Data), &data); err != nil {
-				panic(err)
-			}
-
-			var b bytes.Buffer
-			if err := t.Execute(&b, data); err != nil {
-				panic(err)
-			}
-			hole.Preamble = template.HTML(b.String())
 		}
 
-		// Filter out links that don't match this variant.
-		links := make([]Link, 0, len(hole.Links))
-		for _, link := range hole.Links {
-			if len(link.V) == 0 || slices.ContainsFunc(
-				link.V, func(i int) bool { return hole.Variants[i] == name },
-			) {
-				links = append(links, link)
-			}
+		// Process the templated preamble & synopsis.
+		preamble := template.Must(template.New("").Funcs(funcs).Parse(string(hole.Preamble)))
+		synopsis := templateTxt.Must(templateTxt.New("").Funcs(funcs).Parse(hole.Synopsis))
+
+		var b bytes.Buffer
+		if err := preamble.Execute(&b, hole); err != nil {
+			panic(err)
 		}
-		hole.Links = links
+		hole.Preamble = template.HTML(b.String())
+
+		b.Reset()
+		if err := synopsis.Execute(&b, hole); err != nil {
+			panic(err)
+		}
+		hole.Synopsis = b.String()
 
 		switch hole.Category {
 		case "Art":
@@ -190,31 +183,20 @@ func init() {
 			hole.CategoryIcon = "shuffle"
 		}
 
-		AllHoleByID[hole.ID] = &hole.Hole
-		AllHoleList = append(AllHoleList, &hole.Hole)
+		AllHoleByID[hole.ID] = hole
+		AllHoleList = append(AllHoleList, hole)
 
 		if hole.Experiment == 0 {
-			HoleByID[hole.ID] = &hole.Hole
-			HoleList = append(HoleList, &hole.Hole)
+			HoleByID[hole.ID] = hole
+			HoleList = append(HoleList, hole)
 
 			HoleCategoryHstore.Map[hole.ID] =
 				sql.NullString{String: hole.Category, Valid: true}
 		} else {
-			ExpHoleByID[hole.ID] = &hole.Hole
-			ExpHoleList = append(ExpHoleList, &hole.Hole)
+			ExpHoleByID[hole.ID] = hole
+			ExpHoleList = append(ExpHoleList, hole)
 		}
 	}
-
-	// Ten most recent holes.
-	RecentHoles = make([]*Hole, len(HoleList))
-	copy(RecentHoles, HoleList)
-	slices.SortFunc(RecentHoles, func(a, b *Hole) int {
-		if c := cmp.Compare(b.Released.String(), a.Released.String()); c != 0 {
-			return c
-		}
-		return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
-	})
-	RecentHoles = RecentHoles[:10]
 
 	for _, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
 		// Case-insensitive sort.
@@ -222,4 +204,8 @@ func init() {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
 	}
+
+	LatestHole = slices.MaxFunc(HoleList, func(a, b *Hole) int {
+		return strings.Compare(a.Released.String(), b.Released.String())
+	})
 }

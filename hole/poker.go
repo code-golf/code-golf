@@ -44,7 +44,7 @@ func straightCheck(numbers []int) bool {
 			numbers[4]-numbers[3] == 1)
 }
 
-func poker() []Run {
+var _ = answerFunc("poker", func() []Answer {
 	type Hand struct {
 		Type  string
 		Cards []rune
@@ -574,4 +574,4 @@ func poker() []Run {
 
 	const argc = 37 // Preserve original argc
 	return outputTests(tests[:argc], tests[argc:2*argc], tests[2*argc:3*argc], tests[len(tests)-argc:])
-}
+})

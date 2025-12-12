@@ -4,26 +4,31 @@ import {
     DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
     RootItemConfig,
 } from 'golden-layout';
-import { EditorView }   from './_codemirror';
-import diffView         from './_diff';
-import { $, $$, comma, debounce } from './_util';
+import { EditorView }              from './_codemirror';
+import diffView                    from './_diff';
+import { $, $$, amount, throttle } from './_util';
 import {
-    init, langs, hole, setSolution,
+    init, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
-    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyJSONBtn,
-    getScorings, replaceUnprintablesInOutput, initOutputDiv,
+    populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
+    getScorings,
     updateLocalStorage,
     getLang,
     setState,
     ctrlEnter,
     getLastSubmittedCode,
+    Scorings,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
+import UnprintableElement from './_unprintable';
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
 let isWide = false;
+
+const isSponsor = JSON.parse($('#sponsor').innerText);
+const hasNotes  = JSON.parse($('#has-notes').innerText);
 
 /**
  * Is mobile mode activated? Start at false as default since Golden Layout
@@ -73,8 +78,7 @@ function updateReadonlyPanel(name: string) {
         output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
         break;
     case 'out':
-        output.innerText = subRes.Out;
-        output.innerHTML = replaceUnprintablesInOutput(output.innerHTML);
+        output.replaceChildren(UnprintableElement.escape(subRes.Out));
         break;
     case 'exp':
         output.innerText = subRes.Exp;
@@ -87,7 +91,7 @@ function updateReadonlyPanel(name: string) {
         break;
     case 'diff':
         const ignoreCase = JSON.parse($('#case-fold').innerText);
-        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.MultisetDelimiter, subRes.ItemDelimiter);
+        const diff = diffView(hole, subRes.Exp, subRes.Out, subRes.Argv, ignoreCase, subRes.OutputDelimiter, subRes.MultisetItemDelimiter);
         output.replaceChildren(diff);
     }
 }
@@ -128,9 +132,6 @@ for (const name of ['exp', 'out', 'err', 'arg', 'diff']) {
         autoFocus(container);
         container.element.id = name;
         container.element.classList.add('readonly-output');
-        if (name === 'out') {
-            initOutputDiv(container.element);
-        }
         readonlyOutputs[name] = container.element;
         updateReadonlyPanel(name);
     });
@@ -151,21 +152,34 @@ function makeEditor(parent: HTMLDivElement) {
             const result = editor.update([tr]) as unknown;
 
             const code = tr.state.doc.toString();
-            const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
-            const scoringKeys = ['byte', 'char'] as const;
+            const scorings: {total: Scorings, selection?: Scorings} = getScorings(tr, editor);
+            const scoringKeys = ['byte', 'char', 'stroke'] as const;
 
             $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
 
             function formatScore(scoring: any) {
                 return scoringKeys
                     .filter(s => s in scoring)
-                    .map(s => `${comma(scoring[s])} ${s}${scoring[s] != 1 ? 's' : ''}`)
+                    .map(s => amount(scoring[s], s))
                     .join(', ');
             }
 
-            $('#strokes').innerText = scorings.selection
-                ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
-                : formatScore(scorings.total);
+            $('#strokes').innerText = (() => {
+                let innertext = scorings.selection
+                    ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
+                    : formatScore(scorings.total);
+                if (scorings.selection?.char === 1) {
+                    const sel = tr.state.sliceDoc(tr.state.selection.main.from, tr.state.selection.main.to);
+                    const code = sel.codePointAt(0);
+                    if (code !== undefined) {
+                        const hex = code.toString(16).toUpperCase().padStart(4, '0');
+                        const bin = code.toString(2).padStart(8, '0');
+                        innertext += ` ${sel} - ${code} - 0x${hex} - ${bin}`;
+                    }
+                }
+                return innertext;
+            })();
+
 
             updateLocalStorage(code);
             updateRestoreLinkVisibility(editor);
@@ -184,7 +198,7 @@ function makeHoleLangNotesEditor(parent: HTMLDivElement) {
             if (!holeLangNotesEditor) return;
             const result = holeLangNotesEditor.update([tr]) as unknown;
             const content = tr.state.doc.toString();
-            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor());
+            $<HTMLButtonElement>('#upsert-notes-btn').disabled = content === holeLangNotesContent || (!!content && !isSponsor);
             return result;
         },
         parent,
@@ -229,7 +243,7 @@ layout.registerComponentFactoryFunction('code', async container => {
 
     const deleteBtn = $('#deleteBtn');
     if (deleteBtn) {
-        initDeleteBtn(deleteBtn, langs);
+        initDeleteBtn(deleteBtn);
         deleteBtn.classList.toggle('hide', getHideDeleteBtn());
     }
 
@@ -239,7 +253,7 @@ layout.registerComponentFactoryFunction('code', async container => {
 async function upsertNotes() {
     $<HTMLButtonElement>('#upsert-notes-btn').disabled = true;
     const content = holeLangNotesEditor!.state.doc.toString();
-    if (!content || isSponsor()) {
+    if (!content || isSponsor) {
         const resp = await fetch(
             `/api/notes/${hole}/${getLang()}`,
             content ? { method: 'PUT', body: content} : { method: 'DELETE' },
@@ -342,7 +356,7 @@ layout.registerComponentFactoryFunction('details', container => {
     const details = $<HTMLTemplateElement>('#template-details').content.cloneNode(true) as HTMLDetailsElement;
     container.element.append(details);
     container.element.id = 'details-content';
-    initCopyJSONBtn(container.element.querySelector('#copy') as HTMLElement);
+    initCopyButtons(container.element.querySelectorAll('[data-copy]'));
 });
 
 const titles: Record<string, string | undefined> = {
@@ -415,16 +429,9 @@ const defaultLayout: LayoutConfig = {
     },
 };
 
-function isSponsor() {
-    return $('#golferInfo')?.dataset.isSponsor === 'true';
-}
-function hasNotes() {
-    return $('#golferInfo')?.dataset.hasNotes === 'true';
-}
-
 function getPoolFromLayoutConfig(config: LayoutConfig) {
     const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'details', 'langWiki'];
-    if (isSponsor() || hasNotes()) allComponents.push('holeLangNotes');
+    if (isSponsor || hasNotes) allComponents.push('holeLangNotes');
     const activeComponents = getComponentNamesRecursive(config.root!);
     return allComponents.filter(x => !activeComponents.includes(x));
 }
@@ -456,7 +463,7 @@ function getViewState(): ViewState {
     };
 }
 
-const saveLayout = debounce(() => {
+const saveLayout = throttle(() => {
     const state = getViewState();
     if (!state.config.root) return;
     localStorage.setItem('lastViewState', JSON.stringify(state));

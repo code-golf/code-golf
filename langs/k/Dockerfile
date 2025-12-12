@@ -1,19 +1,20 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.23 AS builder
 
-ENV VERSION=67da192f47
+RUN apk add --no-cache curl gcc make musl-dev patch
 
-RUN apk add --no-cache build-base curl
+ENV CC='gcc -static' VER=717063f249
 
-RUN curl -L https://codeberg.org/ngn/k/archive/$VERSION.tar.gz | tar xz \
- && sed -i s/march=native/march=x86-64-v3/ k/makefile                   \
- && make -C k CC="gcc -static"
+WORKDIR /usr/bin
 
-COPY kwrapper.c /
+RUN curl -#L https://codeberg.org/ngn/k/archive/$VER.tar.gz \
+  | tar xz --strip-components 1
 
-RUN gcc -static -s -o kwrapper kwrapper.c
+COPY k.patch .
 
-FROM codegolf/lang-base-no-proc
+RUN patch -p0 < k.patch | make
 
-COPY --from=0 /k/k /kwrapper /usr/bin/
+FROM codegolf/lang-base
 
-ENTRYPOINT ["kwrapper"]
+COPY --from=0 /usr/bin/k /usr/bin/
+
+ENTRYPOINT ["k"]

@@ -1,12 +1,6 @@
 {{ template "header" . }}
 {{ template "recent" . }}
 
-<svg>
-{{ range $lang, $true := .Data.LangsShown }}
-    {{ svg $lang }}
-{{ end }}
-</svg>
-
 <main id=two-pane>
     {{ template "nav" . }}
 
@@ -16,6 +10,7 @@
                 <th>Hole
                 <th>Golfer
                 <th class="right wide">{{ title .Data.Scoring }}
+                <th class="right wide">Time
                 <th class=right>Submitted
         <tbody>
         {{ $name := "" }}
@@ -25,7 +20,7 @@
             <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>
                     <a href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
-                        <svg class=thin><use href="#{{ .Lang.ID }}"/></svg>
+                        {{ svg .Lang.ID "class" "thin" }}
                         <span>{{ .Hole.Name }}</span>
                     </a>
                 <td>{{ template "golfer-link" . }}
@@ -34,15 +29,17 @@
                     {{ if eq .Golfers 1 }}solve {{ else }}{{ .Rank }}{{ ord .Rank }} {{ end -}}
                     with {{ comma .Strokes }} {{ $.Data.Scoring }} in {{ .Lang.Name }}">
                     <a href="/golfers/{{ .Name }}/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
-                        {{ if eq .Golfers 1 }}🦄
+                        {{ if .Experimental }}{{ svg "flask" }}
+                        {{ else if eq .Golfers 1 }}🦄
                         {{ else if eq .Rank 1 }}{{ if eq .TieCount 1 }}💎{{ else }}🥇{{ end }}
                         {{ else if eq .Rank 2 }}🥈
                         {{ else if eq .Rank 3 }}🥉
                         {{ end }}
                         <span class=right>{{ comma .Strokes }}</span>
-                        <svg><use href="#{{ .Lang.ID }}"/></svg>
+                        {{ svg .Lang.ID }}
                     </a>
-                <td class=right>{{ time .Submitted }}
+                <td class="right wide">{{ duration .Time }}
+                <td class=right>{{ time (.Submitted.In $.Location) }}
         {{ end }}
     </table>
 </main>

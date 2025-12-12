@@ -9,17 +9,15 @@ import (
 
 // GET /rankings/langs/{scoring}
 func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
-		Hole                    *config.Hole
-		Lang                    *config.Lang
-		Golds, Silvers, Bronzes int
-		Points, Rank, Strokes   int
-	}
-
 	data := struct {
 		LangID, Scoring string
 		Langs           []*config.Lang
-		Rows            []row
+		Rows            []struct {
+			Hole                    *config.Hole
+			Lang                    *config.Lang
+			Golds, Silvers, Bronzes int
+			Points, Rank, Strokes   int
+		}
 	}{
 		LangID:  param(r, "lang"),
 		Langs:   config.LangList,
@@ -40,7 +38,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           RANK() OVER (PARTITION BY hole
 			                            ORDER BY points DESC, strokes)
 			      FROM rankings
-			     WHERE scoring = $1
+			     WHERE scoring = $1 AND NOT experimental
 			) SELECT DISTINCT hole, rank
 			    FROM ranks
 			   WHERE lang = $2 AND rank < 4
@@ -60,7 +58,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           ROW_NUMBER() OVER (PARTITION BY hole, lang
 			                                  ORDER BY points DESC, strokes)
 			      FROM rankings
-			     WHERE scoring = $1
+			     WHERE scoring = $1 AND NOT experimental
 			), medals AS (
 			    SELECT DISTINCT hole, lang, rank FROM ranks WHERE rank < 4
 			) SELECT lang,

@@ -474,3 +474,183 @@ export const dart = clike({
         },
     },
 });
+
+function tokenKotlinString(tripleString){
+    return function (stream, state) {
+      var escaped = false, next, end = false;
+      while (!stream.eol()) {
+        if (!tripleString && !escaped && stream.match('"') ) {end = true; break;}
+        if (tripleString && stream.match('"""')) {end = true; break;}
+        next = stream.next();
+        if(!escaped && next == "$" && stream.match('{'))
+          stream.skipTo("}");
+        escaped = !escaped && next == "\\" && !tripleString;
+      }
+      if (end || !tripleString)
+        state.tokenize = null;
+      return "string";
+    }
+  }
+  
+export const kotlin = clike({
+    name: "kotlin",
+    keywords: words(
+      /*keywords*/
+      "package as typealias class interface this super val operator " +
+        "var fun for is in This throw return annotation " +
+        "break continue object if else while do try when !in !is as? " +
+  
+      /*soft keywords*/
+      "file import where by get set abstract enum open inner override private public internal " +
+        "protected catch finally out final vararg reified dynamic companion constructor init " +
+        "sealed field property receiver param sparam lateinit data inline noinline tailrec " +
+        "external annotation crossinline const operator infix suspend actual expect setparam"
+    ),
+    types: words(
+      /* package java.lang */
+      "Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable " +
+        "Compiler Double Exception Float Integer Long Math Number Object Package Pair Process " +
+        "Runtime Runnable SecurityManager Short StackTraceElement StrictMath String " +
+        "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void Annotation Any BooleanArray " +
+        "ByteArray Char CharArray DeprecationLevel DoubleArray Enum FloatArray Function Int IntArray Lazy " +
+        "LazyThreadSafetyMode LongArray Nothing ShortArray Unit"
+    ),
+    indentSwitch: false,
+    indentStatements: false,
+    multiLineStrings: true,
+    number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+(\.\d+)?|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
+    blockKeywords: words("catch class do else finally for if where try while enum"),
+    defKeywords: words("class val var object interface fun"),
+    atoms: words("true false null this"),
+    hooks: {
+      "@": function(stream) {
+        stream.eatWhile(/[\w\$_]/);
+        return "meta";
+      },
+      '*': function(_stream, state) {
+        return state.prevToken == '.' ? 'variable' : 'operator';
+      },
+      '"': function(stream, state) {
+        state.tokenize = tokenKotlinString(stream.match('""'));
+        return state.tokenize(stream, state);
+      },
+      "/": function(stream, state) {
+        if (!stream.eat("*")) return false;
+        state.tokenize = tokenNestedComment(1);
+        return state.tokenize(stream, state)
+      },
+      indent: function(state, ctx, textAfter, indentUnit) {
+        var firstChar = textAfter && textAfter.charAt(0);
+        if ((state.prevToken == "}" || state.prevToken == ")") && textAfter == "")
+          return state.indented;
+        if ((state.prevToken == "operator" && textAfter != "}" && state.context.type != "}") ||
+            state.prevToken == "variable" && firstChar == "." ||
+            (state.prevToken == "}" || state.prevToken == ")") && firstChar == ".")
+          return indentUnit * 2 + ctx.indented;
+        if (ctx.align && ctx.type == "}")
+          return ctx.indented + (state.context.type == (textAfter || "").charAt(0) ? 0 : indentUnit);
+      }
+    },
+    languageData: {
+      closeBrackets: {brackets: ["(", "[", "{", "'", '"', '"""']}
+    }
+  });
+
+function tokenTripleString(stream, state) {
+    var escaped = false;
+    while (!stream.eol()) {
+        if (!escaped && stream.match('"""')) {
+            state.tokenize = null;
+            break;
+        }
+        escaped = stream.next() == '\\' && !escaped;
+    }
+    return 'string';
+}
+
+function tokenNestedComment(depth) {
+    return function (stream, state) {
+        var ch;
+        while (ch = stream.next()) {
+            if (ch == '*' && stream.eat('/')) {
+                if (depth == 1) {
+                    state.tokenize = null;
+                    break;
+                } else {
+                    state.tokenize = tokenNestedComment(depth - 1);
+                    return state.tokenize(stream, state);
+                }
+            } else if (ch == '/' && stream.eat('*')) {
+                state.tokenize = tokenNestedComment(depth + 1);
+                return state.tokenize(stream, state);
+            }
+        }
+        return 'comment';
+    }
+}
+
+export const scala = clike({
+    keywords: words('abstract case catch class def do else extends final finally for forSome if' +
+                  ' implicit import lazy match new null object override package private protected return' +
+                  ' sealed super this throw trait try type val var while with yield _' +
+                  ' assert assume require print println printf readLine readBoolean readByte readShort' +
+                  ' readChar readInt readLong readFloat readDouble'),
+    types: words('AnyVal App Application Array BufferedIterator BigDecimal BigInt Char Console Either' +
+                ' Enumeration Equiv Error Exception Fractional Function IndexedSeq Int Integral Iterable' +
+                ' Iterator List Map Numeric Nil NotNull Option Ordered Ordering PartialFunction PartialOrdering' +
+                ' Product Proxy Range Responder Seq Serializable Set Specializable Stream StringBuilder' +
+                ' StringContext Symbol Throwable Traversable TraversableOnce Tuple Unit Vector' +
+                ' Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable' +
+                ' Compiler Double Exception Float Integer Long Math Number Object Package Pair Process' +
+                ' Runtime Runnable SecurityManager Short StackTraceElement StrictMath String' +
+                ' StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void'),
+    multiLineStrings: true,
+    blockKeywords: words('catch class enum do else finally for forSome if match switch try while'),
+    defKeywords: words('class enum def object package trait type val var'),
+    atoms: words('true false null'),
+    indentStatements: false,
+    indentSwitch: false,
+    isOperatorChar: /[+\-*&%=<>!?|\/#:@]/,
+    hooks: {
+        '@': function(stream) {
+            stream.eatWhile(/[\w\$_]/);
+            return 'meta';
+        },
+        '"': function(stream, state) {
+            if (!stream.match('""')) return false;
+            state.tokenize = tokenTripleString;
+            return state.tokenize(stream, state);
+        },
+        "'": function(stream) {
+            if (stream.match(/^(\\[^'\s]+|[^\\'])'/)) return 'string-2';
+            stream.eatWhile(/[\w\$_\xa1-\uffff]/);
+            return 'atom';
+        },
+        '=': function(stream, state) {
+            var cx = state.context;
+            if (cx.type == '}' && cx.align && stream.eat('>')) {
+                state.context = new Context(cx.indented, cx.column, cx.type, cx.info, null, cx.prev);
+                return 'operator';
+            }
+            return false;
+        },
+        '/': function(stream, state) {
+            if (!stream.eat('*')) return false;
+            state.tokenize = tokenNestedComment(1);
+            return state.tokenize(stream, state);
+        },
+    },
+    modeProps: {closeBrackets: {pairs: '()[]{}""', triples: '"'}},
+});
+
+export const squirrel = clike({
+    keywords: words('base break clone continue const default delete enum extends function in class' +
+                    ' foreach local resume return this throw typeof yield constructor instanceof static'),
+    types: cTypes,
+    blockKeywords: words('case catch class else for foreach if switch try while'),
+    defKeywords: words('function local class'),
+    typeFirstDefinitions: true,
+    atoms: words('true false null'),
+    hooks: {'#': cppHook},
+    modeProps: {fold: ['brace', 'include']}
+});

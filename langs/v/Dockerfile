@@ -1,37 +1,39 @@
-FROM debian:bullseye-slim AS builder
+FROM alpine:3.22 AS builder
 
-RUN apt-get update && apt-get install -y gcc git make
+RUN apk add --no-cache dash gc-dev gcc git make musl-dev
 
-RUN git clone https://github.com/vlang/v /opt/v \
- && cd /opt/v && git reset --hard 0.4.8 && make && strip v
+ENV VER=0.4.12
 
-FROM debian:bullseye-slim
+WORKDIR /usr/local
 
-RUN apt-get update && apt-get install -y libc-dev libgc-dev
+RUN wget -O- https://github.com/vlang/v/archive/refs/tags/$VER.tar.gz \
+  | tar xz --strip-components 1
 
-COPY --from=0 /opt/v/thirdparty/tcc /opt/v/thirdparty/tcc
-COPY --from=0 /opt/v/v              /opt/v/v
-COPY --from=0 /opt/v/vlib           /opt/v/vlib
+RUN make \
+ && strip v
+
+COPY v.c /
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/V -s -static /v.c
 
 FROM codegolf/lang-base
 
-COPY --from=1 /bin/cat /bin/rm /bin/sh                   /bin/
-COPY --from=1 /lib/x86_64-linux-gnu                      /lib/x86_64-linux-gnu
-COPY --from=1 /lib64                                     /lib64
-COPY --from=1 /opt/v                                     /opt/v
-COPY --from=1 /usr/include                               /usr/include
-COPY --from=0 /usr/lib/x86_64-linux-gnu/crt1.o           \
-              /usr/lib/x86_64-linux-gnu/crti.o           \
-              /usr/lib/x86_64-linux-gnu/crtn.o           \
-              /usr/lib/x86_64-linux-gnu/libatomic.so.1   \
-              /usr/lib/x86_64-linux-gnu/libc.so          \
-              /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
-              /usr/lib/x86_64-linux-gnu/libdl.so         \
-              /usr/lib/x86_64-linux-gnu/libm.so          \
-              /usr/lib/x86_64-linux-gnu/libpthread.so    /usr/lib/x86_64-linux-gnu/
+COPY --from=0 /usr/bin/dash             /bin/sh
+COPY --from=0 /lib/ld-musl-*.so.1       /lib/
+COPY --from=0 /usr/bin/V                /usr/bin/
+COPY --from=0 /usr/include              /usr/include
+COPY --from=0 /usr/lib/crt1.o           \
+              /usr/lib/crti.o           \
+              /usr/lib/crtn.o           \
+              /usr/lib/libatomic.so.1   \
+              /usr/lib/libc.so          \
+              /usr/lib/libdl.a          \
+              /usr/lib/libm.a           \
+              /usr/lib/libpthread.a     /usr/lib/
+COPY --from=0 /usr/local/v              /usr/local/
+COPY --from=0 /usr/local/thirdparty/tcc /usr/local/thirdparty/tcc
+COPY --from=0 /usr/local/vlib           /usr/local/vlib
 
-COPY v /usr/bin/
+ENTRYPOINT ["V"]
 
-ENTRYPOINT ["v"]
-
-CMD ["version"]
+CMD ["--version"]

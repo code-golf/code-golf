@@ -38,7 +38,7 @@ func largeFracGen() fraction {
 	// larger number.
 	if f.numerator <= 15 && f.denominator <= 15 {
 		newVal := rand.IntN(235) + 16
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			f.numerator = newVal
 		} else {
 			f.denominator = newVal
@@ -55,7 +55,7 @@ func largeFracGen() fraction {
 	return f
 }
 
-func fractions() []Run {
+var _ = answerFunc("fractions", func() []Answer {
 	// Default cases.
 	ra1 := rand.IntN(249) + 2
 	ra2 := rand.IntN(249) + 2
@@ -124,4 +124,4 @@ func fractions() []Run {
 	}
 
 	return outputTests(tests)
-}
+})

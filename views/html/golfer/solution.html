@@ -6,24 +6,28 @@
         {{ .Data.Hole.Name }} in {{ .Data.Lang.Name }} in {{ title .Data.Scoring }}
 
         <a class="btn purple" href="/{{ .Data.Hole.ID }}#{{ .Data.Lang.ID }}">
-            {{ svg "play-light" }} Play Hole
+            {{ svg "play" }} Play Hole
         </a>
     </h1>
 
-{{ if .Data.Failing }}
-    <p>Currently failing.
-{{ else }}
+{{ if .Data.Failing }}<p>Currently failing.{{ end }}
+
+{{ if .Data.Rank }}
     <p>
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/{{ .Data.Lang.ID }}/{{ .Data.Scoring -}}
-            ?page={{ page .Data.Row }}">
+            ?page={{ page .Data.Row }}&row={{ .Data.Row }}">
             {{ comma .Data.Rank }}<sup>{{ ord .Data.Rank }}</sup> in {{ .Data.Lang.Name }}</a>
         and
         <a href="/rankings/holes/{{ .Data.Hole.ID }}/all/{{ .Data.Scoring -}}
-            ?page={{ page .Data.RowOverall }}">
+            ?page={{ page .Data.RowOverall }}&row={{ .Data.RowOverall }}">
             {{ comma .Data.RankOverall }}<sup>{{ ord .Data.RankOverall }}</sup> overall</a>.
 {{ end }}
 
-    <p>Last tested {{ time .Data.Tested }}.
+    <p>Last tested {{ time (.Data.Tested.In $.Location) }}.
+
+    <p>Runtime of {{ duration .Data.Time }}.
+
+    <div><button class=btn id=test-solution>Test Solution</button></div>
 
     <div>
         <table>
@@ -37,7 +41,7 @@
                 <tr>
                     <td class=right>{{ comma .Bytes }}
                     <td class=right>{{ with .Chars }}{{ comma . }}{{ end }}
-                    <td class=right>{{ time .Submitted }}
+                    <td class=right>{{ time (.Submitted.In $.Location) }}
             {{ end }}
         </table>
     </div>

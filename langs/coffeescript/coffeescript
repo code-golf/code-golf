@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec coffee --version
-
-cat - > /tmp/code.coffee
-
-shift
-exec coffee /tmp/code.coffee "$@"

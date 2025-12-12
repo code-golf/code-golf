@@ -1,14 +1,13 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache curl
+ENV VER=1.12.213
 
-ENV VER=1.4.192
-
-RUN curl -L https://github.com/babashka/babashka/releases/download/v$VER/babashka-$VER-linux-amd64-static.tar.gz | tar xz
+RUN wget -O- https://github.com/babashka/babashka/releases/download/v$VER/babashka-$VER-linux-amd64-static.tar.gz \
+  | tar xz --directory /usr/bin
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bb /usr/bin/clojure
+COPY --from=0 /usr/bin/bb /usr/bin/clojure
 
 ENTRYPOINT ["clojure"]
 

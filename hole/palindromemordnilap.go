@@ -1,6 +1,6 @@
 package hole
 
-func palindromemordnilap() []Run {
+var _ = answerFunc("palindromemordnilap", func() []Answer {
 	const alphabet = "qwertzuiopasdfghjklyxcvbnmQWERTZUIOPASDFGHJKLYXCVBNM0123456789"
 
 	correctLength := func(input string) int {
@@ -28,7 +28,7 @@ func palindromemordnilap() []Run {
 		"123456", "8989a",
 
 		"a", "aA", "aa", "aaaaaaa", "ab", "aba", "abaaaba", "abb", "abc",
-		"abcdc", "abcdcc",
+		"abca", "abcdc", "abcdcc", "sesphase", "ababaa", "aaaaaabaaaaabaaaaaabaaaaaabaaaaaa",
 
 		"better", "mississippi", "Palindrome",
 
@@ -60,5 +60,7 @@ func palindromemordnilap() []Run {
 		}
 	}
 
+	tests = tests[:106] // Preserve original argc
+
 	return outputTests(shuffle(tests))
-}
+})

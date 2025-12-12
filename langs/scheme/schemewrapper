@@ -1,8 +1,0 @@
-#!/bin/sh -e
-
-[ "$1" = "--version" ] && exec scheme --version
-
-cat - > /tmp/code.ss
-
-shift
-exec scheme --script /tmp/code.ss "$@"

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -14,22 +15,19 @@ import (
 func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 	cheevoID := param(r, "cheevo")
 
-	type row struct {
-		Country     config.NullCountry
-		Earned      time.Time
-		Name        string
-		Rank, Count int
-	}
-
 	data := struct {
 		Cheevo *config.Cheevo
 		Pager  *pager.Pager
-		Rows   []row
-		Total  int
+		Rows   []struct {
+			golfer.GolferLink
+
+			Earned             time.Time
+			Count, Rank, Total int
+		}
+		Total int
 	}{
 		Cheevo: config.CheevoByID[cheevoID],
 		Pager:  pager.New(r),
-		Rows:   make([]row, 0, pager.PerPage),
 		Total:  len(config.CheevoList),
 	}
 
@@ -38,49 +36,31 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := session.Database(r).Query(
+	if err := session.Database(r).Select(
+		&data.Rows,
 		`WITH count AS (
 		    SELECT user_id, COUNT(*), MAX(earned) earned
-		      FROM trophies
-		     WHERE $1 IN ('all', trophy::text)
+		      FROM cheevos
+		     WHERE cheevo = $1 OR $1 IS NULL
 		  GROUP BY user_id
-		) SELECT count, country_flag, earned, login,
-		         CASE WHEN $1 = 'all'
+		) SELECT avatar_url, count, country_flag, earned, name,
+		         CASE WHEN $1 IS NULL
 		            THEN RANK() OVER(ORDER BY count DESC)
 		            ELSE RANK() OVER(ORDER BY earned)
 		         END,
-		         COUNT(*) OVER()
-		    FROM count JOIN users ON id = user_id
-		ORDER BY rank, earned, login
+		         COUNT(*) OVER() total
+		    FROM count JOIN golfers_with_avatars ON id = user_id
+		ORDER BY rank, earned, name
 		   LIMIT $2 OFFSET $3`,
-		cheevoID,
+		data.Cheevo,
 		pager.PerPage,
 		data.Pager.Offset,
-	)
-	if err != nil {
+	); err != nil {
 		panic(err)
 	}
-	defer rows.Close()
 
-	for rows.Next() {
-		var r row
-
-		if err := rows.Scan(
-			&r.Count,
-			&r.Country,
-			&r.Earned,
-			&r.Name,
-			&r.Rank,
-			&data.Pager.Total,
-		); err != nil {
-			panic(err)
-		}
-
-		data.Rows = append(data.Rows, r)
-	}
-
-	if err := rows.Err(); err != nil {
-		panic(err)
+	if len(data.Rows) > 0 {
+		data.Pager.Total = data.Rows[0].Total
 	}
 
 	if data.Pager.Calculate() {
@@ -88,7 +68,7 @@ func rankingsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	description := any("All achievements")
+	description := template.HTML("All achievements.")
 	if cheevo := data.Cheevo; cheevo != nil {
 		description = template.HTML(cheevo.Emoji+" "+cheevo.Name+" - ") + cheevo.Description
 	}

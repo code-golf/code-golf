@@ -42,7 +42,10 @@ var morseMap = map[rune]string{
 	' ': "    ",
 }
 
-func morse(reverse bool) []Run {
+var _ = answerFunc("morse-decoder", func() []Answer { return morse(true) })
+var _ = answerFunc("morse-encoder", func() []Answer { return morse(false) })
+
+func morse(reverse bool) []Answer {
 	text := strings.Join(shuffle([]string{
 		"BUD",
 		"FOR",

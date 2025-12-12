@@ -1,8 +1,8 @@
-FROM alpine:3.20
+FROM alpine:3.23
 
 WORKDIR /scratch
 
-RUN mkdir dev etc tmp
+RUN mkdir dev etc proc tmp
 
 # /dev
 RUN ln -s /proc/self/fd dev/fd     \
@@ -14,11 +14,6 @@ RUN ln -s /proc/self/fd dev/fd     \
 RUN echo nobody:x:65534:             > etc/group \
  && echo nobody:x:65534:65534::/tmp: > etc/passwd
 
-FROM scratch AS lang-base-no-proc
-
-COPY --from=0 /scratch /
-
 FROM scratch AS lang-base
 
-COPY --from=0 /scratch     /
-COPY --from=0 /scratch/tmp /proc
+COPY --from=0 /scratch /

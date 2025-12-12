@@ -3,26 +3,25 @@ package hole
 import (
 	"bytes"
 	"context"
-	"embed"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"regexp"
 	"slices"
 	"strings"
-	"sync"
 	"syscall"
 	"time"
 	"unicode"
 
-	"github.com/agnivade/levenshtein"
 	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
-	hungarianAlgorithm "github.com/oddg/hungarian-algorithm"
+	"golang.org/x/sync/errgroup"
 )
+
+// Limit how many runs can run at once.
+var runSemaphore = make(chan struct{}, 8)
 
 var timeout = 5 * time.Second
 
@@ -32,9 +31,6 @@ func init() {
 		timeout = 10 * time.Second
 	}
 }
-
-//go:embed answers
-var answers embed.FS
 
 // All ASCII whitespace except newline, up to a newline or the end.
 var perLineTrimmer = regexp.MustCompile(`[\t\x0B\f\r ]+(?:\n|$)`)
@@ -46,275 +42,135 @@ func trimPerLine(bytesSlice []byte) string {
 
 // Run holds the results of running a given solution once.
 type Run struct {
-	Answer            string        `json:"answer"`
-	ItemDelimiter     string        `json:"item_delimiter"`
-	MultisetDelimiter string        `json:"multiset_delimiter"`
-	Args              []string      `json:"args"`
-	ExitCode          int           `json:"exit_code"`
-	Pass              bool          `json:"pass"`
-	Stderr            string        `json:"stderr"`
-	Stdout            string        `json:"stdout"`
-	Time              time.Duration `json:"time_ns"`
-	Timeout           bool          `json:"timeout"`
+	Answer                string        `json:"answer"`
+	Code                  string        `json:"-"`
+	MultisetItemDelimiter string        `json:"multiset_item_delimiter"`
+	OutputDelimiter       string        `json:"output_delimiter"`
+	Args                  []string      `json:"args"`
+	ExitCode              int           `json:"exit_code"`
+	Pass                  bool          `json:"pass"`
+	Stderr                string        `json:"stderr"`
+	Stdout                string        `json:"stdout"`
+	Time                  time.Duration `json:"time_ns,format:nano"`
+	Timeout               bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly
 	// solution is is to compile it so we store it here but don't JSON it.
 	ASMBytes int `json:"-"`
 }
 
-func getClosestAnswer(anyAnswer, stdout, itemDelimiter, multisetDelimiter string) string {
-	answerMultisets := []string{anyAnswer}
-	stdoutMultisets := []string{stdout}
-	if multisetDelimiter != "" {
-		answerMultisets = strings.Split(anyAnswer, multisetDelimiter)
-		stdoutMultisets = strings.Split(stdout, multisetDelimiter)
-	}
-	closestMultisets := make([]string, len(answerMultisets))
-
-	for i, answerMultiset := range answerMultisets {
-		stdoutMultiset := ""
-		if i < len(stdoutMultisets) {
-			stdoutMultiset = stdoutMultisets[i]
-		}
-		closestMultisets[i] = getClosestMultiset(answerMultiset, stdoutMultiset, itemDelimiter)
-	}
-	return strings.Join(closestMultisets, multisetDelimiter)
-}
-
-func getClosestMultiset(anyAnswer, stdout, itemDelimiter string) string {
-	expectedItems := strings.Split(anyAnswer, itemDelimiter)
-	expectedItemsReordered := make([]string, len(expectedItems))
-	userItems := strings.Split(stdout, itemDelimiter)
-
-	expectedItemsMap := make(map[string]int)
-	for _, expected := range expectedItems {
-		expectedItemsMap[expected]++
-	}
-
-	// Match items that are correct
-	matches := 0
-	for i, user := range userItems {
-		if i < len(expectedItems) && expectedItemsMap[user] > 0 {
-			expectedItemsReordered[i] = user
-			expectedItemsMap[user]--
-			userItems[i] = ""
-			matches++
-		}
-	}
-
-	// Process mismatched items
-	if matches < len(expectedItems) {
-
-		// Calculate indices of expected & user items that couldn't be matched be equality
-		unmatchedExpectedIndices := []int{}
-		unmatchedUserIndices := []int{}
-
-		for i, expected := range expectedItems {
-			if expectedItemsMap[expected] > 0 {
-				unmatchedExpectedIndices = append(unmatchedExpectedIndices, i)
-				expectedItemsMap[expected]--
-			}
-		}
-
-		for i, user := range userItems {
-			if user != "" {
-				unmatchedUserIndices = append(unmatchedUserIndices, i)
-			}
-		}
-
-		n := max(len(unmatchedExpectedIndices), len(unmatchedUserIndices))
-
-		permutation := make([]int, n)
-		for i := range permutation {
-			permutation[i] = i
-		}
-
-		// If there are not many wrong items, try to match them
-		// otherwise, use the above identity permutation
-		if n <= 32 {
-			dist := make([][]int, n)
-			for i := range dist {
-				dist[i] = make([]int, n)
-				for j := range dist {
-					if j >= len(unmatchedExpectedIndices) {
-						dist[i][j] = len(userItems[unmatchedUserIndices[i]])
-					} else if i >= len(unmatchedUserIndices) {
-						dist[i][j] = len(expectedItems[unmatchedExpectedIndices[j]])
-					} else {
-						dist[i][j] = levenshtein.ComputeDistance(expectedItems[unmatchedExpectedIndices[j]], userItems[unmatchedUserIndices[i]])
-					}
-				}
-			}
-
-			permutation, _ = hungarianAlgorithm.Solve(dist)
-		}
-
-		k := 0
-		for _, i := range permutation {
-			if k >= len(expectedItemsReordered) {
-				break
-			}
-			if i < len(unmatchedExpectedIndices) {
-				for expectedItemsReordered[k] != "" {
-					k++
-				}
-				expectedItemsReordered[k] = expectedItems[unmatchedExpectedIndices[i]]
-			}
-		}
-	}
-
-	return strings.Join(expectedItemsReordered, itemDelimiter)
-}
-
 // Play a given hole, in a given lang, with given code and return the runs.
 func Play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
-) (runs []Run) {
+) ([]Run, error) {
+	var answers []Answer
+
 	switch hole.ID {
-	case "arabic-to-roman", "roman-to-arabic":
-		runs = arabicToRoman(hole.ID == "roman-to-arabic")
-	case "arrows":
-		runs = arrows()
-	case "billiards":
-		runs = billiards()
-	case "brainfuck":
-		runs = brainfuck()
-	case "card-number-validation":
-		runs = cardNumberValidation()
-	case "day-of-week":
-		runs = dayOfWeek()
-	case "dfa-simulator":
-		runs = dfaSimulator()
-	case "ellipse-perimeters":
-		runs = ellipsePerimeters()
-	case "forsyth-edwards-notation":
-		runs = forsythEdwardsNotation()
-	case "fractions":
-		runs = fractions()
-	case "game-of-life":
-		runs = gameOfLife()
-	case "gray-code-decoder", "gray-code-encoder":
-		runs = grayCode(hole.ID == "gray-code-decoder")
-	case "css-grid":
-		runs = cssGrid()
-	case "isbn":
-		runs = isbn()
-	case "intersection":
-		runs = intersection()
-	case "jacobi-symbol":
-		runs = jacobiSymbol()
-	case "levenshtein-distance":
-		runs = levenshteinDistance()
-	case "lucky-tickets":
-		runs = luckyTickets()
-	case "mahjong":
-		runs = mahjong()
-	case "maze":
-		runs = maze()
-	case "medal-tally":
-		runs = medalTally()
-	case "morse-decoder", "morse-encoder":
-		runs = morse(hole.ID == "morse-decoder")
-	case "musical-chords":
-		runs = musicalChords()
-	case "nfa-simulator":
-		runs = nfaSimulator()
-	case "ordinal-numbers":
-		runs = ordinalNumbers()
-	case "p-adic-expansion":
-		runs = pAdicExpansion()
-	case "palindromemordnilap":
-		runs = palindromemordnilap()
-	case "pangram-grep":
-		runs = pangramGrep()
-	case "poker":
-		runs = poker()
-	case "qr-decoder", "qr-encoder":
-		runs = qr(hole.ID == "qr-decoder")
-	case "quadratic-formula":
-		runs = quadraticFormula()
-	case "quine":
-		runs = []Run{{Args: []string{}, Answer: code}}
-	case "repeating-decimals":
-		runs = repeatingDecimals()
-	case "reverse-polish-notation":
-		runs = reversePolishNotation()
-	case "reversi":
-		runs = reversi()
-	case "seven-segment":
-		runs = sevenSegment()
-	case "si-units":
-		runs = siUnits()
-	case "spelling-numbers":
-		runs = spellingNumbers()
-	case "sudoku", "sudoku-v2":
-		runs = sudoku(hole.ID == "sudoku-v2")
-	case "ten-pin-bowling":
-		runs = tenPinBowling()
-	case "time-distance":
-		runs = timeDistance()
-	case "transpose-sentence":
-		runs = transposeSentence()
-	case "turtle":
-		runs = turtle()
-	case "zeckendorf-representation":
-		runs = zeckendorfRepresentation()
-	case "zodiac-signs":
-		runs = zodiacSigns()
 
 	// Holes with fixed test cases.
 	case "css-colors":
-		runs = outputTests(shuffle(fixedTests(hole.ID)))
-	case "emojify", "rock-paper-scissors-spock-lizard", "united-states":
-		runs = outputMultirunTests(fixedTests(hole.ID))
+		answers = outputTests(shuffle(fixedTests(hole.ID)))
+	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
+		answers = outputMultirunTests(fixedTests(hole.ID))
 	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
-		runs = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+		answers = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+	case "minesweeper":
+		answers = outputTestsWithSep("\n\n", fixedTests(hole.ID), shuffle(fixedTests(hole.ID)))
 
-	// Holes with no arguments and a static answer.
+	// Holes with a static answer or answer func.
 	default:
-		// ¯\_(ツ)_/¯ cannot embed file answers/√2.txt: invalid name √2.txt
-		id := hole.ID
-		if id == "√2" {
-			id = "root-2"
-		}
-
-		if b, err := answers.ReadFile("answers/" + id + ".txt"); err != nil {
-			panic(err)
+		if hole.AnswerFunc != nil {
+			answers = hole.AnswerFunc()
 		} else {
-			answer := string(bytes.TrimSuffix(b, []byte{'\n'}))
-			runs = []Run{{Args: []string{}, Answer: answer}}
+			answers = []Answer{{Args: []string{}, Answer: hole.Answer}}
 		}
 	}
+
+	runs := make([]Run, len(answers))
 
 	// Run all the runs in parallel to reduce the wall clock time.
-	var wg sync.WaitGroup
-	wg.Add(len(runs))
+	var g errgroup.Group
+	for i, answer := range answers {
+		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
 
-	for i := range runs {
-		go func(run *Run) {
-			if err := play(ctx, hole, lang, code, run); err != nil {
-				log.Println(err)
-			}
+		g.Go(func() error {
+			runSemaphore <- struct{}{}
+			defer func() { <-runSemaphore }()
 
-			wg.Done()
-		}(&runs[i])
+			return play(ctx, hole, lang, code, &runs[i])
+		})
 	}
 
-	wg.Wait()
-
-	return
+	return runs, g.Wait()
 }
 
 func play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
 ) error {
+	err := runCode(ctx, hole, lang, code, run)
+	if err != nil {
+		return err
+	}
+
+	run.Code = code
+	run.OutputDelimiter = hole.OutputDelimiter
+	run.MultisetItemDelimiter = hole.MultisetItemDelimiter
+	run.Answer = holeJudges[hole.ID](*run)
+
+	// Timeouts and whitespace only output never pass.
+	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+		if hole.CaseFold {
+			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
+		} else {
+			run.Pass = run.Answer == run.Stdout
+		}
+	}
+
+	return nil
+}
+
+func runCode(
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, run *Run,
+) error {
 	// Preprocess code.
+	if strings.Contains(code, "\x00") {
+		run.Stderr = "Solutions must not contain a literal null byte."
+		return nil
+	}
+
 	switch lang.ID {
+	case "05ab1e":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) && !strings.Contains(code, "”") {
+			run.Stderr = `Quine in 05AB1E must have at least one '"' or '”' character.`
+			return nil
+		}
+	case "cjam":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && !strings.Contains(code, "`") {
+			run.Stderr = "Quine in CJam must have at least one '`' character."
+			return nil
+		}
 	case "clojure":
 		// Appending (print) prevents implicit output of the last form, if it
 		// is not nil. This seems to be a quirk of the Babashka interpreter
 		// that only occurs when providing code via a command line argument.
-		code += "(print)"
+		//
+		// Add a newline in to avoid commenting it out via ;, and
+		// do it twice to avoid commenting it out via #_.
+		code += "\n(print)(print)"
+	case "go":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && strings.Contains(code, "//go:embed") {
+			run.Stderr = `Quine in Go must not use "embed".`
+			return nil
+		}
+	case "iogii", "stax":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
+			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
+			return nil
+		}
 	case "jq":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && json.Valid([]byte(code)) {
@@ -341,12 +197,30 @@ func play(
 		} else {
 			code += "\n"
 		}
+	case "kotlin":
+		if hole.ID == "quine" {
+			// Appending `Unit` on a newline suppresses implicit output of expressions
+			// in Kotlin. The '\n' guarantees we're not appending a ';' to another ';'.
+			code += "\nUnit"
+		}
 	case "php":
 		code = "<?php " + code + " ;"
+	case "racket":
+		if hole.ID == "quine" {
+			// Inserting `(current-print (λ (x) (void)))` before the code in the editor
+			// suppresses the implicit output of expressions in Racket.
+			code = "(current-print (λ (x) (void)))" + code
+		}
 	case "tex":
 		// Prevent trivial quines. Error out and return early.
 		if hole.ID == "quine" && !strings.Contains(code, `\`) {
 			run.Stderr = `Quine in TeX must have at least one '\' character.`
+			return nil
+		}
+	case "uiua":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && (!strings.Contains(code, "&p") || strings.Contains(code, `"`)) {
+			run.Stderr = "Quine in Uiua must use `&p` (without backticks) and cannot contain double quotes."
 			return nil
 		}
 	}
@@ -369,19 +243,22 @@ func play(
 
 	// Assembly bytes pipe.
 	var asmBytesRead, asmBytesWrite *os.File
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
 		}
+		defer asmBytesRead.Close()
+		defer asmBytesWrite.Close()
 
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
 	}
 
 	// Language arguments. Clone because we intend to mutate.
-	cmd.Args = slices.Clone(lang.Args)
 	if hole.ID == "quine" && lang.ArgsQuine != nil {
 		cmd.Args = slices.Clone(lang.ArgsQuine)
+	} else {
+		cmd.Args = slices.Clone(lang.Args)
 	}
 
 	// Pass code via args or stdin.
@@ -393,6 +270,16 @@ func play(
 
 	// Run arguments.
 	switch lang.ID {
+	// FIXME Do in source.
+	case "amber":
+		args := run.Args
+		if hole.ID == "emojify" || hole.ID == "hexdump" || hole.ID == "pangram-grep" || hole.ID == "rot13" {
+			args = nil
+			for _, arg := range run.Args {
+				args = append(args, strings.ReplaceAll(arg, "`", "'\\'"))
+			}
+		}
+		cmd.Args = append(cmd.Args, args...)
 	case "awk", "brainfuck", "fish":
 		// Hole args passed through stdin for these langs separated by a null byte
 		args := ""
@@ -400,26 +287,6 @@ func play(
 			args += arg + "\x00"
 		}
 		cmd.Stdin = strings.NewReader(args)
-	case "rockstar":
-		// Embed args into the code.
-		var argCode strings.Builder
-		argCode.WriteString("rock args\n")
-		for _, arg := range run.Args {
-			argCode.WriteString(`rock "`)
-			for _, r := range arg {
-				switch r {
-				case '\\', '"':
-					argCode.WriteByte('\\')
-					argCode.WriteRune(r)
-				case '\n':
-					argCode.WriteString(`\n`)
-				default:
-					argCode.WriteRune(r)
-				}
-			}
-			argCode.WriteString("\" into args\n")
-		}
-		cmd.Stdin = strings.NewReader(argCode.String() + code)
 	case "sed":
 		// For sed we always need to append a null byte, even if no args exist
 		args := strings.Join(run.Args, "\x00") + "\x00"
@@ -447,7 +314,11 @@ func play(
 	}
 
 	// Actual byte count is printed by the assembler.
-	if lang.ID == "assembly" {
+	if lang.Assembly {
+		// Explicitly close the writer in case defasm died before it could.
+		// This prevents a very long wait in the upcoming fscanf.
+		asmBytesWrite.Close()
+
 		if _, err := fmt.Fscanf(asmBytesRead, "%d", &run.ASMBytes); err != nil {
 			return err
 		}
@@ -469,9 +340,16 @@ func play(
 
 	stdoutBytes := stdout.Next(maxLength)
 
-	// Postprocess sed output to turn null bytes into newlines.
-	if lang.ID == "sed" {
-		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte("\x00"), []byte("\n"))
+	// Postprocess output in apl or sed.
+	// Convert apl's carriage returns or sed's null bytes to newlines.
+	if lang.ID == "apl" || lang.ID == "sed" {
+		stdoutByte := "\r"
+
+		if lang.ID == "sed" {
+			stdoutByte = "\x00"
+		}
+
+		stdoutBytes = bytes.ReplaceAll(stdoutBytes, []byte(stdoutByte), []byte("\n"))
 	}
 
 	// Trim trailing whitespace on each line, and then trailing empty lines.
@@ -481,25 +359,6 @@ func play(
 	} else {
 		run.Stdout = trimPerLine(stdoutBytes)
 	}
-
-	// Timeouts and whitespace only output never pass.
-	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
-		if hole.ID != "quine" {
-			run.Answer = trimPerLine([]byte(run.Answer))
-		}
-		if hole.ItemDelimiter != "" {
-			run.Answer = getClosestAnswer(run.Answer, run.Stdout, hole.ItemDelimiter, hole.MultisetDelimiter)
-		}
-
-		if hole.CaseFold {
-			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
-		} else {
-			run.Pass = run.Answer == run.Stdout
-		}
-	}
-
-	run.MultisetDelimiter = hole.MultisetDelimiter
-	run.ItemDelimiter = hole.ItemDelimiter
 
 	return nil
 }

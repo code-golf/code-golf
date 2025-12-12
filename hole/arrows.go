@@ -29,7 +29,7 @@ var arrowMapUpAndLeft = [...]string{"←", "↑", "↖", "↰", "⇐", "⇑", "�
 var arrowMapUpAndRight = [...]string{"↑", "→", "↗", "↱", "⇑", "⇒", "⇗", "⇧", "⇨"}
 var arrowMapDownAndRight = [...]string{"→", "↓", "↘", "↳", "⇒", "⇓", "⇘", "⇨", "⇩"}
 
-func arrows() []Run {
+var _ = answerFunc("arrows", func() []Answer {
 	args := make([]string, 0, 3*len(arrowMap))
 
 	// 1-3 of each arrow.
@@ -88,4 +88,4 @@ func arrows() []Run {
 	}
 
 	return outputTests(testRuns...)
-}
+})

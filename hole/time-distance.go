@@ -42,7 +42,7 @@ func formatDistance(secs int) string {
 	return "in " + result
 }
 
-func timeDistance() []Run {
+var _ = answerFunc("time-distance", func() []Answer {
 	inputs := []int{0}
 
 	timeUnitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
@@ -60,10 +60,7 @@ func timeDistance() []Run {
 		inputs = append(inputs, -randInt(2*secs, secsLarger-1)) // past plural
 		inputs = append(inputs, 2*secs)                         // future exactly 2
 		inputs = append(inputs, -2*secs)                        // past exactly 2
-		blimit := secs - 1
-		if blimit > 1000 {
-			blimit = 1000
-		}
+		blimit := min(secs-1, 1000)
 		a := randInt(2, 6)
 		b := randInt(-blimit, blimit)
 		inputs = append(inputs, a*secs+b) // future plural antiapproximation
@@ -78,4 +75,4 @@ func timeDistance() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

@@ -1,45 +1,60 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
+{{ $hidePoints := and .Data.Hole .Data.Hole.Experiment }}
+
 <main id=two-pane>
     {{ template "nav" . }}
 
-    <table class="nowrap-second sticky {{ if eq .Data.HoleID "all" }}all-holes{{ else }}one-hole{{ end }}">
+    <table class="nowrap-second sticky">
         <thead>
+            {{ with .Data }}
+                {{ if .Distribution }}
+                <script id=chart-data type="application/json">{
+                    "golfer": {{ .Strokes }},
+                    "golfers": [
+                    {{- range $i, $d := .Distribution -}}
+                        {{- if ne $i 0 }},{{ end -}}
+                        { "strokes": {{ .Strokes }}, "frequency": {{ .Frequency }} }
+                    {{- end -}}
+                ]}</script>
+                <tr>
+                    <th colspan=6><div id=chart-container><canvas></canvas></div>
+                {{ end }}
+            {{ end }}
             <tr>
                 <th>#
                 <th>Golfer
-                <th class=right>
-                    {{ if eq .Data.HoleID "all" }}Holes{{ else }}Lang{{ end }}
-                <th class=right>Points
+                {{ if eq .Data.HoleID "all" }}<th class=right>Holes{{ end }}
+                <th class="right {{ if $hidePoints }}hide{{ end }}">Points
                 <th class=right>{{ title .Data.Scoring }}
-                <th class=right>Time
+                {{ if ne .Data.HoleID "all" }}<th class=right>Time{{ end }}
+                <th class=right>Submitted
         <tbody>
     {{ $name := "" }}
     {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
+    {{ $row := atoi (.Request.FormValue "row") }}
+
     {{ range .Data.Rows }}
-        <tr {{ if eq $name .Name }} class=me {{ end }}>
+        <tr {{ if or (eq $name .Name) (and $row (eq $row .Row)) }} class=me {{ end }}>
             <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
             <td>{{ template "golfer-link" . }}
+            {{ if eq $.Data.HoleID "all" }}<td class=right>{{ .Holes }}{{ end }}
+            <td class="right {{ if $hidePoints }}hide{{ end }}">{{ comma .Points }}
+        {{ if eq $.Data.HoleID "all" }}
+            <td class=right>{{ comma .Strokes }}
+        {{ else }}
             <td class=right>
-            {{ if eq $.Data.HoleID "all" }}
-                {{ .Holes }}
-            {{ else }}
-                {{ .Lang.Name }}
-            {{ end }}
-            <td class=right>{{ comma .Points }}
-            <td class=right>
-            {{ if eq $.Data.HoleID "all" }}
-                {{ comma .Strokes }}
-            {{ else }}
                 <a href="/golfers/{{ .Name }}/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}"
                 {{ if .OtherStrokes }}
-                   data-tooltip="{{ title $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
+                    data-tooltip="{{ .Lang.Name }} {{ $.Data.Scoring }} solution is {{ comma .Strokes }} {{ $.Data.Scoring }}, {{ comma .OtherStrokes }} {{ $.Data.OtherScoring }}."
                 {{ end }}>
-                   {{ comma .Strokes }}
+                    <span>{{ comma .Strokes }}</span>
+                    {{ svg .Lang.ID }}
                 </a>
-            {{ end }}
+            <td class=right>{{ duration .Time }}
+        {{ end }}
             <td class=right>{{ time (.Submitted.In $.Location) }}
     {{ end }}
     </table>

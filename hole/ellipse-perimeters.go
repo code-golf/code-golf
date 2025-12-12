@@ -18,7 +18,7 @@ func perimeter(ai, bi int) (p float64) {
 	return
 }
 
-func ellipsePerimeters() []Run {
+var _ = answerFunc("ellipse-perimeters", func() []Answer {
 	tests := make([]test, 10)
 
 	// some random tests
@@ -29,4 +29,4 @@ func ellipsePerimeters() []Run {
 	}
 
 	return outputTests(tests)
-}
+})

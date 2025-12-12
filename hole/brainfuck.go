@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func brainfuck() []Run {
+var _ = answerFunc("brainfuck", func() []Answer {
 	tests := fixedTests("brainfuck")
 	tests = append(tests, randomBFCase(5, 3, 8, -3, 2))
 	tests = append(tests, randomBFCase(10, 5, 1, 1, -3))
@@ -22,7 +22,7 @@ func brainfuck() []Run {
 	shuffle(tests)
 	const argc = 12 // Preserve original argc
 	return outputTests(tests[:argc], tests[len(tests)-argc:])
-}
+})
 
 func intToBFString(n int) string {
 	if n < 1 {

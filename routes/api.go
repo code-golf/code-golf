@@ -1,15 +1,18 @@
 package routes
 
 import (
+	"cmp"
+	"context"
 	"database/sql"
 	_ "embed"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
+	"maps"
 	"net/http"
 	"reflect"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -49,10 +52,10 @@ func apiGolferGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Get(
 		golfer,
-		`SELECT admin, id, login name, pronouns, sponsor, started,
+		`SELECT admin, id, name, pronouns, sponsor, started,
 		        CASE WHEN show_country THEN country END country
 		   FROM users
-		  WHERE login = $1`,
+		  WHERE name = $1`,
 		param(r, "golfer"),
 	); errors.Is(err, sql.ErrNoRows) {
 		golfer = nil
@@ -65,167 +68,22 @@ func apiGolferGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /api/holes
 func apiHolesGET(w http.ResponseWriter, _ *http.Request) {
-	encodeJSON(w, config.HoleList)
+	encodeJSON(w, config.AllHoleList)
 }
 
 // GET /api/langs/{lang}
 func apiHoleGET(w http.ResponseWriter, r *http.Request) {
-	encodeJSON(w, config.HoleByID[param(r, "hole")])
+	encodeJSON(w, config.AllHoleByID[param(r, "hole")])
 }
 
 // GET /api/langs
 func apiLangsGET(w http.ResponseWriter, _ *http.Request) {
-	encodeJSON(w, config.LangList)
+	encodeJSON(w, config.AllLangList)
 }
 
 // GET /api/langs/{lang}
 func apiLangGET(w http.ResponseWriter, r *http.Request) {
-	encodeJSON(w, config.LangByID[param(r, "lang")])
-}
-
-// GET /mini-rankings/{hole}/{lang}/{scoring:bytes|chars}/{view:top|me|following}
-func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
-	limit := 7
-	if r.FormValue("long") == "1" {
-		limit = 99
-	}
-
-	var (
-		holeID  = param(r, "hole")
-		langID  = param(r, "lang")
-		scoring = param(r, "scoring")
-		view    = param(r, "view")
-	)
-
-	// No need to check scoring & view, they're covered by chi.
-	hole := config.AllHoleByID[holeID]
-	lang := config.AllLangByID[langID]
-	if hole == nil || lang == nil {
-		w.WriteHeader(http.StatusNotFound)
-		return
-	} else if hole.Experiment != 0 || lang.Experiment != 0 {
-		w.Write([]byte("[]"))
-		return
-	}
-
-	otherScoring := "bytes"
-	if scoring == "bytes" {
-		otherScoring = "chars"
-	}
-
-	var followLimit, userID int
-	if golfer := session.Golfer(r); golfer != nil {
-		followLimit = golfer.FollowLimit()
-		userID = golfer.ID
-	}
-
-	type entry struct {
-		Bytes      *int `json:"bytes"`
-		BytesChars *int `json:"bytes_chars"`
-		Chars      *int `json:"chars"`
-		CharsBytes *int `json:"chars_bytes"`
-		Golfer     struct {
-			ID   int    `json:"id"`
-			Name string `json:"name"`
-		} `json:"golfer"`
-		Me   bool `json:"me"`
-		Rank int  `json:"rank"`
-	}
-
-	sqlWhere, sqlLimit := "true", "$6"
-	switch view {
-	case "me":
-		sqlWhere = "row > COALESCE((SELECT row FROM ranks WHERE me), 0) - $6"
-		sqlLimit = "$6 * 2"
-	case "following":
-		sqlWhere = fmt.Sprint("user_id = ANY(following($1, ", followLimit, "))")
-	}
-
-	// We don't use the rankings view as we want instant updates upon solution
-	// submit, therefore we skip scoring to keep it fast.
-	rows, err := session.Database(r).Query(
-		`WITH ranks AS (
-		    SELECT ROW_NUMBER() OVER (ORDER BY `+scoring+`, submitted) row,
-		           RANK()       OVER (ORDER BY `+scoring+`),
-		           user_id,
-		           `+scoring+`,
-		           `+otherScoring+` `+scoring+`_`+otherScoring+`,
-		           user_id = $1 me
-		      FROM solutions
-		     WHERE hole = $2
-		       AND lang = $3
-		       AND scoring = $4
-		       AND NOT failing
-		), other_scoring AS (
-		    SELECT user_id,
-		           `+otherScoring+`,
-		           `+scoring+` `+otherScoring+`_`+scoring+`
-		      FROM solutions
-		     WHERE hole = $2
-		       AND lang = $3
-		       AND scoring = $5
-		       AND NOT failing
-		)   SELECT bytes, bytes_chars, chars, chars_bytes, id, login, me, rank
-		      FROM ranks
-		      JOIN users ON id = user_id
-		 LEFT JOIN other_scoring USING(user_id)
-		     WHERE `+sqlWhere+`
-		  ORDER BY row
-		     LIMIT `+sqlLimit,
-		userID,
-		holeID,
-		langID,
-		scoring,
-		otherScoring,
-		limit,
-	)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	entries := make([]entry, 0, limit)
-	for rows.Next() {
-		var e entry
-
-		if err := rows.Scan(
-			&e.Bytes,
-			&e.BytesChars,
-			&e.Chars,
-			&e.CharsBytes,
-			&e.Golfer.ID,
-			&e.Golfer.Name,
-			&e.Me,
-			&e.Rank,
-		); err != nil {
-			panic(err)
-		}
-
-		entries = append(entries, e)
-	}
-
-	if err := rows.Err(); err != nil {
-		panic(err)
-	}
-
-	// Trim the rows to limit with "me" as close to the middle as possible.
-	// TODO It would simplify everything if we could fold this into the SQL.
-	length := len(entries)
-	if view == "me" && length > limit {
-		me := slices.IndexFunc(entries, func(e entry) bool { return e.Me })
-		// Before: me entries, then "me" entry, then len(entries)-me-1 entries
-		// 	with me <= limit; len(entries) <= 2*limit; len(entries)-me-1 <= limit-1
-		if me <= limit/2 {
-			entries = entries[:limit]
-		} else if me >= length-(limit+1)/2 {
-			// Impossible case?
-			entries = entries[length-limit:]
-		} else {
-			entries = entries[me-limit/2 : me+(limit+1)/2]
-		}
-	}
-
-	encodeJSON(w, entries)
+	encodeJSON(w, config.AllLangByID[param(r, "lang")])
 }
 
 // GET /api/notes
@@ -308,9 +166,9 @@ func apiNotePUT(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Only sponsors can create or update notes, the can still read & delete.
+	// Only sponsors can create or update notes, the rest can still read & delete.
 	golfer := session.Golfer(r)
-	if !(golfer.Admin || golfer.Sponsor) {
+	if !golfer.SponsorOrAdmin() {
 		w.WriteHeader(http.StatusPaymentRequired)
 		return
 	}
@@ -353,7 +211,7 @@ func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
 	if err := session.Database(r).SelectContext(
 		r.Context(),
 		&rows,
-		` SELECT bytes, chars, login golfer, hole, lang, scoring, submitted
+		` SELECT bytes, chars, name golfer, hole, lang, scoring, submitted
 		    FROM solutions_log
 		    JOIN users ON id = user_id
 		   WHERE hole = $1 AND lang = $2
@@ -367,18 +225,103 @@ func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
 	encodeJSON(w, rows)
 }
 
+// GET /api/solutions-search
+func apiSolutionsSearchGET(w http.ResponseWriter, r *http.Request) {
+	hole := config.AllHoleByID[r.FormValue("hole")]
+	lang := config.AllLangByID[r.FormValue("lang")]
+	pattern := r.FormValue("pattern")
+	if pattern == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	type Match struct {
+		Before  string `json:"before"`
+		Match   string `json:"match"`
+		After   string `json:"after"`
+		Count   int    `json:"count"`
+		Hole    string `json:"hole"`
+		Lang    string `json:"lang"`
+		Scoring string `json:"scoring"`
+	}
+
+	var matches []Match
+
+	db := session.Database(r)
+	golfer := session.Golfer(r)
+
+	// Fetch data, if there is no case-sensitive match, match case-insensitively
+	for _, flags := range []string{"", "i"} {
+		ctx, cancel := context.WithTimeout(r.Context(), 100*time.Millisecond)
+		defer cancel()
+
+		if err := db.SelectContext(
+			ctx,
+			&matches,
+			`WITH matches AS (
+			  SELECT code, hole, lang, scoring,
+			         regexp_count(code, $2, 1, $3)       count,
+			         regexp_instr(code, $2, 1, 1, 0, $3) start,
+			         regexp_instr(code, $2, 1, 1, 1, $3) end
+			    FROM solutions
+			   WHERE user_id = $1
+			     AND regexp_like(code, $2, $3)
+			     AND (hole = $4 OR $4 IS NULL)
+			     AND (lang = $5 OR $5 IS NULL)
+			   LIMIT 1000
+			) SELECT hole, lang, scoring, count,
+			         substr(code, GREATEST(start - 30, 1), LEAST(30, start - 1)) before,
+			         substr(code, start, "end" - start)                          match,
+			         substr(code, "end", 30)                                     after
+			    FROM matches`,
+			golfer.ID, pattern, flags, hole, lang,
+		); err != nil {
+			if ctx.Err() == context.DeadlineExceeded {
+				w.WriteHeader(http.StatusGatewayTimeout)
+				return
+			}
+			panic(err)
+		}
+
+		if len(matches) > 0 {
+			break
+		}
+	}
+
+	// process the results - remove duplicate results for identical bytes/chars solutions
+	matchMap := make(map[string]Match)
+	for _, match := range matches {
+		key := match.Before + match.Match + match.After + match.Hole + match.Lang
+		existing, exists := matchMap[key]
+		if exists {
+			existing.Scoring = ""
+			matchMap[key] = existing
+		} else {
+			matchMap[key] = match
+		}
+	}
+
+	encodeJSON(w, slices.SortedFunc(maps.Values(matchMap), func(a, b Match) int {
+		return cmp.Or(
+			strings.Compare(a.Hole, b.Hole),
+			strings.Compare(a.Lang, b.Lang),
+			strings.Compare(a.Scoring, b.Scoring),
+		)
+	}))
+}
+
 // GET /api/suggestions/golfers
 func apiSuggestionsGolfersGET(w http.ResponseWriter, r *http.Request) {
 	var json []byte
 
 	if err := session.Database(r).QueryRow(
 		`WITH golfers AS (
-		    SELECT login
+		    SELECT name
 		      FROM users
-		     WHERE strpos(login, $1) > 0 AND login != $2
-		  ORDER BY login
+		     WHERE strpos(name, $1) > 0 AND name != $2
+		  ORDER BY name
 		     LIMIT 10
-		) SELECT COALESCE(json_agg(login), '[]') FROM golfers`,
+		) SELECT COALESCE(json_agg(name), '[]') FROM golfers`,
 		r.FormValue("q"),
 		r.FormValue("ignore"),
 	).Scan(&json); err != nil {
@@ -407,12 +350,19 @@ func apiWikiPageGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	// Cache the wiki for 5 minutes, since it is fetched on every page navigation.
+	w.Header().Set("Cache-Control", "max-age=300, public")
+
 	encodeJSON(w, page)
 }
 
 func encodeJSON(w http.ResponseWriter, v any) {
 	if v == nil || reflect.ValueOf(v).IsNil() {
-		w.WriteHeader(http.StatusNotFound)
+		if t := reflect.TypeOf(v); t != nil && t.Kind() == reflect.Slice {
+			w.Write([]byte("[]"))
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+		}
 	} else if err := json.NewEncoder(w).Encode(v); err != nil {
 		panic(err)
 	}

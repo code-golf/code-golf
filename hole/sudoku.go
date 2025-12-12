@@ -2,6 +2,7 @@ package hole
 
 import (
 	"math/rand/v2"
+	"slices"
 	"strings"
 )
 
@@ -48,7 +49,7 @@ func printSudoku(board [boardSize][boardSize]int) string {
 	return b.String()
 }
 
-func solveSudoku(board [boardSize][boardSize]int, cell int, count *int) bool {
+func solveSudoku(board *[boardSize][boardSize]int, cell int, count *int) bool {
 	var i, j int
 
 	for {
@@ -115,63 +116,10 @@ Numbers:
 	return false
 }
 
-func sudokuBoard(v2 bool) Run {
+func sudokuBoard(fillIn bool) Answer {
 	var board [boardSize][boardSize]int
-
-	var generate func(int) bool
-	generate = func(cell int) bool {
-		i := cell / boardSize
-		j := cell % boardSize
-
-		// Origin of block.
-		i0 := i - i%blockSize
-		j0 := j - j%blockSize
-
-		// 1 - 9 in random order.
-		numbers := rand.Perm(9)
-		for i := range numbers {
-			numbers[i]++
-		}
-
-	Numbers:
-		for _, number := range numbers {
-			// number is already in the row.
-			for _, numberInRow := range board[i] {
-				if number == numberInRow {
-					continue Numbers
-				}
-			}
-
-			// number is already in the column.
-			for _, row := range board {
-				if number == row[j] {
-					continue Numbers
-				}
-			}
-
-			// number is already in the block.
-			for _, row := range board[i0 : i0+blockSize] {
-				for _, numberInRow := range row[j0 : j0+blockSize] {
-					if number == numberInRow {
-						continue Numbers
-					}
-				}
-			}
-
-			board[i][j] = number
-
-			if cell+1 == cellCount || generate(cell+1) {
-				return true
-			}
-		}
-
-		// No valid number for this cell, let's backtrack.
-		board[i][j] = 0
-
-		return false
-	}
-
-	generate(0)
+	var solutions int
+	solveSudoku(&board, 0, &solutions)
 
 	var args []string
 	out := printSudoku(board)
@@ -185,8 +133,11 @@ func sudokuBoard(v2 bool) Run {
 		orig := board[i][j]
 		board[i][j] = 0
 
+		// Take a copy as solve will mutate it.
+		boardCopy := ([boardSize][boardSize]int)(slices.Clone(board[:]))
+
 		var solutions int
-		solveSudoku(board, 0, &solutions)
+		solveSudoku(&boardCopy, 0, &solutions)
 
 		// Removing this cell creates too many solutions, put it back.
 		if solutions == 2 {
@@ -194,7 +145,7 @@ func sudokuBoard(v2 bool) Run {
 		}
 	}
 
-	if v2 {
+	if fillIn {
 		args = []string{printSudoku(board)}
 	} else {
 		args = make([]string, boardSize)
@@ -214,13 +165,16 @@ func sudokuBoard(v2 bool) Run {
 		}
 	}
 
-	return Run{Args: args, Answer: out}
+	return Answer{Args: args, Answer: out}
 }
 
-func sudoku(v2 bool) []Run {
-	runs := make([]Run, 3)
-	for i := range runs {
-		runs[i] = sudokuBoard(v2)
+var _ = answerFunc("sudoku", func() []Answer { return sudoku(false) })
+var _ = answerFunc("sudoku-fill-in", func() []Answer { return sudoku(true) })
+
+func sudoku(fillIn bool) []Answer {
+	answers := make([]Answer, 3)
+	for i := range answers {
+		answers[i] = sudokuBoard(fillIn)
 	}
-	return runs
+	return answers
 }

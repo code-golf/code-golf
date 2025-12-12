@@ -82,7 +82,7 @@ func generateDFA() string {
 			inputDFA.WriteByte(' ')
 		}
 
-		if rand.IntN(2) == 0 {
+		if randBool() {
 			inputDFA.WriteByte('F')
 		} else {
 			inputDFA.WriteByte(' ')
@@ -95,10 +95,10 @@ func generateDFA() string {
 			inputDFA.WriteString(states[rand.IntN(stateLength)])
 		}
 		inputDFA.WriteByte('\n')
-
 	}
+
 	inputDFA.WriteByte('"')
-	for i := 0; i < rand.IntN(2*alphabetLength); i++ {
+	for range rand.IntN(2 * alphabetLength) {
 		inputDFA.WriteString(alphabet[rand.IntN(alphabetLength)])
 	}
 	inputDFA.WriteByte('"')
@@ -106,7 +106,7 @@ func generateDFA() string {
 	return inputDFA.String()
 }
 
-func dfaSimulator() []Run {
+var _ = answerFunc("dfa-simulator", func() []Answer {
 	tests := fixedTests("dfa-simulator")
 
 	for range 79 {
@@ -115,4 +115,4 @@ func dfaSimulator() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

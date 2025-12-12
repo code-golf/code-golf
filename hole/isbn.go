@@ -16,7 +16,7 @@ func checkDigit(digits [9]int) int {
 	return (11 - (sum % 11)) % 11
 }
 
-func isbn() []Run {
+var _ = answerFunc("isbn", func() []Answer {
 	tests := make([]test, 100)
 
 	for i, perm := range rand.Perm(100) {
@@ -68,4 +68,4 @@ func isbn() []Run {
 	}
 
 	return outputTests(tests)
-}
+})

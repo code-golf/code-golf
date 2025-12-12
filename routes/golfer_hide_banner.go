@@ -2,11 +2,14 @@ package routes
 
 import (
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
+
+var cheevoBannerRegex = regexp.MustCompile(`^cheevo-(?:before|until)-\d{4}-\d{2}-\d{2}-`)
 
 // POST /golfer/hide-banner
 func golferHideBannerPOST(w http.ResponseWriter, r *http.Request) {
@@ -16,8 +19,12 @@ func golferHideBannerPOST(w http.ResponseWriter, r *http.Request) {
 	// Validate the banner is of a known form.
 	if holeID, ok := strings.CutPrefix(banner, "latest-hole-"); ok {
 		_, valid = config.HoleByID[holeID]
+	} else if langID, ok := strings.CutPrefix(banner, "latest-lang-"); ok {
+		_, valid = config.LangByID[langID]
 	} else if holeID, ok := strings.CutPrefix(banner, "upcoming-hole-"); ok {
 		_, valid = config.ExpHoleByID[holeID]
+	} else if prefix := cheevoBannerRegex.FindString(banner); prefix != "" {
+		_, valid = config.CheevoByID[banner[len(prefix):]]
 	}
 
 	if valid {

@@ -108,7 +108,10 @@ func (qr matrix) toString(trimRight bool) string {
 	return buf.String()
 }
 
-func qr(decoder bool) []Run {
+var _ = answerFunc("qr-decoder", func() []Answer { return qr(true) })
+var _ = answerFunc("qr-encoder", func() []Answer { return qr(false) })
+
+func qr(decoder bool) []Answer {
 	content, qr := getStandardQr()
 	qrString := qr.toString(!decoder)
 

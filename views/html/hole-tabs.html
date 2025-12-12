@@ -1,40 +1,9 @@
-{{ template "header" . }}
-
-<div id=golferInfo data-is-sponsor="{{ .Data.IsSponsor }}" data-has-notes="{{ .Data.HasNotes }}"></div>
-
-<!-- For experimental lang picker -->
-<svg>{{ svg "flask-light" }}</svg>
-
-{{ range .Data.Langs }}<svg>{{ svg .ID }}</svg>{{ end }}
-
-{{ with .Data.Hole.Experiment }}
-    <div class=alert>
-        {{ svg "flask-light" }}
-        <p>
-            This hole is experimental, no solutions will be saved.
-        {{ if ne . -1 }}
-            Please leave feedback on the
-            <a href="//github.com/code-golf/code-golf/issues/{{ . }}">
-                GitHub issue</a>.
-        {{ end }}
-    </div>
-{{ else }}{{ if not .Golfer }}
-    <div class=alert>
-        {{ svg "exclamation-circle" }}
-        <p>
-            Please
-            <a class=log-in href="{{ .LogInURL }}">log in with GitHub</a>
-            in order to save solutions and appear on the leaderboards.
-    </div>
-{{ end }}{{ end }}
-
+{{ template "header"      . }}
 {{ template "hole-header" . }}
 
-{{ $showWhitespace := and .Golfer (index .Golfer.Settings "hole" "show-whitespace") }}
+{{ $showWhitespace := setting .Golfer "hole" "show-whitespace" }}
 <main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
-    <nav class=tabs id=picker {{ with .Golfer -}}
-        data-style='{{ index .Settings "hole" "lang-picker-style" }}'
-    {{- end }}></nav>
+    <nav class=tabs id=picker data-style='{{ setting .Golfer "hole" "lang-picker-style" }}'></nav>
     {{ template "hole-info" . }}
     <div id="picker-status-row">
         <nav class="tabs hide" id=solutionPicker></nav>
@@ -88,7 +57,7 @@
         </button>
     {{ end }}
         <span>ctrl + enter</span> or
-        <button class="btn blue" id=runBtn>{{ svg "play-light" }} Run</button>
+        <button class="btn blue" id=runBtn>{{ svg "play" }} Run</button>
     </div>
 </template>
 

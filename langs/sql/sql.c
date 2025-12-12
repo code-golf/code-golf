@@ -1,10 +1,11 @@
-#include "sqlite3.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "sqlite3.h"
+
 int main(int argc, char *argv[]) {
-    if (argc > 1 && strcmp(argv[1], "-v") == 0) {
+    if (argc > 1 && strcmp(argv[1], "--version") == 0) {
         puts(sqlite3_libversion());
         return 0;
     }
@@ -49,9 +50,15 @@ int main(int argc, char *argv[]) {
             return 1;
         }
 
-        while (sqlite3_step(res) == SQLITE_ROW)
+        int ret;
+        while ((ret = sqlite3_step(res)) == SQLITE_ROW)
             if (sqlite3_column_type(res, 0) != SQLITE_NULL)
                 puts(sqlite3_column_text(res, 0));
+        if (ret == SQLITE_ERROR) {
+            fprintf(stderr, "%s\n", sqlite3_errmsg(db));
+            sqlite3_close(db);
+            return 1;
+        }
 
         sqlite3_finalize(res);
     }

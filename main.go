@@ -6,10 +6,12 @@ import (
 	"os"
 	"time"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/routes"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
@@ -17,6 +19,24 @@ func main() {
 	log.SetFlags(log.Ltime)
 
 	db := db.Open()
+
+	// Attempt to populate the holes/langs tables every sec until we succeed.
+	// This handles the site starting before the DB.
+	go func() {
+		if err := populateHolesLangsTables(db); err != nil {
+			log.Println(err)
+		} else {
+			return
+		}
+
+		for range time.Tick(time.Second) {
+			if err := populateHolesLangsTables(db); err != nil {
+				log.Println(err)
+			} else {
+				break
+			}
+		}
+	}()
 
 	// Every 10 seconds.
 	go func() {
@@ -38,26 +58,34 @@ func main() {
 
 			// Once points is refreshed, award points based cheevos.
 			if _, err := db.Exec(
-				`INSERT INTO trophies(user_id, trophy)
+				`INSERT INTO cheevos(user_id, cheevo)
 				      SELECT user_id, 'big-brother'::cheevo
 				        FROM points
-				       WHERE points >= 1984
+				       WHERE points >= 1_984
 				   UNION ALL
 				      SELECT user_id, 'its-over-9000'
 				        FROM points
-				       WHERE points > 9000
+				       WHERE points > 9_000
 				   UNION ALL
 				      SELECT user_id, 'twenty-kiloleagues'
 				        FROM points
-				       WHERE points >= 20000
+				       WHERE points >= 20_000
 				   UNION ALL
 				      SELECT user_id, 'marathon-runner'
 				        FROM points
-				       WHERE points >= 42195
+				       WHERE points >= 42_195
 				   UNION ALL
 				      SELECT user_id, '0xdead'
 				        FROM points
-				       WHERE points >= 57005
+				       WHERE points >= 57_005
+				   UNION ALL
+				      SELECT user_id, 'overflowing'
+				        FROM points
+				       WHERE points >= 65_536
+				   UNION ALL
+				      SELECT user_id, 'into-space'
+				        FROM points
+				       WHERE points >= 100_000
 				 ON CONFLICT DO NOTHING`,
 			); err != nil {
 				log.Println(err)
@@ -97,7 +125,7 @@ func main() {
 					"superfluous users",
 					`DELETE FROM users u
 					  WHERE NOT EXISTS (SELECT FROM sessions WHERE user_id = u.id)
-						AND NOT EXISTS (SELECT FROM trophies WHERE user_id = u.id)`,
+						AND NOT EXISTS (SELECT FROM cheevos  WHERE user_id = u.id)`,
 				},
 				{
 					"users scheduled for deletion",
@@ -112,7 +140,7 @@ func main() {
 			}
 
 			if _, err := db.Exec(
-				`INSERT INTO trophies(user_id, trophy)
+				`INSERT INTO cheevos(user_id, cheevo)
 				 SELECT user_id, 'aged-like-fine-wine'
 				   FROM solutions
 				  WHERE NOT failing
@@ -145,4 +173,54 @@ func main() {
 
 	// Live only listens on HTTP, TLS is handled by Caddy.
 	panic(http.ListenAndServe(":80", routes.Router(db)))
+}
+
+func populateHolesLangsTables(db *sqlx.DB) error {
+	tx, err := db.Beginx()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	insertHole, err := tx.PrepareNamed(
+		`INSERT INTO holes ( id,  experiment,  name)
+		      VALUES       (:id, :experiment, :name)`,
+	)
+	if err != nil {
+		return err
+	}
+
+	if _, err := tx.Exec("TRUNCATE holes"); err != nil {
+		return err
+	}
+
+	for _, hole := range config.AllHoleList {
+		if _, err := insertHole.Exec(hole); err != nil {
+			return err
+		}
+	}
+
+	insertLang, err := tx.PrepareNamed(
+		`INSERT INTO langs ( id,  experiment,  digest_trunc,  name)
+		      VALUES       (:id, :experiment, :digest_trunc, :name)`,
+	)
+	if err != nil {
+		return err
+	}
+
+	if _, err := tx.Exec("TRUNCATE langs"); err != nil {
+		return err
+	}
+
+	for _, lang := range config.AllLangList {
+		if _, err := insertLang.Exec(lang); err != nil {
+			return err
+		}
+	}
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	log.Println("Populated holes & langs tables.")
+	return nil
 }

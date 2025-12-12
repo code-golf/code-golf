@@ -1,43 +1,47 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base curl libffi-dev openssl-dev zlib-dev
+RUN apk add --no-cache clang curl llvm-dev make openssl-dev
 
-ENV PYVER=3.12.6 VER=3.1.2
+ENV PYVER=3.13.9 VER=3.1.2
 
-RUN curl https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz | tar xJ
+RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
+  | tar xJ --strip-components 1
 
-RUN cd Python-$PYVER           \
- && ./configure                \
+RUN CC='clang' ./configure     \
     --disable-test-modules     \
     --prefix=/usr              \
-    --with-lto                 \
+    --with-lto=thin            \
+    --with-tail-call-interp    \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.12  \
-          /usr/lib/python3.12/lib-dynload/*.so
+ && strip /usr/bin/python3.13  \
+          /usr/lib/python3.13/lib-dynload/*.so
 
 RUN pip3 install coconut==$VER
 
+WORKDIR /usr/lib/python3.13
+
 # Remove some unneeded libraries.
-RUN rm -r /usr/lib/python3.12/__pycache__/doctest.* \
-          /usr/lib/python3.12/__pycache__/pydoc.*   \
-          /usr/lib/python3.12/__pycache__/turtle.*  \
-          /usr/lib/python3.12/ensurepip             \
-          /usr/lib/python3.12/idlelib               \
-          /usr/lib/python3.12/lib2to3               \
-          /usr/lib/python3.12/pydoc_data            \
-          /usr/lib/python3.12/tkinter               \
-          /usr/lib/python3.12/turtle.py             \
-          /usr/lib/python3.12/turtledemo
+RUN find . -name '*.opt-[12].pyc' -delete \
+ && rm -r __pycache__/doctest.*           \
+          __pycache__/pydoc.*             \
+          __pycache__/turtle.*            \
+          _pyrepl                         \
+          ensurepip                       \
+          idlelib                         \
+          pydoc_data                      \
+          tkinter                         \
+          turtle.py                       \
+          turtledemo
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 \
-              /lib/libz.so.1           /lib/
-COPY --from=0 /usr/bin/coconut         \
-              /usr/bin/python3.12      /usr/bin/
-COPY --from=0 /usr/lib/python3.12      /usr/lib/python3.12
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/coconut    \
+              /usr/bin/python3.13 /usr/bin/
+COPY --from=0 /usr/lib/libz.so.1  /usr/lib/
+COPY --from=0 /usr/lib/python3.13 /usr/lib/python3.13
 
 ENTRYPOINT ["coconut"]
 
-CMD ["-v"]
+CMD ["--version"]

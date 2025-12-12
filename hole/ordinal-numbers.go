@@ -6,7 +6,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-func ordinalNumbers() []Run {
+var _ = answerFunc("ordinal-numbers", func() []Answer {
 	tests := make([]test, 1000)
 
 	for i := range tests {
@@ -17,4 +17,4 @@ func ordinalNumbers() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

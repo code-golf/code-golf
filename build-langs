@@ -2,7 +2,7 @@
 
 use TOML::Thumb;
 
-unit sub MAIN(Bool :$no-push, *@langs);
+unit sub MAIN(Bool :$no-cache, Bool :$no-push, *@langs);
 
 chdir $*PROGRAM.dirname;
 
@@ -14,23 +14,29 @@ if my $unknown = @langs ∖ %langs {
 }
 
 # Build (and maybe push) lang-base.
-for 'lang-base', 'lang-base-no-proc' {
-    run <docker buildx build>,
-        '--file',   'docker/lang-base.Dockerfile',
-        '--pull',
-      ( '--push' unless $no-push ),
-        '--tag',    "codegolf/$_",
-        '--target', $_,
-        '.';
-}
+run <docker buildx build>,
+    '--file',   'docker/lang-base.Dockerfile',
+    '--pull',
+    ( '--push' unless $no-push ),
+    '--tag',    'codegolf/lang-base',
+    '.';
 
-for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
+# Build all languages if no arguments are specified.
+@langs ||= %langs.keys.sort: *.fc;
+
+for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     my $id  = id($name);
     my $img = "codegolf/lang-$id";
 
-    # Tag the builder stage so "docker system prune" won't remove it.
-    run «docker buildx build -t "{$img}-builder" --pull --target builder "langs/$id"»;
-    run «docker buildx build -t $img "langs/$id"»;
+    if !$no-cache {
+        # Tag the builder stage so "docker system prune" won't remove it.
+        run «docker buildx build -t "{$img}-builder" --pull --target builder "langs/$id"»;
+    }
+
+    run <docker buildx build>,
+         ( '--no-cache' if $no-cache ),
+         '--tag', $img,
+         "langs/$id";
 
     # Size.
     my $proc = run :out,
@@ -38,19 +44,30 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
 
     $proc.sink;
 
+    # Format the size consistently so everything lines up.
     with %lang<size> = $proc.out.slurp(:close).chomp {
-        s/(.)B$/ {$0.uc}iB/;          # "XB" → " XiB"
-        s/^ ( \d  \d ) ' ' /{$0}.0 /; #   99 → 99.0
-        s/^ ( \d\.\d ) ' ' /{$0}0 /;  #  9.9 → 9.90
+        s/(.)B$/ {$0.uc}iB/;           # "XB" → " XiB"
+        s/^ ( \d  \d ) ' ' /{$0}.0 /;  #   99 → 99.0
+        s/^ ( \d\.\d ) ' ' /{$0}0 /;   #  9.9 → 9.90
+        s/^ ( \d     ) ' ' /{$0}.00 /; #    9 → 9.00
     }
 
     # Version.
-    if $id ~~ any <assembly brainfuck fish golfscript hare hexagony k> {
-        "langs/$id/Dockerfile".IO.slurp ~~ / ' VERSION=' (\S+) /;
-        %lang<version> = $id eq 'assembly' ?? "DefAssembler $0" !! $0;
+    if $id ~~ any <
+        05ab1e apl arturo assembly befunge berry brainfuck cjam erlang fish
+        golfscript hexagony k knight luau stax umka
+    > {
+        "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
+
+        %lang<version> = do given $id {
+            when 'apl'      { "Dyalog APL $0" }
+            when 'assembly' { "DefAssembler $0" }
+            when 'erlang'   { "OTP $0" }
+            default         { $0 }
+        }
     }
     else {
-        # Forth outputs it's version number over stderr.
+        # Some langs output their version number over stderr so merge out/err.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
             :in, :out, :merge(so $id eq 'forth' | 'scheme');
 
@@ -63,39 +80,41 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
             # Dotted decimal or hyphenated date.
             my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
 
+            when 'ALGOL 68'    { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
                | 'Forth'
                | 'Fortran'
-               | 'sed'        { $ver = "GNU $name $digits" }
-            when 'BASIC'      { $ver = "FreeBASIC $digits" }
-            when 'C'          { $ver = "Tiny C Compiler $digits" }
+               | 'sed'         { $ver = "GNU $name $digits" }
+            when 'BASIC'       { $ver = "FreeBASIC $digits" }
+            when 'BQN'         { $ver = "CBQN $digits" }
+            when 'C'           { $ver = "TCC $digits" }
             when 'C#'
                | 'F#'
-               | 'PowerShell' { }
-            when 'C++'        { $ver = "Clang $digits" }
-            when 'Clojure'    { $ver = "Babashka $digits" }
-            when 'COBOL'      { $ver = "GnuCOBOL $digits" }
-            when 'D'          {
-                $ver ~~ m/ v (\S+) /;
-                $ver = "D $0 on LDC $digits";
+               | 'PowerShell'  { }
+            when 'C++'         { $ver = "Clang $digits" }
+            when 'Clojure'     { $ver = "Babashka $digits" }
+            when 'COBOL'       { $ver = "GnuCOBOL $digits" }
+            when 'Common Lisp' { $ver = "GNU CLISP $digits" }
+            when 'D'           { $ver = "DMD $digits" }
+            when 'Haskell'     { $ver = "GHC $digits" }
+            when 'Java'        {
+                $ver = $ver.match(/ \d+ ( \. \d+ )* ( \+ \d+ )? /);
+                $ver = "OpenJDK $ver" ~ ( ".0" if $ver ne $digits );
             }
-            when 'Haskell'    { $ver = "Glasgow Haskell Compiler $digits" }
-            when 'Java'       { $ver = "OpenJDK 23.0" } # FIXME no decimal place.
-            when 'JavaScript' { $ver = "V8 $digits" }
-            when 'Lisp'       { $ver = "GNU CLISP $digits" }
-            when 'Pascal'     { $ver = "Free Pascal $digits" }
-            when 'Prolog'     { $ver = "SWI-Prolog $digits" }
-            when 'Raku'       {
+            when 'JavaScript'  { $ver = "V8 $digits" }
+            when 'Pascal'      { $ver = "FPC $digits" }
+            when 'Prolog'      { $ver = "SWI-Prolog $digits" }
+            when 'Raku'        {
                 $ver ~~ m:g/ v (\S+) '.' /;
                 $ver = "Raku $1[0] on Rakudo $0[0]";
             }
-            when 'Rexx'       { $ver = "Regina $digits" }
-            when 'Rockstar'   { $ver = "Rocky $digits" }
-            when 'Scheme'     { $ver = "Chez Scheme $digits" }
-            when 'SQL'        { $ver = "SQLite $digits" }
-            default           { $ver = $digits }
+            when 'Rexx'        { $ver = "Regina $digits" }
+            when 'Scheme'      { $ver = "Chez Scheme $digits" }
+            when 'SQL'         { $ver = "SQLite $digits" }
+            default            { $ver = $digits }
         }
 
+        die "Couldn't get version string for $id." unless $ver;
         %lang<version> = $ver;
     }
 
@@ -106,11 +125,9 @@ spurt 'config/data/langs.toml', to-toml %langs;
 
 # Reorder Dockerfiles: largest first to speed-up partial deploys.
 my $layers;
-my $max = %langs.keys».&id».chars.max;
-
 $layers ~= sprintf(
-    qq[COPY --from=codegolf/lang-%s%s ["/", "/langs/%1\$s/rootfs/"%2\$s] # %8s\n],
-    id(.key), ' ' x $max - id(.key).chars, .value<size>,
+    q:b[COPY --from=codegolf/lang-%-*s / /langs/%2$s/rootfs/\n],
+    $ //= %langs.keys».&id».chars.max, id(.key),
 ) for %langs.sort: { so .value<size> ~~ /K/, -.value<size>.split(" ")[0], id(.key) };
 
 .spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers

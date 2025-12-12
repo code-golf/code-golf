@@ -116,7 +116,7 @@ func (s quadraticSolution) String() string {
 	return st
 }
 
-func quadraticFormula() []Run {
+var _ = answerFunc("quadratic-formula", func() []Answer {
 	tests := make([]test, 200)
 
 	for i := range tests {
@@ -158,4 +158,4 @@ func quadraticFormula() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

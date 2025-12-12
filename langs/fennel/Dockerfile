@@ -1,21 +1,17 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base curl
+ENV BIN='/usr/bin/fennel' VER=1.6.0
 
-RUN curl -o fennel https://fennel-lang.org/downloads/fennel-1.5.1 \
- && chmod +x fennel
+RUN wget -qO $BIN https://fennel-lang.org/downloads/fennel-$VER \
+ && chmod +x $BIN
 
 # Rewrite shebang to bypass /usr/bin/env and go directly to /usr/bin/lua.
-RUN sed -i '1c#!/usr/bin/lua' fennel
-
-COPY fennelwrapper.c /
-
-RUN gcc -static -s -o fennelwrapper fennelwrapper.c
+RUN sed -i '1c#!/usr/bin/lua' $BIN
 
 FROM codegolf/lang-lua
 
-COPY --from=0 fennel fennelwrapper /usr/bin/
+COPY --from=0 /usr/bin/fennel /usr/bin/
 
-ENTRYPOINT ["fennelwrapper"]
+ENTRYPOINT ["fennel"]
 
-CMD ["-v"]
+CMD ["--version"]

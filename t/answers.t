@@ -1,6 +1,6 @@
 use t;
 
-for sort dir 'hole/answers' {
+for sort dir 'config/hole-answers' {
     my $code = 'say ｢' ~ .slurp ~ '｣';
     my $hole = .extension("").basename;
 

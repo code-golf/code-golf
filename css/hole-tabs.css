@@ -8,6 +8,8 @@ body {
 
 #details-content { padding: .375rem }
 
+.cm-editor { height: 100% }
+
 .readonly-output {
     flex: 1;
     font-family: emoji, mahjong, 'Source Code Pro', monospace;
@@ -20,6 +22,8 @@ body {
     content: "(Empty)";
 }
 
+.rotate-icon svg { rotate: 90deg }
+
 section {
     /* undo display: grid */
     display: block;
@@ -27,7 +31,10 @@ section {
 
 section header {
     /* a little more space than default hole.css */
+    align-items: center;
+    display: flex;
     height: 2.2rem;
+    justify-content: space-between;
     padding: 0 .5rem;
 }
 
@@ -73,12 +80,6 @@ section header {
     grid-template-rows: 1fr max-content;
 }
 
-#scores-wrapper {
-    overflow-y: auto;
-    /* Avoid scroll bars from tooltip overflow */
-    overflow-x: hidden;
-}
-
 #scores-wrapper header {
     position: sticky;
     top: 0;
@@ -90,18 +91,6 @@ section header {
     border: none;
     width: 100%;
     height: unset;
-}
-
-#scores [data-tooltip]:after {
-    /* Override tooltip transform to avoid right-overflow */
-    transform: translate(-100%, -0.25rem);
-    left: 110%;
-    /* Override tooltip transform to avoid top-overflow */
-    bottom: 100%;
-}
-
-#scores [data-tooltip]:before {
-    bottom: calc(100% - 0.5rem);
 }
 
 /* Remove left and right borders from base.css */
@@ -136,7 +125,7 @@ main {
     gap: 0;
 }
 
-#info-container .info,
+#info-container,
 #picker-status-row > *:not(:empty),
 #golden-container {
     margin-top: 0.5rem;
@@ -156,12 +145,6 @@ main {
 #status {
     flex-grow: 1;
     flex-basis: 20rem;
-}
-
-#info-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
 }
 
 #pool {
@@ -211,6 +194,8 @@ main {
 .full-width #make-wide { display: none; }
 .full-width body { max-width: unset; }
 
+.full-height .alert,
+.full-height .info,
 .full-height #page-header,
 .full-height footer,
 .full-height #picker,

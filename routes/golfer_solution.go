@@ -1,13 +1,16 @@
 package routes
 
 import (
+	"cmp"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
-	"github.com/code-golf/code-golf/discord"
+	h "github.com/code-golf/code-golf/hole"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -25,9 +28,10 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 		Rank, RankOverall, Row, RowOverall *int
 		Scoring                            string
 		Tested                             time.Time
+		Time                               time.Duration
 	}{
-		Hole:    config.HoleByID[param(r, "hole")],
-		Lang:    config.LangByID[param(r, "lang")],
+		Hole:    config.AllHoleByID[param(r, "hole")],
+		Lang:    config.AllLangByID[param(r, "lang")],
 		Scoring: param(r, "scoring"),
 	}
 
@@ -40,7 +44,8 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 	golfer := session.GolferInfo(r).Golfer
 	if err := session.Database(r).Get(
 		&data,
-		`  SELECT failing, rank, rank_overall, row, row_overall, tested
+		`  SELECT failing, rank, rank_overall, row, row_overall, tested,
+		          solutions.time_ms * 1e6 time
 		     FROM solutions
 		LEFT JOIN rankings USING (hole, lang, scoring, user_id)
 		    WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4`,
@@ -73,10 +78,9 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 }
 
 // POST /golfers/{golfer}/{hole}/{lang}/{scoring}
-// nolint deadcode
 func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
-	hole := config.HoleByID[param(r, "hole")]
-	lang := config.LangByID[param(r, "lang")]
+	hole := config.AllHoleByID[param(r, "hole")]
+	lang := config.AllLangByID[param(r, "lang")]
 	scoring := param(r, "scoring")
 
 	if hole == nil || lang == nil || (scoring != "bytes" && scoring != "chars") {
@@ -85,16 +89,16 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 	}
 
 	code := ""
+	previouslyFailing := false
 	ctx := r.Context()
 	db := session.Database(r)
 	golfer := session.GolferInfo(r).Golfer
 
 	if err := db.QueryRowContext(
 		ctx,
-		`SELECT code
+		`SELECT code, failing
 		   FROM solutions
-		  WHERE NOT failing
-		    AND hole    = $1
+		  WHERE hole    = $1
 		    AND lang    = $2
 		    AND scoring = $3
 		    AND user_id = $4`,
@@ -102,37 +106,64 @@ func golferSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		lang.ID,
 		scoring,
 		golfer.ID,
-	).Scan(&code); errors.Is(err, sql.ErrNoRows) {
+	).Scan(&code, &previouslyFailing); errors.Is(err, sql.ErrNoRows) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	} else if err != nil {
 		panic(err)
 	}
 
-	// Best of three runs. Given they're fickle, timeouts count as passes.
-	var passes, fails int
-	/* FIXME for i := 0; passes < 2 && fails < 2; i++ {
-		score := h.Play(ctx, hole.ID, lang.ID, code)
-		if score.Pass || score.Timeout || score.ExitCode != 0 {
-			passes++
-		} else {
-			fails++
-		}
-	} */
+	// Subset runs so we don't leak too much info.
+	type SubsetRun struct {
+		Pass    bool          `json:"pass"`
+		Time    time.Duration `json:"time"`
+		Timeout bool          `json:"timeout"`
+	}
 
-	if fails > passes {
-		res := db.MustExec(
-			`UPDATE solutions
-			    SET failing = true
-			  WHERE NOT failing AND code = $1 AND hole = $2 AND lang = $3`,
-			code, hole.ID, lang.ID,
-		)
+	runs, err := h.Play(ctx, hole, lang, code)
+	if err != nil {
+		panic(err)
+	}
+	subsetRuns := make([]SubsetRun, len(runs))
 
-		// FIXME Technically we can end up failing multiple golfers.
-		if rows, _ := res.RowsAffected(); rows > 0 {
-			go discord.LogFailedRejudge(&golfer, hole, lang, scoring)
+	overallPass := true
+	for i, run := range runs {
+		subsetRuns[i] = SubsetRun{run.Pass, run.Time, run.Timeout}
+
+		if !run.Pass {
+			overallPass = false
 		}
 	}
 
-	http.Redirect(w, r, param(r, "scoring"), http.StatusSeeOther)
+	longestRun := slices.MaxFunc(runs, func(a, b h.Run) int {
+		return cmp.Compare(a.Time, b.Time)
+	})
+
+	// Update the lang_digest & tested values if we can.
+	if overallPass || previouslyFailing {
+		if _, err := db.ExecContext(
+			ctx,
+			`UPDATE solutions
+			    SET lang_digest = $1,
+			        tested      = DEFAULT,
+			        time_ms     = CASE WHEN $1 = lang_digest
+			                           THEN LEAST($8, time_ms)
+			                           ELSE $8
+			                           END
+			  WHERE code    = $2
+			    AND failing = $3
+			    AND hole    = $4
+			    AND lang    = $5
+			    AND scoring = $6
+			    AND user_id = $7`,
+			lang.DigestTrunc, code, previouslyFailing, hole.ID, lang.ID, scoring, golfer.ID,
+			longestRun.Time.Round(time.Millisecond)/time.Millisecond,
+		); err != nil {
+			panic(err)
+		}
+	}
+
+	if err := json.NewEncoder(w).Encode(subsetRuns); err != nil {
+		panic(err)
+	}
 }

@@ -5,7 +5,7 @@ for 'config/data/langs.toml'.IO.&from-toml.map({
 }).sort -> (:key($lang), :value($code)) {
     for (
         # Pick a hole that will definitely have unicode arguments.
-        'rock-paper-scissors-spock-lizard',
+        'musical-chords',
 
         # Ensure PowerShell example works on Quine with explicit output.
         ( 'quine' if $lang eq 'powershell' ),
@@ -16,10 +16,10 @@ for 'config/data/langs.toml'.IO.&from-toml.map({
 
             $exp ~= "\n" if $hole eq 'quine';
 
-            # Factor, Pascal & TeX prints lots of info to STDERR.
+            # Some langs print noise to STDERR, so don't test for no output.
             is $got<stdout>, $exp, 'Stdout';
             is $got<stderr>,   '', 'Stderr'
-                if $lang ne 'factor' | 'pascal' | 'tex';
+                if $lang ne 'factor';
         }
     }
 }

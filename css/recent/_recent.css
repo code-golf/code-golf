@@ -1,5 +1,5 @@
 /* TODO Stop having "thin" pages, make everything consistent. */
-body { max-width: 60rem }
+body { max-width: 64rem }
 
 body > p { margin: 1rem 1rem 0 }
 
@@ -18,5 +18,3 @@ h1 nav {
 }
 
 h1 span { flex: 1 }
-
-table { flex: 1 }

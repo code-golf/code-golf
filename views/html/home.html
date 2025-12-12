@@ -8,33 +8,23 @@
             solving problems in the least number of characters.
         <p>
             Since this is your first time here, we suggest starting with
-            something simple like <a href=fizz-buzz>Fizz Buzz</a>.
+            something simple like the <a href=tutorial>Tutorial hole</a>.
         <p>
             Also visit <a href=//discord.gg/eVCTkYQ>our Discord server</a>
             for some advice.
     </div>
 {{ end }}
 
-<svg>
-    {{ svg "brush" }}
-    {{ svg "calculator" }}
-    {{ svg "cpu" }}
-    {{ svg "joystick" }}
-    {{ svg "shuffle" }}
-    {{ svg "sort-numeric-down" }}
-    {{ range $k, $v := .Data.LangsUsed }}{{ svg $k }}{{ end }}
-</svg>
-
 <main id=home>
 {{ if .Golfer }}
-    <nav class="span tabs">
+    <nav class=span>
         <button class="btn blue" data-dialog=settings-dialog title=Settings>
             {{ svg "gear-fill" }}
             Page Settings
         </button>
     </nav>
 {{ end }}
-{{ range .Data.Cards }}
+{{ range .Data }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
         {{ $lang    := index $.Golfer.Settings "home" "points-for" }}
@@ -49,11 +39,11 @@
     {{ end }}
        title="{{ .Hole.Name }} ({{ .Hole.Category }})">
         <h2>{{ .Hole.Name }}</h2>
-        <svg><use href="#{{ .Hole.CategoryIcon }}"/></svg>
+        {{ svg .Hole.CategoryIcon }}
     {{ if .Lang }}
         <span title="{{ comma .Points }} points in {{ .Lang.Name }}">
             {{ comma .Points }}
-            <svg><use href="#{{ .Lang.ID }}"/></svg>
+            {{ svg .Lang.ID }}
         </span>
     {{ end }}
     </a>

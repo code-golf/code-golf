@@ -1,19 +1,23 @@
-FROM alpine:3.20 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev patch
 
-RUN curl -L https://github.com/wren-lang/wren-cli/archive/refs/tags/0.4.0.tar.gz \
-  | tar xz
+ENV LDFLAGS='-static' VER=0.4.0
 
-COPY stdin.patch /
+RUN curl -#L https://github.com/wren-lang/wren-cli/archive/refs/tags/$VER.tar.gz \
+  | tar xz --strip-components 1
 
-RUN mv wren-* wren         \
- && patch -p0 <stdin.patch \
- && LDFLAGS=-static make -C /wren/projects/make
+COPY wren.patch /
 
-FROM codegolf/lang-base-no-proc
+RUN patch -p0 < wren.patch
 
-COPY --from=0 /wren/bin/wren_cli /usr/bin/wren
+WORKDIR /projects/make
+
+RUN make
+
+FROM codegolf/lang-base
+
+COPY --from=0 /bin/wren_cli /usr/bin/wren
 
 ENTRYPOINT ["wren"]
 

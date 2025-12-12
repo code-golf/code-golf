@@ -1,18 +1,15 @@
-FROM alpine:3.20 AS builder
+FROM nimlang/nim:2.2.6-alpine-slim AS builder
 
-RUN apk add --no-cache curl g++ nim pcre
+ENV VER=da1b9ca
 
-RUN curl -L https://github.com/arturo-lang/arturo/archive/0756a55.tar.gz \
-  | tar xz
+RUN curl -#L https://github.com/arturo-lang/arturo/tarball/$VER \
+  | tar xz --strip-components 1
 
-RUN cd arturo-* && ./build.nims --install --mode mini --release
+RUN ./build.nims --install --log --mode mini --release
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1  /lib/
-COPY --from=0 /root/.arturo/bin/arturo  /usr/bin/
-COPY --from=0 /usr/lib/libpcre.so.1     /usr/lib/
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /bin/arturo         /usr/bin/
 
 ENTRYPOINT ["arturo"]
-
-CMD ["-v"]

@@ -10,7 +10,10 @@ var r1 = [...]string{"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"}
 var r2 = [...]string{"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"}
 var r3 = [...]string{"", "M", "MM", "MMM"}
 
-func arabicToRoman(reverse bool) []Run {
+var _ = answerFunc("arabic-to-roman", func() []Answer { return arabicToRoman(false) })
+var _ = answerFunc("roman-to-arabic", func() []Answer { return arabicToRoman(true) })
+
+func arabicToRoman(reverse bool) []Answer {
 	// The max roman numeral is 3,999. Test all of them.
 	const count = 3999
 

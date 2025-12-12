@@ -1,0 +1,22 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+<main>
+    <form id=search>
+        <fieldset>
+            <input name=q autocomplete=off autofocus>
+            <label>
+                <input name=regex type=checkbox checked>
+                Regex
+            </label>
+        </fieldset>
+        <fieldset>
+            {{ template "settings" . }}
+        </fieldset>
+    </form>
+
+    <div id=resultsOverview></div>
+    <div id=results></div>
+</main>
+
+{{ template "footer" }}

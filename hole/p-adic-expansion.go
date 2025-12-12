@@ -39,7 +39,7 @@ var pAdicTests = [...]struct{ p, n, d int }{
 }
 var pAdicPrimes = []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61}
 
-func pAdicExpansion() []Run {
+var _ = answerFunc("p-adic-expansion", func() []Answer {
 	tests := make([]test, len(pAdicTests), 100)
 
 	for i, test := range pAdicTests {
@@ -56,4 +56,4 @@ func pAdicExpansion() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

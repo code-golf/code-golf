@@ -66,7 +66,7 @@ func wordify(i int) string {
 	return out.String()
 }
 
-func spellingNumbers() []Run {
+var _ = answerFunc("spelling-numbers", func() []Answer {
 	tests := make([]test, 1001)
 
 	for i := range tests {
@@ -74,4 +74,4 @@ func spellingNumbers() []Run {
 	}
 
 	return outputTests(shuffle(tests))
-}
+})

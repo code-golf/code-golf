@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"crypto/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -38,9 +39,9 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		LogInURL, Name, Nonce, Path, Theme string
 		Golfer                             *golfer.Golfer
 		GolferInfo                         *golfer.GolferInfo
-		Holes                              map[string]*config.Hole
+		Holes                              map[string][]string
 		JS                                 []string
-		Langs                              map[string]*config.Lang
+		Langs                              map[string][]string
 		Location                           *time.Location
 		Nav                                *config.Navigaton
 		Request                            *http.Request
@@ -53,16 +54,24 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
 		Golfer:      theGolfer,
 		GolferInfo:  session.GolferInfo(r),
-		Holes:       config.HoleByID,
+		Holes:       make(map[string][]string),
 		JS:          []string{config.Assets["js/base.tsx"]},
-		Langs:       config.LangByID,
+		Langs:       make(map[string][]string),
 		Name:        name,
-		Nonce:       nonce(),
+		Nonce:       rand.Text(),
 		Path:        r.URL.Path,
 		Request:     r,
 		Settings:    config.Settings[strings.TrimSuffix(name, "-tabs")],
 		Theme:       theme,
 		Title:       "Code Golf",
+	}
+
+	// Mapping lang & hole IDs to a list of known names (the first is the primary one)
+	for k, v := range config.AllLangByID {
+		args.Langs[k] = []string{v.Name, k}
+	}
+	for k, v := range config.AllHoleByID {
+		args.Holes[k] = append([]string{v.Name, k}, v.Aliases...)
 	}
 
 	if g := args.GolferInfo; g != nil && g.About != "" {
@@ -86,7 +95,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	// Get route specific CSS, JS, and navigation by splitting the name.
 	// e.g. foo/bar/baz → foo, foo/bar, foo/bar/baz.
 	subName := ""
-	for _, part := range strings.Split(name, "/") {
+	for part := range strings.SplitSeq(name, "/") {
 		subName = path.Join(subName, part)
 
 		if nav, ok := config.Nav[subName]; ok {
@@ -119,17 +128,20 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 	header := w.Header()
 
+	// Workaround SVG blocking, set default-src to 'self' rather than 'none'.
+	// Until Firefox >= 132 is more widespread, see https://bugzil.la/1773976
 	header.Set("Content-Language", "en")
 	header.Set("Content-Type", "text/html; charset=utf-8")
 	header.Set("Referrer-Policy", "no-referrer")
 	header.Set("Content-Security-Policy",
 		"base-uri 'none';"+
 			"connect-src 'self';"+
-			"default-src 'none';"+
+			"default-src 'self';"+
 			"form-action 'self';"+
 			"font-src 'self';"+
 			"frame-ancestors 'none';"+
-			"img-src 'self' data: avatars.githubusercontent.com;"+
+			"img-src 'self' data: avatars.githubusercontent.com"+
+			" cdn.discordapp.com gravatar.com;"+
 			"script-src 'self' 'nonce-"+args.Nonce+"';"+
 			"style-src 'self' 'unsafe-inline'",
 	)

@@ -1,6 +1,7 @@
 // CodeMirror unprintable character extensions
-import { Decoration, EditorView, keymap, MatchDecorator, ViewPlugin, WidgetType } from '@codemirror/view';
-import { EditorState }                                                            from '@codemirror/state';
+import { Decoration, EditorView, keymap, MatchDecorator, Panel, ViewPlugin, WidgetType, showPanel } from '@codemirror/view';
+import { EditorState, StateEffect, StateField } from '@codemirror/state';
+import UnprintableElement from './_unprintable';
 
 export const carriageReturn = [
     EditorState.lineSeparator.of('\n'), // Prevent CM from treating carriage return as newline
@@ -33,26 +34,94 @@ export const carriageReturn = [
     }),
 ];
 
-let inputSequence = '';
+interface InsertCharState {
+    code?: string;
+    toggleMode?: boolean;
+}
+
+const updateInsertCharState = StateEffect.define<string | boolean>();
+export const insertCharState = StateField.define<InsertCharState>({
+    create: () => ({}),
+    update(value, tr) {
+        if (tr.docChanged) value = {};
+        for (const e of tr.effects) {
+            if (!e.is(updateInsertCharState)) continue;
+            if (e.value === true) {
+                value = { ...value, toggleMode: true };
+            }
+            else if (e.value === false) {
+                value = {};
+            }
+            else {
+                value = { ...value, code: (value.code || '') + e.value };
+            }
+        }
+        return value;
+    },
+    provide: f => showPanel.from(f, value => value.code !== undefined ? createPanel : null),
+});
+
+const createPanel = (): Panel => {
+    const dom = document.createElement('div');
+    return {
+        dom,
+        update(update) {
+            const { code, toggleMode } = update.state.field(insertCharState);
+            const toggleModeHelp = toggleMode ? ' (press Alt again to insert)' : '';
+            if (code) {
+                dom.textContent = 'Composing \\u' + code + '...' + toggleModeHelp;
+            }
+            else if (toggleMode) {
+                dom.textContent = 'Type hexadecimal digits and press Alt again to insert.';
+            }
+            else {
+                dom.textContent = '';
+            }
+        },
+    };
+};
+
 export const insertChar = EditorView.domEventHandlers({
-    keydown: event => {
-        if (event.altKey && event.key.match(/^[0-9a-f]$/i)) {
-            inputSequence += event.key;
+    keydown: (event, view) => {
+        const hasOtherMods = event.ctrlKey || event.shiftKey || event.metaKey;
+
+        if (event.key == 'Alt' && !hasOtherMods) {
+            // This might be a toggle start, so we start buffering keys.
+            view.dispatch({ effects: updateInsertCharState.of('')});
+            event.preventDefault();
+            return;
+        }
+
+        const { code, toggleMode } = view.state.field(insertCharState);
+        if ((event.altKey || toggleMode) && !hasOtherMods && event.key.match(/^[0-9a-f]$/i)) {
+            view.dispatch({ effects: updateInsertCharState.of(event.key.toUpperCase()) });
             event.preventDefault();
         }
-    },
-    keyup: (event, view) => {
-        if (event.key == 'Alt' && inputSequence) {
-            try {
-                const codepoint = parseInt(inputSequence, 16);
-                if (codepoint != 0)
-                    view.dispatch(view.state.replaceSelection(
-                        String.fromCodePoint(codepoint),
-                    ));
-            }
-            catch {}
-            inputSequence = '';
+        else if (code || toggleMode) {
+            // Reset the state whenever possible.
+            view.dispatch({ effects: updateInsertCharState.of(false) });
         }
+    },
+
+    keyup: (event, view) => {
+        if (event.key != 'Alt') return;
+
+        const { code, toggleMode } = view.state.field(insertCharState);
+        if (code === '' && !toggleMode) {
+            view.dispatch({ effects: updateInsertCharState.of(true) });
+            return;
+        }
+
+        let codepoint;
+        try {
+            if (code) codepoint = String.fromCodePoint(parseInt(code, 16));
+        }
+        catch {}
+
+        view.dispatch(
+            { effects: updateInsertCharState.of(false) },
+            codepoint ? view.state.replaceSelection(codepoint) : {},
+        );
     },
 });
 
@@ -64,12 +133,12 @@ class UnprintableWidget extends WidgetType {
         this.value = value;
     }
     toDOM() {
-        return <span title={'\\u' + this.value.toString(16)}>•</span>;
+        return <u-p c={String.fromCharCode(this.value)} />;
     }
 }
 
 const unprintableDecorator = new MatchDecorator({
-    regexp: /[\x01-\x08\x0B-\x1F\x7F]/g,
+    regexp: UnprintableElement.PATTERN,
     decoration: match => Decoration.replace({
         widget: new UnprintableWidget(match[0].charCodeAt(0)),
     }),

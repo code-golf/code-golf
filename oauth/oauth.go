@@ -9,9 +9,7 @@ import (
 	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/null"
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/github"
-	"golang.org/x/oauth2/gitlab"
-	"golang.org/x/oauth2/stackoverflow"
+	"golang.org/x/oauth2/endpoints"
 )
 
 type Config struct {
@@ -20,6 +18,7 @@ type Config struct {
 }
 
 type Connection struct {
+	AvatarURL            *string
 	Connection, Username string
 	Discriminator        null.Int
 	ID                   int
@@ -28,39 +27,53 @@ type Connection struct {
 
 var Providers = map[string]*Config{
 	// https://discord.com/developers/applications
+	// https://discord.com/developers/docs/resources/user
 	"discord": {
 		Name:         "Discord",
 		UserEndpoint: discordgo.EndpointUser("@me"),
 		Config: oauth2.Config{
-			Scopes: []string{"identify"},
-			Endpoint: oauth2.Endpoint{
-				AuthStyle: oauth2.AuthStyleInParams,
-				AuthURL:   discordgo.EndpointOauth2 + "authorize",
-				TokenURL:  discordgo.EndpointOauth2 + "token",
-			},
+			Endpoint: endpoints.Discord,
+			Scopes:   []string{"identify"},
 		},
 	},
 
 	// https://github.com/settings/developers
+	// https://docs.github.com/en/rest/users/users
 	"github": {
 		Name:   "GitHub",
-		Config: oauth2.Config{Endpoint: github.Endpoint},
+		Config: oauth2.Config{Endpoint: endpoints.GitHub},
 	},
 
 	// https://gitlab.com/-/profile/applications
+	// https://docs.gitlab.com/integration/openid_connect_provider/
 	"gitlab": {
 		Name:         "GitLab",
 		UserEndpoint: "https://gitlab.com/oauth/userinfo",
 		Config: oauth2.Config{
-			Endpoint: gitlab.Endpoint,
+			Endpoint: endpoints.GitLab,
 			Scopes:   []string{"openid"},
 		},
 	},
 
+	// https://gravatar.com/developers/applications
+	// https://docs.gravatar.com/api/oauth/
+	"gravatar": {
+		Name:         "Gravatar",
+		UserEndpoint: "https://api.gravatar.com/v3/me/profile",
+		Config: oauth2.Config{
+			Endpoint: oauth2.Endpoint{
+				AuthURL:  "https://public-api.wordpress.com/oauth2/authorize",
+				TokenURL: "https://public-api.wordpress.com/oauth2/token",
+			},
+			Scopes: []string{"auth", "gravatar-profile:read"},
+		},
+	},
+
 	// https://stackapps.com/apps/oauth
+	// https://api.stackexchange.com/docs/me
 	"stack-overflow": {
 		Name:         "Stack Overflow",
-		Config:       oauth2.Config{Endpoint: stackoverflow.Endpoint},
+		Config:       oauth2.Config{Endpoint: endpoints.StackOverflow},
 		UserEndpoint: "https://api.stackexchange.com/me?site=stackoverflow",
 	},
 }
@@ -96,7 +109,7 @@ func init() {
 func GetConnections(db db.Queryable, golferID int, onlyPublic bool) (c []Connection) {
 	if err := db.Select(
 		&c,
-		` SELECT connection, discriminator, id, public, username
+		` SELECT avatar_url, connection, discriminator, id, public, username
 		    FROM connections
 		   WHERE user_id = $1 AND public IN (true, $2)
 		ORDER BY connection`,
