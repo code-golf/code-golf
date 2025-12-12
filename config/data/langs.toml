@@ -82,7 +82,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '4.91 MiB'
-version    = '714e284'
+version    = 'da1b9ca'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -348,7 +348,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '111 MiB'
-version = 'C# 14.0 on .NET 10.0.0'
+version = 'C# 14.0 on .NET 10.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '118 MiB'
-version = '3.10.3'
+version = '3.10.4'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -637,7 +637,7 @@ none
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '57.1 MiB'
+size    = '57.2 MiB'
 version = '1.19.4'
 website = 'https://elixir-lang.org'
 example = '''
@@ -656,7 +656,7 @@ args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
 size     = '50.1 MiB'
-version  = 'OTP 28.2'
+version  = 'OTP 28.3'
 website  = 'https://www.erlang.org'
 example  = '''
 main(Args) ->
@@ -674,7 +674,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.0'
+version = 'F# 10.0 on .NET 10.0.1'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '75.1 MiB'
+size    = '74.9 MiB'
 version = '1.13.0'
 website = 'https://gleam.run'
 example = '''
@@ -964,7 +964,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '7.69 MiB'
+size    = '7.71 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -992,7 +992,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.30 MiB'
+size       = '2.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1416,7 +1416,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '137 MiB'
-version    = 'PowerShell 7.5.4 on .NET 10.0.0'
+version    = 'PowerShell 7.5.4 on .NET 10.0.1'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1593,7 +1593,7 @@ end
 [Rockstar]
 args      = [ '/usr/bin/rockstarwrapper', '-' ]
 redirects = [ 'rockstar-2' ]
-size      = '3.93 MiB'
+size      = '3.92 MiB'
 version   = '2.0.31'
 website   = 'https://codewithrockstar.com'
 example   = '''
@@ -1633,8 +1633,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '406 MiB'
-version = '1.91.1'
+size    = '407 MiB'
+version = '1.92.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1846,7 +1846,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.1 MiB'
+size       = '19.0 MiB'
 version    = '0.17.3'
 website    = 'https://www.uiua.org'
 example    = '''
