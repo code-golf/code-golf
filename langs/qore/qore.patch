@@ -1,0 +1,11 @@
+--- command-line.cpp
++++ command-line.cpp
+@@ -546,8 +546,6 @@
+             qore_build_host, qore_cplusplus_compiler, qore_cflags, qore_ldflags, mpfrInfo.getBuffer());
+
+     printf("use -B to show build options\n");
+-
+-    exit(0);
+ }
+
+ static void set_charset(const char* arg) {

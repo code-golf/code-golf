@@ -1,8 +1,8 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 ENV VER=9.8.2
 
-RUN apk add --no-cache build-base ghc=$VER-r2
+RUN apk add --no-cache ghc=$VER-r2 musl-dev
 
 RUN echo "#define VER \"$VER\"" > haskell.h
 
