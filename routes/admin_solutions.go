@@ -1,10 +1,12 @@
 package routes
 
 import (
+	"cmp"
 	"context"
-	"encoding/json"
+	"encoding/json/v2"
 	"errors"
 	"net/http"
+	"slices"
 	"strconv"
 	"sync"
 	"time"
@@ -25,7 +27,7 @@ type solution struct {
 	Pass     bool          `json:"pass"`
 	Stderr   string        `json:"stderr"`
 	Tested   time.Time     `json:"tested"`
-	Took     time.Duration `json:"took"`
+	Took     time.Duration `json:"took,format:nano"`
 	Total    int           `json:"total"`
 }
 
@@ -94,7 +96,15 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 					}
 
 					s.Stderr = run.Stderr
-					s.Took = run.Time
+
+					longestRun := slices.MaxFunc(runs, func(a, b hole.Run) int {
+						return cmp.Compare(a.Time, b.Time)
+					})
+
+					s.Took = min(s.Took, longestRun.Time)
+					if s.Took == 0 {
+						s.Took = longestRun.Time
+					}
 
 					if run.Pass {
 						s.Pass = true
@@ -107,7 +117,13 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				if s.Pass || !noNewFailures || s.Failing {
 					db.MustExec(
 						`UPDATE solutions
-						    SET failing = $1, lang_digest = $2, tested = DEFAULT
+						    SET failing     = $1,
+						        lang_digest = $2,
+						        tested      = DEFAULT,
+						        time_ms     = CASE WHEN $2 = lang_digest
+						                           THEN LEAST($7, time_ms)
+						                           ELSE $7
+						                           END
 						  WHERE code    = $3
 						    AND hole    = $4
 						    AND lang    = $5
@@ -118,6 +134,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 						s.HoleID,
 						s.LangID,
 						s.GolferID,
+						s.Took.Round(time.Millisecond)/time.Millisecond,
 					)
 				}
 
@@ -165,15 +182,15 @@ func getSolutions(r *http.Request) chan solution {
 		rows, err := session.Database(r).QueryxContext(
 			r.Context(),
 			`WITH distinct_solutions AS (
-			  SELECT DISTINCT code, failing, login golfer, user_id golfer_id,
+			  SELECT DISTINCT code, failing, u.name golfer, user_id golfer_id,
 			                  hole hole_id, lang lang_id, tested
 			    FROM solutions
-			    JOIN users   ON id = user_id
+			    JOIN users u ON id = user_id
 			LEFT JOIN langs  ON lang_digest = digest_trunc
 			   WHERE failing IN (true, $1)
-			     AND (login = $2 OR $2 = '')
-			     AND (hole  = $3 OR $3 IS NULL)
-			     AND (lang  = $4 OR $4 IS NULL)
+			     AND (u.name = $2 OR $2 = '')
+			     AND (hole = $3 OR $3 IS NULL)
+			     AND (lang = $4 OR $4 IS NULL)
 			     AND DATE(TIMEZONE($5, TIMEZONE('UTC', tested))) BETWEEN $6 AND $7
 			     AND (NOT $8 OR digest_trunc IS NULL)
 			ORDER BY tested

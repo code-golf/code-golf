@@ -1,4 +1,4 @@
-FROM node:24.9.0-bookworm-slim
+FROM node:25.2.1-trixie-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
@@ -6,7 +6,7 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
-ENV VER=397dec7
+ENV VER=cf77649
 
 WORKDIR /twemoji-colr
 
@@ -21,6 +21,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f0cf.svg'            `# Joker`                        \
     '*/1f308.svg'            `# Rainbow`                      \
     '*/1f30c.svg'            `# Milky Way`                    \
+    '*/1f320.svg'            `# Shooting Star`                \
     '*/1f340.svg'            `# Four Leaf Clover`             \
     '*/1f355.svg'            `# Pizza`                        \
     '*/1f356.svg'            `# Meat on Bone`                 \
@@ -41,6 +42,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f3c3.svg'            `# Person Running`               \
     '*/1f3c6.svg'            `# Trophy`                       \
     '*/1f3cc.svg'            `# Person Golfing`               \
+    '*/1f3db.svg'            `# Classical Building`           \
     '*/1f3de.svg'            `# National Park`                \
     '*/1f3e5.svg'            `# Hospital`                     \
     '*/1f409.svg'            `# Dragon`                       \
@@ -112,11 +114,14 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f680.svg'            `# Rocket`                       \
     '*/1f697.svg'            `# Automobile`                   \
     '*/1f6a2.svg'            `# Ship`                         \
+    '*/1f6a9.svg'            `# Triangular Flag on Post`      \
+    '*/1f6df.svg'            `# Ring Buoy`                    \
     '*/1f910.svg'            `# Zipper-Mouth Face`            \
     '*/1f947.svg'            `# 1st Place Medal`              \
     '*/1f948.svg'            `# 2nd Place Medal`              \
     '*/1f949.svg'            `# 3rd Place Medal`              \
     '*/1f961.svg'            `# Takeout Box`                  \
+    '*/1f962.svg'            `# Chopsticks`                   \
     '*/1f963.svg'            `# Bowl with Spoon`              \
     '*/1f967.svg'            `# Pie`                          \
     '*/1f96a.svg'            `# Sandwich`                     \
@@ -131,6 +136,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f9db.svg'            `# Vampire`                      \
     '*/1f9e0.svg'            `# Brain`                        \
     '*/1f9ea.svg'            `# Test Tube`                    \
+    '*/1f9ed.svg'            `# Compass`                      \
     '*/1f9f6.svg'            `# Yarn`                         \
     '*/1fa84.svg'            `# Magic Wand`                   \
     '*/1fa9b.svg'            `# Screwdriver`                  \
@@ -150,6 +156,8 @@ RUN echo [] > extras/ligatures.json                           \
  && rm twe-svg.zip                                            \
     svg/1f1ea-1f1fa.svg      `# Flag: European Union`         \
     svg/1f1fa-1f1f3.svg      `# Flag: United Nations`         \
- && zip -qr twe-svg.zip svg                                   \
- && make                                                      \
- && woff2_compress 'build/Twemoji Mozilla.ttf'
+ && zip -qr twe-svg.zip svg
+
+COPY font.sh ./
+
+RUN ./font.sh

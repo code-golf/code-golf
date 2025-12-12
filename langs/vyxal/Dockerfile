@@ -1,6 +1,6 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-ENV VER=3.10.2
+ENV VER=3.10.3
 
 RUN wget -qO vyxal.jar https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar
 

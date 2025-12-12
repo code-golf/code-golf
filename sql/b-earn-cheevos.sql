@@ -101,6 +101,12 @@ BEGIN
     IF hole = 'poker' AND lang = 'fish' THEN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
 
+    -- 🚩 Flag Those Mines
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('f-sharp', 'factor', 'forth', 'fortran');
+    IF hole = 'minesweeper' AND found THEN
+        earned := earn(earned, 'flag-those-mines', user_id); END IF;
+
     -- 🏞️ Go Forth!
     IF langs_for_hole @> '{go,forth}' THEN
         earned := earn(earned, 'go-forth', user_id); END IF;
@@ -139,6 +145,12 @@ BEGIN
     IF hole = 'λ' AND found THEN
         earned := earn(earned, 'mary-had-a-little-lambda', user_id); END IF;
 
+    -- 🧭 Never Eat Shredded Wheat
+    SELECT COUNT(DISTINCT SUBSTR(unnest::text, 1, 1)) = 4 INTO found
+      FROM UNNEST(langs_for_hole) WHERE unnest::text similar to '[nesw]%';
+    IF hole = 'arrows' AND found THEN
+        earned := earn(earned, 'never-eat-shredded-wheat', user_id); END IF;
+
     -- 📴 Off-the-grid
     IF hole IN ('sudoku', 'sudoku-fill-in') AND lang = 'hexagony' THEN
         earned := earn(earned, 'off-the-grid', user_id); END IF;
@@ -155,6 +167,12 @@ BEGIN
     IF langs_for_hole @> '{berry,coconut,elixir}' THEN
         earned := earn(earned, 'piña-colada', user_id); END IF;
 
+    -- 🛟 Ring Toss
+    SELECT COUNT(*) >= 9 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN (SELECT id FROM langs WHERE experiment = 0 AND name LIKE '%O%');
+    IF hole = 'tower-of-hanoi' AND found THEN
+        earned := earn(earned, 'ring-toss', user_id); END IF;
+
     -- 🎮 S-box 360
     IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN
         earned := earn(earned, 's-box-360', user_id); END IF;
@@ -162,6 +180,12 @@ BEGIN
     -- 💬 Simon Sed
     IF hole = 'look-and-say' AND lang = 'sed' THEN
         earned := earn(earned, 'simon-sed', user_id); END IF;
+
+    -- 🥢 Sinosphere
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('c', 'j', 'k', 'v');
+    IF hole = 'mahjong' AND found THEN
+        earned := earn(earned, 'sinosphere', user_id); END IF;
 
     -- 🪞 Solve Quine
     IF hole = 'quine' THEN
@@ -193,9 +217,22 @@ BEGIN
     IF hole = 'si-units' AND lang = 'powershell' THEN
         earned := earn(earned, 'watt-are-you-doing', user_id); END IF;
 
+    -- 🏛️ When in Rome
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('c', 'd', 'v', 'viml');
+    IF hole = 'roman-to-arabic' AND found THEN
+        earned := earn(earned, 'when-in-rome', user_id); END IF;
+
     -- ❌ X-Factor
     IF hole = 'factorial-factorisation' AND lang = 'factor' THEN
         earned := earn(earned, 'x-factor', user_id); END IF;
+    
+    -- 🌠 Zoodiac Signs
+    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN ('awk', 'basic', 'civet', 'factor', 'ocaml', 'perl',
+      'prolog', 'python', 'raku', 'swift', 'wren');
+    IF hole = 'zodiac-signs' AND found THEN
+        earned := earn(earned, 'zoodiac-signs', user_id); END IF;
 
     -------------------
     -- Miscellaneous --
