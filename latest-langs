@@ -149,7 +149,7 @@ my $buffer = "\r\e[K";
 
 for %langs{ @langs.unique || * }:p.sort(*.key.fc).kv -> $i, (:key($name), :value(%lang)) {
     # Catch exceptions and carry on to the next lang.
-    CATCH { default { note "$name: $_" } }
+    CATCH { default { $buffer ~= sprintf "$name: $_\n" } }
 
     print "\r\e[K" ~ progress($i + 1);
 
