@@ -730,7 +730,7 @@ example    = '''
 
 [Forth]
 args    = [ '/usr/bin/forth', '/proc/self/fd/0' ]
-size    = '590 KiB'
+size    = '639 KiB'
 version = 'GNU Forth 0.7.3'
 website = 'https://www.gnu.org/software/gforth/'
 example = '''
