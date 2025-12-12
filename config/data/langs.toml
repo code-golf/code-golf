@@ -1275,7 +1275,7 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '66.9 MiB'
+size    = '79.5 MiB'
 version = '5.4.0'
 website = 'https://ocaml.org'
 example = '''
@@ -1782,7 +1782,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '561 MiB'
-version = '6.2.1'
+version = '6.2.2'
 website = 'https://swift.org'
 example = '''
 // Printing
