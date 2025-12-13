@@ -26,6 +26,9 @@ RUN bash configure                     \
 RUN /build/release/images/jdk/bin/jlink           \
     --add-modules java.base,java.se               \
     --add-modules jdk.compiler,jdk.unsupported    \
+    --add-options='                               \
+      --enable-native-access=ALL-UNNAMED          \
+      --sun-misc-unsafe-memory-access=allow'      \
     --compress zip-9                              \
     --generate-cds-archive                        \
     --module-path /build/release/images/jdk/jmods \
