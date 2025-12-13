@@ -75,6 +75,7 @@ constant %paths = (
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
+    'PARI-GP'      => 'pari.math.u-bordeaux.fr/download.html',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
@@ -139,6 +140,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'golfscript.com'    / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'          / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'npmjs.org'         / { $res.&from-json[0]<version> }
+        when / 'pari.math.u'       / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'picat-lang.org'    / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'          / { $res.&from-json<info><version> }
         when / 'sourceforge'       / { $res ~~ / 'Latest' .+? <(<ver>)> / }

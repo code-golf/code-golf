@@ -61,6 +61,7 @@ COPY --from=codegolf/lang-qore         / /langs/qore/rootfs/
 COPY --from=codegolf/lang-php          / /langs/php/rootfs/
 COPY --from=codegolf/lang-nim          / /langs/nim/rootfs/
 COPY --from=codegolf/lang-apl          / /langs/apl/rootfs/
+COPY --from=codegolf/lang-pari-gp      / /langs/pari-gp/rootfs/
 COPY --from=codegolf/lang-harbour      / /langs/harbour/rootfs/
 COPY --from=codegolf/lang-picat        / /langs/picat/rootfs/
 COPY --from=codegolf/lang-j            / /langs/j/rootfs/
