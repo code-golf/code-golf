@@ -1,4 +1,4 @@
-FROM swipl:9.2.9 AS builder
+FROM swipl:10.0.0 AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \

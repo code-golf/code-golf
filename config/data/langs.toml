@@ -567,7 +567,7 @@ end
 [Curry]
 args       = [ '/usr/bin/curry', '-' ]
 experiment = 1418
-size       = '86.2 MiB'
+size       = '94.2 MiB'
 version    = 'PAKCS 3.8.0'
 website    = 'https://www.curry-lang.org/pakcs/'
 example    = '''
