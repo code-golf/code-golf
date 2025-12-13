@@ -1,5 +1,5 @@
---- /lib/interp/interpreter.ex
-+++ /lib/interp/interpreter.ex
+--- lib/interp/interpreter.ex
++++ lib/interp/interpreter.ex
 @@ -58,7 +58,7 @@
      def interp_string(string, stack, environment) do
          dissected_string = String.split(string, "ÿ")
