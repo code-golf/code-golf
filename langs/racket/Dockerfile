@@ -1,6 +1,6 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base curl linux-headers
+RUN apk add --no-cache curl gcc linux-headers make musl-dev
 
 ENV VER=9.0
 

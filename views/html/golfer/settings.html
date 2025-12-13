@@ -20,66 +20,6 @@
 
         <textarea maxlength=255 name=about rows=4>{{ .Golfer.About }}</textarea>
 
-        <h2>Connections</h2>
-
-        Will eventually allow for logging in with any supported OAuth
-        connection.
-
-        <ol id=connections>
-        {{ range .Data.Connections }}
-            <li>
-            {{ with .AvatarURL }}
-                <img src="{{ avatar . 96 }}">
-            {{ else }}
-                {{ svg .Connection }}
-            {{ end }}
-                <h3>
-                    <span>{{ .Connection }}/</span>
-                    {{- .Username -}}
-                {{- with .Discriminator.V -}}
-                    <span>{{ printf "#%04d" . }}</span>
-                {{- end -}}
-                </h3>
-                <div>
-                {{ if ne .Connection "github" }}
-                    {{ $prov := index $.Data.OAuthProviders .Connection }}
-                    <a class="btn blue" href="{{ $prov.AuthCodeURL $.Data.OAuthState }}">
-                        {{ svg "arrow-clockwise" }}<span class=wide>Refresh</span>
-                    </a>
-                    <a class="btn red" href="disconnect/{{ .Connection }}">
-                        {{ svg "trash" }}<span class=wide>Remove</span>
-                    </a>
-                {{ end }}
-                </div>
-                <label>
-                    Show this connection publicly?
-                    <input name="show_{{ .Connection }}" type=checkbox
-                        {{ if .Public }}checked{{ end }}>
-                </label>
-        {{ end }}
-        </ol>
-
-{{ if ne (len .Data.Connections) (len .Data.OAuthProviders) }}
-        <div id=missingConnections>
-    {{ range $id, $conn := .Data.OAuthProviders }}
-        {{ $missing := true }}
-
-        {{ range $.Data.Connections }}
-            {{ if eq $id .Connection }}
-                {{ $missing = false }}
-                {{break}}
-            {{ end }}
-        {{ end }}
-
-        {{ if $missing }}
-            <a class="btn blue" href="{{ $conn.AuthCodeURL $.Data.OAuthState }}">
-                {{ svg $id }} Add {{ $conn.Name }}
-            </a>
-        {{ end }}
-    {{ end }}
-        </div>
-{{ end }}
-
         <h2>Country</h2>
 
         Is used in aggregate on the statistics page.
@@ -154,6 +94,69 @@
         {{- end -}}
         </select>
 
+        <p><button class="btn green">Save Changes</button>
+    </form>
+{{ else if eq .Title "Settings: Connections" }}
+    <form method=post>
+        <h2>Connections</h2>
+
+        Will eventually allow for logging in with any supported OAuth
+        connection.
+
+        <ol id=connections>
+        {{ range .Data.Connections }}
+            <li>
+            {{ with .AvatarURL }}
+                <img src="{{ avatar . 96 }}">
+            {{ else }}
+                {{ svg .Connection }}
+            {{ end }}
+                <h3>
+                    <span>{{ .Connection }}/</span>
+                    {{- .Username -}}
+                {{- with .Discriminator.V -}}
+                    <span>{{ printf "#%04d" . }}</span>
+                {{- end -}}
+                </h3>
+                <div>
+                {{ if ne .Connection "github" }}
+                    {{ $prov := index $.Data.OAuthProviders .Connection }}
+                    <a class="btn blue" href="{{ $prov.AuthCodeURL $.Data.OAuthState }}">
+                        {{ svg "arrow-clockwise" }}<span class=wide>Refresh</span>
+                    </a>
+                    <a class="btn red" href="/golfer/disconnect/{{ .Connection }}">
+                        {{ svg "trash" }}<span class=wide>Remove</span>
+                    </a>
+                {{ end }}
+                </div>
+                <label>
+                    Show this connection publicly?
+                    <input name="show_{{ .Connection }}" type=checkbox
+                        {{ if .Public }}checked{{ end }}>
+                </label>
+        {{ end }}
+        </ol>
+
+{{ if ne (len .Data.Connections) (len .Data.OAuthProviders) }}
+        <div id=missingConnections>
+    {{ range $id, $conn := .Data.OAuthProviders }}
+        {{ $missing := true }}
+
+        {{ range $.Data.Connections }}
+            {{ if eq $id .Connection }}
+                {{ $missing = false }}
+                {{break}}
+            {{ end }}
+        {{ end }}
+
+        {{ if $missing }}
+            <a class="btn blue" href="{{ $conn.AuthCodeURL $.Data.OAuthState }}">
+                {{ svg $id }} Add {{ $conn.Name }}
+            </a>
+        {{ end }}
+    {{ end }}
+        </div>
+{{ end }}
         <p><button class="btn green">Save Changes</button>
     </form>
 {{ else if eq .Title "Settings: Export Data" }}

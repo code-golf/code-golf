@@ -1,16 +1,21 @@
 # Also bump Curry.
-FROM swipl:9.2.9 AS builder
+ARG VER=10.0.0
+
+FROM swipl:$VER AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes gcc
 
 RUN rm -r /usr/lib/swipl/demo \
+          \
           /usr/lib/swipl/doc
+
+RUN strip /usr/bin/swipl
 
 COPY prolog.c /
 
-RUN gcc -Wall -Wextra -Werror -o /usr/bin/prolog -s prolog.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/prolog -s prolog.c
 
 FROM codegolf/lang-base
 
