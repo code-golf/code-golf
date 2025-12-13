@@ -1976,7 +1976,7 @@ example    = '''
 [WebAssembly]
 args       = [ '/usr/bin/webassembly', '/proc/self/fd/0' ]
 experiment = 479
-size       = '56.7 MiB'
+size       = '56.3 MiB'
 version    = 'Wasmtime 39.0.1'
 website    = 'https://wasmtime.dev'
 example    = '''
