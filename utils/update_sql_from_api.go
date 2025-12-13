@@ -187,10 +187,10 @@ func main() {
 		updateCount++
 
 		if _, err := tx.Exec(
-			`INSERT INTO solutions (  bytes,     chars,    code, hole, lang,
-			                        scoring, submitted, user_id, lang_digest)
-			                VALUES (     $1,        $2,      $3,   $4,   $5,
-			                             $6,        $7,      $8,   '')
+			`INSERT INTO solutions (  bytes,     chars,    code,        hole,   lang,
+			                        scoring, submitted, user_id, lang_digest, time_ms)
+			                VALUES (     $1,        $2,      $3,          $4,     $5,
+			                             $6,        $7,      $8,          '',      0)
 			ON CONFLICT            (user_id, hole, lang, scoring)
 			  DO UPDATE SET bytes = excluded.bytes,
 			                chars = excluded.chars,

@@ -1,11 +1,3 @@
-#==================================================================================
-# warning: negative steps are not supported in Enum.slice/2, pass 0..-2//1 instead
-#  (elixir 1.19.3) lib/enum.ex:2999: Enum.slice/2
-#  (osabie 1.0.1) lib/interp/interpreter.ex:61: Interp.Interpreter.interp_string/3
-#  (osabie 1.0.1) lib/interp/interpreter.ex:121: Interp.Interpreter.interp/3
-#  (osabie 1.0.1) lib/osabie.ex:62: Osabie.CLI.main/1
-#  (elixir 1.19.3) lib/kernel/cli.ex:141: anonymous fn/3 in Kernel.CLI.exec_fun/2
-#==================================================================================
 --- lib/interp/interpreter.ex
 +++ lib/interp/interpreter.ex
 @@ -58,7 +58,7 @@
