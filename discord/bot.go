@@ -117,8 +117,6 @@ func getUsername(id int, db *sqlx.DB) (name string) {
 // recAnnounceToEmbed parses a recAnnouncement object and turns it into a Discord embed
 func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.MessageEmbed {
 	hole, lang, golfer := announce.Hole, announce.Lang, announce.Golfer
-	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
-	golferURL := "https://code.golf/golfers/" + golfer.Name
 
 	titlePrefix := "New Tied 🥇"
 	isUnicorn := false
@@ -127,7 +125,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	embed := &discordgo.MessageEmbed{
 		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/",
 		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
-		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+		Author: messageEmbedAuthor(golfer),
 	}
 
 	// Now, we fill out the fields according to the updates of the announcement
@@ -318,13 +316,10 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 		return
 	}
 
-	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
-	golferURL := "https://code.golf/golfers/" + golfer.Name
-
 	if _, err := bot.ChannelMessageSendEmbed(channel(hole, lang), &discordgo.MessageEmbed{
 		Title:  fmt.Sprintf("%s in %s failed rejudge!", hole.Name, lang.Name),
 		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/" + scoring,
-		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+		Author: messageEmbedAuthor(golfer),
 	}); err != nil {
 		log.Println(err)
 	}
@@ -444,7 +439,7 @@ func logNewRecord(
 	}
 }
 
-func loadLastAnnouncement(db *sqlx.DB, channelID string) (result *RecAnnouncement) {
+func loadLastAnnouncement(db *sqlx.DB, channelID string) (announcement *RecAnnouncement) {
 	var bytes []byte
 
 	if err := db.QueryRow(
@@ -455,14 +450,19 @@ func loadLastAnnouncement(db *sqlx.DB, channelID string) (result *RecAnnouncemen
 		return
 	}
 
-	var announcement RecAnnouncement
 	if err := json.Unmarshal(bytes, &announcement); err != nil {
 		log.Println(err)
-	} else {
-		result = &announcement
 	}
 
 	return
+}
+
+func messageEmbedAuthor(golfer *Golfer.Golfer) *discordgo.MessageEmbedAuthor {
+	return &discordgo.MessageEmbedAuthor{
+		IconURL: golfer.AvatarURL,
+		Name:    golfer.Name,
+		URL:     "https://code.golf/golfers/" + golfer.Name,
+	}
 }
 
 func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
