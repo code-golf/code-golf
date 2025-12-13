@@ -1,6 +1,6 @@
 FROM alpine:3.23 AS builder
 
-ENV VER=1.10.1
+ENV VER=1.11.0
 
 RUN wget -qO scala-cli.gz https://github.com/VirtusLab/scala-cli/releases/download/v$VER/scala-cli-x86_64-pc-linux-static.gz
 

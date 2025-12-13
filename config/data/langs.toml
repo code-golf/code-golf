@@ -1658,7 +1658,7 @@ args       = [ '/usr/bin/scala', '-e', '$code', '--server=false', '--' ]
 env        = [ 'COURSIER_CACHE=/cache', 'JAVA_HOME=/opt/java' ]
 experiment = 235
 size       = '206 MiB'
-version    = 'Scala CLI 1.10.1'
+version    = 'Scala CLI 1.11.0'
 website    = 'https://www.scala-lang.org'
 example    = '''
 // Printing
