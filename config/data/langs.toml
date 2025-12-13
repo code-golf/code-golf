@@ -1411,6 +1411,42 @@ main(Args) =>
     end.
 '''
 
+[Piet]
+args       = [ '/usr/bin/piet', '-' ]
+env        = [ 'PYTHON_COLORS=1' ]
+experiment = 648
+size       = '82.7 MiB'
+version    = 'npiet 1.3f'
+website    = 'https://www.bertnase.de/npiet/'
+example    = '''
+t  printing
+t
+tliumldamedtqeusaqumkqimeciaeusaqumkqimeciaeusaqumkqimeciaeusaqumkqimq
+ l lllmmmddeeeaaauuqqqmmiiieeaaauuqqqmmiiieeaaauuqqqmmiiiee uuuuqqq  c
+   lmmmddddeeaauuuqqqqmmiieeeaauuqqqmmmiieeeaaauuqqqmmiiiee uuuqqqq  j
+    mdddeeeeaauuuuqqqqmmiieee         iieeeeaaauuqmmmmieeee          v
+                  qqmmmiii                  a uuu    m e             d
+   looping                                                           m
+                                                                     q
+jueeeiljjrrrrrrrrrr????????????????????????????????????????????cqmdvjc
+?
+?ejrrr????lfnnnnnnnnnnltfc
+t?                       l
+tt                       t
+l                        t
+cfffvvnecccskffffvnebbbrctdl
+                           ?
+   accessing arguments     ?
+                           ?
+ejrrr???????????????????????
+?
+?ejrrr????rk?qaaaaaaaaaaq
+t?         t            f    ??
+tt         d            n    ?
+l          d            n    ?
+cbdtqmjjjbkdaqeusinssskqnvvvna
+'''
+
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
