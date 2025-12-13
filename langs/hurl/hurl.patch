@@ -1,0 +1,20 @@
+--- src/lib.rs
++++ src/lib.rs
+@@ -1,4 +1,4 @@
+-#![feature(let_chains)]
++
+
+ pub mod callable;
+ pub mod cmd;
+--- src/parser.rs
++++ src/parser.rs
+@@ -51,8 +51,7 @@
+ pub fn parse_leading_comments(pairs: &mut Pairs<Rule>) -> Result<Vec<Comment>, ParseError> {
+     let mut comments = vec![];
+
+-    while let Some(pair) = pairs.peek()
+-        && pair.as_rule() == Rule::COMMENT
++    while matches!(pairs.peek(), Some(pair) if pair.as_rule() == Rule::COMMENT)
+     {
+         let pair = pairs.next().unwrap();
+         comments.push(parse_comment(pair)?);
