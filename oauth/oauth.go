@@ -18,6 +18,7 @@ type Config struct {
 }
 
 type Connection struct {
+	AvatarURL            *string
 	Connection, Username string
 	Discriminator        null.Int
 	ID                   int
@@ -108,7 +109,7 @@ func init() {
 func GetConnections(db db.Queryable, golferID int, onlyPublic bool) (c []Connection) {
 	if err := db.Select(
 		&c,
-		` SELECT connection, discriminator, id, public, username
+		` SELECT avatar_url, connection, discriminator, id, public, username
 		    FROM connections
 		   WHERE user_id = $1 AND public IN (true, $2)
 		ORDER BY connection`,

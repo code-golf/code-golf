@@ -20,12 +20,13 @@ CREATE TYPE cheevo AS ENUM (
     'never-eat-shredded-wheat', 'off-the-grid', 'omniglot', 'omniglutton',
     'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
-    'real-programmers', 'right-on', 'rm-rf', 'rtfm', 'rule-34', 's-box-360',
-    'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord', 'solve-quine',
-    'sounds-quite-nice', 'takeout', 'texnical-know-how', 'the-watering-hole',
-    'tim-toady', 'tl-dr', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
-    'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
-    'when-in-rome', 'x-factor', 'x86', 'zoodiac-signs'
+    'real-programmers', 'right-on', 'ring-toss', 'rm-rf', 'rtfm', 'rule-34',
+    's-box-360', 'simon-sed', 'sinosphere', 'slowcoach', 'smörgåsbord',
+    'solve-quine', 'sounds-quite-nice', 'takeout', 'texnical-know-how',
+    'the-watering-hole', 'tim-toady', 'tl-dr', 'twelvetide',
+    'twenty-kiloleagues', 'typesetter', 'under-pressure', 'up-to-eleven',
+    'vampire-byte', 'watt-are-you-doing', 'when-in-rome', 'x-factor', 'x86',
+    'zoodiac-signs'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -54,17 +55,18 @@ CREATE TYPE hole AS ENUM (
     'levenshtein-distance', 'leyland-numbers', 'ln-2', 'look-and-say',
     'lucky-numbers', 'lucky-tickets', 'mahjong', 'mandelbrot', 'maze',
     'medal-tally', 'minesweeper', 'morse-decoder', 'morse-encoder',
-    'musical-chords', 'n-queens', 'nfa-simulator', 'niven-numbers',
-    'niven-numbers-long', 'number-spiral', 'odd-polyomino-tiling',
-    'odious-numbers', 'odious-numbers-long', 'ordinal-numbers',
-    'p-adic-expansion', 'palindromemordnilap', 'pangram-grep',
-    'partition-numbers', 'pascals-triangle', 'pernicious-numbers',
-    'pernicious-numbers-long', 'poker', 'polygon-triangulations',
-    'polyominoes', 'prime-numbers', 'prime-numbers-long', 'proximity-grid',
-    'qr-decoder', 'qr-encoder', 'quadratic-formula', 'quine', 'recamán',
-    'repeating-decimals', 'reverse-polish-notation', 'reversi',
-    'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
-    'rot13', 'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set',
+    'multitap-input', 'musical-chords', 'n-queens', 'nfa-simulator',
+    'niven-numbers', 'niven-numbers-long', 'number-spiral', 'numbrix',
+    'odd-polyomino-tiling', 'odious-numbers', 'odious-numbers-long',
+    'ordinal-numbers', 'p-adic-expansion', 'palindromemordnilap',
+    'pangram-grep', 'partition-numbers', 'pascals-triangle',
+    'pernicious-numbers', 'pernicious-numbers-long', 'poker',
+    'polygon-triangulations', 'polyominoes', 'prime-numbers',
+    'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'qr-encoder',
+    'quadratic-formula', 'quine', 'recamán', 'repeating-decimals',
+    'reverse-polish-notation', 'reversi', 'rijndael-s-box',
+    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rot13',
+    'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set',
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
     'smooth-numbers', 'snake', 'spelling-numbers', 'sphenic-numbers',
     'star-wars-gpt', 'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
@@ -131,7 +133,6 @@ CREATE TABLE users (
     delete       timestamp,
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
-    started      timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     theme        theme     NOT NULL DEFAULT 'auto',
     pronouns     pronouns,
@@ -139,6 +140,9 @@ CREATE TABLE users (
     about        text      NOT NULL DEFAULT '',
     country_flag char(2)            GENERATED ALWAYS AS
         (CASE WHEN show_country THEN country END),
+    uuid         uuid      NOT NULL UNIQUE DEFAULT uuidv7(),
+    started      timestamp NOT NULL GENERATED ALWAYS AS
+        (timezone('UTC', uuid_extract_timestamp(uuid))),
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),             -- Can't refer yourself!
     CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
