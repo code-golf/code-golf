@@ -1782,7 +1782,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '561 MiB'
-version = '6.2.2'
+version = '6.2.3'
 website = 'https://swift.org'
 example = '''
 // Printing
