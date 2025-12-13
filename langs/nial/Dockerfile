@@ -1,8 +1,8 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache cmake curl g++ make
+RUN apk add --no-cache clang cmake curl make
 
-ENV CFLAGS='-Wno-cpp' LDFLAGS='-static' VER=cdd6e81
+ENV CC='clang' CXX='clang++' CFLAGS='-Wno-cpp' CMAKE_POLICY_VERSION_MINIMUM='3.5' LDFLAGS='-static' VER=cdd6e81
 
 RUN curl -#L https://github.com/niallang/Nial_Development/tarball/$VER \
   | tar xz --strip-components 2

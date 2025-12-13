@@ -1256,7 +1256,7 @@ end
 [Nial]
 args       = [ '/usr/bin/nial', '-' ]
 experiment = 579
-size       = '616 KiB'
+size       = '608 KiB'
 version    = 'cdd6e81'
 website    = 'https://www.nial-array-language.org'
 example    = '''
