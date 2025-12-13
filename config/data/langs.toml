@@ -992,7 +992,7 @@ example = '''
 [Hurl]
 args       = [ '/usr/bin/hurl', '-' ]
 experiment = 1890
-size       = '2.11 MiB'
+size       = '2.08 MiB'
 version    = '0bcafce'
 website    = 'https://hurl.wtf'
 example    = '''
