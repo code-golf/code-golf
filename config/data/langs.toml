@@ -1415,7 +1415,7 @@ main(Args) =>
 args       = [ '/usr/bin/piet', '-' ]
 env        = [ 'PYTHON_COLORS=1' ]
 experiment = 648
-size       = '81.9 MiB'
+size       = '82.7 MiB'
 version    = 'npiet 1.3f'
 website    = 'https://www.bertnase.de/npiet/'
 example    = '''
