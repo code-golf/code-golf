@@ -2,6 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev patch
 
+# Also rebuild Crap.
 ENV VER=0.9.27
 
 RUN curl -#L https://download.savannah.nongnu.org/releases/tinycc/tcc-$VER.tar.bz2 \
