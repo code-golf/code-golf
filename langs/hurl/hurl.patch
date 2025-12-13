@@ -1,3 +1,11 @@
+--- src/lib.rs
++++ src/lib.rs
+@@ -1,4 +1,4 @@
+-#![feature(let_chains)]
++
+
+ pub mod callable;
+ pub mod cmd;
 --- src/parser.rs
 +++ src/parser.rs
 @@ -51,8 +51,7 @@

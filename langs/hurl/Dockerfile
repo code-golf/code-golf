@@ -14,7 +14,6 @@ RUN curl -#L https://git.sr.ht/~ntietz/hurl-lang/archive/$VER.tar.gz \
 COPY hurl.patch .
 
 RUN rustup target add $CRT \
- && sed -i '1d' src/lib.rs \
  && patch -p0 < hurl.patch
 
 RUN cargo install     \
