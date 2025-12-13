@@ -48,24 +48,14 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 			return nil, err
 		}
 
-		// Set the size for every host.
+		// Set the avatar size. Most support "s" and "size", but i.sstatic.net
+		// only supports "s" and cdn.discordapp.com only supports "size".
 		q := u.Query()
-		q.Set("size", strconv.Itoa(size))
-
-		// Set any host specific parameters.
-		switch u.Host {
-		// https://docs.gravatar.com/sdk/images/
-		case "gravatar.com", "www.gravatar.com", "secure.gravatar.com":
-			// TODO This munging should be pushed to connection time.
-			u.Host = "gravatar.com"
-			u.Scheme = "https"
-			q.Del("d")
-			q.Del("r")
-
-			q.Set("default", "identicon")
-			q.Set("rating", "PG")
+		if u.Host == "cdn.discordapp.com" {
+			q.Set("size", strconv.Itoa(size))
+		} else {
+			q.Set("s", strconv.Itoa(size))
 		}
-
 		u.RawQuery = q.Encode()
 
 		return u, nil

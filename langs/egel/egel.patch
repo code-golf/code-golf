@@ -1,0 +1,22 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -143,7 +143,7 @@
+ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+ # enforce static linking
+-#set(CMAKE_EXE_LINKER_FLAGS "-static")
++set(CMAKE_EXE_LINKER_FLAGS "-static")
+
+ # objects
+ add_library(objlib OBJECT ${EGEL_SOURCES})
+--- src/eval.hpp
++++ src/eval.hpp
+@@ -94,7 +94,7 @@
+         rr.push_back(k);
+         rr.push_back(exc);
+         rr.push_back(_result.result);
+-        for (uint i = 5; i < tt.size(); i++) {
++        for (size_t i = 5; i < tt.size(); i++) {
+             rr.push_back(tt[i]);
+         }
+         return machine()->create_array(rr);

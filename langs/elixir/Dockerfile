@@ -19,7 +19,6 @@ RUN make
 
 FROM codegolf/lang-erlang
 
-COPY --from=1 /usr/lib/locale            /usr/lib/locale
 COPY --from=1 /usr/local/bin/elixir      /usr/local/bin/
 COPY --from=1 /usr/local/lib/elixir/ebin /usr/local/lib/elixir/ebin
 
