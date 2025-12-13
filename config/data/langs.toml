@@ -1994,7 +1994,7 @@ for (a in Process.arguments) System.print(a)
 [Zeek]
 args       = [ '/usr/bin/zeek', '-' ]
 experiment = 1457
-size       = '34.6 MiB'
+size       = '34.5 MiB'
 version    = '8.0.4'
 website    = 'https://zeek.org'
 example    = '''
