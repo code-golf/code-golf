@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 # Also rebuild iogii.
 ENV VER=9.8.2

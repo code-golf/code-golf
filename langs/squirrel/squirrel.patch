@@ -1,0 +1,20 @@
+--- sq/sq.c
++++ sq/sq.c
+@@ -224,7 +224,7 @@
+ void Interactive(HSQUIRRELVM v)
+ {
+
+-#define MAXINPUT 1024
++#define MAXINPUT 2048
+     SQChar buffer[MAXINPUT];
+     SQInteger blocks =0;
+     SQInteger string=0;
+@@ -311,7 +311,7 @@
+     _CrtSetAllocHook(MemAllocHook);
+ #endif
+
+-    v=sq_open(1024);
++    v=sq_open(2048);
+     sq_setprintfunc(v,printfunc,errorfunc);
+
+     sq_pushroottable(v);

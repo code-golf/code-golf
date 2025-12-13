@@ -1,17 +1,22 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache clang cmake curl make
+RUN apk add --no-cache clang cmake curl make patch
 
 ENV VER=3.2
 
 RUN curl -#L https://github.com/albertodemichelis/squirrel/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN sed -i 's/1024/2048/' sq/sq.c
+COPY squirrel.patch /
+
+RUN patch -p0 < squirrel.patch
 
 WORKDIR /squirrel
 
-RUN cmake -DCMAKE_BUILD_TYPE='MinSizeRel' .. && make install
+RUN cmake ..                             \
+    -DCMAKE_BUILD_TYPE='MinSizeRel'      \
+    -DCMAKE_POLICY_VERSION_MINIMUM='3.5' \
+ && make install
 
 COPY squirrel.c /
 

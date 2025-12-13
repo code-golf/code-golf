@@ -14,7 +14,7 @@ services:
     volumes:
       - ..:/go
   db:
-    image: postgres:17.6-trixie
+    image: postgres:18.1-trixie
     environment:
       POSTGRES_DB: code-golf
       POSTGRES_HOST_AUTH_METHOD: trust

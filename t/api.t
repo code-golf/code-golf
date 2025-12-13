@@ -2,13 +2,13 @@ use t;
 use HTTP::Tiny;
 
 my $dbh = dbh;
-$dbh.execute: "INSERT INTO users (id,  login)
-                          VALUES (123, 'foo'), (456, 'bar'), (789, 'baz')";
+
+my $session = new-golfer :$dbh :id<123> :name<foo>;
+
+new-golfer :$dbh :id<456> :name<bar>;
+new-golfer :$dbh :id<789> :name<baz>;
 
 $dbh.execute: "INSERT INTO notes VAlUES (123, 'π', 'c', '🥧')";
-
-my $session = $dbh.execute(
-    'INSERT INTO sessions (user_id) VALUES (123) RETURNING id').row.head;
 
 my $ua = HTTP::Tiny.new :!max-redirect;
 

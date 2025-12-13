@@ -9,6 +9,12 @@ h1 {
     gap: 1rem;
     margin: 1rem 1rem 0;
     white-space: nowrap;
+
+    > span {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 h1 nav {
@@ -16,8 +22,6 @@ h1 nav {
     flex-wrap: wrap;
     gap: .5rem;
 }
-
-h1 span { flex: 1 }
 
 #pagination {
     display: flex;

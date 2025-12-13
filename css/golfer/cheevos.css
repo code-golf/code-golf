@@ -48,7 +48,8 @@ summary {
     --step-width: 6rem;
 
     /* Some steps look better in different sizes */
-    &#cheevo-alphabet-soup, &#cheevo-pangramglot, &#cheevo-sounds-quite-nice {
+    &#cheevo-alphabet-soup, &#cheevo-pangramglot,
+    &#cheevo-sinosphere,    &#cheevo-sounds-quite-nice {
         --step-width: 2.375rem;
     }
 

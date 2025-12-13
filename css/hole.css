@@ -35,8 +35,7 @@ aside > h3 {
     background: var(--color);
     line-height: 2rem;
     padding: .5rem 0;
-    rotate: 180deg;
-    writing-mode: vertical-rl;
+    writing-mode: sideways-lr;
 }
 
 canvas {

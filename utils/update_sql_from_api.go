@@ -75,7 +75,7 @@ func getLatestTimestamp(db *sql.DB) (result string) {
 func getUserMap(db *sql.DB) (result map[string]int32) {
 	result = map[string]int32{}
 
-	rows, err := db.Query(`SELECT id, login FROM users`)
+	rows, err := db.Query("SELECT id, name FROM users")
 	if err != nil {
 		panic(err)
 	}
@@ -83,13 +83,13 @@ func getUserMap(db *sql.DB) (result map[string]int32) {
 
 	for rows.Next() {
 		var id int32
-		var login string
+		var name string
 
-		if err := rows.Scan(&id, &login); err != nil {
+		if err := rows.Scan(&id, &name); err != nil {
 			panic(err)
 		}
 
-		result[login] = id
+		result[name] = id
 	}
 
 	if err := rows.Err(); err != nil {
@@ -155,7 +155,7 @@ func main() {
 		if _, ok := userMap[info.Login]; !ok {
 			userID := getUnusedUserID(userMap)
 			userMap[info.Login] = userID
-			if _, err := tx.Exec("INSERT INTO users (id, login) VALUES($1, $2)",
+			if _, err := tx.Exec("INSERT INTO users (id, name) VALUES($1, $2)",
 				userID, info.Login,
 			); err != nil {
 				panic(err)
@@ -187,10 +187,10 @@ func main() {
 		updateCount++
 
 		if _, err := tx.Exec(
-			`INSERT INTO solutions (  bytes,     chars,    code, hole, lang,
-			                        scoring, submitted, user_id, lang_digest)
-			                VALUES (     $1,        $2,      $3,   $4,   $5,
-			                             $6,        $7,      $8,   '')
+			`INSERT INTO solutions (  bytes,     chars,    code,        hole,   lang,
+			                        scoring, submitted, user_id, lang_digest, time_ms)
+			                VALUES (     $1,        $2,      $3,          $4,     $5,
+			                             $6,        $7,      $8,          '',      0)
 			ON CONFLICT            (user_id, hole, lang, scoring)
 			  DO UPDATE SET bytes = excluded.bytes,
 			                chars = excluded.chars,

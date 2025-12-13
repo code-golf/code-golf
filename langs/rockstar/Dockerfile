@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.306-alpine3.22-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0.101-alpine3.23-amd64 AS builder
 
 RUN apk add --no-cache gcc musl-dev zlib-dev
 
@@ -7,7 +7,7 @@ ENV VER=2.0.31
 RUN curl -#L https://github.com/RockstarLang/rockstar/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net9/' {} + \
+RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net10/' {} + \
  && dotnet publish Starship/Rockstar -c Release -o /usr/bin \
     -p:InvariantGlobalization=true
 

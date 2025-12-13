@@ -5,18 +5,17 @@ import (
 	"errors"
 
 	"github.com/code-golf/code-golf/config"
-	"github.com/gofrs/uuid/v5"
 	"github.com/jmoiron/sqlx"
 )
 
 // Get a Golfer given a session ID, updates the session's last used time.
-func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
+func Get(db *sqlx.DB, sessionID string) *Golfer {
 	var golfer Golfer
 
 	if err := db.Get(
 		&golfer,
 		`WITH golfer AS (
-		    UPDATE sessions SET last_used = DEFAULT WHERE id = $1
+		    UPDATE sessions SET last_used = DEFAULT WHERE id = uuid_or_null($1)
 		    RETURNING user_id
 		), failing AS (
 		    SELECT hole, lang
@@ -27,14 +26,15 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		  ORDER BY hole, lang
 		)  SELECT u.about                                   about,
 		          u.admin                                   admin,
+		          u.avatar_url                              avatar_url,
 		          COALESCE(bytes.points, 0)                 bytes_points,
 		          COALESCE(chars.points, 0)                 chars_points,
 		          u.country                                 country,
 		          u.delete                                  delete,
 		          u.id                                      id,
-		          u.login                                   name,
+		          u.name                                    name,
 		          u.pronouns                                pronouns,
-		          COALESCE(r.login, '')                     referrer,
+		          COALESCE(r.name, '')                      referrer,
 		          u.settings                                settings,
 		          u.show_country                            show_country,
 		          u.sponsor                                 sponsor,
@@ -52,16 +52,22 @@ func Get(db *sqlx.DB, sessionID uuid.UUID) *Golfer {
 		              ORDER BY followee_id)                 following,
 		          (SELECT COUNT(*)
 		             FROM notes WHERE user_id = u.id) > 0   has_notes,
-		          ARRAY(SELECT DISTINCT hole
-		                  FROM solutions
-		                 WHERE user_id = u.id
-		              ORDER BY hole)                        holes
-		     FROM users  u
+		          EXISTS(SELECT *
+		                   FROM solutions
+		                  WHERE user_id = u.id
+		                    AND hole = $2)                  solved_latest_hole,
+		          EXISTS(SELECT *
+		                   FROM solutions
+		                  WHERE user_id = u.id
+		                    AND lang = $3)                  solved_latest_lang
+		     FROM golfers_with_avatars u
 		     JOIN golfer g     ON u.id = g.user_id
 		LEFT JOIN users  r     ON r.id = u.referrer_id
 		LEFT JOIN points bytes ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
 		LEFT JOIN points chars ON u.id = chars.user_id AND chars.scoring = 'chars'`,
 		sessionID,
+		config.LatestHole,
+		config.LatestLang,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {
@@ -104,14 +110,15 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		 GROUP BY user_id
 		)  SELECT about,
 		          admin,
+		          avatar_url,
 		          COALESCE(bronze, 0)                   bronze,
 		          ARRAY(
 		            SELECT cheevo
 		              FROM cheevos
-		             WHERE user_id = users.id
+		             WHERE user_id = golfers_with_avatars.id
 		          ORDER BY cheevo
 		          )                                     cheevos,
-		          country_flag                          country,
+		          country_flag                          country_flag,
 		          COALESCE(diamond, 0)                  diamond,
 		          COALESCE(gold, 0)                     gold,
 		          (SELECT COUNT(DISTINCT hole)
@@ -120,36 +127,41 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          ARRAY(
 		            SELECT hole
 		              FROM authors
-		             WHERE user_id = users.id
+		             WHERE user_id = golfers_with_avatars.id
 		          ORDER BY hole
 		          )                                     holes_authored,
 		          id,
 		          (SELECT COUNT(DISTINCT lang)
 		             FROM stable_passing_solutions
 		            WHERE user_id = id)                 langs,
-		          login                                 name,
+		          name                                  name,
 		          COALESCE(bytes.points, 0)             bytes_points,
 		          COALESCE(chars.points, 0)             chars_points,
 		          pronouns                              pronouns,
-		          ARRAY(
-		            SELECT login
-		              FROM users u
-		             WHERE referrer_id = users.id
-		          ORDER BY login
-		          )                                     referrals,
 		          COALESCE(silver, 0)                   silver,
 		          sponsor,
 		          started,
 		          COALESCE(unicorn, 0)                  unicorn
-		     FROM users
+		     FROM golfers_with_avatars
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
 		LEFT JOIN points chars ON id = chars.user_id AND chars.scoring = 'chars'
-		    WHERE login = $1`,
+		    WHERE name = $1`,
 		name,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {
+		panic(err)
+	}
+
+	if err := db.Select(
+		&info.Referrals,
+		` SELECT avatar_url, name
+		    FROM golfers_with_avatars
+		   WHERE referrer_id = $1
+		ORDER BY name`,
+		info.ID,
+	); err != nil {
 		panic(err)
 	}
 

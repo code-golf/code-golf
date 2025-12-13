@@ -38,10 +38,10 @@ func initNav() {
 					Slug: "page",
 					Links: []*NavLink{
 						{Name: "General", Path: "/golfer/settings"},
-						{Name: "Export Data", Slug: "export-data"},
-						{Name: "Delete Account", Slug: "delete-account"},
+						{Name: "Connections", Slug: "connections"},
 					},
 				},
+				group("Manage Data", "page", "Export Data", "Delete Account"),
 			},
 		},
 
@@ -91,12 +91,13 @@ func initNav() {
 			},
 		},
 
-		"rankings/recent-holes": {
-			Path: "/rankings/recent-holes/{lang}/{scoring}",
-			Groups: []*LinkGroup{
-				group("Scoring", "scoring", "Bytes", "Chars"),
-				groupLangs(false),
-			},
+		"recent/cheevos": {
+			OnePerRow: true,
+			Path:      "/recent/cheevos/{cheevo}",
+			Groups: append(
+				[]*LinkGroup{group("", "cheevo", "All")},
+				groupsCheevos()...,
+			),
 		},
 
 		"recent/solutions": {

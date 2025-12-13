@@ -7,6 +7,10 @@ main {
         flex-direction: column;
         gap: 1rem;
     }
+
+    > table:first-of-type {
+        grid-column: 1 / -1;
+    }
 }
 
 tr > :not(:first-child) { text-align: right }

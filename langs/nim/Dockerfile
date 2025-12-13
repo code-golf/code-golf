@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl dash gcc musl-dev pcre tcc tcc-libs-static
 

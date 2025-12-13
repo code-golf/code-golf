@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
         <Compile Include="f-sharp.fs"/>
-        <PackageReference Include="FSharp.Compiler.Service" Version="43.9.303"/>
+        <PackageReference Include="FSharp.Compiler.Service" Version="43.10.100"/>
     </ItemGroup>
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <PublishReadyToRun>true</PublishReadyToRun>
         <SelfContained>true</SelfContained>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
     </PropertyGroup>
 </Project>

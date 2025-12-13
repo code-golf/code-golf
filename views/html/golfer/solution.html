@@ -25,7 +25,7 @@
 
     <p>Last tested {{ time (.Data.Tested.In $.Location) }}.
 
-    {{ with .Data.Time }}<p>Runtime of {{ duration . }}.{{ end }}
+    <p>Runtime of {{ duration .Data.Time }}.
 
     <div><button class=btn id=test-solution>Test Solution</button></div>
 

@@ -4,6 +4,17 @@
 <main>
     <table class="nowrap-first sticky">
         <thead>
+            <th>Avatar URL
+            <th>Count
+        <tbody>
+        {{ range .Data.AvatarURLs }}
+            <tr>
+                <td>{{ .URL }}
+                <td>{{ comma .Count }}
+        {{ end }}
+    </table>
+    <table class="nowrap-first sticky">
+        <thead>
             <th>Golfer
             <th>Last Used
         <tbody>

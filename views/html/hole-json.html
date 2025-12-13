@@ -13,3 +13,6 @@
 <script id=sponsor type=application/json>
     {{ with .Golfer }}{{ .SponsorOrAdmin }}{{ else }}false{{ end }}
 </script>
+
+<script id=renamed-holes type=application/json>{{ .Data.HoleRedirects }}</script>
+<script id=renamed-langs type=application/json>{{ .Data.LangRedirects }}</script>

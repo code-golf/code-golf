@@ -28,7 +28,7 @@ func golferSolutionGET(w http.ResponseWriter, r *http.Request) {
 		Rank, RankOverall, Row, RowOverall *int
 		Scoring                            string
 		Tested                             time.Time
-		Time                               *time.Duration
+		Time                               time.Duration
 	}{
 		Hole:    config.AllHoleByID[param(r, "hole")],
 		Lang:    config.AllLangByID[param(r, "lang")],

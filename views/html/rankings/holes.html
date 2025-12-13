@@ -53,7 +53,7 @@
                     <span>{{ comma .Strokes }}</span>
                     {{ svg .Lang.ID }}
                 </a>
-            <td class=right>{{ with .Time }}{{ duration . }}{{ end }}
+            <td class=right>{{ duration .Time }}
         {{ end }}
             <td class=right>{{ time (.Submitted.In $.Location) }}
     {{ end }}

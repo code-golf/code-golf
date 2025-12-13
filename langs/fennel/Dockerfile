@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 ENV BIN='/usr/bin/fennel' VER=1.6.0
 

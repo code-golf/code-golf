@@ -1,0 +1,21 @@
+--- makefile
++++ makefile
+@@ -1,15 +1,15 @@
+ MAKE:=$(MAKE) MAKEFLAGS=-j8
+ M=mkdir -p $(@D)
+ 0:;$(MAKE) k && $(MAKE) t #default target
+-k:;$(MAKE) a N=$@ R=k O='-O3 -march=native' L='-lm -ldl' #for calling k from dynamic libs, add: L='... -Wl,-E'
++k:;$(MAKE) a N=$@ R=k O='-O3 -march=x86-64-v3' L='-lm -ldl' #for calling k from dynamic libs, add: L='... -Wl,-E'
+ libk.so:;$(MAKE) a N=$@ R=$@ O='-fPIC -Dshared -fvisibility=hidden' L='-lm -ldl -shared'
+-libk.a:;$(MAKE) b N=$@ R=$@ O='-O3 -march=native -ffreestanding -lm -ldl -Dldstatic'
++libk.a:;$(MAKE) b N=$@ R=$@ O='-O3 -march=x86-64-v3 -ffreestanding -lm -ldl -Dldstatic'
+ o/$N/%.o:%.c *.h;$M;$(CC) @opts $O -o $@ -c $<
+ o/$N/bin:$(patsubst %.c,o/$N/%.o,$(wildcard *.c));$(CC) $O -o $@ $^ @lopts $L # ;$(STRIP) -R .comment $@ -R '.note*'
+ a:o/$N/bin;cp o/$N/bin $R
+ b:$(patsubst %.c,o/$N/%.o,$(wildcard *.c));ar rcs o/$R/libk.a o/$N/*.o && cp o/$N/libk.a $R
+
+-o/asm/%.s:%.c *.h;$M;$(CC) -O3 @opts -march=native -nostdlib -ffreestanding -c $< -o $@ -S -masm=intel
++o/asm/%.s:%.c *.h;$M;$(CC) -O3 @opts -march=x86-64-v3 -nostdlib -ffreestanding -c $< -o $@ -S -masm=intel
+
+ #/usr/lib/llvm-17/bin/wasm-ld must be on $PATH
+ #apt-get install lld-7 gcc-multilib-x86-64-linux-gnux32 binaryen lz4

@@ -1,12 +1,12 @@
 ARG VER=15.2.0
 
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 ARG VER
 
-RUN apk add --no-cache curl g++ m4 make
+RUN apk add --no-cache clang curl m4 make
 
-ENV GMPVER=6.3.0 LDFLAGS='-static' MPCVER=1.3.1 MPFRVER=4.2.2
+ENV CC='clang' CXX='clang++' GMPVER=6.3.0 LDFLAGS='-static' MPCVER=1.3.1 MPFRVER=4.2.2
 
 WORKDIR /gmp
 
@@ -80,12 +80,12 @@ COPY --from=0 /usr/bin/as                       \
 COPY --from=0 /usr/lib/crt1.o                   \
               /usr/lib/crti.o                   \
               /usr/lib/crtn.o                   \
-              /usr/lib/libbfd-2.44.so           \
+              /usr/lib/libbfd-2.45.1.so         \
               /usr/lib/libc.so                  \
               /usr/lib/libctf.so.0              \
               /usr/lib/libjansson.so.4          \
               /usr/lib/libm.a                   \
-              /usr/lib/libsframe.so.1           \
+              /usr/lib/libsframe.so.2           \
               /usr/lib/libz.so.1                \
               /usr/lib/libzstd.so.1             /usr/lib/
 COPY --from=0 /usr/local/bin/gfortran           /usr/local/bin/

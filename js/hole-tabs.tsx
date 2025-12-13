@@ -8,7 +8,7 @@ import { EditorView }              from './_codemirror';
 import diffView                    from './_diff';
 import { $, $$, amount, throttle } from './_util';
 import {
-    init, langs, hole, setSolution,
+    init, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
@@ -18,6 +18,7 @@ import {
     setState,
     ctrlEnter,
     getLastSubmittedCode,
+    Scorings,
 } from './_hole-common';
 import { highlightCodeBlocks } from './_wiki';
 import UnprintableElement from './_unprintable';
@@ -151,8 +152,8 @@ function makeEditor(parent: HTMLDivElement) {
             const result = editor.update([tr]) as unknown;
 
             const code = tr.state.doc.toString();
-            const scorings: {total: {byte?: number, char?: number}, selection?: {byte?: number, char?: number}} = getScorings(tr, editor);
-            const scoringKeys = ['byte', 'char'] as const;
+            const scorings: {total: Scorings, selection?: Scorings} = getScorings(tr, editor);
+            const scoringKeys = ['byte', 'char', 'stroke'] as const;
 
             $('main')?.classList.toggle('lastSubmittedCode', code === getLastSubmittedCode());
 
@@ -242,7 +243,7 @@ layout.registerComponentFactoryFunction('code', async container => {
 
     const deleteBtn = $('#deleteBtn');
     if (deleteBtn) {
-        initDeleteBtn(deleteBtn, langs);
+        initDeleteBtn(deleteBtn);
         deleteBtn.classList.toggle('hide', getHideDeleteBtn());
     }
 

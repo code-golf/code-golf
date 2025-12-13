@@ -28,12 +28,15 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int pargc = argc;
+    int pargc = argc + 3;
     char** pargv = malloc(pargc * sizeof(char*));
     pargv[0] = (char*) prolog;
-    memcpy(&pargv[1], &argv[2], (argc - 2) * sizeof(char*));
+    pargv[1] = "-g";
+    pargv[2] = "halt";
+    pargv[3] = (char*) code;
+    memcpy(&pargv[4], &argv[2], (argc - 2) * sizeof(char*));
     pargv[pargc - 1] = NULL;
 
-    execv(prolog, argv);
+    execv(prolog, pargv);
     ERR_AND_EXIT("execv");
 }

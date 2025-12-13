@@ -1,6 +1,6 @@
 ARG VER=3.2.2
 
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 ARG VER
 
@@ -22,10 +22,10 @@ COPY --from=0 /usr/bin/fpc                                    \
               /usr/bin/ld                                     \
               /usr/bin/pascal                                 \
               /usr/bin/ppcx64                                 /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.44.so                         \
+COPY --from=0 /usr/lib/libbfd-2.45.1.so                       \
               /usr/lib/libctf.so.0                            \
               /usr/lib/libjansson.so.4                        \
-              /usr/lib/libsframe.so.1                         \
+              /usr/lib/libsframe.so.2                         \
               /usr/lib/libz.so.1                              \
               /usr/lib/libzstd.so.1                           /usr/lib/
 COPY --from=0 /usr/lib/fpc/$VER/units/x86_64-linux/fcl-base   \

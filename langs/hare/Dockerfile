@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev qbe scdoc
 
@@ -34,10 +34,10 @@ COPY --from=0 /usr/bin/as                \
               /usr/bin/harewrapper       \
               /usr/bin/ld                \
               /usr/bin/qbe               /usr/bin/
-COPY --from=0 /usr/lib/libbfd-2.44.so    \
+COPY --from=0 /usr/lib/libbfd-2.45.1.so  \
               /usr/lib/libctf.so.0       \
               /usr/lib/libjansson.so.4   \
-              /usr/lib/libsframe.so.1    \
+              /usr/lib/libsframe.so.2    \
               /usr/lib/libz.so.1         \
               /usr/lib/libzstd.so.1      /usr/lib/
 COPY --from=0 /usr/local/bin/hare        \

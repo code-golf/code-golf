@@ -44,6 +44,13 @@ func initCheevos() {
 		}
 	}
 
+	ringToss := CheevoByID["ring-toss"]
+	for _, lang := range LangList {
+		if strings.ContainsRune(strings.ToLower(lang.Name), 'o') {
+			ringToss.Langs = append(ringToss.Langs, lang)
+		}
+	}
+
 	// Case-insensitive sort.
 	slices.SortFunc(CheevoList, func(a, b *Cheevo) int {
 		return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))

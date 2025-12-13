@@ -8,6 +8,6 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <OutputType>Exe</OutputType>
         <SelfContained>true</SelfContained>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
     </PropertyGroup>
 </Project>

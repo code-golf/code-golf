@@ -13,7 +13,7 @@ services:
       interval: 1s
       retries:  60
   db:
-    tmpfs: /var/lib/postgresql/data
+    tmpfs: /var/lib/postgresql
   e2e:
     build:
       context: .

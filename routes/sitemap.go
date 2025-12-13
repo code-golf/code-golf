@@ -24,14 +24,15 @@ func sitemapGET(w http.ResponseWriter, r *http.Request) {
 			{"https://code.golf/about"},
 			{"https://code.golf/ideas"},
 			{"https://code.golf/stats"},
-			{"https://code.golf/wiki"},
 		},
 	}
 
 	var urls []URL
 	if err := session.Database(r).Select(
 		&urls,
-		"SELECT 'https://code.golf/wiki/' || slug loc FROM wiki ORDER BY slug",
+		` SELECT concat_ws('/', 'https://code.golf/wiki', nullif(slug, '')) loc
+		    FROM wiki
+		ORDER BY slug`,
 	); err != nil {
 		panic(err)
 	}

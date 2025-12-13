@@ -14,7 +14,7 @@ new-golfer :$dbh :id(2) :name<Bob>;
 $dbh.execute: "INSERT INTO authors VALUES ('fizz-buzz', 1)";
 
 # Alice referred Bob.
-$dbh.execute: "UPDATE users SET referrer_id = 1 WHERE login = 'Bob'";
+$dbh.execute: "UPDATE users SET referrer_id = 1 WHERE name = 'Bob'";
 
 ##########
 # Before #
@@ -27,15 +27,15 @@ is-deeply sessions(), ({ user_id => 1 }, { user_id => 2 }),
     'sessions before delete';
 
 is-deeply users(), (
-    { id => 1, login => 'Alice', referrer_id => Int },
-    { id => 2, login => 'Bob',   referrer_id => 1   },
+    { id => 1, name => 'Alice', referrer_id => Int },
+    { id => 2, name => 'Bob',   referrer_id => 1   },
 ), 'users before delete';
 
 ##############
 # Kill Alice #
 ##############
 
-$dbh.execute: "DELETE FROM users WHERE login = 'Alice'";
+$dbh.execute: "DELETE FROM users WHERE name = 'Alice'";
 
 #########
 # After #
@@ -47,7 +47,7 @@ is-deeply authors(), $(),
 is-deeply sessions(), ({ user_id => 2 },),
     'sessions after delete';
 
-is-deeply users(), ({ id => 2, login => 'Bob', referrer_id => Int },),
+is-deeply users(), ({ id => 2, name => 'Bob', referrer_id => Int },),
     'users after delete';
 
 done-testing;
@@ -65,5 +65,5 @@ sub sessions { $dbh.execute(q:to/SQL/).allrows :array-of-hash }
 SQL
 
 sub users { $dbh.execute(q:to/SQL/).allrows :array-of-hash }
-    SELECT id, login, referrer_id FROM users
+    SELECT id, name, referrer_id FROM users
 SQL

@@ -89,7 +89,7 @@ func updateUsernamesBatch(db *sqlx.DB, ids []string) (*rateLimit, error) {
 	}
 	defer updateConn.Close()
 
-	updateUser, err := db.Prepare("UPDATE users SET login = $2 WHERE id = $1")
+	updateUser, err := db.Prepare("UPDATE users SET name = $2 WHERE id = $1")
 	if err != nil {
 		return nil, err
 	}

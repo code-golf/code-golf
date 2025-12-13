@@ -24,7 +24,7 @@ func golferExportGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE user_id = $1
 		  ORDER BY hole, lang, scoring
 		) SELECT json_build_object(
-		    'name',      login,
+		    'name',      name,
 		    'country',   country,
 		    'time_zone', time_zone,
 		    'cheevos',   (SELECT COALESCE(json_agg(cheevos  ), '[]'::json) FROM cheevos  ),

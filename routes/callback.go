@@ -56,7 +56,7 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := session.Database(r).QueryRow(
-			`SELECT COALESCE((SELECT id FROM users WHERE login = $1), COUNT(*) + 1) FROM users`,
+			`SELECT COALESCE((SELECT id FROM users WHERE name = $1), COUNT(*) + 1) FROM users`,
 			user.Login,
 		).Scan(&user.ID); err != nil {
 			panic(err)
@@ -101,10 +101,10 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 	// Create or update a user. For now user ID == GitHub user ID.
 	// This'll need to change for true multi connection OAuth support.
 	tx.MustExec(
-		`INSERT INTO users (id, login, country, time_zone)
-		      VALUES       ($1,    $2,      $3,        $4)
+		`INSERT INTO users (id, name, country, time_zone)
+		      VALUES       ($1,   $2,      $3,        $4)
 		 ON CONFLICT       (id)
-		   DO UPDATE SET login = excluded.login,
+		   DO UPDATE SET name = excluded.name,
 		     country = COALESCE(users.country,   excluded.country),
 		   time_zone = COALESCE(users.time_zone, excluded.time_zone)`,
 		user.ID, user.Login, country, timeZone,

@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl
 
-ENV VER=0.100
+ENV VER=0.101
 
 RUN curl -#L https://downloads.factorcode.org/releases/$VER/factor-linux-x86-64-$VER.tar.gz \
   | tar xz --directory /usr/bin --strip-components 1

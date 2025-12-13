@@ -4,27 +4,30 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
-	"github.com/lib/pq"
 )
 
 // GET /{hole}
 func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Authors                  []string
-		HideDetails              bool
-		Hole, PrevHole, NextHole *config.Hole
-		Langs                    map[string]*config.Lang
-		RankingsView             string
-		Solutions                []map[string]string
+		Authors                      []golfer.GolferLink
+		HideDetails                  bool
+		Hole, PrevHole, NextHole     *config.Hole
+		HoleRedirects, LangRedirects map[string]string
+		Langs                        map[string]*config.Lang
+		RankingsView                 string
+		Solutions                    []map[string]string
 	}{
-		Langs:        config.AllLangByID,
-		RankingsView: "me",
-		Solutions:    []map[string]string{{}, {}},
+		Hole:          config.AllHoleByID[param(r, "hole")],
+		HoleRedirects: config.HoleRedirects,
+		LangRedirects: config.LangRedirects,
+		Langs:         config.AllLangByID,
+		RankingsView:  "me",
+		Solutions:     []map[string]string{{}, {}},
 	}
 
-	var ok bool
-	if data.Hole, ok = config.AllHoleByID[param(r, "hole")]; !ok {
+	if data.Hole == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
@@ -42,13 +45,14 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Lookup the hole's author(s).
-	if err := session.Database(r).QueryRow(
-		`SELECT array_agg(login ORDER BY login)
+	if err := session.Database(r).Select(
+		&data.Authors,
+		`SELECT avatar_url, name
 		   FROM authors
-		   JOIN users ON id = user_id
+		   JOIN golfers_with_avatars ON id = user_id
 		  WHERE hole = $1`,
 		data.Hole.ID,
-	).Scan(pq.Array(&data.Authors)); err != nil {
+	); err != nil {
 		panic(err)
 	}
 

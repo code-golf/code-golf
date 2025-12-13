@@ -285,3 +285,13 @@ BEGIN
     RETURN ret;
 END;
 $$ LANGUAGE plpgsql;
+
+-- TODO A generic try_or_cast function could be created instead if needed for
+-- more types in the future - https://dba.stackexchange.com/questions/203934
+CREATE FUNCTION uuid_or_null(str text) RETURNS uuid AS $$
+BEGIN
+    RETURN str::uuid;
+EXCEPTION WHEN invalid_text_representation THEN
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
