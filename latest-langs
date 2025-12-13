@@ -107,6 +107,7 @@ constant %paths = (
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
+    'Zeek'         => 'github.com/zeek/zeek/releases/latest',
     'Zig'          => 'ziglang.org',
 );
 
