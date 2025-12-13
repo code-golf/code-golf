@@ -1,9 +1,3 @@
-#==============================================================================
-# Cannot resolve C library function
-# Library: f
-# Symbol: readdir64_r
-# DlError: Symbol not found: readdir64_r
-#==============================================================================
 --- /factor/basis/io/directories/unix/linux/linux.factor
 +++ /factor/basis/io/directories/unix/linux/linux.factor
 @@ -7,7 +7,7 @@
@@ -15,12 +9,6 @@
      ] 2keep void* deref ; inline
 
  M: linux (directory-entries)
-#==============================================================================
-# Cannot resolve C library function
-# Library: f
-# Symbol: __lxstat64
-# DlError: Symbol not found: __lxstat64
-#==============================================================================
 --- /factor/basis/unix/stat/linux/64/64.factor
 +++ /factor/basis/unix/stat/linux/64/64.factor
 @@ -22,9 +22,9 @@
@@ -35,9 +23,6 @@
 -: lstat ( pathname buf -- int ) [ 1 ] 2dip __lxstat64 ;
 +: lstat ( pathname buf -- int ) [ 1 ] 2dip __lxstat ;
  : fstat ( fd buf -- int ) [ 1 ] 2dip __fxstat64 ;
-#==============================================================================
-# Prevent the restart message from always being printed.
-#==============================================================================
 --- /factor/basis/vocabs/prettyprint/prettyprint.factor
 +++ /factor/basis/vocabs/prettyprint/prettyprint.factor
 @@ -89,15 +89,3 @@

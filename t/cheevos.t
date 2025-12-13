@@ -50,51 +50,54 @@ for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     is save-solution(:hole($_) :lang<c>), $cheevos, "$_/c earns $cheevos";
 }
 
-for <
-    24-game                          tex        {texnical-know-how}
-    brainfuck                        brainfuck  {inception}
-    divisors                         php        {elephpant-in-the-room}
-    css-colors                       basic      {horse-of-a-different-color}
-    evil-numbers                     scheme     {evil-scheme}
-    factorial-factorisation          factor     {x-factor}
-    game-of-life                     elixir     {alchemist}
-    hexdump                          hexagony   {hextreme-agony}
-    look-and-say                     sed        {simon-sed}
-    pascals-triangle                 pascal     {under-pressure}
-    poker                            fish       {fish-n-chips}
-    quine                            python     {ouroboros}
-    rijndael-s-box                   c-sharp    {s-box-360}
-    rock-paper-scissors-spock-lizard janet      {dammit-janet}
-    seven-segment                    assembly   {assembly-required}
-    si-units                         powershell {watt-are-you-doing}
-    star-wars-opening-crawl          tex        {typesetter}
-    sudoku                           hexagony   {off-the-grid}
-    ten-pin-bowling                  cobol      {cobowl}
-    united-states                    pascal     {going-postal}
-    𝑒                                r          {emergency-room}
-> -> $hole, $lang, $cheevos {
-    is save-solution(:$hole :$lang), $cheevos, "$hole/$lang earns $cheevos";
-}
+for Q:ww<
+    {alchemist} game-of-life elixir
+    {alphabet-soup} scrambled-sort 'c d j'
+    {archivist} isbn 'basic cobol common-lisp'
+    {assembly-required} seven-segment assembly
+    {bird-is-the-word} levenshtein-distance 'awk prolog sql'
+    {cobowl} ten-pin-bowling cobol
+    {dammit-janet} rock-paper-scissors-spock-lizard janet
+    {elephpant-in-the-room} divisors php
+    {emergency-room} 𝑒 r
+    {evil-scheme} evil-numbers scheme
+    {fish-n-chips} poker fish
+    {flag-those-mines} minesweeper 'f-sharp factor forth'
+    {going-postal} united-states pascal
+    {happy-go-lucky} 'happy-numbers lucky-numbers' go
+    {hextreme-agony} hexdump hexagony
+    {horse-of-a-different-color} css-colors basic
+    {inception} brainfuck brainfuck
+    {jeweler} diamonds 'crystal ruby'
+    {mary-had-a-little-lambda} λ 'clojure coconut common-lisp'
+    {never-eat-shredded-wheat} arrows 'nim elixir sed wren'
+    {off-the-grid} sudoku hexagony
+    {ouroboros} quine python
+    {pangramglot} pangram-grep 'brainfuck d hexagony javascript nim swift sql zig'
+    {ring-toss} tower-of-hanoi 'cobol factor fortran go groovy kotlin ocaml prolog python'
+    {s-box-360} rijndael-s-box c-sharp
+    {simon-sed} look-and-say sed
+    {sinosphere} mahjong 'c j v'
+    {sounds-quite-nice} musical-chords 'c c-sharp d'
+    {texnical-know-how} 24-game tex
+    {typesetter} star-wars-opening-crawl tex
+    {under-pressure} pascals-triangle pascal
+    {watt-are-you-doing} si-units powershell
+    {when-in-rome} roman-to-arabic 'c d v'
+    {x-factor} factorial-factorisation factor
+    {zoodiac-signs} zodiac-signs 'awk basic civet'
+> -> $cheevos, $holes, $langs {
+    my @holes = $holes.words;
+    my @langs = $langs.words;
 
-for <nim elixir sed wren> {
-    my $cheevos = $_ eq 'wren' ?? '{never-eat-shredded-wheat}' !! '{}';
+    for @holes -> $hole {
+        for @langs -> $lang {
+            my $earns = $hole eq @holes.tail && $lang eq @langs.tail
+                ?? $cheevos !! '{}';
 
-    is save-solution(:hole<arrows> :lang($_)), $cheevos,
-        "arrows/$_ earns $cheevos";
-}
-
-for <brainfuck d hexagony javascript nim swift sql zig> {
-    my $cheevos = $_ eq 'zig' ?? '{pangramglot}' !! '{}';
-
-    is save-solution(:hole<pangram-grep> :lang($_)), $cheevos,
-        "pangram-grep/$_ earns $cheevos";
-}
-
-for <c d v> {
-    my $cheevos = $_ eq 'v' ?? '{when-in-rome}' !! '{}';
-
-    is save-solution(:hole<roman-to-arabic> :lang($_)), $cheevos,
-        "roman-to-arabic/$_ earns $cheevos";
+            is save-solution(:$hole :$lang), $earns, "$hole/$lang earns $earns";
+        }
+    }
 }
 
 is save-solution(:code<⛳> :hole<π> :lang<c>), '{different-strokes}',
@@ -104,7 +107,6 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     my $earns = %langs{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos on the front.
-    $earns.=subst: '{', '{sounds-quite-nice,' if $_ eq 'd';
     $earns.=subst: '{', '{piña-colada,'       if $_ eq 'elixir';
     $earns.=subst: '{', '{caffeinated,'       if $_ eq 'java';
     $earns.=subst: '{', '{go-forth,'          if $_ eq 'go';
@@ -112,7 +114,7 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';
     $earns.=subst: ',}', '}';
 
-    is save-solution(:hole<musical-chords> :lang($_)), $earns,
+    is save-solution(:hole<cubes> :lang($_)), $earns,
         "Lang $i ($_) earns $earns";
 }
 
