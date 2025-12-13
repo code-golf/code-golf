@@ -203,6 +203,12 @@ func runCode(
 			// in Kotlin. The '\n' guarantees we're not appending a ';' to another ';'.
 			code += "\nUnit"
 		}
+	case "octave":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && strings.Contains(code, "ans") {
+			run.Stderr = `Quine in Octave must not use "ans".`
+			return nil
+		}
 	case "php":
 		code = "<?php " + code + " ;"
 	case "racket":
