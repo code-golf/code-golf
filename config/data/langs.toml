@@ -1216,7 +1216,7 @@ for (arg in args)
 args       = [ '/usr/bin/llvm-ir', '-' ]
 experiment = 1114
 size       = '30.4 MiB'
-version    = '21.1.6'
+version    = '21.1.7'
 website    = 'https://llvm.org'
 example    = '''
 @.str = global [14 x i8] c"Hello, World!\00"
