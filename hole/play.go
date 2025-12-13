@@ -270,6 +270,32 @@ func runCode(
 
 	// Run arguments.
 	switch lang.ID {
+	// FIXME ~Do~ Try in source.
+	case "amber":
+		args := run.Args
+		switch hole.ID {
+		case "emojify":
+			args = nil
+			for _, arg := range run.Args {
+				args = append(args, strings.ReplaceAll(arg, "\\", "\\\\"))
+			}
+		case "hexdump":
+			args = nil
+			for _, arg := range run.Args {
+				args = append(args, strings.ReplaceAll(arg, "`", "\\`"))
+			}
+		case "pangram-grep":
+			args = nil
+			for _, arg := range run.Args {
+				args = append(args, strings.ReplaceAll(arg, "", ""))
+			}
+		case "rot13":
+			args = nil
+			for _, arg := range run.Args {
+				args = append(args, strings.ReplaceAll(arg, "", ""))
+			}
+		}
+		cmd.Args = append(cmd.Args, args...)
 	case "awk", "brainfuck", "fish":
 		// Hole args passed through stdin for these langs separated by a null byte
 		args := ""

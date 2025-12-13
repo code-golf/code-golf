@@ -16,6 +16,7 @@ constant %paths = (
     '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
+    'Amber'        => 'github.com/amber-lang/amber/releases/latest',
     'APL'          => 'dyalog.com/download-zone.htm?p=download',
     'Arturo'       => 'github.com/arturo-lang/arturo',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
