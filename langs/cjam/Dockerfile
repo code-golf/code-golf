@@ -1,10 +1,10 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache coreutils
 
 ENV VER=0.6.5
 
-RUN wget -qO cjam.jar https://sourceforge.net/projects/cjam/files/cjam-$VER/cjam-$VER.jar/download
+RUN wget -qO cjam.jar https://downloads.sourceforge.net/cjam/files/cjam-$VER.jar
 
 FROM codegolf/lang-java
 

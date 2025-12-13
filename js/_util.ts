@@ -37,9 +37,10 @@ export const charLen = (str: string) => {
 export const avatar = (rawURL: string, size: number): URL => {
     const u = new URL(rawURL);
 
-    // Set the avatar size.
+    // Set the avatar size. Most support "s" and "size", but i.sstatic.net
+    // only supports "s" and cdn.discordapp.com only supports "size".
     const q = u.searchParams;
-    q.set('size', size.toString());
+    q.set(u.host == 'cdn.discordapp.com' ? 'size' : 's', size.toString());
     u.search = q.toString();
 
     return u;
