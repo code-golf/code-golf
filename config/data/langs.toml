@@ -72,13 +72,13 @@ main(args) {
     echo "Hello, World!"
 
     // Looping
-    for i in 0..10 {
+    for i in 0..=9 {
         echo i
     }
 
     // Accessing arguments
-    for arg in args[1..len(args)] {
-        echo arg
+    for i in 1..len(args) {
+        echo args[i]
     }
 }
 '''
