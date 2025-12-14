@@ -5,13 +5,16 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* haskell = "/usr/local/bin/ghc", *code = "/tmp/code.hs";
+const char* haskell = "/usr/local/bin/ghc", *code = "code.hs";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
         execv(haskell, argv);
         ERR_AND_EXIT("execv");
     }
+
+    if (chdir("/tmp"))
+        ERR_AND_EXIT("chdir");
 
     FILE* fp;
 

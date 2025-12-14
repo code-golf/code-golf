@@ -920,7 +920,7 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '187 MiB'
+size    = '183 MiB'
 version = 'GHC 9.12.2'
 website = 'https://www.haskell.org/ghc/'
 example = '''
