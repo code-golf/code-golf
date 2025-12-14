@@ -1,8 +1,8 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache clang curl dash llvm-dev make
 
-ENV CPPFLAGS='-march=x86-64-v3' VER=2025-11
+ENV CPPFLAGS='-march=x86-64-v3' VER=2025-12
 
 RUN curl -#L https://github.com/odin-lang/Odin/archive/refs/tags/dev-$VER.tar.gz \
   | tar xz --directory /usr/local/lib --strip-components 1
@@ -32,10 +32,10 @@ COPY --from=0 /usr/bin/clang                   \
 COPY --from=0 /usr/lib/crt1.o                  \
               /usr/lib/crti.o                  \
               /usr/lib/crtn.o                  \
-              /usr/lib/libLLVM.so.20.1         \
-              /usr/lib/libbfd-2.44.so          \
+              /usr/lib/libLLVM.so.21.1         \
+              /usr/lib/libbfd-2.45.1.so        \
               /usr/lib/libc.so                 \
-              /usr/lib/libclang-cpp.so.20.1    \
+              /usr/lib/libclang-cpp.so.21.1    \
               /usr/lib/libctf.so.0             \
               /usr/lib/libffi.so.8             \
               /usr/lib/libgcc_s.so             \
@@ -43,15 +43,15 @@ COPY --from=0 /usr/lib/crt1.o                  \
               /usr/lib/libjansson.so.4         \
               /usr/lib/liblzma.so.5            \
               /usr/lib/libm.a                  \
-              /usr/lib/libsframe.so.1          \
+              /usr/lib/libsframe.so.2          \
               /usr/lib/libssp_nonshared.a      \
               /usr/lib/libstdc++.so.6          \
               /usr/lib/libxml2.so.2            \
               /usr/lib/libz.so.1               \
               /usr/lib/libzstd.so.1            /usr/lib/
-COPY --from=0 /usr/lib/gcc/*/14.2.0/crtbegin.o \
-              /usr/lib/gcc/*/14.2.0/crtend.o   \
-              /usr/lib/gcc/*/14.2.0/libgcc.a   /usr/lib/gcc/x86_64-alpine-linux-musl/14.2.0/
+COPY --from=0 /usr/lib/gcc/*/15.2.0/crtbegin.o \
+              /usr/lib/gcc/*/15.2.0/crtend.o   \
+              /usr/lib/gcc/*/15.2.0/libgcc.a   /usr/lib/gcc/x86_64-alpine-linux-musl/15.2.0/
 COPY --from=0 /usr/local/lib/odin              /usr/local/bin/
 COPY --from=0 /usr/local/bin/base              /usr/local/bin/base
 COPY --from=0 /usr/local/bin/core              /usr/local/bin/core

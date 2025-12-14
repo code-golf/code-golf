@@ -72,8 +72,10 @@ func Play(
 		answers = outputTests(shuffle(fixedTests(hole.ID)))
 	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
 		answers = outputMultirunTests(fixedTests(hole.ID))
-	case "floyd-steinberg-dithering", "hexdump", "minesweeper", "proximity-grid", "star-wars-opening-crawl":
+	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		answers = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+	case "minesweeper":
+		answers = outputTestsWithSep("\n\n", fixedTests(hole.ID), shuffle(fixedTests(hole.ID)))
 
 	// Holes with a static answer or answer func.
 	default:
@@ -276,8 +278,10 @@ func runCode(
 		}
 		cmd.Stdin = strings.NewReader(args)
 	case "picat":
+		// FIXME While unresolved upstream, try source edit instead.
 		args := run.Args
-		if hole.ID == "proximity-grid" || hole.ID == "ten-pin-bowling" {
+		switch hole.ID {
+		case "proximity-grid", "ten-pin-bowling":
 			args = nil
 			for _, arg := range run.Args {
 				args = append(args, strings.ReplaceAll(arg, "--", "+--"))

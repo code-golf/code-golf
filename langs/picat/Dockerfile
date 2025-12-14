@@ -10,16 +10,16 @@ RUN curl -# https://picat-lang.org/download/picat${VER}_src.tar.gz | tar xz
 
 WORKDIR /Picat/emu
 
-COPY init.patch .
+COPY picat.patch .
 
-RUN patch -p0 < init.patch
+RUN patch -p0 < picat.patch
 
 RUN make -fMakefile.linux64 -j`nproc` \
  && strip picat
 
-COPY picat.c /
+COPY picat.c .
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/picat -s /picat.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/picat -s picat.c
 
 FROM codegolf/lang-base
 

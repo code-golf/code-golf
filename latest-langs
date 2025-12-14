@@ -23,8 +23,8 @@ constant %paths = (
     'Bash'         => 'ftp.gnu.org/gnu/bash/?C=M;O=D',
     'BASIC'        => 'github.com/freebasic/fbc/releases/latest',
     'Befunge'      => 'github.com/VorpalBlade/cfunge',
-    'Berry'        => 'github.com/berry-lang/berry/releases/latest',
-    'BQN'          => 'aplwiki.com/wiki/BQN',
+    'Berry'        => 'github.com/berry-lang/berry',
+    'BQN'          => 'api.github.com/repos/dzaima/CBQN/tags',
     'brainfuck'    => 'github.com/primo-ppcg/bfci',
     'C'            => 'en.wikipedia.org/wiki/Tiny_C_Compiler',
     'C#'           => 'en.wikipedia.org/wiki/C_Sharp_(programming_language)',
@@ -100,14 +100,14 @@ constant %paths = (
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
     'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
-    'Uiua'         => 'api.github.com/repos/uiua-lang/uiua/releases',
+    'Uiua'         => 'api.github.com/repos/uiua-lang/uiua/tags',
     'Umka'         => 'github.com/vtereshkov/umka-lang/releases/latest',
     'V'            => 'raw.githubusercontent.com/vlang/v/refs/heads/master/CHANGELOG.md',
     'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
-    'Zig'          => 'github.com/ziglang/zig/releases/latest',
+    'Zig'          => 'ziglang.org',
 );
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
@@ -144,9 +144,13 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'sourceforge'       / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'sqlite.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'swi-prolog'        / { $res ~~ / 'stable' .+? <(<ver>)> / }
+        when / 'ziglang.org'       / { $res ~~ / 'Release' .+? <(<ver>)> / }
         when / 'api.github.com'    / {
-            $res.&from-json.grep(!*<prerelease>).map({ .<name> ~~ / <ver> / })
-                .sort({ Version.new: $_ }).tail;
+            $res.&from-json.grep(
+                .ends-with('releases')
+                    ?? !*<prerelease>
+                    !! { .<name> !~~ / < dev latest > / }
+            ).map({ .<name> ~~ / <ver> / }).sort({ Version.new: $_ }).tail;
         }
         when / 'github.com'        / {
             .ends-with('/releases/latest')

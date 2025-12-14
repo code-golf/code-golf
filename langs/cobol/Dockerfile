@@ -1,17 +1,18 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache curl gcc make mpir-dev musl-dev patch
+RUN apk add --no-cache clang curl make mpir-dev patch
 
-ENV VER=3.2
+ENV CC='clang' VER=3.2
 
-RUN curl -#L https://ftp.gnu.org/gnu/gnucobol/gnucobol-$VER.tar.xz \
+RUN curl -#L https://ftpmirror.gnu.org/gnu/gnucobol/gnucobol-$VER.tar.xz \
   | tar xJ --strip-components 1
 
-COPY codegen.patch /
+COPY cobol.patch /
 
-RUN patch -p0 < codegen.patch
+RUN patch -p0 < cobol.patch
 
 RUN ./configure               \
+    --disable-debug           \
     --without-db              \
  && make -j`nproc` install    \
  && strip /usr/local/bin/cobc \
