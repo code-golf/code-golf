@@ -270,29 +270,14 @@ func runCode(
 
 	// Run arguments.
 	switch lang.ID {
-	// FIXME ~Do~ Try in source.
 	case "amber":
-		args := run.Args
+		// FIXME While unresolved upstream, try source edit instead.
+		args, esc := run.Args, strings.ReplaceAll
 		switch hole.ID {
-		case "emojify":
+		case "emojify", "hexdump", "pangram-grep", "rot13":
 			args = nil
 			for _, arg := range run.Args {
-				args = append(args, strings.ReplaceAll(arg, "\\", "\\\\"))
-			}
-		case "hexdump":
-			args = nil
-			for _, arg := range run.Args {
-				args = append(args, strings.ReplaceAll(arg, "`", "\\`"))
-			}
-		case "pangram-grep":
-			args = nil
-			for _, arg := range run.Args {
-				args = append(args, strings.ReplaceAll(arg, "", ""))
-			}
-		case "rot13":
-			args = nil
-			for _, arg := range run.Args {
-				args = append(args, strings.ReplaceAll(arg, "", ""))
+				args = append(args, esc(esc(esc(arg, "\\", "\\\\"), "`", "\\`"), "$", "\\$"))
 			}
 		}
 		cmd.Args = append(cmd.Args, args...)
