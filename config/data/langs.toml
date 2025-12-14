@@ -1258,8 +1258,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.15 MiB'
-version    = '0.702'
+size       = '5.19 MiB'
+version    = '0.703'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1805,7 +1805,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '561 MiB'
-version = '6.2.2'
+version = '6.2.3'
 website = 'https://swift.org'
 example = '''
 // Printing
