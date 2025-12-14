@@ -1,6 +1,6 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache clang curl llvm-dev make openssl-dev
+RUN apk add --no-cache clang curl llvm-dev make openssl-dev patch
 
 ENV PYVER=3.14.2 VER=70c9fd9
 
@@ -17,11 +17,16 @@ RUN CC='clang' ./configure     \
  && strip /usr/bin/python3.14  \
           /usr/lib/python3.14/lib-dynload/*.so
 
-RUN curl -#L https://github.com/DennisMitchell/jellylanguage/tarball/$VER \
-  | tar xz --directory /tmp --strip-components 1
+WORKDIR /jelly
 
-# FIXME Python 3.14.X is denied.
-RUN pip3 install --upgrade /tmp
+RUN curl -#L https://github.com/DennisMitchell/jellylanguage/tarball/$VER \
+  | tar xz --strip-components 1
+
+COPY jelly.patch .
+
+RUN patch -p0 < jelly.patch
+
+RUN pip3 install --upgrade .
 
 WORKDIR /usr/lib/python3.14
 
