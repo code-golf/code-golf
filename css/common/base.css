@@ -86,6 +86,14 @@ body, body > footer > nav, #site-header nav, #popups {
     max-width: 80rem;
 }
 
+/* Use the full width for top of the page alerts on smaller screens */
+@media (max-width: 80rem) {
+    body > :is(.alert, .info, .success) {
+        border-width: 0 0 1px;
+        margin: 0;
+    }
+}
+
 .hide { display: none }
 
 details .grid { padding-top: 1rem }
@@ -429,7 +437,7 @@ thead th {
     border-bottom-width: 2px;
 }
 
-:is(.alert, .info, .success) {
+.alert, .info, .success {
     border: 1px solid var(--color);
     display: grid;
     gap: .5rem;
