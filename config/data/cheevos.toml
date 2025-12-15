@@ -234,6 +234,11 @@ emoji       = '🍹'
 description = 'Solve any hole in Berry, Coconut, and Elixir.'
 
 [['Hole/Lang Specific']]
+name        = 'Prime Time'
+emoji       = '📺'
+description = 'Solve <a href=/prime-numbers>Prime Numbers</a> or <a href=/prime-numbers-long>Prime Numbers (Long)</a> on a prime day in a prime month.'
+
+[['Hole/Lang Specific']]
 name        = 'Ring Toss'
 emoji       = '🛟'
 description = 'Solve <a href=/tower-of-hanoi>Tower of Hanoi</a> in any nine languages containing the letter "O". '

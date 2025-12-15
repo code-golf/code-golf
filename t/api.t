@@ -13,27 +13,28 @@ $dbh.execute: "INSERT INTO notes VAlUES (123, 'π', 'c', '🥧')";
 my $ua = HTTP::Tiny.new :!max-redirect;
 
 for «
-    200 /api                             ｢ 'openapi:' .*?                          ｣
-    200 /api/cheevos                     ｢ '[' .*? '"RTFM"' .*? '"tl;dr"' .*? ']'  ｣
-    200 /api/cheevos/tl-dr               ｢ '{' .*?              '"tl;dr"' .*? '}'  ｣
-    404 /api/cheevos/unknown             ｢ 'null'                                  ｣
-    200 /api/holes                       ｢ '[' .*? '"ISBN"' .*? '"π"'     .*? ']'  ｣
-    200 /api/holes/π                     ｢ '{' .*?              '"π"'     .*? '}'  ｣
-    404 /api/holes/unknown               ｢ 'null'                                  ｣
-    200 /api/langs                       ｢ '[' .*? '"Perl"' .*? '"Raku"'  .*? ']'  ｣
-    200 /api/langs/raku                  ｢ '{' .*?              '"Raku"'  .*? '}'  ｣
-    404 /api/langs/unknown               ｢ 'null'                                  ｣
-    404 /api/not-found                   ｢ 'null'                                  ｣
-    200 /api/notes                       ｢ '[{"hole":"π","lang":"c","note":"🥧"}]' ｣
-    200 /api/notes/π/c                   ｢ '🥧'                                    ｣
-    404 /api/notes/π/d                   ｢ 'null'                                  ｣
-    500 /api/panic                       ｢ 'null'                                  ｣
-    200 /api/solutions-log?hole=π&lang=c ｢ '[]'                                    ｣
-    200 /api/solutions-search?pattern=a  ｢ '[]'                                    ｣
-    200 /api/suggestions/golfers         ｢ '["bar", "baz", "foo"]'                 ｣
-    200 /api/suggestions/golfers?q=ba    ｢ '["bar", "baz"]'                        ｣
-    200 /api/suggestions/golfers?q=x     ｢ '[]'                                    ｣
-    200 /api/suggestions/golfers?q=z     ｢ '["baz"]'                               ｣
+    200 /api                             ｢ 'openapi:' .*?                                            ｣
+    200 /api/cheevos                     ｢ '[' .*? '"Prime Time"' .*? '"RTFM"' .*? '"tl;dr"' .*? ']' ｣
+    200 /api/cheevos/prime-time          ｢ '{' .*? '"Prime Time"'                            .*? '}' ｣
+    200 /api/cheevos/tl-dr               ｢ '{' .*?                                 '"tl;dr"' .*? '}' ｣
+    404 /api/cheevos/unknown             ｢ 'null'                                                    ｣
+    200 /api/holes                       ｢ '[' .*? '"ISBN"' .*? '"π"'                        .*? ']' ｣
+    200 /api/holes/π                     ｢ '{' .*?              '"π"'                        .*? '}' ｣
+    404 /api/holes/unknown               ｢ 'null'                                                    ｣
+    200 /api/langs                       ｢ '[' .*? '"Perl"' .*? '"Raku"'                     .*? ']' ｣
+    200 /api/langs/raku                  ｢ '{' .*?              '"Raku"'                     .*? '}' ｣
+    404 /api/langs/unknown               ｢ 'null'                                                    ｣
+    404 /api/not-found                   ｢ 'null'                                                    ｣
+    200 /api/notes                       ｢ '[{"hole":"π","lang":"c","note":"🥧"}]'                   ｣
+    200 /api/notes/π/c                   ｢ '🥧'                                                      ｣
+    404 /api/notes/π/d                   ｢ 'null'                                                    ｣
+    500 /api/panic                       ｢ 'null'                                                    ｣
+    200 /api/solutions-log?hole=π&lang=c ｢ '[]'                                                      ｣
+    200 /api/solutions-search?pattern=a  ｢ '[]'                                                      ｣
+    200 /api/suggestions/golfers         ｢ '["bar", "baz", "foo"]'                                   ｣
+    200 /api/suggestions/golfers?q=ba    ｢ '["bar", "baz"]'                                          ｣
+    200 /api/suggestions/golfers?q=x     ｢ '[]'                                                      ｣
+    200 /api/suggestions/golfers?q=z     ｢ '["baz"]'                                                 ｣
 » -> $status, $path, $content {
     subtest $path, {
         my %res = $ua.get: "https://app$path",
