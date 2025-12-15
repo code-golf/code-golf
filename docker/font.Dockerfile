@@ -6,7 +6,7 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
-ENV VER=cf77649
+ENV VER=bbe76d8
 
 WORKDIR /twemoji-colr
 

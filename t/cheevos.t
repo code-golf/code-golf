@@ -63,6 +63,7 @@ for Q:ww<
     {evil-scheme} evil-numbers scheme
     {fish-n-chips} poker fish
     {flag-those-mines} minesweeper 'f-sharp factor forth'
+    {full-stack-dev} css-colors 'javascript php sql'
     {going-postal} united-states pascal
     {happy-go-lucky} 'happy-numbers lucky-numbers' go
     {hextreme-agony} hexdump hexagony

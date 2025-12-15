@@ -107,6 +107,10 @@ BEGIN
     IF hole = 'minesweeper' AND found THEN
         earned := earn(earned, 'flag-those-mines', user_id); END IF;
 
+    -- 🦄 Full Stack Dev
+    IF hole = 'css-colors' AND langs_for_hole @> '{javascript,php,sql}' THEN
+        earned := earn(earned, 'full-stack-dev', user_id); END IF;
+
     -- 🏞️ Go Forth!
     IF langs_for_hole @> '{go,forth}' THEN
         earned := earn(earned, 'go-forth', user_id); END IF;
