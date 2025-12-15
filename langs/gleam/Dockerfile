@@ -1,12 +1,10 @@
-FROM codegolf/lang-erlang
-
-FROM rust:1.88.0-slim-bookworm AS builder
+FROM rust:1.92.0-slim-trixie AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV VER=1.11.1
+ENV VER=1.13.0
 
 WORKDIR /gleam
 
@@ -17,28 +15,27 @@ RUN make -j`nproc` install
 
 WORKDIR /usr/local
 
-RUN gleam new --name main --skip-git .
-
-RUN gleam add argv \
+RUN gleam new --name main . \
+ && gleam add argv          \
  && gleam remove gleeunit
-
-RUN chmod -R 777 .
 
 COPY gleam.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleam -s /gleam.c
 
-FROM codegolf/lang-base
+FROM codegolf/lang-erlang
 
-COPY --from=0 /                                   /
-COPY --from=1 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/
-COPY --from=1 /usr/bin/gleam                      /usr/bin/
-COPY --from=1 /usr/lib/locale                     /usr/lib/locale
-COPY --from=1 /usr/local/gleam.toml               \
+COPY --from=0 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/
+COPY --from=0 /usr/bin/gleam                      /usr/bin/
+COPY --chown=nobody                               \
+     --from=0 /usr/local/gleam.toml               \
               /usr/local/manifest.toml            /usr/local/
-COPY --from=1 /usr/local/cargo/bin/gleam          /usr/local/bin/
-COPY --from=1 /usr/local/build/packages           /usr/local/build/packages
-COPY --from=1 /usr/local/src                      /usr/local/src
+COPY --chown=nobody                               \
+     --from=0 /usr/local/cargo/bin/gleam          /usr/local/bin/
+COPY --chown=nobody                               \
+     --from=0 /usr/local/build/packages           /usr/local/build/packages
+COPY --chown=nobody                               \
+     --from=0 /usr/local/src                      /usr/local/src
 
 ENTRYPOINT ["gleam"]
 

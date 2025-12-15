@@ -20,6 +20,9 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+// Limit how many runs can run at once.
+var runSemaphore = make(chan struct{}, 8)
+
 var timeout = 5 * time.Second
 
 // Increase the timeout under e2e as the hardware is less powerful than live.
@@ -48,7 +51,7 @@ type Run struct {
 	Pass                  bool          `json:"pass"`
 	Stderr                string        `json:"stderr"`
 	Stdout                string        `json:"stdout"`
-	Time                  time.Duration `json:"time_ns"`
+	Time                  time.Duration `json:"time_ns,format:nano"`
 	Timeout               bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly
@@ -69,8 +72,10 @@ func Play(
 		answers = outputTests(shuffle(fixedTests(hole.ID)))
 	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
 		answers = outputMultirunTests(fixedTests(hole.ID))
-	case "floyd-steinberg-dithering", "hexdump", "minesweeper", "proximity-grid", "star-wars-opening-crawl":
+	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		answers = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+	case "minesweeper":
+		answers = outputTestsWithSep("\n\n", fixedTests(hole.ID), shuffle(fixedTests(hole.ID)))
 
 	// Holes with a static answer or answer func.
 	default:
@@ -88,7 +93,12 @@ func Play(
 	for i, answer := range answers {
 		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
 
-		g.Go(func() error { return play(ctx, hole, lang, code, &runs[i]) })
+		g.Go(func() error {
+			runSemaphore <- struct{}{}
+			defer func() { <-runSemaphore }()
+
+			return play(ctx, hole, lang, code, &runs[i])
+		})
 	}
 
 	return runs, g.Wait()
@@ -239,7 +249,7 @@ func runCode(
 
 	// Assembly bytes pipe.
 	var asmBytesRead, asmBytesWrite *os.File
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
@@ -300,7 +310,7 @@ func runCode(
 	}
 
 	// Actual byte count is printed by the assembler.
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		// Explicitly close the writer in case defasm died before it could.
 		// This prevents a very long wait in the upcoming fscanf.
 		asmBytesWrite.Close()

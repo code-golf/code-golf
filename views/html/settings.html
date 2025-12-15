@@ -11,8 +11,7 @@
         </label>
     </fieldset>
 {{ else }}
-    <label>
-        {{ .Name }}
+    {{ with .Name }}<label>{{ . }}{{ end }}
 
     {{ if gt (len .Options) 3 }}
         <select name="{{ .ID }}">
@@ -38,6 +37,6 @@
         {{ end }}
         </fieldset>
     {{ end }}
-    </label>
+    {{ if .Name }}</label>{{ end }}
 {{ end }}
 {{ end }}

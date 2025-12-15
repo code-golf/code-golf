@@ -11,8 +11,5 @@ jobs:
     steps:
       - uses: eps1lon/actions-label-merge-conflict@v3
         with:
-          commentOnDirty: >
-            Your pull request has conflicts that need to be resolved before it
-            can be reviewed and merged.
           dirtyLabel: conflicts
           repoToken: ${{ secrets.GITHUB_TOKEN }}

@@ -25,6 +25,13 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"0c4288c", "2025-12-01 00:29:08", "tower-of-hanoi", true},
+		{"7468e46", "2025-11-27 06:16:49", "erlang", false},
+		{"32dbdb1", "2025-11-01 00:09:41", "minesweeper", true},
+		{"be593ba", "2025-10-01 00:00:11", "trinomial-triangle", true},
+		{"0d7dc56", "2025-09-01 00:00:13", "hilbert-curve", true},
+		{"a258251", "2025-08-29 06:49:50", "groovy", false},
+		{"3c72c36", "2025-08-01 00:00:01", "topological-sort", true},
 		{"4caf324", "2025-07-01 00:00:04", "mandelbrot", true},
 		{"5920cfd", "2025-06-01 00:00:13", "scrambled-sort", true},
 		{"273405d", "2025-05-01 00:00:34", "star-wars-gpt", true},

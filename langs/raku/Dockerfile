@@ -1,10 +1,10 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base git perl
+RUN apk add --no-cache gcc git make musl-dev perl
 
-ENV VER=2025.06.1
+ENV VER=2025.11
 
-RUN git clone --branch $VER https://github.com/rakudo/rakudo.git
+RUN git clone --branch $VER https://github.com/rakudo/rakudo
 
 WORKDIR /rakudo
 
@@ -26,11 +26,11 @@ RUN rm rakudo.moarvm       \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/rakudo          /usr/bin/raku
-COPY --from=0 /usr/lib/libmoar.so      /usr/lib/
-COPY --from=0 /usr/share/nqp           /usr/share/nqp
-COPY --from=0 /usr/share/perl6         /usr/share/perl6
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/rakudo     /usr/bin/raku
+COPY --from=0 /usr/lib/libmoar.so /usr/lib/
+COPY --from=0 /usr/share/nqp      /usr/share/nqp
+COPY --from=0 /usr/share/perl6    /usr/share/perl6
 
 ENTRYPOINT ["raku"]
 

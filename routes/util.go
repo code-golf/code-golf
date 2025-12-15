@@ -25,6 +25,11 @@ func redir(templateURL string) http.HandlerFunc {
 			// slice to remove the surrounding {}
 			return param(r, s[1:len(s)-1])
 		})
+
+		if r.URL.RawQuery != "" {
+			url += "?" + r.URL.RawQuery
+		}
+
 		http.Redirect(w, r, url, http.StatusPermanentRedirect)
 	}
 }

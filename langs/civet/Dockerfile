@@ -1,8 +1,8 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache bash curl icu-data npm
 
-ENV VER=0.10.5
+ENV VER=0.11.1
 
 RUN curl -#L https://github.com/DanielXMoore/Civet/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
@@ -12,9 +12,9 @@ RUN npm install \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1                                   /lib/
+COPY --from=0 /lib/ld-musl-*.so.1                                        /lib/
 COPY --from=0 /usr/bin/env /usr/bin/node                                 /usr/bin/
-COPY --from=0 /usr/lib/libada.so.2                                       \
+COPY --from=0 /usr/lib/libada.so.3                                       \
               /usr/lib/libbrotlicommon.so.1                              \
               /usr/lib/libbrotlidec.so.1                                 \
               /usr/lib/libbrotlienc.so.1                                 \
@@ -26,7 +26,7 @@ COPY --from=0 /usr/lib/libada.so.2                                       \
               /usr/lib/libicuuc.so.76                                    \
               /usr/lib/libnghttp2.so.14                                  \
               /usr/lib/libsimdjson.so.25                                 \
-              /usr/lib/libsimdutf.so.24                                  \
+              /usr/lib/libsimdutf.so.27                                  \
               /usr/lib/libsqlite3.so.0                                   \
               /usr/lib/libssl.so.3                                       \
               /usr/lib/libstdc++.so.6                                    \

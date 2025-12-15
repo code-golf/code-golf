@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0.301-alpine3.22-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0.101-alpine3.23-amd64 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
@@ -19,7 +19,7 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/staxwrapper -s -static /stax.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
+COPY --from=0 /lib/ld-musl-*.so.1      /lib/
 COPY --from=0 /out/*.dll               \
               /out/libSystem.Native.so \
               /out/libclrjit.so        \

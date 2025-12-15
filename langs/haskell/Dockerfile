@@ -1,8 +1,8 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 ENV VER=9.8.2
 
-RUN apk add --no-cache build-base ghc=$VER-r2
+RUN apk add --no-cache ghc=$VER-r2 musl-dev
 
 RUN echo "#define VER \"$VER\"" > haskell.h
 
@@ -30,10 +30,10 @@ RUN rm -r /usr/lib/ghc-$VER/lib/bin                           \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1 /lib/
-COPY --from=0 /usr/bin/cc              \
-              /usr/bin/haskell         /usr/bin/
-COPY --from=0 /usr/lib                 /usr/lib
+COPY --from=0 /lib/ld-musl-*.so.1 /lib/
+COPY --from=0 /usr/bin/cc         \
+              /usr/bin/haskell    /usr/bin/
+COPY --from=0 /usr/lib            /usr/lib
 
 ENTRYPOINT ["haskell"]
 

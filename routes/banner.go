@@ -12,7 +12,7 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["mandelbrot"]
+var nextHole = config.ExpHoleByID["tower-of-hanoi"]
 
 type banner struct {
 	Body          template.HTML
@@ -150,12 +150,22 @@ Cheevo:
 	}
 
 	// Latest hole (if unsolved).
-	if hole := config.RecentHoles[0]; !golfer.Solved(hole.ID) {
+	if hole := config.LatestHole; !golfer.SolvedLatestHole {
 		banners = append(banners, banner{
 			HideKey: "latest-hole-" + hole.ID,
 			Type:    "info",
 			Body: template.HTML(`The <a href="/` + hole.ID + `">` +
 				hole.Name + "</a> hole is now live! Why not try and solve it?"),
+		})
+	}
+
+	// Latest lang (if unsolved).
+	if lang := config.LatestLang; !golfer.SolvedLatestLang {
+		banners = append(banners, banner{
+			HideKey: "latest-lang-" + lang.ID,
+			Type:    "info",
+			Body: template.HTML(lang.Name +
+				" is now live! Why not try and solve a hole in it?"),
 		})
 	}
 

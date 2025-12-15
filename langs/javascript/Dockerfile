@@ -1,12 +1,12 @@
-FROM debian:bookworm-slim AS builder
+FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl g++ git pkg-config procps python3
+    apt-get install --yes curl g++ git pkgconf procps python3
 
-ENV PATH=/depot_tools:$PATH VER=13.8.500258
+ENV PATH=/depot_tools:$PATH VER=14.3.127.16
 
-RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools \
  && fetch v8
 
 WORKDIR /v8

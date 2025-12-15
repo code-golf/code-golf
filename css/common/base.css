@@ -60,35 +60,43 @@ body {
     display: flex;
     flex-direction: column;
     font: 16px emoji, mahjong, system-ui, -apple-system, sans-serif;
-    min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
 
     &:has(dialog[open]) { overflow: hidden }
+
+    > footer {
+        background: var(--light-grey);
+        border-top: 1px solid var(--color);
+        margin: 0 calc(50% - 50vw);
+
+        > nav {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            justify-content: center;
+            padding: .5rem;
+        }
+    }
 }
 
-body, footer nav, #site-header nav, #popups {
+body, body > footer > nav, #site-header nav, #popups {
     margin: auto;
     max-width: 80rem;
+}
+
+/* Use the full width for top of the page alerts on smaller screens */
+@media (max-width: 80rem) {
+    body > :is(.alert, .info, .success) {
+        border-width: 0 0 1px;
+        margin: 0;
+    }
 }
 
 .hide { display: none }
 
 details .grid { padding-top: 1rem }
-
-footer {
-    background: var(--light-grey);
-    border-top: 1px solid var(--color);
-    margin: 0 calc(50% - 50vw);
-}
-
-footer nav {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
-    justify-content: center;
-    padding: .5rem;
-}
 
 h1 { font-size: 1.75rem }
 h2 { font-size: 1.50rem }
@@ -203,6 +211,46 @@ dialog > * {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
+}
+
+dialog#search-nav-dialog {
+    translate: -50% 0;
+    top: 0;
+    width: 35rem;
+    border-top: none;
+
+    a {
+        justify-content: space-between;
+
+        .result-description {
+            color: var(--color);
+        }
+        .result-path {
+            color: var(--grey);
+        }
+    }
+    a:hover {
+        text-decoration: none;
+    }
+
+    .hint {
+        color: var(--grey);
+    }
+
+    ul {
+        margin: 0;
+        gap: 0;
+    }
+    li {
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+    }
+    ul:not(:has(li:hover)):not(:has(li:focus-within)) li.current-result, li:hover, li:focus-within {
+        background-color: var(--light-grey);
+    }
+    li :focus {
+        outline: none;
+    }
 }
 
 dialog a {
@@ -332,6 +380,8 @@ svg { fill: currentColor }
 table {
     border-spacing: 0;
     font-variant: tabular-nums;
+
+    &:not(:has(thead)) { border-top: 2px solid var(--color) }
 }
 
 tbody > :nth-child(even) { background: var(--light-grey) }
@@ -387,7 +437,7 @@ thead th {
     border-bottom-width: 2px;
 }
 
-:is(.alert, .info, .success) {
+.alert, .info, .success {
     border: 1px solid var(--color);
     display: grid;
     gap: .5rem;
@@ -535,8 +585,6 @@ td .btn {
     gap: 1rem;
 }
 
-.headless { border-top: 2px solid var(--color) }
-
 .hide { display: none !important }
 
 .me { background: var(--light-green) !important }
@@ -585,7 +633,22 @@ nav + main .sticky th { top: calc(5.75rem + 1px) }
 
 .tabs {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
+    gap: 0;
+
+    > :is(a, button) {
+        background: none;
+        border: 0;
+        color: var(--color);
+        padding: .375rem .5rem;
+
+        &:is(.on, :hover, a:not([href]), [disabled]) {
+            background: var(--color) !important;
+            color: var(--background);
+            text-decoration: none;
+        }
+    }
 }
 
 /* Tabs outside <main> should be bold, sticky, & underlined. */
@@ -597,23 +660,11 @@ body > .tabs {
     position: sticky;
     top: 2.75rem;
     z-index: 2;
-}
 
-body > .tabs a {
-    margin-bottom: -2px;
-    padding: calc(.5rem - 1px) .5rem;
-}
-
-.tabs a {
-    color: var(--color);
-    padding: .375rem .5rem;
-}
-
-/* TODO .tabs a:is(.on, :hover, :not([href])) */
-.tabs .on, .tabs a:hover, .tabs a:not([href]) {
-    background: var(--color) !important;
-    color: var(--background);
-    text-decoration: none;
+    > a {
+        margin-bottom: -2px;
+        padding: calc(.5rem - 1px) .5rem;
+    }
 }
 
 .text-red { color: var(--red-text) }
@@ -622,16 +673,14 @@ body > .tabs a {
 
 #home { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
-#home > .tabs { justify-content: flex-end }
+#home > nav {
+    display: flex;
+    justify-content: flex-end;
+}
 
 #home > .grid {
     border: 2px solid var(--color);
     padding: 1rem;
-}
-
-#me {
-    position: relative;
-    top: -50vh;
 }
 
 #popups {

@@ -1,11 +1,13 @@
 <div id=pagination>
     <span>
-        {{ with .Prev }}<a href="{{ . }}">Prev</a>{{ end }}
+        {{ with .FirstPage }}<a href="{{ . }}">First</a>{{ end }}
+        {{ with .Prev      }}<a href="{{ . }}">Prev</a>{{ end }}
     </span>
     <span>
         {{ .First | comma }}⁠–{{ .Last | comma }} of {{ .Total | comma }}
     </span>
     <span>
-        {{ with .Next }}<a href="{{ . }}">Next</a>{{ end }}
+        {{ with .Next     }}<a href="{{ . }}">Next</a>{{ end }}
+        {{ with .LastPage }}<a href="{{ . }}">Last</a>{{ end }}
     </span>
 </div>

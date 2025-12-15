@@ -3,7 +3,7 @@ package routes
 import "net/http"
 
 // POST /log-out
-func logOutPost(w http.ResponseWriter, r *http.Request) {
+func logOutPOST(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		HttpOnly: true,
 		MaxAge:   -1,

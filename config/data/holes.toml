@@ -170,7 +170,7 @@ preamble = '''
 <p>The numbers range from 1 to 3999 inclusive.
 
 <div>
-    <table class=headless>
+    <table>
         <tr>
             <th>Arabic
             <td>1
@@ -337,6 +337,31 @@ preamble = '''
 <p>Separate each size with empty lines.
 '''
 redirects = ["billiard"]
+
+['Binary Lambda Calculus']
+category = 'Computing'
+experiment = 1567
+links = [
+    { name = 'Esolang Wiki', url = '//esolangs.org/wiki/Binary_lambda_calculus' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Universal_Lambda_Machine' },
+]
+synopsis = 'Normalize a binary lambda calculus expression.'
+preamble = '''
+<p>
+    Binary lambda calculus is a compact representation for expressions in
+    lambda calculus.
+
+<p>
+    <code>00</code> denotes a lambda, <code>01</code> denotes application, and
+    <code>1...10</code> with x 1s denotes the argument of the xth-innermost
+    lambda containing it. For example, <code>00000110110</code> denotes
+    <code>λx.λy.y x</code>.
+
+<p>
+    Given a list of binary lambda calculus expressions, output their normal
+    forms. You can assume that there are no infinite loops in the inputs.
+'''
+
 
 [brainfuck]
 category = 'Computing'
@@ -583,6 +608,71 @@ preamble = '''
     Additionally, print <b><code>Draw</code></b> if no row of four connected
     checkers is complete when both players have used all their checkers; or
     <b><code>-</code></b> when games are still in progress.
+'''
+
+['Continued Fractions']
+category = 'Mathematics'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Continued_fraction' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Simple_continued_fraction' },
+]
+experiment = 2503
+synopsis = 'Convert fractions to continued fractions.'
+preamble = '''
+<p>
+    For each fraction argument <code>a/b</code>, print its continued fraction
+    expansion.
+'''
+
+[Crossword]
+category = 'Computing'
+experiment = 1308
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Crossword' },
+]
+output-delimiter = "\n\n"
+synopsis = 'Print valid crossword puzzles.'
+preamble = '''
+<p>
+    Each argument contains a variable number of words, separated by spaces. Use
+    the individual words to create a ten-by-ten crossword puzzle that meets the
+    following requirements:
+
+<ul>
+    <li>You must use all the words.
+    <li>Words can be formed horizontally or vertically, but not diagonally.
+    <li>Each word must overlap with at least one other word.
+    <li>No new words may be created, either horizontally or vertically, i.e.
+        the letters of one word may not be adjacent to the letters of another
+        word unless they overlap.
+    <li>Use capital letters for each word and a period for unused squares.
+        Separate everything with spaces.
+</ul>
+
+<p>
+    For example, consider the following argument:
+
+<pre>freeze arm waffle love mad federal aura one</pre>
+
+<p>
+    If you take the above restrictions into account, the crossword below is one
+    of <i>many</i> valid possibilities.
+
+<pre>
+. W A F F L E . . .
+. . R . E . . . . .
+. . M A D . . . . .
+. . . . E . . . . .
+. . . . R . . . . .
+. A U R A . . . . .
+. . . . L O V E . .
+. . . . . N . . . .
+F R E E Z E . . . .
+. . . . . . . . . .
+</pre>
+
+<p>
+    For each argument, print any valid crossword puzzle.
 '''
 
 ['CSS Colors']
@@ -1715,12 +1805,12 @@ preamble = '''
 '''
 
 ['Hilbert Curve']
-experiment = 1448
-category   = 'Art'
+category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hilbert_curve' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Hilbert_curve' },
 ]
+released = 2025-09-01
 synopsis = 'Print five iterations of the Hilbert curve.'
 preamble = '''
 <p>
@@ -2203,12 +2293,13 @@ preamble = '''
 '''
 
 [Minesweeper]
-experiment = 1025
 category = 'Gaming'
+released = 2025-11-01
 links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Minesweeper_game' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Minesweeper_(video_game)' },
 ]
-synopsis = 'Print solved boards in Minesweeper games.'
+synopsis = 'Print solved Minesweeper boards.'
 preamble = '''
 <p>
     Minesweeper is a video game in which the player must clear a board without
@@ -2217,12 +2308,13 @@ preamble = '''
 
 <p>
     Each argument represents a ten-by-ten board with thirteen mine tiles,
-    denoted by <code><b>M</b></code>. Replace the safe tiles, denoted by
-    <code><b>X</b></code>, with the number of adjacent mines.
+    denoted by <code><b>X</b></code>, and the rest being safe tiles, denoted
+    by <code><b>_</b></code>.
 
 <p>
-    Print a solved Minesweeper board for each argument, separated by newlines,
-    and replace each mine with <code><b>X</b></code> as if it weren't detonated.
+    Print a solved Minesweeper board for each argument, separated by blank
+    lines. Replace each mine with <code><b>F</b></code> as if it were flagged.
+    And replace each safe tile with the number of adjacent mines.
 '''
 
 ['Morse Decoder']
@@ -2337,6 +2429,56 @@ preamble = '''
 [['Morse Decoder'.variants]]
 name     = 'Morse Encoder'
 synopsis = 'Encode alphanumeric strings into International Morse Code.'
+
+['Multitap Input']
+category = 'Transform'
+experiment = 1952
+links = [
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Multi-tap' },
+]
+data = '''
+{
+    "A": "2", "B": "22", "C": "222",
+	"D": "3", "E": "33", "F": "333",
+	"G": "4", "H": "44", "I": "444",
+	"J": "5", "K": "55", "L": "555",
+	"M": "6", "N": "66", "O": "666",
+	"P": "7", "Q": "77", "R": "777", "S": "7777",
+	"T": "8", "U": "88", "V": "888",
+	"W": "9", "X": "99", "Y": "999", "Z": "9999",
+	" ": "0"
+}'''
+synopsis = 'Convert numeric button presses to text by the multi-tap system.'
+preamble = '''
+<p>
+    Many older mobile phone designs allow text to be entered on a numeric
+    E.161 keypad. The numbers 2-9 are labeled with letters:
+
+<ul>
+    <li>2: ABC
+    <li>3: DEF
+    <li>4: GHI
+    <li>5: JKL
+    <li>6: MNO
+    <li>7: PQRS
+    <li>8: TUV
+    <li>9: WXYZ
+</ul>
+
+<p>
+    Pressing a number key once enters the first letter shown on the button,
+    pressing it twice in a row enters the second letter shown on the button,
+    and so on. Two letters located on the same number key can be entered
+    consecutively by waiting a short period of time between entering each letter.
+    Pressing the 0 key enters a space.
+
+<p>
+    Given a sequence of button presses and pauses (represented by spaces),
+    print the equivalent text. No run of one digit will be longer than the number
+    of letters on that key. Pauses may occur between any two letters, not
+    just those on the same key.
+
+'''
 
 ['Musical Chords']
 category = 'Transform'
@@ -2672,6 +2814,89 @@ preamble = '''
 <pre>{{ .Answer }}</pre>
 '''
 
+[Numbrix]
+category = 'Gaming'
+experiment = 1151
+links = [
+    { name = 'Parade',       url = '//parade.com/numbrix' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Solve_a_Numbrix_puzzle' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Hidato' },
+]
+synopsis = 'Solve a Numbrix puzzle.'
+preamble = '''
+<p>
+    Numbrix is a logic puzzle game where the goal is to fill the empty squares
+    in a grid with unique, consecutive numbers that are horizontally or
+    vertically adjacent. Each puzzle begins with a number of arbitrary squares
+    in a pattern already occupied by unique numbers, but not necessarily
+    consecutive to other numbers in potentially adjacent squares.
+
+<p>
+    For example, take the following starting pattern:
+
+<pre>
+┏━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┓
+┃    │    │    │    │    │    │    │    │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 11 │ 12 │ 15 │ 18 │ 21 │ 62 │ 61 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │  6 │    │    │    │    │    │ 60 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 33 │    │    │    │    │    │ 57 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 32 │    │    │    │    │    │ 56 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 37 │    │  1 │    │    │    │ 73 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 38 │    │    │    │    │    │ 72 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 43 │ 44 │ 47 │ 48 │ 51 │ 76 │ 77 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │    │    │    │    │    │    │    │    ┃
+┗━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┛
+</pre>
+
+<p>
+    Suppose a player starts the puzzle at number '1', then the player can reach
+    number '6' via four valid paths:
+
+<ul>
+    <li>Up → Up → Up → Left → Left
+    <li>Left → Up → Up → Up → Left
+    <li>Up → Left → Up → Up → Left
+    <li>Up → Up → Left → Up → Left
+</ul>
+
+<p>
+    When the above puzzle is solved, it might look something like this:
+
+<pre>
+┏━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┓
+┃  9 │ 10 │ 13 │ 14 │ 19 │ 20 │ 63 │ 64 │ 65 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃  8 │ 11 │ 12 │ 15 │ 18 │ 21 │ 62 │ 61 │ 66 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃  7 │  6 │  5 │ 16 │ 17 │ 22 │ 59 │ 60 │ 67 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 34 │ 33 │  4 │  3 │ 24 │ 23 │ 58 │ 57 │ 68 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 35 │ 32 │ 31 │  2 │ 25 │ 54 │ 55 │ 56 │ 69 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 36 │ 37 │ 30 │  1 │ 26 │ 53 │ 74 │ 73 │ 70 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 39 │ 38 │ 29 │ 28 │ 27 │ 52 │ 75 │ 72 │ 71 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 40 │ 43 │ 44 │ 47 │ 48 │ 51 │ 76 │ 77 │ 78 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 41 │ 42 │ 45 │ 46 │ 49 │ 50 │ 81 │ 80 │ 79 ┃
+┗━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┛
+</pre>
+
+<p>
+    Given a nine-by-nine grid with a starting pattern, print a solved Numbrix
+    puzzle.
+'''
+
 ['Odd Polyomino Tiling']
 category = 'Art'
 experiment = 815
@@ -2830,6 +3055,29 @@ preamble = '''
     binomial coefficients.
 
 <p>Print the first <b>20</b> rows of Pascal’s triangle.
+'''
+
+[['Pascal’s Triangle'.variants]]
+name = 'Trinomial Triangle'
+links = [
+    { name = 'OEIS A027907', url = '//oeis.org/A027907' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
+]
+released = 2025-10-01
+synopsis = 'Print the first 20 rows of the trinomial triangle.'
+preamble = '''
+<p>
+    The trinomial triangle is a triangular array of numbers similar to
+    Pascal's triangle. The top row consists of a single 1, and each subsequent
+    row contains 2 more numbers than the last. Each number is the sum of the 3
+    numbers above it, i.e.
+
+<pre>
+1 2 3
+  6
+</pre>
+
+<p>Print the first <b>20</b> rows of the trinomial triangle.
 '''
 
 ['Pernicious Numbers']
@@ -3821,6 +4069,34 @@ preamble = '''
     each on their own line.
 '''
 
+['Smooth Numbers']
+experiment = 2144
+category = 'Mathematics'
+links = [
+    { name = 'OEIS A000079', url = '//oeis.org/A000079' },
+    { name = 'OEIS A003586', url = '//oeis.org/A003586' },
+    { name = 'OEIS A051037', url = '//oeis.org/A051037' },
+    { name = 'OEIS A002473', url = '//oeis.org/A002473' },
+    { name = 'OEIS A051038', url = '//oeis.org/A051038' },
+    { name = 'OEIS A080197', url = '//oeis.org/A080197' },
+    { name = 'OEIS A080681', url = '//oeis.org/A080681' },
+    { name = 'OEIS A080682', url = '//oeis.org/A080682' },
+    { name = 'OEIS A080683', url = '//oeis.org/A080683' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-smooth_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Smooth_number' },
+]
+synopsis = 'Print all the n-smooth numbers from 1 to k inclusive.'
+preamble = '''
+<p>
+    An <i>n</i>-smooth number is a positive integer whose prime factors are
+    all less than or equal to <i>n</i>.
+
+<p>
+    Given the arguments <code>𝑛</code> and <code>𝑘</code>, print all the
+    <i>n</i>-smooth numbers from 1 to <i>k</i> inclusive, each on their own
+    line.
+'''
+
 [Snake]
 experiment = 1039
 category = 'Gaming'
@@ -3915,11 +4191,18 @@ synopsis = 'Print the next most likely word in the Star Wars opening crawls.'
 preamble = '''
 <p>
     You are given a series of inputs. Each input contains a text <b>corpus</b>
-    and a dozen <b>prompts</b> on subsequent lines. For each prompt, output the
-    most likely next word in the corpus by frequency (aka <b>mode</b>). If
-    there is more than one mode, output the first encountered in the corpus. In
-    this problem, the corpus is fixed to be the
-    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts.
+    and 12 <b>prompt</b> words on subsequent lines.
+    For each prompt, output the word which most frequently follows it in the corpus.
+    In case of a tie, print the one whose first follow-on occurrence comes earliest.
+<p>
+    For example, suppose the corpus is "code golf and golf and code"
+    and the prompt is "and".
+    Both "golf" and "code" follow the word "and" maximally frequently (once), but "golf"
+    <em>does so first</em>, and so the output is "golf".
+<p>
+    In this problem, each corpus is formed by concatenating two
+    <a href=star-wars-opening-crawl>Star Wars Opening Crawl</a> texts together
+    (separated by one space).
 '''
 
 ['Star Wars Opening Crawl']
@@ -4052,6 +4335,28 @@ preamble = '''
 name      = 'Sudoku (Fill-in)'
 redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
+
+['Taxicab Numbers']
+experiment = 914
+category = 'Sequence'
+links = [
+    { name = 'OEIS A001235', url = '//oeis.org/A001235' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Taxicab_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Taxicab_number' },
+]
+synopsis = 'Print all taxicab numbers from 1 to 100,000,000.'
+preamble = '''
+<p>
+    A taxicab number is a number that is expressible as the sum of two cubes in at least two different ways.
+
+<p>
+    For example, <b>1729 = 1<sup>3</sup> + 12<sup>3</sup> = 9<sup>3</sup> + 10<sup>3</sup></b> or
+    <b>4104 = 2<sup>3</sup> + 16<sup>3</sup> = 9<sup>3</sup> + 15<sup>3</sup></b>.
+    
+<p>
+    Print all the taxicab numbers from <b>1</b> to <b>100,000,000</b> inclusive,
+    each on their own line.
+'''
 
 ['Ten-pin Bowling']
 category = 'Gaming'
@@ -4194,8 +4499,8 @@ preamble = '''
 '''
 
 ['Topological Sort']
-experiment = 2308
 category = 'Computing'
+released = 2025-08-01
 synopsis = 'Perform topological sort.'
 preamble = '''
 <p>
@@ -4208,6 +4513,30 @@ preamble = '''
 <p>
     This is similar to the <code>tsort</code> utility, except that output nodes
     are separated with spaces instead of newlines.
+'''
+
+['Tower of Hanoi']
+category = 'Art'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Tower_of_Hanoi' },
+]
+released = 2025-12-01
+synopsis = 'Print out all the steps to solve a Tower of Hanoi puzzle.'
+preamble = '''
+<p>
+    Tower of Hanoi is a puzzle consisting of three poles, and a set amount of
+    disks on the very left pole stacked from biggest diameter on the bottom,
+    to smallest on the top. The goal is to move all of the disks from the left
+    pole to the right pole with the restrictions of only moving the top disk
+    of a pole, and being forbidden to stack a bigger disk onto a smaller disk.
+    With N disks, there's always a unique optimal solution with 2**N - 1 steps.
+
+<p>
+    Print out all the steps of the optimal solution to solve a Tower of Hanoi
+    puzzle consisting of nine disks. Each step describes the number of the
+    starting pole and the pole it goes to. (i.e: 1 -> 3 would mean put top
+    disk from Pole 1 onto Pole 3.)
 '''
 
 ['Transpose Sentence']
@@ -4243,28 +4572,6 @@ boy
     space after the last letter of each column, which yields:
 
 <p><b>awanpmjadb lonolaauo lrdakcly kyekl s</b>.
-'''
-
-['Trinomial Triangle']
-experiment = 1117
-category = 'Sequence'
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Trinomial_triangle' },
-]
-synopsis = 'Print the first 20 rows of the trinomial triangle.'
-preamble = '''
-<p>
-    The trinomial triangle is a triangular array of numbers similar to
-    Pascal's triangle. The top row consists of a single 1, and each subsequent
-    row contains 2 more numbers than the last. Each number is the sum of the 3
-    numbers above it, i.e.
-
-<pre>
-1 2 3
-  6
-</pre>
-
-<p>Print the first <b>20</b> rows of the trinomial triangle.
 '''
 
 [Turtle]

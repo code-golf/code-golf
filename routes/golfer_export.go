@@ -13,10 +13,10 @@ func golferExportGET(w http.ResponseWriter, r *http.Request) {
 
 	rows, err := session.Database(r).Query(
 		`WITH cheevos AS (
-		    SELECT trophy cheevo, to_json(earned)#>>'{}' || 'Z' earned
-		      FROM trophies
+		    SELECT cheevo, to_json(earned)#>>'{}' || 'Z' earned
+		      FROM cheevos
 		     WHERE user_id = $1
-		  ORDER BY trophy
+		  ORDER BY cheevo
 		), solutions AS (
 		    SELECT hole, lang, scoring, bytes, chars, failing,
 		           to_json(submitted)#>>'{}' || 'Z' submitted, code
@@ -24,7 +24,7 @@ func golferExportGET(w http.ResponseWriter, r *http.Request) {
 		     WHERE user_id = $1
 		  ORDER BY hole, lang, scoring
 		) SELECT json_build_object(
-		    'name',      login,
+		    'name',      name,
 		    'country',   country,
 		    'time_zone', time_zone,
 		    'cheevos',   (SELECT COALESCE(json_agg(cheevos  ), '[]'::json) FROM cheevos  ),

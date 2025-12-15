@@ -1,15 +1,15 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev patch
 
 ENV VER=0.9.27
 
 RUN curl -#L https://download.savannah.nongnu.org/releases/tinycc/tcc-$VER.tar.bz2 \
   | tar xj --strip-components 1
 
-COPY setvbuf.patch /
+COPY c.patch /
 
-RUN patch -p0 < setvbuf.patch
+RUN patch -p0 < c.patch
 
 RUN ./configure      \
     --config-musl    \
@@ -20,7 +20,7 @@ RUN ./configure      \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-x86_64.so.1   /lib/
+COPY --from=0 /lib/ld-musl-*.so.1        /lib/
 COPY --from=0 /usr/bin/tcc               /usr/bin/c
 COPY --from=0 /usr/include/alloca.h      \
               /usr/include/assert.h      \
@@ -59,4 +59,4 @@ COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
 
 ENTRYPOINT ["c"]
 
-CMD ["-v"]
+CMD ["-version"]
