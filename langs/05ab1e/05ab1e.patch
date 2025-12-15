@@ -11,6 +11,24 @@
                      nil -> {acc, curr_stack, curr_env}
 --- lib/reading/input.ex
 +++ lib/reading/input.ex
+@@ -4,7 +4,7 @@
+
+     defp parse_multiline_string(chars) do
+         cond do
+-            String.ends_with?(chars, "\"\"\"") -> String.slice(chars, 0..-4)
++            String.ends_with?(chars, "\"\"\"") -> String.slice(chars, 0..-4//1)
+             true -> chars <> "\n" <> parse_multiline_string(String.trim_trailing(IO.read(:stdio, :line), "\n"))
+             :eof -> ""
+         end
+@@ -26,7 +26,7 @@
+                 Globals.set(%{global_env | inputs: global_env.inputs ++ [result]})
+                 result
+             String.starts_with?(input, "\"\"\"") ->
+-                result = parse_multiline_string(String.slice(input, 3..-1))
++                result = parse_multiline_string(String.slice(input, 3..-1//1))
+                 global_env = Globals.get()
+                 Globals.set(%{global_env | inputs: global_env.inputs ++ [result]})
+                 result
 @@ -49,7 +49,6 @@
          input = IO.read(:stdio, :line)
          cond do

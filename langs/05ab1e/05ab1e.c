@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
         ERR_AND_EXIT("open");
 
     for (int i = 2; i < argc; i++)
-        if (write(fd, argv[i], strlen(argv[i])) < 0 || write(fd, "\n", sizeof(char)) < 0) {
+        if (!write(fd, buffer, snprintf(buffer, sizeof(buffer), "\"\"\"%s\"\"\"\n", argv[i]))) {
             if (close(fd))
                 ERR_AND_EXIT("close");
 
@@ -66,4 +66,7 @@ int main(int argc, char* argv[]) {
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
+
+    if (remove(code))
+        ERR_AND_EXIT("remove");
 }
