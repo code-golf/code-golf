@@ -137,7 +137,7 @@ description = 'Solve <a href=/𝑒#r>𝑒 in R</a>.'
 [['Hole/Lang Specific']]
 name        = 'Evil Scheme'
 emoji       = '😈'
-description = 'Solve <a href=/evil-numbers#scheme>Evil Numbers</a> or <a href=/evil-numbers-long>Evil Numbers (Long)</a> in Scheme.'
+description = 'Solve <a href=/evil-numbers#scheme>Evil Numbers</a> or <a href=/evil-numbers-long#scheme>Evil Numbers (Long)</a> in Scheme.'
 
 [['Hole/Lang Specific']]
 name        = 'Fish ’n’ Chips'
