@@ -1,6 +1,6 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev \
+RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl dash fontconfig-dev \
                        libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
 
 # Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
@@ -41,7 +41,8 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/java -s -static java.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/bash /bin/rm                     /bin/
+COPY --from=0 /bin/bash /bin/rm /bin/uname          /bin/
+COPY --from=0 /usr/bin/dash                         /bin/sh
 COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /opt/java/bin/java                    /opt/java/bin/
 COPY --from=0 /opt/java/conf/security/java.security /opt/java/conf/security/
@@ -59,12 +60,12 @@ COPY --from=0 /opt/java/lib/jrt-fs.jar              \
               /opt/java/lib/tzdb.dat                /opt/java/lib/
 COPY --from=0 /opt/java/lib/server/classes.jsa      \
               /opt/java/lib/server/libjvm.so        /opt/java/lib/server/
-COPY --from=0 /usr/bin/java                         /usr/bin/
+COPY --from=0 /usr/bin/dirname                      \
+              /usr/bin/env                          \
+              /usr/bin/java                         /usr/bin/
 COPY --from=0 /usr/lib/libncursesw.so.6             \
               /usr/lib/libreadline.so.8             \
               /usr/lib/libz.so.1                    /usr/lib/
-
-SHELL ["/bin/bash", "-c"]
 
 COPY <<EOF code.java
 void main(String[] args) {
