@@ -125,6 +125,11 @@ emoji       = '👄'
 description = 'Solve <a href=/rock-paper-scissors-spock-lizard#janet>Rock-paper-scissors-Spock-lizard in Janet</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Down to the Metal'
+emoji       = '🔩'
+description = 'Solve any hole in both Assembly and Rust.'
+
+[['Hole/Lang Specific']]
 name        = 'ElePHPant in the Room'
 emoji       = '🐘'
 description = 'Solve any hole in PHP.'
