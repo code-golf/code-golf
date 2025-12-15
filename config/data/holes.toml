@@ -1662,7 +1662,7 @@ preamble = '''
 '''
 
 ['Gray Code Decoder']
-category = 'Transform'
+category = 'Computing'
 experiment = 779
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
