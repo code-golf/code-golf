@@ -26,9 +26,9 @@ RUN mix local.hex --force          \
  && mix deps.update ssl_verify_fun \
  && MIX_ENV='prod' mix escript.build
 
-COPY 05ab1e.c /
+COPY 05ab1e.c .
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/05ab1e -s /05ab1e.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/05ab1e -s 05ab1e.c
 
 FROM codegolf/lang-erlang
 
