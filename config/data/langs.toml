@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.40 MiB'
-version    = 'Algol 68 Genie 3.10.8'
+version    = 'Algol 68 Genie 3.10.9'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.7'
+version = 'Clang 21.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -1138,7 +1138,7 @@ $ARGS.positional[]
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '361 MiB'
-version = '1.12.2'
+version = '1.12.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1196,8 +1196,8 @@ example    = '''
 
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '136 MiB'
-version = '2.2.21'
+size    = '137 MiB'
+version = '2.3.0'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
