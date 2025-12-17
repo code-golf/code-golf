@@ -198,7 +198,7 @@ BEGIN {
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
 size    = '1.35 MiB'
-version = '5.3.8'
+version = '5.3.9'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -1614,7 +1614,7 @@ end
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '33.4 MiB'
-version = '3.4.7'
+version = '3.4.8'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
