@@ -804,8 +804,8 @@ pub fn main() {
 '''
 
 [Go]
-args    = [ '/usr/bin/gowrapper', '-' ]
-env     = [ 'GOCACHE=/tmp/cache' ]
+args    = [ '/usr/bin/go', '-' ]
+env     = [ 'GOCACHE=/cache' ]
 size    = '323 MiB'
 version = '1.25.5'
 website = 'https://go.dev'
