@@ -4,6 +4,7 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"testing/synctest"
 	"time"
 
 	"github.com/code-golf/code-golf/golfer"
@@ -16,12 +17,15 @@ func TestBanners(t *testing.T) {
 		{"2022-12-25T07:00:00Z", "<b>Twelvetide</b> achievement will stop being available"},
 		{"2023-01-01T01:02:03Z", "<b>Twelvetide</b> achievement will stop being available"},
 	} {
-		time, _ := time.Parse(time.RFC3339, tt.time)
+		synctest.Test(t, func(t *testing.T) {
+			now, _ := time.Parse(time.RFC3339, tt.time)
+			time.Sleep(time.Until(now))
 
-		if !slices.ContainsFunc(banners(&golfer.Golfer{}, time), func(b banner) bool {
-			return strings.Contains(string(b.Body), tt.cheevo)
-		}) {
-			t.Errorf("banners(%v) didn't produce %v", tt.time, tt.cheevo)
-		}
+			if !slices.ContainsFunc(banners(&golfer.Golfer{}), func(b banner) bool {
+				return strings.Contains(string(b.Body), tt.cheevo)
+			}) {
+				t.Errorf("banners(%v) didn't produce %v", tt.time, tt.cheevo)
+			}
+		})
 	}
 }
