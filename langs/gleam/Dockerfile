@@ -19,9 +19,9 @@ RUN gleam new --name main . \
  && gleam add argv          \
  && gleam remove gleeunit
 
-COPY gleam.c /
+COPY gleam.c .
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleam -s /gleam.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleam -s gleam.c
 
 FROM codegolf/lang-erlang
 
