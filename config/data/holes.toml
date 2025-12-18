@@ -369,26 +369,28 @@ experiment = 1306
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Boggle' },
 ]
+multiset-item-delimiter = "\n"
 synopsis = 'Print valid Boggle words.'
 preamble = '''
 <p>
-    Boggle is a word game in which players try to find as many words as they
-    can from a four-by-four grid of random letters in the English alphabet.
+    Boggle is a word game in which players try to find as many words as
+    possible in a four-by-four grid formed by dice with letters from the
+    English alphabet, usually within a set time limit.
 
 <p>
-    Each word, in order to be valid, must adhere to specific criteria defined
-    as follows:
+    To be valid, each word must meet specific criteria, as described below:
 
 <ul>
-    <li>Any given word must consist of at least three letters.
-    <li>Each letter after the first must be adjacent to the previous letter,
-        either horizontally, vertically, or diagonally.
-    <li>Individual letters from the grid may be used once in any given word.
-    <li>Wrapping around any of the edges is not allowed.
+    <li>Each word must contain at least three letters.
+    <li>Each letter after the first must be directly adjacent to the preceding
+        letter, either horizontally, vertically, or diagonally.
+    <li>Individual letters from the grid may appear only once in a word.
+    <li>Consecutive letters in a word must not be connected by crossing the
+        grid boundaries.
 </ul>
 
 <p>
-    For example, consider the following arguments:
+    For example, take the following arguments:
 
 <pre>
 D E C A
@@ -401,9 +403,15 @@ code golf awesome is but not share you solutions
 </pre>
 
 <p>
-    The second argument has all the words you need to validate. Validating the
-    word "code" is demonstrated by replacing every matching letter in the grid
-    with digits 1, 2, 3, and 4, respectively.
+    The <b>first</b> argument is a four-by-four grid containing sixteen
+    randomly chosen letters, each corresponding to one of the sides of the dice
+    in the original English game. This argument is used to check the validity
+    of a series of random words.
+
+<p>
+    The <b>second</b> argument contains all the words you need to validate.
+    Validation of the word "code" is demonstrated by replacing each matching
+    letter in the grid with the numbers 1, 2, 3, and 4, respectively.
 
 <pre>
 <b>3</b> <b>4</b> <b>1</b> A
@@ -414,14 +422,16 @@ T D N I
 
 <p>
     In ascending order, each digit after the first digit is adjacent to the
-    previous digit in one of the directions mentioned above. Therefore, and
-    because it adheres to all remaining validation criteria equally, the word
-    "code" is valid.
+    preceding digit in one of the directions mentioned above. Therefore, and
+    because it meets all other validation criteria, the word "code" is valid.
 
 <p>
-    In order of appearance, print the valid words for each given grid per
-    argument, each on their own line; or <b>-</b> when none of the words are
-    valid.
+    On one side of a die is the letter 'Q', and that is a special case. Meeeeh.
+
+<p>
+    Print all unique words <b>valid</b> for each given grid per first argument
+    in random order, each on a separate line; or <b>-</b> if none of the words
+    are valid.
 '''
 
 [brainfuck]
