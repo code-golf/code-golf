@@ -109,7 +109,6 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 
 	location := golfer.Location()
 
-Cheevo:
 	for _, cheevo := range config.CheevoTree["Date Specific"] {
 		if golfer.Earned(cheevo.ID) {
 			continue
@@ -142,7 +141,7 @@ Cheevo:
 					Type:    "info",
 				})
 
-				break Cheevo
+				break
 			}
 		}
 	}
