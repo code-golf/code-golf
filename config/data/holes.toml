@@ -427,6 +427,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Calendar' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gregorian_calendar' },
 ]
+released = 2026-01-01
 synopsis = 'Print calendars for given months in given years.'
 preamble = '''
 <p>
