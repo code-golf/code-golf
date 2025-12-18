@@ -388,20 +388,22 @@ preamble = '''
 </ul>
 
 <p>
-    For example, consider the following argument:
+    For example, consider the following arguments:
 
 <pre>
-code golf is awesome
 D E C A
 B O L O
 E R T I
 T D N I
 </pre>
+<pre>
+code golf awesome is but not share you solutions
+</pre>
 
 <p>
-    The first line has all the words you need to validate. Validating the word
-    <code><b>code</b></code> is demonstrated by replacing every matching letter
-    in the grid with digits 1, 2, 3, and 4, respectively.
+    The second argument has all the words you need to validate. Validating the
+    word "code" is demonstrated by replacing every matching letter in the grid
+    with digits 1, 2, 3, and 4, respectively.
 
 <pre>
 <b>3</b> <b>4</b> <b>1</b> A
@@ -414,12 +416,12 @@ T D N I
     In ascending order, each digit after the first digit is adjacent to the
     previous digit in one of the directions mentioned above. Therefore, and
     because it adheres to all remaining validation criteria equally, the word
-    <code><b>code</b></code> is valid.
+    "code" is valid.
 
 <p>
     In order of appearance, print the valid words for each given grid per
-    argument on the same line, separated by spaces; or <b>-</b> when none
-    of the words are valid.
+    argument, each on their own line; or <b>-</b> when none of the words are
+    valid.
 '''
 
 [brainfuck]

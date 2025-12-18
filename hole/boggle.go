@@ -1,120 +1,89 @@
 package hole
 
-import (
-	"math/rand/v2"
-	"strings"
-)
+import "strings"
+
+var dice = []string{
+	"AACIOT", "ABILTY", "ABJMOQ", "ACDEMP",
+	"ACELRS", "ADENVZ", "AHMORS", "BIFORX",
+	"DENOSW", "DKNOTU", "EEFHIY", "EGINTV",
+	"EGKLUY", "EHINPS", "ELPSTU", "GILRUW",
+}
 
 var _ = answerFunc("boggle", func() []Answer {
-	const argc = 100 // Preserve original argc
+	answers := make([]Answer, 5)
 
-	tests := make([]test, 0, argc)
+	for i := range answers {
+		var board [4][4]byte
 
-	for range 2 * argc {
-		var argument, expected strings.Builder
+		args := make([]strings.Builder, 2)
 
-		board, count, words := scramble(), randInt(2*argc, 4*argc), make(map[string]struct{})
+		shuffle(dice)
 
-		for i := 0; i < count; {
-			word := randWord()
+		for j, row := range board {
+			for k := range row {
+				die := dice[k + j * len(row)]
 
-			if _, dupe := words[word]; dupe {
-				continue
+				board[j][k] = die[randInt(0, 5)]
+
+				args[0].WriteByte(board[j][k])
+
+				if k < len(row) - 1 {
+					args[0].WriteByte(' ')
+				}
 			}
 
-			words[word] = struct{}{}
-			i++
-
-			argument.WriteString(word)
-
-			if i < count {
-				argument.WriteByte(' ')
+			if j < len(row) - 1 {
+				args[0].WriteByte('\n')
 			}
 		}
 
-		for _, word := range strings.Fields(argument.String()) {
+		var answer strings.Builder
+
+		for _, word := range shuffle(words) {
 			if validate(board, strings.ToUpper(word)) {
-				expected.WriteString(word)
-				expected.WriteByte(' ')
+				if answer.String() != "" {
+					args[1].WriteByte(' ')
+				}
+
+				answer.WriteString(word)
+				answer.WriteByte('\n')
+
+				args[1].WriteString(word)
 			}
 		}
 
-		if len(expected.String()) == 0 {
-			expected.WriteByte('-')
+		// Expand args[1] with random:
+		// - invalid words less than 3 characters long
+		// - invalid words because of all the rest
+		// - valid but duplicate words (because no duplicate prints)
+		//
+		// Enforce no valid words for one of the runs if it didn't already generate.
+		// If more than one such run occurs, regenerate the run so there's only one. But, unlikely.
+		//
+		// Implement the 'Q' thing.
+		//
+		// Update more description.
+
+		if answer.String() == "" {
+			answer.WriteByte('-')
 		}
 
-		argument.WriteString("\n" + stringify(board))
-
-		tests = append(tests, test{
-			argument.String(),
-			expected.String(),
-		})
+		answers[i] = Answer{Args: []string{args[0].String(), args[1].String()}, Answer: answer.String()}
 	}
 
-	tests = shuffle(tests)
-
-	return outputTests(tests[:argc], tests[len(tests)-argc:])
+	return answers
 })
 
-func stringify(board [4][4]byte) string {
-	var grid strings.Builder
-
-	for i := range 4 {
-		for j := range 4 {
-			grid.WriteByte(board[i][j])
-
-			if j < 3 {
-				grid.WriteByte(' ')
-			} else {
-				grid.WriteByte('\n')
-			}
-		}
-	}
-
-	return grid.String()
-}
-
-func scramble() [4][4]byte {
-	var dice = [16][]byte{
-		[]byte("RIFOBX"), []byte("IFEHEY"), []byte("DENOWS"), []byte("UTOKND"),
-		[]byte("HMSRAO"), []byte("LUPETS"), []byte("ACITOA"), []byte("YLGKUE"),
-		[]byte("QBMJOA"), []byte("EHISPN"), []byte("VETIGN"), []byte("BALIYT"),
-		[]byte("EZAVND"), []byte("RALESC"), []byte("UWILRG"), []byte("PACEMD"),
-	}
-
-	for _, die := range dice {
-		// Scramble positions.
-		rand.Shuffle(len(dice), func(i, j int) {
-			dice[i], dice[j] = dice[j], dice[i]
-		})
-
-		// Scramble letters.
-		rand.Shuffle(len(die), func(i, j int) {
-			die[i], die[j] = die[j], die[i]
-		})
-	}
-
-	var board [4][4]byte
-
-	for i := range 4 {
-		for j := range 4 {
-			board[i][j] = dice[j+i*4][0] // Index 0 is the side facing up after scrambling.
-		}
-	}
-
-	return board
-}
-
-func validate(board [4][4]byte, word string) bool {
-	if len(word) < 3 || len(word) > 16 {
+func validate(b [4][4]byte, s string) bool {
+	if l := len(b); len(s) < l - 1 || len(s) > l * l {
 		return false
 	}
 
-	letters, used := []byte(word), [4][4]bool{}
+	used := [4][4]bool{}
 
-	for i := range 4 {
-		for j := range 4 {
-			if board[i][j] == letters[0] && dfs(board, used, letters, 0, i, j) {
+	for i, row := range b {
+		for j, letter := range row {
+			if dfs(b, used, s, 0, i, j) && s[0] == letter {
 				return true
 			}
 		}
@@ -123,50 +92,28 @@ func validate(board [4][4]byte, word string) bool {
 	return false
 }
 
-func dfs(board [4][4]byte, used [4][4]bool, word []byte, index, i, j int) bool {
-	if index == len(word) {
+func dfs(b [4][4]byte, used [4][4]bool, s string, i, j, k int) bool {
+	if len(s) == i {
 		return true
 	}
 
-	if i < 0 || i > 3 || j < 0 || j > 3 || used[i][j] {
+	if l := len(b) - 1; j < 0 || j > l || k < 0 || k > l || used[j][k] || s[i] != b[j][k] {
 		return false
 	}
 
-	if letter := board[i][j]; letter == 'q' {
-		if index+1 < len(word) && word[index] == 'q' && word[index+1] == 'u' {
-			used[i][j] = true
+	used[j][k] = true
 
-			for _, direction := range [][]int{
-				{-1, -1}, {-1, +0}, {-1, +1},
-				{+0, -1}, {+0, +1},
-				{+1, -1}, {+1, +0}, {+1, +1},
-			} {
-				if dfs(board, used, word, index+2, i+direction[0], j+direction[1]) {
-					return true
-				}
-			}
-
-			used[i][j] = false
-
-			return false
-		}
-	} else if letter != word[index] {
-		return false
-	}
-
-	used[i][j] = true
-
-	for _, direction := range [][]int{
+	for _, direction := range [][2]int{
 		{-1, -1}, {-1, +0}, {-1, +1},
-		{+0, -1}, {+0, +1},
+		{+0, -1},           {+0, +1},
 		{+1, -1}, {+1, +0}, {+1, +1},
 	} {
-		if dfs(board, used, word, index+1, i+direction[0], j+direction[1]) {
+		if dfs(b, used, s, i+1, j+direction[0], k+direction[1]) {
 			return true
 		}
 	}
 
-	used[i][j] = false
+	used[j][k] = false
 
 	return false
 }
