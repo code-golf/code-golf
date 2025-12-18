@@ -88,7 +88,7 @@ func initHoles() {
 
 	// Expand variants.
 	copyFields := []string{
-		"Category", "Data", "Links", "Preamble", "Released", "Synopsis", "Variants"}
+		"Category", "Data", "Links", "Preamble", "Synopsis", "Variants"}
 	for name, hole := range holes {
 		hole.Name = name
 
