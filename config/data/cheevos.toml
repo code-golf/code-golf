@@ -125,6 +125,11 @@ emoji       = '👄'
 description = 'Solve <a href=/rock-paper-scissors-spock-lizard#janet>Rock-paper-scissors-Spock-lizard in Janet</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Down to the Metal'
+emoji       = '🔩'
+description = 'Solve any hole in both Assembly and Rust.'
+
+[['Hole/Lang Specific']]
 name        = 'ElePHPant in the Room'
 emoji       = '🐘'
 description = 'Solve any hole in PHP.'
@@ -137,7 +142,7 @@ description = 'Solve <a href=/𝑒#r>𝑒 in R</a>.'
 [['Hole/Lang Specific']]
 name        = 'Evil Scheme'
 emoji       = '😈'
-description = 'Solve <a href=/evil-numbers#scheme>Evil Numbers</a> or <a href=/evil-numbers-long>Evil Numbers (Long)</a> in Scheme.'
+description = 'Solve <a href=/evil-numbers#scheme>Evil Numbers</a> or <a href=/evil-numbers-long#scheme>Evil Numbers (Long)</a> in Scheme.'
 
 [['Hole/Lang Specific']]
 name        = 'Fish ’n’ Chips'
@@ -234,6 +239,13 @@ emoji       = '🍹'
 description = 'Solve any hole in Berry, Coconut, and Elixir.'
 
 [['Hole/Lang Specific']]
+name        = 'Ring Toss'
+emoji       = '🛟'
+description = 'Solve <a href=/tower-of-hanoi>Tower of Hanoi</a> in any nine languages containing the letter "O". '
+holes       = ['tower-of-hanoi']
+target      = 9
+
+[['Hole/Lang Specific']]
 name        = 'S-box 360'
 emoji       = '🎮'
 description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'
@@ -242,6 +254,14 @@ description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft
 name        = 'Simon Sed'
 emoji       = '💬'
 description = 'Solve <a href=/look-and-say#sed>Look and Say in sed</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Sinosphere'
+emoji       = '🥢'
+description = 'Solve <a href=/mahjong>Mahjong</a> in any three of <a href=/mahjong#c>C</a>, <a href=/mahjong#j>J</a>, <a href=/mahjong#k>K</a>, or <a href=/mahjong#v>V</a>.'
+holes       = ['mahjong']
+langs       = ['c', 'j', 'k', 'v']
+target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'Solve Quine'

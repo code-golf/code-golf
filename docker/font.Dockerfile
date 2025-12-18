@@ -1,4 +1,4 @@
-FROM node:25.1.0-bookworm-slim
+FROM node:25.2.1-trixie-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
@@ -6,7 +6,7 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
-ENV VER=397dec7
+ENV VER=bbe76d8
 
 WORKDIR /twemoji-colr
 
@@ -81,6 +81,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f520.svg'            `# Input Latin Uppercase`        \
     '*/1f523.svg'            `# Input Symbols`                \
     '*/1f526.svg'            `# Flashlight`                   \
+    '*/1f529.svg'            `# Nut and Bolt`                 \
     '*/1f549.svg'            `# Om`                           \
     '*/1f596.svg'            `# Vulcan Salute`                \
     '*/1f5a5.svg'            `# Desktop Computer`             \
@@ -115,11 +116,13 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f697.svg'            `# Automobile`                   \
     '*/1f6a2.svg'            `# Ship`                         \
     '*/1f6a9.svg'            `# Triangular Flag on Post`      \
+    '*/1f6df.svg'            `# Ring Buoy`                    \
     '*/1f910.svg'            `# Zipper-Mouth Face`            \
     '*/1f947.svg'            `# 1st Place Medal`              \
     '*/1f948.svg'            `# 2nd Place Medal`              \
     '*/1f949.svg'            `# 3rd Place Medal`              \
     '*/1f961.svg'            `# Takeout Box`                  \
+    '*/1f962.svg'            `# Chopsticks`                   \
     '*/1f963.svg'            `# Bowl with Spoon`              \
     '*/1f967.svg'            `# Pie`                          \
     '*/1f96a.svg'            `# Sandwich`                     \
@@ -154,6 +157,8 @@ RUN echo [] > extras/ligatures.json                           \
  && rm twe-svg.zip                                            \
     svg/1f1ea-1f1fa.svg      `# Flag: European Union`         \
     svg/1f1fa-1f1f3.svg      `# Flag: United Nations`         \
- && zip -qr twe-svg.zip svg                                   \
- && make                                                      \
- && woff2_compress 'build/Twemoji Mozilla.ttf'
+ && zip -qr twe-svg.zip svg
+
+COPY font.sh ./
+
+RUN ./font.sh

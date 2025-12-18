@@ -1,16 +1,16 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev
 
 ENV VER=1.8.1
 
 RUN curl -#L https://github.com/jqlang/jq/releases/download/jq-$VER/jq-$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN ./configure                        \
-    --prefix=/usr                      \
-    --with-oniguruma=builtin           \
- && make LDFLAGS='-all-static' install \
+RUN ./configure         \
+    --enable-all-static \
+    --prefix=/usr       \
+ && make install        \
  && strip /usr/bin/jq
 
 FROM codegolf/lang-base

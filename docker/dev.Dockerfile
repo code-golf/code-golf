@@ -1,4 +1,4 @@
-FROM golang:1.25.4-alpine3.22
+FROM golang:1.25.5-alpine3.23
 
 ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 
@@ -6,7 +6,7 @@ ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 RUN apk add --no-cache build-base curl git linux-headers tzdata \
  && GOBIN=/bin go install github.com/cespare/reflex@latest
 
-COPY --from=codegolf/lang-go       / /langs/go/rootfs/
+COPY --from=codegolf/lang-go           / /langs/go/rootfs/
 
 COPY cmd/hash-langs ./cmd/hash-langs
 

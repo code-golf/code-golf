@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
 )
@@ -12,11 +13,11 @@ import (
 // GET /recent/golfers
 func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 	var data []struct {
+		golfer.GolferLink
+
 		Cheevos config.Cheevos
-		Country *config.Country
 		Date    time.Time
 		Langs   config.Langs
-		Name    string
 	}
 
 	if err := session.Database(r).Select(
@@ -32,9 +33,9 @@ func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id
 		  ORDER BY date DESC
 		     LIMIT $1
-		)  SELECT country_flag country, cheevos, date, login name, langs
+		)  SELECT avatar_url, country_flag, cheevos, date, name, langs
 		     FROM cheevos
-		     JOIN users ON id = user_id
+		     JOIN golfers_with_avatars ON id = user_id
 		LEFT JOIN langs USING (user_id)
 		 ORDER BY date DESC`,
 		pager.PerPage,
