@@ -76,6 +76,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f4e3.svg'            `# Megaphone`                    \
     '*/1f4eb.svg'            `# Mailbox`                      \
     '*/1f4f4.svg'            `# Mobile Phone Off`             \
+    '*/1f4fa.svg'            `# Television`                   \
     '*/1f511.svg'            `# Key`                          \
     '*/1f51e.svg'            `# No One Under Eighteen`        \
     '*/1f520.svg'            `# Input Latin Uppercase`        \

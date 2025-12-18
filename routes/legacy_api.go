@@ -264,6 +264,16 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
+			case "prime-numbers", "prime-numbers-long":
+				switch month {
+				case 2, 3, 4, 5, 11:
+					switch day {
+					case 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31:
+						if c := golfer.Earn(db, "prime-time"); c != nil {
+							out.Cheevos = append(out.Cheevos, *c)
+						}
+					}
+				}
 			case "star-wars-gpt", "star-wars-opening-crawl":
 				if month == time.May && day == 4 {
 					if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
