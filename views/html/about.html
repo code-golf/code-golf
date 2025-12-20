@@ -137,14 +137,22 @@
 
         <dt>How are solutions scored?
         <dd>
-            For each hole, in each language, up to 1,000 points are available.
-            The formula is:
-            <blockquote>
-                <i>Points</i> =
-                    <i>S<sub>b</sub></i> ÷ <i>S<sub>u</sub></i> × 1000
-            </blockquote>
-            Where <i>S<sub>u</sub></i> is the length of the user's solution,
-            and <i>S<sub>b</sub></i> is a Bayesian estimator of the form:
+            There are two leaderboards. There is a global leaderboard and
+            a language specitic leaderboard.
+
+            <p>
+                For the language specific leaderboard, the best answer gets
+                1,000 points and the rest will get proportional points.
+
+            <p>
+                For example, if you have double the the best solution, you
+                will get 500 ponts.
+
+            <p>
+                For the global leaderboard, we multiply the score by a
+                <i>Confidence Interval</i>
+
+            <p>The confidence interval is calculated as follows:
             <blockquote>
                 <i>S<sub>b</sub></i> = ((<i>√n</i> + 2) ÷ (<i>√n</i> + 3))
                     × <i>S</i> + (1 ÷ (<i>√n</i> + 3)) × <i>S<sub>a</sub></i>
