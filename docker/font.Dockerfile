@@ -6,7 +6,7 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
-ENV VER=cf77649
+ENV VER=bbe76d8
 
 WORKDIR /twemoji-colr
 
@@ -76,11 +76,13 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f4e3.svg'            `# Megaphone`                    \
     '*/1f4eb.svg'            `# Mailbox`                      \
     '*/1f4f4.svg'            `# Mobile Phone Off`             \
+    '*/1f4fa.svg'            `# Television`                   \
     '*/1f511.svg'            `# Key`                          \
     '*/1f51e.svg'            `# No One Under Eighteen`        \
     '*/1f520.svg'            `# Input Latin Uppercase`        \
     '*/1f523.svg'            `# Input Symbols`                \
     '*/1f526.svg'            `# Flashlight`                   \
+    '*/1f529.svg'            `# Nut and Bolt`                 \
     '*/1f549.svg'            `# Om`                           \
     '*/1f596.svg'            `# Vulcan Salute`                \
     '*/1f5a5.svg'            `# Desktop Computer`             \

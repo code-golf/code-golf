@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -15,16 +16,11 @@ func TestBanners(t *testing.T) {
 		{"2022-12-25T07:00:00Z", "<b>Twelvetide</b> achievement will stop being available"},
 		{"2023-01-01T01:02:03Z", "<b>Twelvetide</b> achievement will stop being available"},
 	} {
-		pass := false
 		time, _ := time.Parse(time.RFC3339, tt.time)
-		for _, b := range banners(&golfer.Golfer{}, time) {
-			if strings.Contains(string(b.Body), tt.cheevo) {
-				pass = true
-				continue
-			}
-		}
 
-		if !pass {
+		if !slices.ContainsFunc(banners(&golfer.Golfer{}, time), func(b banner) bool {
+			return strings.Contains(string(b.Body), tt.cheevo)
+		}) {
 			t.Errorf("banners(%v) didn't produce %v", tt.time, tt.cheevo)
 		}
 	}
