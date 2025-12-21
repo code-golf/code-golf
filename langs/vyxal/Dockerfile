@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 ENV VER=3.10.3
 
@@ -6,11 +6,10 @@ RUN wget -qO /usr/lib/vyxal.jar https://github.com/Vyxal/Vyxal/releases/download
 
 FROM codegolf/lang-java
 
-COPY --from=0 /bin/sh            /bin/
 COPY --from=0 /usr/lib/vyxal.jar /usr/lib/
 
-# Delete default CDS archive used for AppCDS by Kotlin.
-RUN rm /opt/java/lib/server/classes.jsa
+# Delete default CDS archive to save space.
+RUN rm -f /opt/java/lib/server/classes.jsa
 
 FROM codegolf/lang-base
 

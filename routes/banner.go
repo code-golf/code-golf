@@ -12,8 +12,6 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["minesweeper"]
-
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
@@ -21,7 +19,7 @@ type banner struct {
 
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
-	if hole := nextHole; hole != nil {
+	if hole := config.NextHole; hole != nil {
 		t := hole.Released.AsTime(time.UTC)
 		if golfer != nil {
 			t = t.In(golfer.Location())
@@ -111,8 +109,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 
 	location := golfer.Location()
 
-Cheevo:
-	for _, cheevo := range config.CheevoList {
+	for _, cheevo := range config.CheevoTree["Date Specific"] {
 		if golfer.Earned(cheevo.ID) {
 			continue
 		}
@@ -144,18 +141,28 @@ Cheevo:
 					Type:    "info",
 				})
 
-				break Cheevo
+				break
 			}
 		}
 	}
 
 	// Latest hole (if unsolved).
-	if hole := config.RecentHoles[0]; !golfer.Solved(hole.ID) {
+	if hole := config.LatestHole; !golfer.SolvedLatestHole {
 		banners = append(banners, banner{
 			HideKey: "latest-hole-" + hole.ID,
 			Type:    "info",
 			Body: template.HTML(`The <a href="/` + hole.ID + `">` +
 				hole.Name + "</a> hole is now live! Why not try and solve it?"),
+		})
+	}
+
+	// Latest lang (if unsolved).
+	if lang := config.LatestLang; !golfer.SolvedLatestLang {
+		banners = append(banners, banner{
+			HideKey: "latest-lang-" + lang.ID,
+			Type:    "info",
+			Body: template.HTML(lang.Name +
+				" is now live! Why not try and solve a hole in it?"),
 		})
 	}
 

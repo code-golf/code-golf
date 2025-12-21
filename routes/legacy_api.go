@@ -26,7 +26,7 @@ func scoresAllGET(w http.ResponseWriter, r *http.Request) {
 		    SELECT hole,
 		           lang,
 		           scoring,
-		           login,
+		           name login,
 		           chars,
 		           bytes,
 		           submitted
@@ -160,11 +160,11 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        old_best_chars,
 			        old_best_chars_submitted
 			   FROM save_solution(
-			            bytes   := CASE WHEN $3 = 'assembly'::lang
+			            bytes   := CASE WHEN $7
 			                            THEN $5
 			                            ELSE octet_length($1)
 			                            END,
-			            chars   := CASE WHEN $3 = 'assembly'::lang
+			            chars   := CASE WHEN $7
 			                            THEN NULL
 			                            ELSE char_length($1)
 			                            END,
@@ -176,6 +176,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 			        )`,
 			in.Code, in.Hole, in.Lang, golfer.ID, out.Runs[0].ASMBytes,
 			longestRun.Time.Round(time.Millisecond)/time.Millisecond,
+			langObj.Assembly,
 		).Scan(
 			pq.Array(&out.Cheevos),
 			&out.RankUpdates[0].FailingStrokes,
@@ -261,6 +262,16 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 					(month == time.January && day <= 5) {
 					if c := golfer.Earn(db, "twelvetide"); c != nil {
 						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "prime-numbers", "prime-numbers-long":
+				switch month {
+				case 2, 3, 5, 7, 11:
+					switch day {
+					case 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31:
+						if c := golfer.Earn(db, "prime-time"); c != nil {
+							out.Cheevos = append(out.Cheevos, *c)
+						}
 					}
 				}
 			case "star-wars-gpt", "star-wars-opening-crawl":
@@ -379,16 +390,13 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type entry struct {
-		Bytes      *int `json:"bytes"`
-		BytesChars *int `json:"bytes_chars"`
-		Chars      *int `json:"chars"`
-		CharsBytes *int `json:"chars_bytes"`
-		Golfer     struct {
-			ID   int    `json:"id"`
-			Name string `json:"name"`
-		} `json:"golfer"`
-		Me   bool `json:"me"`
-		Rank int  `json:"rank"`
+		Bytes      *int              `json:"bytes"`
+		BytesChars *int              `json:"bytes_chars"`
+		Chars      *int              `json:"chars"`
+		CharsBytes *int              `json:"chars_bytes"`
+		Golfer     Golfer.GolferLink `json:"golfer"`
+		Me         bool              `json:"me"`
+		Rank       int               `json:"rank"`
 	}
 
 	sqlWhere, sqlLimit := "true", "$6"
@@ -427,9 +435,9 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		       AND scoring = $5
 		       AND NOT failing
 		)   SELECT bytes, bytes_chars, chars, chars_bytes, me, rank,
-		           id "golfer.id", login "golfer.name"
+		           avatar_url "golfer.avatar_url", name "golfer.name"
 		      FROM ranks
-		      JOIN users ON id = user_id
+		      JOIN golfers_with_avatars ON id = user_id
 		 LEFT JOIN other_scoring USING(user_id)
 		     WHERE `+sqlWhere+`
 		  ORDER BY row

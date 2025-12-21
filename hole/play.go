@@ -72,8 +72,10 @@ func Play(
 		answers = outputTests(shuffle(fixedTests(hole.ID)))
 	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
 		answers = outputMultirunTests(fixedTests(hole.ID))
-	case "floyd-steinberg-dithering", "hexdump", "minesweeper", "proximity-grid", "star-wars-opening-crawl":
+	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		answers = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
+	case "minesweeper":
+		answers = outputTestsWithSep("\n\n", fixedTests(hole.ID), shuffle(fixedTests(hole.ID)))
 
 	// Holes with a static answer or answer func.
 	default:
@@ -241,7 +243,7 @@ func runCode(
 
 	// Assembly bytes pipe.
 	var asmBytesRead, asmBytesWrite *os.File
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		var err error
 		if asmBytesRead, asmBytesWrite, err = os.Pipe(); err != nil {
 			return err
@@ -302,7 +304,7 @@ func runCode(
 	}
 
 	// Actual byte count is printed by the assembler.
-	if lang.ID == "assembly" {
+	if lang.Assembly {
 		// Explicitly close the writer in case defasm died before it could.
 		// This prevents a very long wait in the upcoming fscanf.
 		asmBytesWrite.Close()

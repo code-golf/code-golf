@@ -4,6 +4,11 @@
 # Date Specific
 
 [['Date Specific']]
+name        = 'Prime Time'
+emoji       = '📺'
+description = 'Solve <a href=/prime-numbers>Prime Numbers</a> or <a href=/prime-numbers-long>Prime Numbers (Long)</a> on a prime day in a prime month.'
+
+[['Date Specific']]
 name        = 'Hugs and Kisses'
 emoji       = '🥰'
 dates       = [2000-02-14, 2000-02-15]
@@ -125,6 +130,11 @@ emoji       = '👄'
 description = 'Solve <a href=/rock-paper-scissors-spock-lizard#janet>Rock-paper-scissors-Spock-lizard in Janet</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Down to the Metal'
+emoji       = '🔩'
+description = 'Solve any hole in both Assembly and Rust.'
+
+[['Hole/Lang Specific']]
 name        = 'ElePHPant in the Room'
 emoji       = '🐘'
 description = 'Solve any hole in PHP.'
@@ -137,7 +147,7 @@ description = 'Solve <a href=/𝑒#r>𝑒 in R</a>.'
 [['Hole/Lang Specific']]
 name        = 'Evil Scheme'
 emoji       = '😈'
-description = 'Solve <a href=/evil-numbers#scheme>Evil Numbers</a> or <a href=/evil-numbers-long>Evil Numbers (Long)</a> in Scheme.'
+description = 'Solve <a href=/evil-numbers#scheme>Evil Numbers</a> or <a href=/evil-numbers-long#scheme>Evil Numbers (Long)</a> in Scheme.'
 
 [['Hole/Lang Specific']]
 name        = 'Fish ’n’ Chips'
@@ -207,6 +217,12 @@ langs       = ['clojure', 'coconut', 'common-lisp', 'haskell', 'scheme']
 target      = 3
 
 [['Hole/Lang Specific']]
+name        = 'Never Eat Shredded Wheat'
+emoji       = '🧭'
+description = 'Solve <a href=/arrows>Arrows</a> in languages beginning with the letters "N", "E", "S", and "W".'
+target      = 4
+
+[['Hole/Lang Specific']]
 name        = 'Off-the-grid'
 emoji       = '📴'
 description = 'Solve <a href=/sudoku#hexagony>Sudoku</a> or <a href=/sudoku-fill-in#hexagony>Sudoku (Fill-in)</a> in Hexagony.'
@@ -228,6 +244,13 @@ emoji       = '🍹'
 description = 'Solve any hole in Berry, Coconut, and Elixir.'
 
 [['Hole/Lang Specific']]
+name        = 'Ring Toss'
+emoji       = '🛟'
+description = 'Solve <a href=/tower-of-hanoi>Tower of Hanoi</a> in any nine languages containing the letter "O". '
+holes       = ['tower-of-hanoi']
+target      = 9
+
+[['Hole/Lang Specific']]
 name        = 'S-box 360'
 emoji       = '🎮'
 description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'
@@ -236,6 +259,14 @@ description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft
 name        = 'Simon Sed'
 emoji       = '💬'
 description = 'Solve <a href=/look-and-say#sed>Look and Say in sed</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Sinosphere'
+emoji       = '🥢'
+description = 'Solve <a href=/mahjong>Mahjong</a> in any three of <a href=/mahjong#c>C</a>, <a href=/mahjong#j>J</a>, <a href=/mahjong#k>K</a>, or <a href=/mahjong#v>V</a>.'
+holes       = ['mahjong']
+langs       = ['c', 'j', 'k', 'v']
+target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'Solve Quine'
@@ -276,9 +307,25 @@ emoji       = '💡'
 description = 'Solve <a href=/si-units#powershell>SI Units in PowerShell</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'When in Rome'
+emoji       = '🏛️'
+description = 'Solve <a href=/roman-to-arabic>Roman to Arabic</a> in any three of <a href=/roman-to-arabic#c>C</a>, <a href=/roman-to-arabic#d>D</a>, <a href=/roman-to-arabic#v>V</a>, or <a href=/roman-to-arabic#viml>VimL</a>.'
+holes       = ['roman-to-arabic']
+langs       = ['c', 'd', 'v', 'viml']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'X-Factor'
 emoji       = '❌'
 description = 'Solve <a href=/factorial-factorisation#factor>Factorial Factorisation in Factor</a>.'
+
+[['Hole/Lang Specific']]
+name        = 'Zoodiac Signs'
+emoji       = '🌠'
+description = 'Solve <a href=/zodiac-signs>Zodiac Signs</a> in any three languages whose logo depicts an animal.'
+holes       = ['zodiac-signs']
+langs       = ['awk', 'basic', 'civet', 'factor', 'ocaml', 'perl', 'prolog', 'python', 'raku', 'swift', 'wren']
+target      = 3
 
 # Miscellaneous
 

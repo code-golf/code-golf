@@ -18,7 +18,7 @@ func golferAvatarGET(w http.ResponseWriter, r *http.Request) {
 		`SELECT c.id
 		   FROM users       u
 		   JOIN connections c ON c.user_id = u.id AND c.connection = 'github'
-		  WHERE login = $1`,
+		  WHERE name = $1`,
 		param(r, "name"),
 	); errors.Is(err, sql.ErrNoRows) {
 		w.WriteHeader(http.StatusNotFound)

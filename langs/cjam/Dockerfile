@@ -1,6 +1,4 @@
-FROM alpine:3.22 AS builder
-
-RUN apk add --no-cache coreutils
+FROM alpine:3.23 AS builder
 
 ENV VER=0.6.5
 
@@ -8,16 +6,10 @@ RUN wget -qO /usr/lib/cjam.jar https://downloads.sourceforge.net/cjam/cjam-$VER.
 
 FROM codegolf/lang-java
 
-COPY --from=0 /bin/sh                     /bin/
-COPY --from=0 /usr/lib/cjam.jar           \
-              /usr/lib/libacl.so.1        \
-              /usr/lib/libattr.so.1       \
-              /usr/lib/libcrypto.so.3     \
-              /usr/lib/libskarnet.so.2.14 \
-              /usr/lib/libutmps.so.0.1    /usr/lib/
+COPY --from=0 /usr/lib/cjam.jar /usr/lib/
 
-# Delete default CDS archive used for AppCDS by Kotlin.
-RUN rm /opt/java/lib/server/classes.jsa
+# Delete default CDS archive to save space.
+RUN rm -f /opt/java/lib/server/classes.jsa
 
 FROM codegolf/lang-base
 

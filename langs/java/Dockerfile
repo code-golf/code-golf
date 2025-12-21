@@ -1,13 +1,13 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev \
+RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl dash fontconfig-dev \
                        libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
 
 # Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
 ENV VER=25.0.1 BUILD=8
 
 RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk_x64_alpine-linux_hotspot_${VER}_$BUILD.tar.gz \
-  | tar xz --directory /tmp --strip-components 1
+  | tar xz --directory /opt --strip-components 1
 
 RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk-sources_${VER}_$BUILD.tar.gz \
   | tar xz --strip-components 1
@@ -18,7 +18,7 @@ RUN bash configure                     \
     --enable-jvm-feature-link-time-opt \
     --enable-jvm-feature-management    \
     --enable-jvm-feature-opt-size      \
-    --with-boot-jdk=/tmp               \
+    --with-boot-jdk=/opt               \
     --with-conf-name=release           \
     --with-jobs=`nproc`                \
     --without-test-jobs                \
@@ -41,7 +41,8 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/java -s -static java.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/rm                               /bin/
+COPY --from=0 /bin/bash /bin/rm /bin/uname          /bin/
+COPY --from=0 /usr/bin/dash                         /bin/sh
 COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /opt/java/bin/java                    /opt/java/bin/
 COPY --from=0 /opt/java/conf/security/java.security /opt/java/conf/security/
@@ -59,8 +60,12 @@ COPY --from=0 /opt/java/lib/jrt-fs.jar              \
               /opt/java/lib/tzdb.dat                /opt/java/lib/
 COPY --from=0 /opt/java/lib/server/classes.jsa      \
               /opt/java/lib/server/libjvm.so        /opt/java/lib/server/
-COPY --from=0 /usr/bin/java                         /usr/bin/
-COPY --from=0 /usr/lib/libz.so.1                    /usr/lib/
+COPY --from=0 /usr/bin/dirname                      \
+              /usr/bin/env                          \
+              /usr/bin/java                         /usr/bin/
+COPY --from=0 /usr/lib/libncursesw.so.6             \
+              /usr/lib/libreadline.so.8             \
+              /usr/lib/libz.so.1                    /usr/lib/
 
 ENTRYPOINT ["java"]
 

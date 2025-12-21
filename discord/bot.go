@@ -22,12 +22,10 @@ const minElapsedTimeToShowDate = 30 * 24 * time.Hour
 
 var (
 	bot                 *discordgo.Session
+	freshHole           = config.LatestHole
+	freshLang           = config.LatestLang
 	lastAnnouncementMap = make(map[string]*RecAnnouncement)
 	mux                 sync.Mutex
-
-	// TODO Make this dynamic based on hole/lang age.
-	freshHole = config.HoleByID["minesweeper"]
-	freshLang = config.LangByID["groovy"]
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
@@ -51,6 +49,11 @@ type RecAnnouncement struct {
 }
 
 func init() {
+	// Is the latest lang still that fresh?
+	if time.Since(freshLang.Released.AsTime(time.UTC)) > 1000*time.Hour {
+		freshLang = nil
+	}
+
 	// Ensure we have all our config.
 	switch "" {
 	case botToken, chanFreshID, chanSourID, chanWildID, guildID,
@@ -102,7 +105,7 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 }
 
 func getUsername(id int, db *sqlx.DB) (name string) {
-	err := db.Get(&name, "SELECT login FROM users WHERE id = $1", id)
+	err := db.Get(&name, "SELECT name FROM users WHERE id = $1", id)
 	if err != nil {
 		name = "unknown golfer"
 		log.Println(err)
@@ -114,8 +117,6 @@ func getUsername(id int, db *sqlx.DB) (name string) {
 // recAnnounceToEmbed parses a recAnnouncement object and turns it into a Discord embed
 func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.MessageEmbed {
 	hole, lang, golfer := announce.Hole, announce.Lang, announce.Golfer
-	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
-	golferURL := "https://code.golf/golfers/" + golfer.Name
 
 	titlePrefix := "New Tied 🥇"
 	isUnicorn := false
@@ -124,7 +125,7 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 	embed := &discordgo.MessageEmbed{
 		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/",
 		Fields: make([]*discordgo.MessageEmbedField, 0, 2),
-		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+		Author: messageEmbedAuthor(golfer),
 	}
 
 	// Now, we fill out the fields according to the updates of the announcement
@@ -193,7 +194,8 @@ func recAnnounceToEmbed(announce *RecAnnouncement, db *sqlx.DB) *discordgo.Messa
 			}
 
 			if update.FailingStrokes.Valid && update.FailingStrokes.V <= update.To.Strokes.V {
-				fieldValues[update.Scoring] += fmt.Sprintf(" (replaced failing %d)", update.FailingStrokes.V)
+				fieldValues[update.Scoring] += fmt.Sprintf(
+					" (replaced failing %s)", pretty.Comma(update.FailingStrokes.V))
 			}
 		}
 	}
@@ -314,13 +316,10 @@ func LogFailedRejudge(golfer *Golfer.Golfer, hole *config.Hole, lang *config.Lan
 		return
 	}
 
-	imageURL := "https://code.golf/golfers/" + golfer.Name + "/avatar"
-	golferURL := "https://code.golf/golfers/" + golfer.Name
-
 	if _, err := bot.ChannelMessageSendEmbed(channel(hole, lang), &discordgo.MessageEmbed{
 		Title:  fmt.Sprintf("%s in %s failed rejudge!", hole.Name, lang.Name),
 		URL:    "https://code.golf/rankings/holes/" + hole.ID + "/" + lang.ID + "/" + scoring,
-		Author: &discordgo.MessageEmbedAuthor{Name: golfer.Name, IconURL: imageURL, URL: golferURL},
+		Author: messageEmbedAuthor(golfer),
 	}); err != nil {
 		log.Println(err)
 	}
@@ -440,7 +439,7 @@ func logNewRecord(
 	}
 }
 
-func loadLastAnnouncement(db *sqlx.DB, channelID string) (result *RecAnnouncement) {
+func loadLastAnnouncement(db *sqlx.DB, channelID string) (announcement *RecAnnouncement) {
 	var bytes []byte
 
 	if err := db.QueryRow(
@@ -451,14 +450,19 @@ func loadLastAnnouncement(db *sqlx.DB, channelID string) (result *RecAnnouncemen
 		return
 	}
 
-	var announcement RecAnnouncement
 	if err := json.Unmarshal(bytes, &announcement); err != nil {
 		log.Println(err)
-	} else {
-		result = &announcement
 	}
 
 	return
+}
+
+func messageEmbedAuthor(golfer *Golfer.Golfer) *discordgo.MessageEmbedAuthor {
+	return &discordgo.MessageEmbedAuthor{
+		IconURL: golfer.AvatarURL,
+		Name:    golfer.Name,
+		URL:     "https://code.golf/golfers/" + golfer.Name,
+	}
 }
 
 func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
