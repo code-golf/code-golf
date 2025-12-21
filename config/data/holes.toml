@@ -426,12 +426,13 @@ T D N I
     because it meets all other validation criteria, the word "code" is valid.
 
 <p>
-    On one side of all dice is the letter 'Q', which is a special case because
-    it's considered two letters: 'Q' and 'U'. This is because the letter 'q' is
-    immediately followed by the letter 'u' in almost every English word. Even
-    if an adjacent die shows the letter 'U', the two-letter rule still applies,
-    as it's used to form words that contain an additional letter 'u' in
-    addition to "qu", such as "s<b>u</b>bse<b>qu</b>ent".
+    On one side of one of the dice is the letter 'Q', which is a special case.
+    In the vast majority of English words containing the letter 'q', it is
+    immediately followed by the letter 'u'. However, there is a chance that the
+    letters 'Q' and 'U' will end up next to each other after rolling the dice,
+    although this can take a long time. To make this more bearable, the letter
+    'Q' can also count as "Qu" in games where the letter 'U' is not rolled or
+    is not reachable. In all other cases, the usual game procedure applies.
 
 <p>
     Print all unique words <b>valid</b> for each given grid per first argument

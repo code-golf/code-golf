@@ -9,10 +9,10 @@ import (
 const gridSize = 4
 
 var dice = []string{
-	"AACIOT", "ABILTY", "ABJMOQ", "ACDEMP",
-	"ACELRS", "ADENVZ", "AHMORS", "BIFORX",
-	"DENOSW", "DKNOTU", "EEFHIY", "EGINTV",
-	"EGKLUY", "EHINPS", "ELPSTU", "GILRUW",
+	"AACIOT", "AHMORS", "EGKLUY", "ABILTY",
+	"ACDEMP", "EGINTV", "GILRUW", "ELPSTU",
+	"DENOSW", "ACELRS", "ABJMOQ", "EEFHIY",
+	"EHINPS", "DKNOTU", "ADENVZ", "BIFORX",
 }
 
 var _ = answerFunc("boggle", func() []Answer {
@@ -34,7 +34,6 @@ var _ = answerFunc("boggle", func() []Answer {
 
 				grid[r][c] = letter
 
-				// 'Q' is always followed by a virtual 'U', regardless of whether 'U' is also an adjacent letter.
 				if letters[letter]++; letter == 'Q' {
 					letters['U']++
 				}
@@ -58,11 +57,13 @@ var _ = answerFunc("boggle", func() []Answer {
 	outer: // Identify all valid and nearly valid words.
 		for _, word := range shuffle(dictionary) {
 			if used, uses := validate(grid, strings.ToUpper(word)), maps.Clone(letters); len(word)-used <= 2 {
-				// Before adding the word, first check if the unused letters appear in the grid.
-				for _, letter := range strings.ToUpper(word)[used-1:] {
-					if uses[byte(letter)]--; uses[byte(letter)] <= 0 {
+				// Before adding the word, first check that every letter appears in the grid.
+				for _, letter := range strings.ToUpper(word) {
+					if uses[byte(letter)] <= 0 {
 						continue outer
 					}
+
+					uses[byte(letter)]--
 				}
 
 				words = append(words, word)
