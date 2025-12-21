@@ -1,8 +1,12 @@
 package hole
 
-import "strings"
+import (
+	"maps"
+	"slices"
+	"strings"
+)
 
-const alphabet = "abcdefghijklmnopqrstuvwxyz"
+const gridSize = 4
 
 var dice = []string{
 	"AACIOT", "ABILTY", "ABJMOQ", "ACDEMP",
@@ -12,141 +16,137 @@ var dice = []string{
 }
 
 var _ = answerFunc("boggle", func() []Answer {
-	answers := make([]Answer, 5)
+	answers := make([]Answer, gridSize)
 
 	for i := range answers {
-		var board [4][4]byte
-
-		// Separate the letters and words as arguments.
-		args := make([]strings.Builder, 2)
+		var args, answer strings.Builder
 
 		shuffle(dice)
 
-		for j, row := range board {
-			for k := range row {
-				die := dice[k+j*len(row)]
+		dictionary, letters := slices.Clone(words), make(map[byte]int)
 
-				board[j][k] = die[randInt(0, 5)]
+		var grid [gridSize][gridSize]byte
 
-				args[0].WriteByte(board[j][k])
+		// Build "grid" argument.
+		for r, row := range grid {
+			for c := range row {
+				letter := randChoice([]byte(dice[r*gridSize+c]))
 
-				if k < len(row)-1 {
-					args[0].WriteByte(' ')
+				grid[r][c] = letter
+				letters[letter]++
+				args.WriteByte(letter)
+
+				if c < gridSize-1 {
+					args.WriteByte(' ')
 				}
 			}
 
-			if j < len(row)-1 {
-				args[0].WriteByte('\n')
+			if r < gridSize-1 {
+				args.WriteByte('\n')
 			}
 		}
 
-		var wordList []string
+		answers[i].Args = []string{args.String()}
 
-		// Determine all the valid words.
-		for _, word := range shuffle(words) {
-			if validate(board, strings.ToUpper(word)) {
-				wordList = append(wordList, word)
+		var words []string
+
+	outer: // Identify all valid and nearly valid words.
+		for _, word := range shuffle(dictionary) {
+			if used, uses := validate(grid, strings.ToUpper(word)), maps.Clone(letters); len(word)-used <= 2 {
+				// Before adding the word, first check if the unused letters appear in the grid.
+				for _, letter := range strings.ToUpper(word)[used:] {
+					if uses[byte(letter)]--; uses[byte(letter)] <= 0 {
+						continue outer
+					}
+				}
+
+				words = append(words, word)
+
+				// A perfectly valid word.
+				if len(word) == used {
+					answer.WriteString(word)
+					answer.WriteByte('\n')
+				}
 			}
 		}
-
-		// Duplicate a number of valid words.
-		for range 10 {
-			wordList = append(wordList, randChoice(wordList))
-		}
-
-		// Generate a number of words that are too short.
-		for j := range 10 {
-			wordList = append(wordList, strings.Repeat(string(randChoice([]byte(alphabet))), j%2+1))
-		}
-
-		// Append a number of dictionary words. *** This needs more shizzle ***
-		for j := 0; j < 25; {
-			word := randWord()
-
-			if len(word) < len(board)-1 || len(word) > len(board)*2-1 {
-				continue
-			}
-
-			wordList = append(wordList, word)
-			j++
-		}
-
-		var answer strings.Builder
-
-		unique := make(map[string]bool)
-
-		// Build the argument and the answer.
-		for _, word := range shuffle(wordList) {
-			if args[1].String() != "" {
-				args[1].WriteByte(' ')
-			}
-
-			if !unique[word] && validate(board, strings.ToUpper(word)) {
-				answer.WriteString(word)
-				answer.WriteByte('\n')
-
-				unique[word] = true
-			}
-
-			args[1].WriteString(word)
-		}
-
-		// Enforce no valid words for one of the runs if it didn't already generate.
-		// If more than one such run occurs, regenerate the run so there's only one. But, unlikely.
-		//
-		// Implement case 'Q' and explain in description.
 
 		// No valid words.
 		if answer.String() == "" {
 			answer.WriteByte('-')
 		}
 
-		answers[i] = Answer{Args: []string{args[0].String(), args[1].String()}, Answer: answer.String()}
+		answers[i].Answer = answer.String()
+
+		const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+		// Add any letter of the alphabet.
+		words = append(words, string(randChoice([]byte(alphabet))))
+
+		// Add a combination of any two unique letters from the alphabet.
+		words = append(words, string(shuffle([]byte(alphabet))[:2]))
+
+		// Add a copy of any valid word.
+		words = append(words, randChoice(strings.Fields(answers[i].Answer)))
+
+		// Add any word from the dictionary.
+		words = append(words, randWord())
+
+		args.Reset()
+
+		// Build "words" argument.
+		for _, word := range shuffle(words) {
+			if args.String() != "" {
+				args.WriteByte(' ')
+			}
+
+			args.WriteString(word)
+		}
+
+		answers[i].Args = append(answers[i].Args, args.String())
 	}
 
 	return answers
 })
 
-func validate(b [4][4]byte, s string) bool {
-	if l := len(b); len(s) < l-1 || len(s) > l*l {
-		return false
-	}
+func validate(grid [gridSize][gridSize]byte, word string) int {
+	var used int
 
-	used := [4][4]bool{}
+	if len(word) >= gridSize-1 && len(word) < gridSize*gridSize {
+		var uses [gridSize][gridSize]bool
 
-	for i, row := range b {
-		for j, letter := range row {
-			if dfs(b, used, s, 0, i, j) && s[0] == letter {
-				return true
+		for r, row := range grid {
+			for c := range row {
+				if n := dfs(grid, uses, word, 0, r, c); n > used {
+					used = n
+				}
 			}
 		}
 	}
 
-	return false
+	return used
 }
 
-func dfs(b [4][4]byte, used [4][4]bool, s string, i, j, k int) bool {
-	if len(s) == i {
-		return true
+func dfs(grid [gridSize][gridSize]byte, uses [gridSize][gridSize]bool, word string, index, row, col int) int {
+	switch true {
+	case index == len(word), row < 0, row > gridSize-1, col < 0, col > gridSize-1, uses[row][col], grid[row][col] != word[index]:
+		return 0
 	}
 
-	if l := len(b) - 1; j < 0 || j > l || k < 0 || k > l || used[j][k] || s[i] != b[j][k] {
-		return false
-	}
+	var used int
 
-	used[j][k] = true
+	uses[row][col] = true
 
-	for _, direction := range [][2]int{
+	for _, direction := range [...][2]int{
 		{-1, -1}, {-1, +0}, {-1, +1},
 		{+0, -1}, {+0, +1},
 		{+1, -1}, {+1, +0}, {+1, +1},
 	} {
-		if dfs(b, used, s, i+1, j+direction[0], k+direction[1]) {
-			return true
+		if n := dfs(grid, uses, word, index+1, row+direction[0], col+direction[1]); n > used {
+			used = n
 		}
 	}
 
-	used[j][k] = false
+	uses[row][col] = false
 
-	return false
+	return used + 1
 }
