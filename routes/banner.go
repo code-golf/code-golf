@@ -12,8 +12,6 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["tower-of-hanoi"]
-
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
@@ -21,7 +19,7 @@ type banner struct {
 
 func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	// Upcoming hole.
-	if hole := nextHole; hole != nil {
+	if hole := config.NextHole; hole != nil {
 		t := hole.Released.AsTime(time.UTC)
 		if golfer != nil {
 			t = t.In(golfer.Location())
@@ -111,7 +109,6 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 
 	location := golfer.Location()
 
-Cheevo:
 	for _, cheevo := range config.CheevoTree["Date Specific"] {
 		if golfer.Earned(cheevo.ID) {
 			continue
@@ -144,7 +141,7 @@ Cheevo:
 					Type:    "info",
 				})
 
-				break Cheevo
+				break
 			}
 		}
 	}

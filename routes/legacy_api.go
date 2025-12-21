@@ -266,7 +266,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 				}
 			case "prime-numbers", "prime-numbers-long":
 				switch month {
-				case 2, 3, 4, 5, 11:
+				case 2, 3, 5, 7, 11:
 					switch day {
 					case 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31:
 						if c := golfer.Earn(db, "prime-time"); c != nil {
