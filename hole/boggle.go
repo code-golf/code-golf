@@ -59,7 +59,7 @@ var _ = answerFunc("boggle", func() []Answer {
 		for _, word := range shuffle(dictionary) {
 			if used, uses := validate(grid, strings.ToUpper(word)), maps.Clone(letters); len(word)-used <= 2 {
 				// Before adding the word, first check if the unused letters appear in the grid.
-				for _, letter := range strings.ToUpper(word)[used:] {
+				for _, letter := range strings.ToUpper(word)[used-1:] {
 					if uses[byte(letter)]--; uses[byte(letter)] <= 0 {
 						continue outer
 					}
@@ -91,7 +91,9 @@ var _ = answerFunc("boggle", func() []Answer {
 		words = append(words, string(shuffle([]byte(alphabet))[:2]))
 
 		// Add a copy of any valid word.
-		words = append(words, randChoice(strings.Fields(answers[i].Answer)))
+		if answers[i].Answer != "-" {
+			words = append(words, randChoice(strings.Fields(answers[i].Answer)))
+		}
 
 		// Add any word from the dictionary.
 		words = append(words, randWord())
@@ -133,7 +135,7 @@ func validate(grid [gridSize][gridSize]byte, word string) int {
 
 func dfs(grid [gridSize][gridSize]byte, uses [gridSize][gridSize]bool, word string, index, r, c int) int {
 	switch true {
-	case index == len(word), r < 0, r > gridSize-1, c < 0, c > gridSize-1, uses[r][c], grid[r][c] != word[index]:
+	case index >= len(word), r < 0, r >= gridSize, c < 0, c >= gridSize, uses[r][c], grid[r][c] != word[index]:
 		return 0
 	}
 
