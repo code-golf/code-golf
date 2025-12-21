@@ -33,7 +33,12 @@ var _ = answerFunc("boggle", func() []Answer {
 				letter := randChoice([]byte(dice[r*gridSize+c]))
 
 				grid[r][c] = letter
-				letters[letter]++
+
+				// 'Q' is always followed by a virtual 'U', regardless of whether 'U' is also an adjacent letter.
+				if letters[letter]++; letter == 'Q' {
+					letters['U']++
+				}
+
 				args.WriteByte(letter)
 
 				if c < gridSize-1 {
@@ -126,27 +131,31 @@ func validate(grid [gridSize][gridSize]byte, word string) int {
 	return used
 }
 
-func dfs(grid [gridSize][gridSize]byte, uses [gridSize][gridSize]bool, word string, index, row, col int) int {
+func dfs(grid [gridSize][gridSize]byte, uses [gridSize][gridSize]bool, word string, index, r, c int) int {
 	switch true {
-	case index == len(word), row < 0, row > gridSize-1, col < 0, col > gridSize-1, uses[row][col], grid[row][col] != word[index]:
+	case index == len(word), r < 0, r > gridSize-1, c < 0, c > gridSize-1, uses[r][c], grid[r][c] != word[index]:
 		return 0
 	}
 
-	var used int
+	var used, offset int
 
-	uses[row][col] = true
+	uses[r][c] = true
+
+	if word[index] == 'Q' {
+		offset++
+	}
 
 	for _, direction := range [...][2]int{
 		{-1, -1}, {-1, +0}, {-1, +1},
 		{+0, -1}, {+0, +1},
 		{+1, -1}, {+1, +0}, {+1, +1},
 	} {
-		if n := dfs(grid, uses, word, index+1, row+direction[0], col+direction[1]); n > used {
-			used = n
+		if n := dfs(grid, uses, word, index+1+offset, r+direction[0], c+direction[1]); n+offset > used {
+			used = n + offset
 		}
 	}
 
-	uses[row][col] = false
+	uses[r][c] = false
 
 	return used + 1
 }
