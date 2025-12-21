@@ -19,11 +19,13 @@ COPY --chown=nobody                                      \
      --from=0 /cache                                     /cache
 COPY --from=0 /lib/ld-musl-*.so.1                        /lib/
 COPY --from=0 /usr/bin/go                                /usr/bin/
-COPY --from=0 /usr/local/go/bin/go                       /usr/local/go/bin/
+COPY --from=0 /usr/local/go/bin/go                       /usr/local/bin/
 COPY --from=0 /usr/local/go/pkg/tool/linux_amd64/asm     \
               /usr/local/go/pkg/tool/linux_amd64/compile \
-              /usr/local/go/pkg/tool/linux_amd64/link    /usr/local/go/pkg/tool/linux_amd64/
-COPY --from=0 /usr/local/go/src                          /usr/local/go/src
+              /usr/local/go/pkg/tool/linux_amd64/link    /usr/local/pkg/tool/linux_amd64/
+COPY --from=0 /usr/local/go/src                          /usr/local/src
+
+ENV PATH=/usr/bin
 
 ENTRYPOINT ["go"]
 

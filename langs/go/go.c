@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* go = "/usr/local/go/bin/go", *code = "code.go";
+const char* go = "/usr/local/bin/go", *code = "code.go";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -31,14 +32,32 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int gargc = argc + 2;
+    pid_t pid;
+
+    if (!(pid = fork())) {
+        execl(go, go, "build", code, NULL);
+        ERR_AND_EXIT("execl");
+    }
+
+    int status;
+
+    waitpid(pid, &status, 0);
+
+    if (!WIFEXITED(status))
+        exit(EXIT_FAILURE);
+
+    if (WEXITSTATUS(status))
+        return WEXITSTATUS(status);
+
+    if (remove(code))
+        ERR_AND_EXIT("remove");
+
+    int gargc = argc;
     char** gargv = malloc(gargc * sizeof(char*));
-    gargv[0] = (char*) go;
-    gargv[1] = "run";
-    gargv[2] = (char*) code;
-    memcpy(&gargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    gargv[0] = "code";
+    memcpy(&gargv[1], &argv[2], (argc - 2) * sizeof(char*));
     gargv[gargc - 1] = NULL;
 
-    execv(go, gargv);
+    execv("code", gargv);
     ERR_AND_EXIT("execv");
 }
