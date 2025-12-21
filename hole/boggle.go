@@ -153,8 +153,8 @@ func dfs(grid [gridSize][gridSize]byte, uses [gridSize][gridSize]bool, word stri
 		{+0, -1}, {+0, +1},
 		{+1, -1}, {+1, +0}, {+1, +1},
 	} {
-		if n := dfs(grid, uses, word, index+1+offset, r+direction[0], c+direction[1]); n+offset > used {
-			used = n + offset
+		if n := dfs(grid, uses, word, index+1+offset, r+direction[0], c+direction[1]) + offset; n > used {
+			used = n
 		}
 	}
 
