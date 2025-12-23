@@ -9,14 +9,14 @@ import (
 const gridSize = 4
 
 var _ = answerFunc("boggle", func() []Answer {
-	answers := make([]Answer, gridSize)
+	answers := make([]Answer, gridSize+1)
 
 	for i := 0; i < len(answers); {
 		var grid [gridSize][gridSize]byte
 
 		dice := scramble(&grid)
 
-		// Force at least two runs involving "Qu".
+		// Force two runs involving "Qu".
 		if i%2 == dice['q'] {
 			continue
 		}
@@ -48,9 +48,15 @@ var _ = answerFunc("boggle", func() []Answer {
 					}
 				}
 
-				if words = append(words, word); unused == 0 {
+				if unused != 0 {
+					// Force a run with no valid words.
+					if words = append(words, word); i == 1 {
+						continue
+					}
+				} else if i != 1 {
 					// A perfectly valid word.
 					fmt.Fprintln(&answer, word)
+					words = append(words, word)
 				}
 			}
 		}
@@ -74,7 +80,9 @@ var _ = answerFunc("boggle", func() []Answer {
 		words = append(words, string(shuffle([]byte(alphabet))[:2]))
 
 		// Add four more random words.
-		words = append(words, randWord(), randWord(), randWord(), randWord())
+		if i != 1 {
+			words = append(words, randWord(), randWord(), randWord(), randWord())
+		}
 
 		// Build "words" argument.
 		args.WriteString(strings.Join(shuffle(words), " "))
