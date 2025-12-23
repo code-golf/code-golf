@@ -264,6 +264,12 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
+			case "calendar":
+				if day == 1 {
+					if c := golfer.Earn(db, "turn-over-a-new-leaf"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
 			case "prime-numbers", "prime-numbers-long":
 				switch month {
 				case 2, 3, 5, 7, 11:
