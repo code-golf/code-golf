@@ -712,7 +712,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '716 KiB'
+size       = '728 KiB'
 version    = '1.6.0'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -1214,8 +1214,8 @@ for (arg in args)
 
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '383 KiB'
-version = '5.4.8'
+size    = '396 KiB'
+version = '5.5.0'
 website = 'https://www.lua.org'
 example = '''
 -- Printing
@@ -1365,7 +1365,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.0'
+version = '8.5.1'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1534,8 +1534,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.11'
+size      = '76.5 MiB'
+version   = 'Raku 6.d on Rakudo 2025.12'
 website   = 'https://raku.org'
 example   = '''
 # Printing
