@@ -17,7 +17,7 @@ var _ = answerFunc("boggle", func() []Answer {
 		dice := scramble(&grid)
 
 		// Force two runs involving "Qu".
-		if i%2 == dice['q'] {
+		if i%2 != dice['q'] {
 			continue
 		}
 
@@ -50,10 +50,10 @@ var _ = answerFunc("boggle", func() []Answer {
 
 				if unused != 0 {
 					// Force a run with no valid words.
-					if words = append(words, word); i == 1 {
+					if words = append(words, word); i == 0 {
 						continue
 					}
-				} else if i != 1 {
+				} else if i != 0 {
 					// A perfectly valid word.
 					fmt.Fprintln(&answer, word)
 					words = append(words, word)
@@ -80,7 +80,7 @@ var _ = answerFunc("boggle", func() []Answer {
 		words = append(words, string(shuffle([]byte(alphabet))[:2]))
 
 		// Add four more random words.
-		if i != 1 {
+		if i != 0 {
 			words = append(words, randWord(), randWord(), randWord(), randWord())
 		}
 
