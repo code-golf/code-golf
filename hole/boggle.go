@@ -16,7 +16,7 @@ var _ = answerFunc("boggle", func() []Answer {
 
 		dice := scramble(&grid)
 
-		// Force two runs involving "Qu".
+		// Force two runs involving 'Q'.
 		if i%2 != dice['q'] {
 			continue
 		}
@@ -106,13 +106,9 @@ func scramble(grid *[gridSize][gridSize]byte) map[byte]int {
 
 	for r, row := range grid {
 		for c := range row {
-			letter := randChoice([]byte(dice[r*gridSize+c]))
+			grid[r][c] = randChoice([]byte(dice[r*gridSize+c]))
 
-			if letters[letter]++; letter == 'q' {
-				letters['u']++
-			}
-
-			grid[r][c] = letter
+			letters[grid[r][c]]++
 		}
 	}
 
@@ -145,7 +141,7 @@ func dfs(grid *[gridSize][gridSize]byte, uses *[gridSize][gridSize]bool, word st
 
 	var used, offset int
 
-	if uses[r][c] = true; word[index] == 'q' {
+	if uses[r][c] = true; word[index] == 'q' && strings.Contains(word, "qu") {
 		offset++
 	}
 
