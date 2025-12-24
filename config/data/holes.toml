@@ -431,8 +431,8 @@ T D N I
     immediately followed by the letter 'u'. However, there is a chance that the
     letters 'Q' and 'U' will end up next to each other after rolling the dice,
     although this can take a long time. To make this more bearable, the letter
-    'Q' can also count as "Qu" in games where the letter 'U' is not rolled or
-    is not reachable. In all other cases, the usual game procedure applies.
+    'Q' always counts as "Qu" when forming words containing "qu". In all other
+    cases, the usual game procedure applies: one die, one letter.
 
 <p>
     Print all unique words <b>valid</b> for each given grid per first argument
