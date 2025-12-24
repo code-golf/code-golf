@@ -1863,8 +1863,8 @@ example    = '''
 [Umka]
 args       = [ '/usr/bin/umka', '-' ]
 experiment = 1921
-size       = '1.33 MiB'
-version    = '1.5.4'
+size       = '1.16 MiB'
+version    = '1.5.5'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
 import "std.um"
