@@ -124,6 +124,7 @@ COPY --from=codegolf/lang-fish         / /langs/fish/rootfs/
 COPY --from=codegolf/lang-k            / /langs/k/rootfs/
 COPY --from=codegolf/lang-forth        / /langs/forth/rootfs/
 COPY --from=codegolf/lang-wren         / /langs/wren/rootfs/
+COPY --from=codegolf/lang-joy          / /langs/joy/rootfs/
 COPY --from=codegolf/lang-lua          / /langs/lua/rootfs/
 COPY --from=codegolf/lang-befunge      / /langs/befunge/rootfs/
 COPY --from=codegolf/lang-sed          / /langs/sed/rootfs/
