@@ -60,6 +60,29 @@ FOR i FROM 2 TO argc DO
 OD
 '''
 
+[Amber]
+args       = [ '/usr/bin/amber', '-', '--' ]
+experiment = 1356
+size       = '8.99 MiB'
+version    = '0.5.1'
+website    = 'https://amber-lang.com'
+example    = '''
+main(args) {
+    // Printing
+    echo "Hello, World!"
+
+    // Looping
+    for i in 0..=9 {
+        echo i
+    }
+
+    // Accessing arguments
+    for i in 1..len(args) {
+        echo args[i]
+    }
+}
+'''
+
 [APL]
 args       = [ '/usr/bin/apl', '-' ]
 experiment = 135
