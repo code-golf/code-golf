@@ -1,6 +1,6 @@
 FROM alpine:3.23 AS builder
 
-ENV VER=2.2.21
+ENV VER=2.3.0
 
 RUN wget -qO kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip
 
