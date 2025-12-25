@@ -149,6 +149,7 @@ export const extensions : { [key: string]: any } = {
     'brainfuck':     brainfuck(),
     'c':             StreamLanguage.define(c),
     'c-sharp':       StreamLanguage.define(csharp),
+    // TODO c3
     'civet':         javascript,
     // TODO cjam
     'clojure':       StreamLanguage.define(clojure),
