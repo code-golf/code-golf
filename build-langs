@@ -84,6 +84,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
             when 'AWK'
                | 'Forth'
                | 'Fortran'
+               | 'Octave'
                | 'sed'         { $ver = "GNU $name $digits" }
             when 'BASIC'       { $ver = "FreeBASIC $digits" }
             when 'BQN'         { $ver = "CBQN $digits" }
