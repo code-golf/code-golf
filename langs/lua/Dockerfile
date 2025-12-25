@@ -4,7 +4,7 @@ RUN apk add --no-cache curl gcc make musl-dev
 
 ENV VER=5.5.0
 
-# Also rebuild Fennel.
+# Also rebuild Fennel, YueScript.
 RUN curl -#L https://www.lua.org/ftp/lua-$VER.tar.gz \
   | tar xz --strip-components 1
 
