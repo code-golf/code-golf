@@ -155,7 +155,7 @@ func dfs(grid *[gridSize][gridSize]byte, uses *[gridSize][gridSize]bool, word st
 
 	var used, offset int
 
-	if uses[r][c] = true; word[index] == 'q' && strings.Contains(word, "qu") {
+	if uses[r][c] = true; word[index] == 'q' && strings.Contains(word, "qu") && strings.Count(word, "q") == 1 {
 		offset++
 	}
 
