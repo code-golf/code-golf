@@ -1991,6 +1991,28 @@ for (i in 0..9) System.print(i)
 for (a in Process.arguments) System.print(a)
 '''
 
+[Zeek]
+args       = [ '/usr/bin/zeek', '-' ]
+experiment = 1457
+size       = '34.5 MiB'
+version    = '8.0.4'
+website    = 'https://zeek.org'
+example    = '''
+# Printing
+print "Hello, World!";
+
+# Looping
+local i = 0;
+while ( i < 10 ) {
+    print i;
+    ++i;
+}
+
+# Accessing arguments
+for ( _, arg in zeek_script_args )
+    print_raw(fmt("%s\n", arg));
+'''
+
 [Zig]
 args    = [ '/usr/bin/zig', '-' ]
 size    = '189 MiB'
