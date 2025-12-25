@@ -9,7 +9,20 @@ import (
 const gridSize = 4
 
 var _ = answerFunc("boggle", func() []Answer {
-	answers := make([]Answer, gridSize+1)
+	const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+	// Add all three-letter permutations containing the letter 'q' to the dictionary.
+	for _, i := range alphabet {
+		for _, j := range alphabet {
+			for _, k := range alphabet {
+				if i == 'q' || j == 'q' || k == 'q' {
+					words = append(words, string([]rune{i, j, k}))
+				}
+			}
+		}
+	}
+
+	answers, dictionary := make([]Answer, gridSize+1), shuffle(words)
 
 	for i := 0; i < len(answers); {
 		var grid [gridSize][gridSize]byte
@@ -33,8 +46,6 @@ var _ = answerFunc("boggle", func() []Answer {
 
 			fmt.Fprintln(&args)
 		}
-
-		dictionary := shuffle(words)
 
 		var words []string
 
@@ -61,7 +72,7 @@ var _ = answerFunc("boggle", func() []Answer {
 			}
 		}
 
-		answers[i].Args = []string{strings.ToUpper(args.String())}
+		answers[i].Args = []string{strings.Trim(strings.ToUpper(args.String()), "\n")}
 
 		if args.Reset(); answer.String() != "" {
 			// Add a copy of any valid word.
@@ -70,8 +81,6 @@ var _ = answerFunc("boggle", func() []Answer {
 			// No valid words.
 			answer.WriteByte('-')
 		}
-
-		const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
 		// Add any letter.
 		words = append(words, string(randChoice([]byte(alphabet))))
