@@ -113,6 +113,7 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     $earns.=subst: '{', '{go-forth,'          if $_ eq 'go';
     $earns.=subst: '{', '{just-kidding,'      if $_ eq 'k';
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';
+    $earns.=subst: '{', '{down-to-the-metal,' if $_ eq 'rust';
     $earns.=subst: ',}', '}';
 
     is save-solution(:hole<cubes> :lang($_)), $earns,
