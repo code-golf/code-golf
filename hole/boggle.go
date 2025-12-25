@@ -138,7 +138,9 @@ func validate(grid [gridSize][gridSize]byte, word string) int {
 		for r, row := range grid {
 			for c := range row {
 				if n := dfs(&grid, &uses, word, 0, r, c); n > used {
-					used = n
+					if used = n; used == len(word) {
+						return 0
+					}
 				}
 			}
 		}
@@ -155,21 +157,23 @@ func dfs(grid *[gridSize][gridSize]byte, uses *[gridSize][gridSize]bool, word st
 
 	var used, offset int
 
-	if uses[r][c] = true; word[index] == 'q' && strings.Contains(word, "qu") && strings.Count(word, "q") == 1 {
+	if uses[r][c] = true; word[index] == 'q' && index+1 < len(word) && word[index+1] == 'u' {
 		offset++
 	}
 
-	for _, direction := range [...][2]int{
-		{-1, -1}, {-1, +0}, {-1, +1},
-		{+0, -1}, {+0, +1},
-		{+1, -1}, {+1, +0}, {+1, +1},
-	} {
-		if n := dfs(grid, uses, word, index+1+offset, r+direction[0], c+direction[1]) + offset; n > used {
-			used = n
+	for i := offset + 1; i > 0; i-- {
+		for _, direction := range [...][2]int{
+			{-1, -1}, {-1, +0}, {-1, +1},
+			{+0, -1}, {+0, +1},
+			{+1, -1}, {+1, +0}, {+1, +1},
+		} {
+			if n := dfs(grid, uses, word, index+i, r+direction[0], c+direction[1]) + i; n > used {
+				used = n
+			}
 		}
 	}
 
 	uses[r][c] = false
 
-	return used + 1
+	return used
 }
