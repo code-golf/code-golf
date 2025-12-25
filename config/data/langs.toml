@@ -836,7 +836,7 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-size       = '33.4 MiB'
+size       = '38.5 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
 example    = '''
@@ -1032,7 +1032,7 @@ example    = '''
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
-size       = '33.5 MiB'
+size       = '38.6 MiB'
 version    = '1.1'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
@@ -1613,8 +1613,8 @@ end
 
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
-size    = '33.4 MiB'
-version = '3.4.8'
+size    = '38.5 MiB'
+version = '4.0.0'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
