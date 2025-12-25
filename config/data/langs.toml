@@ -1322,6 +1322,23 @@ main :: proc() {
 }
 '''
 
+[PARI-GP]
+args       = [ '/usr/bin/pari-gp', '-' ]
+experiment = 219
+size       = '13.0 MiB'
+version    = '2.17.3'
+website    = 'https://pari.math.u-bordeaux.fr'
+example    = '''
+\\ Printing
+print("Hello, World!");
+
+\\ Looping
+for (i=0, 9, print(i));
+
+\\ Accessing arguments
+[print(arg) | arg <- read(args)];
+'''
+
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '26.8 MiB'
