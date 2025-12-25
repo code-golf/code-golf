@@ -17,7 +17,7 @@ type banner struct {
 	HideKey, Type string
 }
 
-func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
+func banners(golfer *golfer.Golfer) (banners []banner) {
 	// Upcoming hole.
 	if hole := config.NextHole; hole != nil {
 		t := hole.Released.AsTime(time.UTC)
@@ -105,6 +105,7 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	}
 
 	// Our date-specific cheevos are set around the year 2000.
+	now := time.Now().UTC()
 	delta := now.Year() - 2000
 
 	location := golfer.Location()
