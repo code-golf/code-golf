@@ -989,6 +989,45 @@ example = '''
           t e r m i n a t e d
 '''
 
+[Hurl]
+args       = [ '/usr/bin/hurl', '-' ]
+experiment = 1890
+size       = '2.08 MiB'
+version    = '0bcafce'
+website    = 'https://hurl.wtf'
+example    = '''
+include "if.hurl";
+include "loop.hurl";
+
+# Printing
+println("Hello, World!");
+
+# Looping
+try {
+    loop(func(i) {
+        println(i.1);
+        toss [i.1 + 1, i.2];
+        hurl (i.1 + 1) < i.2;
+    }, [0, 10]);
+} catch as x {
+};
+
+# Accessing arguments
+let file = read_file("argv.txt");
+let list = str_lines(file);
+let argv = slice(list, 1, len(list) + 1);
+try {
+    if(func() {
+        hurl argv ~= [];
+    }, func() {
+        for_each(argv, func(arg) {
+            println(arg);
+        });
+    });
+} catch as x {
+};
+'''
+
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656

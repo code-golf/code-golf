@@ -77,6 +77,7 @@ COPY --from=codegolf/lang-cobol        / /langs/cobol/rootfs/
 COPY --from=codegolf/lang-squirrel     / /langs/squirrel/rootfs/
 COPY --from=codegolf/lang-rockstar     / /langs/rockstar/rootfs/
 COPY --from=codegolf/lang-hush         / /langs/hush/rootfs/
+COPY --from=codegolf/lang-hurl         / /langs/hurl/rootfs/
 COPY --from=codegolf/lang-awk          / /langs/awk/rootfs/
 COPY --from=codegolf/lang-c            / /langs/c/rootfs/
 COPY --from=codegolf/lang-algol-68     / /langs/algol-68/rootfs/
