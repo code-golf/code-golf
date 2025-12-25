@@ -6,23 +6,13 @@ import (
 	"strings"
 )
 
-const gridSize = 4
+const (
+	alphabet = "abcdefghijklmnopqrstuvwxyz"
+	gridSize = 4
+)
 
 var _ = answerFunc("boggle", func() []Answer {
-	const alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-	// Add all three-letter permutations containing the letter 'q' to the dictionary.
-	for _, i := range alphabet {
-		for _, j := range alphabet {
-			for _, k := range alphabet {
-				if i == 'q' || j == 'q' || k == 'q' {
-					words = append(words, string([]rune{i, j, k}))
-				}
-			}
-		}
-	}
-
-	answers, dictionary := make([]Answer, gridSize+1), shuffle(words)
+	answers := make([]Answer, gridSize+1)
 
 	for i := 0; i < len(answers); {
 		var grid [gridSize][gridSize]byte
@@ -46,6 +36,8 @@ var _ = answerFunc("boggle", func() []Answer {
 
 			fmt.Fprintln(&args)
 		}
+
+		dictionary := shuffle(words)
 
 		var words []string
 
@@ -104,6 +96,19 @@ var _ = answerFunc("boggle", func() []Answer {
 
 	return shuffle(answers)
 })
+
+func init() {
+	// Add all three-letter permutations containing the letter 'q' to the dictionary.
+	for _, i := range alphabet {
+		for _, j := range alphabet {
+			for _, k := range alphabet {
+				if i == 'q' || j == 'q' || k == 'q' {
+					words = append(words, string([]rune{i, j, k}))
+				}
+			}
+		}
+	}
+}
 
 func scramble(grid *[gridSize][gridSize]byte) map[byte]int {
 	dice, letters := shuffle([]string{
