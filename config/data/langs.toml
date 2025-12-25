@@ -1194,6 +1194,29 @@ example    = '''
     : = i + i 1
 '''
 
+[Koka]
+args       = [ '/usr/bin/koka', '-' ]
+env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
+experiment = 1792
+size       = '191 MiB'
+version    = '3.2.2'
+website    = 'https://koka-lang.github.io/koka/doc/index.html'
+example    = '''
+import std/os/env
+
+fun main()
+  // Printing
+  println("Hello, World!")
+
+  // Looping
+  for(0,9) fn(i)
+    println(i)
+
+  // Accessing arguments
+  get-args().foreach fn(arg)
+    arg.println
+'''
+
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '137 MiB'
