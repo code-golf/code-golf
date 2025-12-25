@@ -158,6 +158,7 @@ export const extensions : { [key: string]: any } = {
     'common-lisp':   StreamLanguage.define(commonLisp),
     'cpp':           cpp(),
     'crystal':       StreamLanguage.define(crystal),
+    'curry':         StreamLanguage.define(haskell),
     'd':             StreamLanguage.define(d),
     'dart':          StreamLanguage.define(dart),
     // TODO egel
