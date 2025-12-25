@@ -80,8 +80,8 @@ var _ = answerFunc("boggle", func() []Answer {
 		// Add a combination of any two unique letters.
 		words = append(words, string(shuffle([]byte(alphabet))[:2]))
 
-		// Add four more random words.
 		if i != 0 {
+			// Add four more random words.
 			words = append(words, randWord(), randWord(), randWord(), randWord())
 		}
 

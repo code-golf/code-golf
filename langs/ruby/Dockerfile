@@ -3,11 +3,11 @@ FROM alpine:3.23 AS builder
 RUN apk add --no-cache clang curl make
 
 # Also rebuild GolfScript, iogii.
-ENV VER=3.4.8
+ENV VER=4.0.0
 
 WORKDIR /ruby
 
-RUN curl -#L https://cache.ruby-lang.org/pub/ruby/3.4/ruby-$VER.tar.xz \
+RUN curl -#L https://cache.ruby-lang.org/pub/ruby/4.0/ruby-$VER.tar.xz \
   | tar xJ --strip-components 1
 
 # Prefer clang to gcc as it produces smaller binaries with adequate stack.
@@ -20,7 +20,7 @@ RUN ./configure            \
  && strip -s /usr/bin/ruby
 
 # Remove some default gems we don't need.
-RUN cd /usr/lib/ruby/3.4.0 && rm -rf \
+RUN cd /usr/lib/ruby/4.0.0 && rm -rf \
                       English.rb     \
                       benchmark*     \
                       bundler*       \
