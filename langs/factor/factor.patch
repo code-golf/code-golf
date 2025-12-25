@@ -1,0 +1,43 @@
+--- /factor/basis/io/directories/unix/linux/linux.factor
++++ /factor/basis/io/directories/unix/linux/linux.factor
+@@ -7,7 +7,7 @@
+
+ : next-dirent ( DIR* dirent* -- dirent* ? )
+     f void* <ref> [
+-        readdir64_r [ (throw-errno) ] unless-zero
++        readdir_r [ (throw-errno) ] unless-zero
+     ] 2keep void* deref ; inline
+
+ M: linux (directory-entries)
+--- /factor/basis/unix/stat/linux/64/64.factor
++++ /factor/basis/unix/stat/linux/64/64.factor
+@@ -22,9 +22,9 @@
+     { __unused0 long[3] } ;
+
+ FUNCTION: int __xstat64  ( int ver, c-string pathname, stat* buf )
+-FUNCTION: int __lxstat64 ( int ver, c-string pathname, stat* buf )
++FUNCTION: int __lxstat ( int ver, c-string pathname, stat* buf )
+ FUNCTION: int __fxstat64 ( int ver, int fd, stat* buf )
+
+ :  stat-func ( pathname buf -- int ) [ 1 ] 2dip __xstat64 ;
+-: lstat ( pathname buf -- int ) [ 1 ] 2dip __lxstat64 ;
++: lstat ( pathname buf -- int ) [ 1 ] 2dip __lxstat ;
+ : fstat ( fd buf -- int ) [ 1 ] 2dip __fxstat64 ;
+--- /factor/basis/vocabs/prettyprint/prettyprint.factor
++++ /factor/basis/vocabs/prettyprint/prettyprint.factor
+@@ -89,15 +89,3 @@
+     { inset { 5 5 } }
+ }
+
+-[
+-    [
+-        nl
+-        { { font-style bold } { font-name "sans-serif" } } [
+-            "Restarts were invoked adding vocabularies to the search path." print
+-            "To avoid doing this in the future, add the following forms" print
+-            "at the top of the source file:" print nl
+-        ] with-style
+-        manifest-style [ manifest get pprint-manifest ] with-nesting
+-        nl nl flush
+-    ] with-output>error
+-] print-use-hook set-global
