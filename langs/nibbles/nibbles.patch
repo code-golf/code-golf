@@ -1,0 +1,11 @@
+--- Data/Function/Memoize/TH.hs
++++ Data/Function/Memoize/TH.hs
+@@ -156,7 +156,7 @@
+ --   corresponds to a @data@ or @newtype@, and if so, returns the name,
+ --   a list of its parameters, and a list of constructor names with
+ --   their arities.
+-checkName ∷ Name → Q (Name, [COMPAT_TY_VAR_BNDR(())], [(Name, Int)])
++checkName ∷ Name → Q (Name, [COMPAT_TY_VAR_BNDR(BndrVis)], [(Name, Int)])
+ checkName name0 = do
+   let can'tDerive      = "deriveMemoizable: Can’t derive a Memoizable " ++
+                          "instance for ‘" ++ show name0 ++ "’ because "

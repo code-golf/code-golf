@@ -53,7 +53,7 @@ constant %paths = (
     'Groovy'       => 'endoflife.date/api/apache-groovy.json',
     'Harbour'      => 'sourceforge.net/projects/harbour-project/files',
     'Hare'         => 'git.sr.ht/~sircmpwn/hare',
-    'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
+    'Haskell'      => 'packages.gentoo.org/packages/dev-lang/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
     'Hexagony'     => 'github.com/SirBogman/Hexagony',
     'Hush'         => 'crates.io/api/v1/crates/hush',
@@ -72,6 +72,7 @@ constant %paths = (
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
     'Lua'          => 'github.com/lua/lua/releases/latest',
     'Luau'         => 'github.com/luau-lang/luau/releases/latest',
+    'Nibbles'      => 'github.com/darrenks/nibbles',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
@@ -123,7 +124,6 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $new = do with %paths{$name} {
         my $res = get($_);
 
-        when / 'alpinelinux'       / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki'           / { $res ~~ / ' release' .+? <(<ver>)> / }
         when / 'chromium'          / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'codeberg'          / { $res ~~ / '"shortsha">' <(<ver>)> / }
