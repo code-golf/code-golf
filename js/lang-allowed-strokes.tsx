@@ -19,7 +19,7 @@ const allowedStrokesMap: Record<string, Set<number>> = {
     // Method: Open https://www.uiua.org/, then run
     // document.querySelector(".additional-functions").remove()
     // copy([...document.querySelector(".glyph-buttons").innerText].filter(c=>c.codePointAt(0)>127).join("")),
-    'uiua': makeLookup('∘◌˙˜⊙⋅⟜⊸⤙⤚◡∩⊃⊓¬±¯⌵√ₑ∿⌊⌈⁅≠≤≥×÷◿ⁿ↧↥∠ℂ⚂ηπτ∞¯←⧻△⇡⊢⊣⇌♭¤⋯⍉⍆⍏⍖⊚◴⊛⧆□⋕≍⊟⊂⊏⊡↯↙↘↻⤸▽⌕⦷∊⨂⊥∧≡⍚⊞⧅⧈⍥⊕⊜◇⌅°⌝⍜⍢⬚⨬⍣⍩⍤'),
+    'uiua': makeLookup('∘◌˙˜⊙⋅⟜⊸⤙⤚◡∩⊃⊓¬±¯⌵√ₑ∿⌊⌈⁅≠≤≥×÷◿ⁿ↧↥∠ℂ⚂ηπτ∞¯←⧻△⇡⊢⊣⇌♭¤⋯⍉⍆⍏⍖⊚◴⊛⧆□⋕≍⊟⊂⊏⊡↯↙↘↻⤸▽⌕⦷∊⨂⊥∧≡⍚⊞⧅⧈⍥⊕⊜◇⌅°⌝⍜⍢⬚⨬⍣⍩⍤₀₁₂₃₄₅₆₇₈₉₋⌞⌟'),
     // Method: Open https://github.com/Adriandmen/05AB1E/wiki/Codepage, then run
     // copy([...document.querySelector("table").innerText].filter(c=>c.codePointAt(0)>127).join(""))
     '05ab1e': makeLookup('ǝʒαβγδεζηθвимнтΓΔΘιΣΩ≠∊∍∞₁₂₃₄₅₆Ƶ€Λ‚ƒ„…†‡ˆ‰Š‹ŒĆŽƶĀ‘’“”•–—˜™š›œćžŸā¡¢£¤¥¦§¨©ª«¬λ®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ'),
