@@ -85,6 +85,10 @@ BEGIN
     IF hole = 'rock-paper-scissors-spock-lizard' AND lang = 'janet' THEN
         earned := earn(earned, 'dammit-janet', user_id); END IF;
 
+    -- 🔩 Down to the Metal
+    IF langs_for_hole @> '{assembly,rust}' THEN
+        earned := earn(earned, 'down-to-the-metal', user_id); END IF;
+
     -- 🐘 ElePHPant in the Room
     IF lang = 'php' THEN
         earned := earn(earned, 'elephpant-in-the-room', user_id); END IF;

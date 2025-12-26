@@ -12,16 +12,14 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 )
 
-var nextHole = config.ExpHoleByID["tower-of-hanoi"]
-
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
 }
 
-func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
+func banners(golfer *golfer.Golfer) (banners []banner) {
 	// Upcoming hole.
-	if hole := nextHole; hole != nil {
+	if hole := config.NextHole; hole != nil {
 		t := hole.Released.AsTime(time.UTC)
 		if golfer != nil {
 			t = t.In(golfer.Location())
@@ -107,12 +105,12 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 	}
 
 	// Our date-specific cheevos are set around the year 2000.
+	now := time.Now().UTC()
 	delta := now.Year() - 2000
 
 	location := golfer.Location()
 
-Cheevo:
-	for _, cheevo := range config.CheevoList {
+	for _, cheevo := range config.CheevoTree["Date Specific"] {
 		if golfer.Earned(cheevo.ID) {
 			continue
 		}
@@ -144,7 +142,7 @@ Cheevo:
 					Type:    "info",
 				})
 
-				break Cheevo
+				break
 			}
 		}
 	}

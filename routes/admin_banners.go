@@ -2,7 +2,6 @@ package routes
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
@@ -29,7 +28,7 @@ func adminBannersGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Use a dummy golfer to generate a list of live banners.
-	for _, banner := range banners(&golfer.Golfer{}, time.Now().UTC()) {
+	for _, banner := range banners(&golfer.Golfer{}) {
 		data.LiveBanners[banner.HideKey] = true
 	}
 

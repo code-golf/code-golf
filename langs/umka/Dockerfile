@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-ENV VER=1.5.4
+ENV VER=1.5.5
 
 RUN curl -#L https://github.com/vtereshkov/umka-lang/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1

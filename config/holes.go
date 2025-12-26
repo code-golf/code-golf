@@ -42,6 +42,9 @@ var (
 
 	// Latest stable hole.
 	LatestHole *Hole
+
+	// Next experimental hole to become stable.
+	NextHole *Hole
 )
 
 type Link struct {
@@ -88,7 +91,7 @@ func initHoles() {
 
 	// Expand variants.
 	copyFields := []string{
-		"Category", "Data", "Links", "Preamble", "Released", "Synopsis", "Variants"}
+		"Category", "Data", "Links", "Preamble", "Synopsis", "Variants"}
 	for name, hole := range holes {
 		hole.Name = name
 
@@ -208,4 +211,13 @@ func initHoles() {
 	LatestHole = slices.MaxFunc(HoleList, func(a, b *Hole) int {
 		return strings.Compare(a.Released.String(), b.Released.String())
 	})
+
+	// There should only be up to one exp hole with a valid release date.
+	var emptyLocalDate toml.LocalDate
+	for _, hole := range ExpHoleList {
+		if hole.Released != emptyLocalDate {
+			NextHole = hole
+			break
+		}
+	}
 }

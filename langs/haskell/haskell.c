@@ -5,13 +5,16 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* haskell = "/usr/bin/ghc", *code = "/tmp/code.hs";
+const char* haskell = "/usr/bin/ghc", *code = "code.hs";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
         execv(haskell, argv);
         ERR_AND_EXIT("execv");
     }
+
+    if (chdir("/tmp"))
+        ERR_AND_EXIT("chdir");
 
     FILE* fp;
 
@@ -31,9 +34,9 @@ int main(int argc, char* argv[]) {
     int hargc = argc + 5;
     char** hargv = malloc(hargc * sizeof(char*));
     hargv[0] = (char*) haskell;
-    hargv[1] = "-fdiagnostics-color=always";
-    hargv[2] = "--run";
-    hargv[3] = (char*) code;
+    hargv[1] = "--run";
+    hargv[2] = (char*) code;
+    hargv[3] = "-fdiagnostics-color=always";
     hargv[4] = hargv[5] = "--";
     memcpy(&hargv[6], &argv[2], (argc - 2) * sizeof(char*));
     hargv[hargc - 1] = NULL;

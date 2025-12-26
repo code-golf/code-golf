@@ -427,6 +427,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Calendar' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gregorian_calendar' },
 ]
+released = 2026-01-01
 synopsis = 'Print calendars for given months in given years.'
 preamble = '''
 <p>
@@ -1662,7 +1663,7 @@ preamble = '''
 '''
 
 ['Gray Code Decoder']
-category = 'Transform'
+category = 'Computing'
 experiment = 779
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
@@ -1959,11 +1960,11 @@ preamble = '''
 
 ['Kolakoski Constant']
 category = 'Mathematics'
-released = 2021-01-16
 links = [
     { name = 'OEIS A118270', url = '//oeis.org/A118270' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
 ]
+released = 2021-01-16
 synopsis = 'Print the first 1,000 digits of the Kolakoski constant.'
 preamble = '''
 {{- if eq .Name "Kolakoski Constant" -}}
@@ -2001,6 +2002,7 @@ preamble = '''
 [['Kolakoski Constant'.variants]]
 name     = 'Kolakoski Sequence'
 category = 'Sequence'
+released = 2021-01-16
 synopsis = 'Print the first 1,000 elements in the Kolakoski sequence.'
 links = [
     { name = 'OEIS A000002', url = '//oeis.org/A000002' },
@@ -2428,6 +2430,7 @@ preamble = '''
 
 [['Morse Decoder'.variants]]
 name     = 'Morse Encoder'
+released = 2018-02-18
 synopsis = 'Encode alphanumeric strings into International Morse Code.'
 
 ['Multitap Input']
