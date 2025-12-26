@@ -37,6 +37,7 @@ FROM scratch
 
 COPY --from=codegolf/lang-swift        / /langs/swift/rootfs/
 COPY --from=codegolf/lang-rust         / /langs/rust/rootfs/
+COPY --from=codegolf/lang-iogii        / /langs/iogii/rootfs/
 COPY --from=codegolf/lang-julia        / /langs/julia/rootfs/
 COPY --from=codegolf/lang-haskell      / /langs/haskell/rootfs/
 COPY --from=codegolf/lang-go           / /langs/go/rootfs/
@@ -74,7 +75,6 @@ COPY --from=codegolf/lang-erlang       / /langs/erlang/rootfs/
 COPY --from=codegolf/lang-javascript   / /langs/javascript/rootfs/
 COPY --from=codegolf/lang-hy           / /langs/hy/rootfs/
 COPY --from=codegolf/lang-haxe         / /langs/haxe/rootfs/
-COPY --from=codegolf/lang-iogii        / /langs/iogii/rootfs/
 COPY --from=codegolf/lang-golfscript   / /langs/golfscript/rootfs/
 COPY --from=codegolf/lang-ruby         / /langs/ruby/rootfs/
 COPY --from=codegolf/lang-v            / /langs/v/rootfs/
