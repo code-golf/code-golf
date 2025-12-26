@@ -1212,6 +1212,23 @@ for (arg in args)
     println(arg)
 '''
 
+[Labyrinth]
+args       = [ '/usr/bin/labyrinth', '-' ]
+experiment = 445
+size       = '39.2 MiB'
+version    = 'd3cc04f'
+website    = 'https://github.com/m-ender/labyrinth'
+example    = '''
+Printing
+72_1_108::_3+:}
+   0          _ """
+    11_{78_23_" " "
+    4         4 ".{\!\ Looping
+    _         " {    )::}_10-> Accessing arguments
+    1           }"   "      " ,)
+    08_100_33""""""""""""\!{; .(@
+'''
+
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
 size    = '396 KiB'
