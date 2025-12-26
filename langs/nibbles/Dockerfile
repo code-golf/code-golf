@@ -4,7 +4,11 @@ RUN apk add --no-cache curl dash gcc musl-dev patch
 
 ENV VER=5bbfddb
 
-WORKDIR /usr/local/bin
+WORKDIR /usr/local
+
+RUN touch argv.txt code.nbl out.hs
+
+RUN chmod -R 777 .
 
 RUN curl -#L https://github.com/darrenks/nibbles/tarball/$VER                                     \
   | tar xz --strip-components 1                                                                   \
@@ -26,8 +30,6 @@ COPY nibbles.c .
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/nibbles -s -static nibbles.c
 
 FROM codegolf/lang-haskell
-
-ENV PATH=/usr/bin:$PATH
 
 COPY --from=0 /usr/bin/dash                              /bin/sh
 COPY --from=0 /usr/bin/as /usr/bin/ld /usr/bin/nibbles   /usr/bin/
@@ -58,9 +60,9 @@ COPY --from=0 /usr/lib/gcc/*/15.2.0/crtbegin.o           \
               /usr/lib/gcc/*/15.2.0/libgcc.a             /usr/lib/gcc/x86_64-alpine-linux-musl/15.2.0/
 COPY --from=0 /usr/libexec/gcc/*/15.2.0/cc1              \
               /usr/libexec/gcc/*/15.2.0/liblto_plugin.so /usr/libexec/gcc/x86_64-alpine-linux-musl/15.2.0/
-COPY --from=0 /usr/local/bin                             /usr/local/bin
+COPY --from=0 /usr/local                                 /usr/local
 
-WORKDIR /usr/local/bin
+WORKDIR /usr/local
 
 RUN ghc -O -dynamic nibbles.hs
 
