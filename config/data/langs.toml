@@ -920,8 +920,8 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '339 MiB'
-version = 'GHC 9.8.2'
+size    = '238 MiB'
+version = 'GHC 9.14.1'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -1257,8 +1257,8 @@ end
 args       = [ '/usr/bin/nibbles', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1062
-size       = '321 MiB'
-version    = '07e0450'
+size       = '297 MiB'
+version    = '5bbfddb'
 website    = 'https://golfscript.com/nibbles/'
 example    = '''
 # Printing
