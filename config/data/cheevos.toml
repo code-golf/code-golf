@@ -175,6 +175,14 @@ langs       = ['f-sharp', 'factor', 'forth', 'fortran']
 target      = 3
 
 [['Hole/Lang Specific']]
+name        = 'Full Stack Dev'
+emoji       = '🦄'
+description = 'Solve <a href=/css-colors>CSS Colors</a> in <a href=/css-colors#javascript>JavaScript</a>, <a href=/css-colors#php>PHP</a>, and <a href=/css-colors#sql>SQL</a>.'
+holes       = ['css-colors']
+langs       = ['javascript', 'php', 'sql']
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'Go Forth!'
 emoji       = '🏞️'
 description = 'Solve any hole in both Go and Forth.'
