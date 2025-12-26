@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.40 MiB'
-version    = 'Algol 68 Genie 3.10.8'
+version    = 'Algol 68 Genie 3.10.9'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -198,7 +198,7 @@ BEGIN {
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
 size    = '1.35 MiB'
-version = '5.3.8'
+version = '5.3.9'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.7'
+version = 'Clang 21.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -712,7 +712,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '716 KiB'
+size       = '728 KiB'
 version    = '1.6.0'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -836,7 +836,7 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-size       = '33.4 MiB'
+size       = '38.5 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
 example    = '''
@@ -1032,7 +1032,7 @@ example    = '''
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
-size       = '33.5 MiB'
+size       = '38.6 MiB'
 version    = '1.1'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
@@ -1138,7 +1138,7 @@ $ARGS.positional[]
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '361 MiB'
-version = '1.12.2'
+version = '1.12.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1195,9 +1195,9 @@ example    = '''
 '''
 
 [Kotlin]
-args    = [ '/opt/java/bin/java', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '136 MiB'
-version = '2.2.21'
+args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
+size    = '137 MiB'
+version = '2.3.0'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1214,8 +1214,8 @@ for (arg in args)
 
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '383 KiB'
-version = '5.4.8'
+size    = '396 KiB'
+version = '5.5.0'
 website = 'https://www.lua.org'
 example = '''
 -- Printing
@@ -1235,8 +1235,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.15 MiB'
-version    = '0.702'
+size       = '5.19 MiB'
+version    = '0.703'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1365,7 +1365,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.0'
+version = '8.5.1'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1534,8 +1534,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.11'
+size      = '76.5 MiB'
+version   = 'Raku 6.d on Rakudo 2025.12'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1613,8 +1613,8 @@ end
 
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
-size    = '33.4 MiB'
-version = '3.4.7'
+size    = '38.5 MiB'
+version = '4.0.0'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -1782,7 +1782,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '561 MiB'
-version = '6.2.2'
+version = '6.2.3'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -1863,8 +1863,8 @@ example    = '''
 [Umka]
 args       = [ '/usr/bin/umka', '-' ]
 experiment = 1921
-size       = '1.33 MiB'
-version    = '1.5.4'
+size       = '1.16 MiB'
+version    = '1.5.5'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
 import "std.um"
