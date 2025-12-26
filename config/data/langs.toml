@@ -1212,6 +1212,49 @@ for (arg in args)
     println(arg)
 '''
 
+['LLVM IR']
+args       = [ '/usr/bin/llvm-ir', '-' ]
+experiment = 1114
+size       = '30.4 MiB'
+version    = '21.1.8'
+website    = 'https://llvm.org'
+example    = '''
+@.str = global [14 x i8] c"Hello, World!\00"
+@.ing = global [4 x i8] c"%d\0A\00"
+
+define i32 @main(i32 %argc, ptr %argv) {
+entry: ; Printing
+  call i32 @puts(ptr @.str)
+  br label %loops
+
+loops: ; Looping
+  %i = phi i32 [ 0, %entry ], [ %5, %loops ]
+  call i32 @printf(ptr @.ing, i32 %i)
+  %5 = add i32 %i, 1
+  %6 = icmp eq i32 %5, 10
+  br i1 %6, label %stdin, label %loops
+
+stdin: ; Accessing arguments
+  %10 = icmp sgt i32 %argc, 1
+  br i1 %10, label %11, label %exit
+  %12 = zext i32 %argc to i64
+  br label %13
+  %14 = phi i64 [ 1, %11 ], [ %18, %13 ]
+  %15 = getelementptr ptr, ptr %argv, i64 %14
+  %16 = load ptr, ptr %15
+  call i32 @puts(ptr %16)
+  %18 = add i64 %14, 1
+  %19 = icmp eq i64 %18, %12
+  br i1 %19, label %exit, label %13
+
+exit:
+  ret i32 0
+}
+
+declare i32 @puts(ptr)
+declare i32 @printf(ptr, ...)
+'''
+
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
 size    = '396 KiB'
