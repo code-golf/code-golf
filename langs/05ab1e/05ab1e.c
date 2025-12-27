@@ -48,8 +48,10 @@ int main(int argc, char* argv[]) {
 
         int j, chunk;
 
+        typedef unsigned char UCHAR;
+
         for (j = 0; j + 2 < len; j += 3) {
-            chunk = argv[i][j] << 16 | argv[i][j+1] << 8 | argv[i][j+2];
+            chunk = ((UCHAR*) argv[i])[j] << 16 | ((UCHAR*) argv[i])[j+1] << 8 | ((UCHAR*) argv[i])[j+2];
 
             *str++ = table[chunk >> 18 & 63];
             *str++ = table[chunk >> 12 & 63];
@@ -58,7 +60,7 @@ int main(int argc, char* argv[]) {
         }
 
         if (j < len) {
-            chunk = argv[i][j] << 16 | (j + 1 < len) * argv[i][j+1] << 8;
+            chunk = ((UCHAR*) argv[i])[j] << 16 | (j + 1 < len) * ((UCHAR*) argv[i])[j+1] << 8;
 
             *str++ = table[chunk >> 18 & 63];
             *str++ = table[chunk >> 12 & 63];
