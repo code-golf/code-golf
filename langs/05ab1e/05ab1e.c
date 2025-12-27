@@ -36,13 +36,43 @@ int main(int argc, char* argv[]) {
     if (!(fd = open(input, O_CREAT | O_TRUNC | O_WRONLY, 0644)))
         ERR_AND_EXIT("open");
 
-    for (int i = 2; i < argc; i++)
-        if (!write(fd, buffer, snprintf(buffer, sizeof(buffer), "\"\"\"%s\"\"\"\n", argv[i]))) {
-            if (close(fd))
-                ERR_AND_EXIT("close");
+    const char* table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-            ERR_AND_EXIT("write");
+    for (int i = 2; i < argc; i++) {
+        int len = strlen(argv[i]);
+
+        char* arg, *str;
+
+        if (!(arg = str = malloc((len + 2) / 3 * 4 + 1)))
+            ERR_AND_EXIT("malloc");
+
+        int j, chunk;
+
+        for (j = 0; j + 2 < len; j += 3) {
+            chunk = argv[i][j] << 16 | argv[i][j+1] << 8 | argv[i][j+2];
+
+            *str++ = table[chunk >> 18 & 63];
+            *str++ = table[chunk >> 12 & 63];
+            *str++ = table[chunk >> 6 & 63];
+            *str++ = table[chunk & 63];
         }
+
+        if (j < len) {
+            chunk = argv[i][j] << 16 | (j + 1 < len) * argv[i][j+1] << 8;
+
+            *str++ = table[chunk >> 18 & 63];
+            *str++ = table[chunk >> 12 & 63];
+            *str++ = j + 1 < len ? table[chunk >> 6 & 63] : '=';
+            *str++ = '=';
+        }
+
+        *str = 0;
+
+        if (!write(fd, arg, strlen(arg)) || !write(fd, "\n", sizeof(char)))
+            ERR_AND_EXIT("write");
+
+        free(arg);
+    }
 
     if (close(fd))
         ERR_AND_EXIT("close");
