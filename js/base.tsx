@@ -48,13 +48,12 @@ for (const input of $$<any>('[list]')) {
 for (const dialog of $$<HTMLDialogElement>('dialog'))
     dialog.onmousedown = e => e.target == dialog ? dialog.close() : null;
 
-// Wire up any dialog buttons.
-for (const btn of $$<HTMLElement>('[data-dialog]'))
-    btn.onclick = () => {
-        const dialog = $<HTMLDialogElement>('#' + btn.dataset.dialog);
-
-        dialog.showModal();
-    };
+// Polyfill command="show-modal"
+// https://caniuse.com/mdn-api_commandevent_command
+if (!('command' in HTMLButtonElement.prototype))
+    for (const btn of $$('[command="show-modal"]'))
+        btn.onclick = () =>
+            $<HTMLDialogElement>('#' + btn.getAttribute('commandfor')).showModal();
 
 // Reset forms inside dialogs on dialog close.
 for (const dialog of $$('dialog:has(form)'))
