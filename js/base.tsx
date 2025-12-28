@@ -53,10 +53,12 @@ for (const btn of $$<HTMLElement>('[data-dialog]'))
     btn.onclick = () => {
         const dialog = $<HTMLDialogElement>('#' + btn.dataset.dialog);
 
-        // If the dialog contains a form then reset it first.
-        dialog.querySelector('form')?.reset();
         dialog.showModal();
     };
+
+// Reset forms inside dialogs on dialog close.
+for (const dialog of $$('dialog:has(form)'))
+    dialog.onclose = () => dialog.querySelector('form')!.reset();
 
 // Search navigation dialog
 document.addEventListener('keydown', e => {
@@ -68,7 +70,6 @@ document.addEventListener('keydown', e => {
             dialog.close();
         }
         else {
-            dialog.querySelector('form')?.reset();
             dialog.showModal();
             updateResults([]);
             e.preventDefault();
