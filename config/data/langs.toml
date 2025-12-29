@@ -942,10 +942,8 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '339 MiB'
-version = 'GHC 9.8.2'
-size    = '339 MiB'
-version = 'GHC 9.8.2'
+size    = '229 MiB'
+version = 'GHC 9.14.1'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -1056,7 +1054,7 @@ example    = '''
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
-size       = '372 MiB'
+size       = '268 MiB'
 version    = '1.1'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
