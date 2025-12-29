@@ -40,7 +40,7 @@
             <ul>{{ range . }}<li>{{ template "golfer-link" . }}{{ end }}</ul>
         </div>
     </dialog>
-    <button data-dialog=authors-dialog id=authors-btn>
+    <button command=show-modal commandfor=authors-dialog id=authors-btn>
     {{ range . }}
         <img src="{{ avatar .AvatarURL 72 }}">
     {{ end }}
@@ -62,7 +62,7 @@
         </a>
     {{ end }}
     {{ if .Golfer }}
-        <button class="btn blue" data-dialog=settings-dialog title=Settings>
+        <button class="btn blue" command=show-modal commandfor=settings-dialog title=Settings>
             {{ svg "gear-fill" }}
             Page Settings
         </button>

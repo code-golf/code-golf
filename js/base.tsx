@@ -48,15 +48,16 @@ for (const input of $$<any>('[list]')) {
 for (const dialog of $$<HTMLDialogElement>('dialog'))
     dialog.onmousedown = e => e.target == dialog ? dialog.close() : null;
 
-// Wire up any dialog buttons.
-for (const btn of $$<HTMLElement>('[data-dialog]'))
-    btn.onclick = () => {
-        const dialog = $<HTMLDialogElement>('#' + btn.dataset.dialog);
+// Polyfill command="show-modal"
+// https://caniuse.com/mdn-api_commandevent_command
+if (!('command' in HTMLButtonElement.prototype))
+    for (const btn of $$('[command="show-modal"]'))
+        btn.onclick = () =>
+            $<HTMLDialogElement>('#' + btn.getAttribute('commandfor')).showModal();
 
-        // If the dialog contains a form then reset it first.
-        dialog.querySelector('form')?.reset();
-        dialog.showModal();
-    };
+// Reset forms inside dialogs on dialog close.
+for (const dialog of $$('dialog:has(form)'))
+    dialog.onclose = () => dialog.querySelector('form')!.reset();
 
 // Search navigation dialog
 document.addEventListener('keydown', e => {
@@ -68,7 +69,6 @@ document.addEventListener('keydown', e => {
             dialog.close();
         }
         else {
-            dialog.querySelector('form')?.reset();
             dialog.showModal();
             updateResults([]);
             e.preventDefault();
