@@ -112,10 +112,10 @@ func init() {
 
 func scramble(grid *[gridSize][gridSize]byte) map[byte]int {
 	dice, letters := shuffle([]string{
-		"aaciot", "ahmors", "egkluy", "abilty",
-		"acdemp", "egintv", "gilruw", "elpstu",
-		"denosw", "acelrs", "abjmoq", "eefhiy",
-		"ehinps", "dknotu", "adenvz", "biforx",
+		"aaeegn", "abbjoo", "achops", "affkps",
+		"aoottw", "cimotu", "deilrx", "delrvy",
+		"distty", "eeghnw", "eeinsu", "ehrtvw",
+		"eiosst", "elrtty", "himnuq", "hlnnrz",
 	}), make(map[byte]int)
 
 	for r, row := range grid {
