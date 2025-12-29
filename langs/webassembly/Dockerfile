@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl musl-dev
 
-ENV CRT='x86_64-unknown-linux-musl' VER=39.0.1
+ENV CRT='x86_64-unknown-linux-musl' VER=40.0.0
 
 WORKDIR /usr/bin
 
