@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* iogii = "/usr/local/bin/iogii", *haskell = "/usr/bin/ghc", *code[] = {"code.iog", "code.hs"}, *input = "argv.txt";
+const char* iogii = "/usr/local/bin/iogii", *haskell = "/usr/local/bin/ghc", *code[] = {"code.iog", "code.hs"}, *input = "argv.txt";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
         if (close(fd))
             ERR_AND_EXIT("close");
 
-        execl(iogii, iogii, "--hs", code[0], NULL);
+        execl(iogii, iogii, "-hs", code[0], NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
         if (dup2(open(input, O_RDONLY), STDIN_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(haskell, haskell, "-fdiagnostics-color=always", "-w", "--run", code[1], NULL);
+        execl(haskell, haskell, "--run", code[1], "-fdiagnostics-color=always", "-w", NULL);
         ERR_AND_EXIT("execl");
     }
 
