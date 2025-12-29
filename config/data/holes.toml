@@ -369,7 +369,6 @@ experiment = 1306
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Boggle' },
 ]
-multiset-item-delimiter = "\n"
 synopsis = 'Print valid Boggle words.'
 preamble = '''
 <p>
@@ -435,9 +434,9 @@ T D N I
     cases, the usual game procedure applies: one die, one letter.
 
 <p>
-    Print all unique words <b>valid</b> for each given grid per first argument
-    in random order, each on a separate line; or <b>-</b> if none of the words
-    are valid.
+    Print all unique words <b>valid</b> for each given grid per first argument,
+    in alphabetical order of decreasing length, each on a separate line; or
+    <b>-</b> if none of the words are valid.
 '''
 
 [brainfuck]

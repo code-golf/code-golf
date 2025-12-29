@@ -3,6 +3,7 @@ package hole
 import (
 	"fmt"
 	"maps"
+	"sort"
 	"strings"
 )
 
@@ -87,6 +88,20 @@ var _ = answerFunc("boggle", func() []Answer {
 
 		// Build "words" argument.
 		args.WriteString(strings.Join(shuffle(words), " "))
+
+		words = strings.Fields(answer.String())
+
+		// Sort the valid words alphabetically and in descending order of length.
+		sort.Slice(words, func(i, j int) bool {
+			if len(words[i]) == len(words[j]) {
+				return words[i] < words[j]
+			}
+
+			return len(words[i]) > len(words[j])
+		})
+
+		answer.Reset()
+		answer.WriteString(strings.Join(words, "\n"))
 
 		answers[i].Args = append(answers[i].Args, args.String())
 		answers[i].Answer = answer.String()
