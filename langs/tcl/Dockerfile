@@ -1,4 +1,4 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache bsd-compat-headers curl gcc make musl-dev zlib-dev
 
