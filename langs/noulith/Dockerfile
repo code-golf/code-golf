@@ -2,7 +2,7 @@ FROM rust:1.92.0-alpine3.23 AS builder
 
 RUN apk add --no-cache curl musl-dev
 
-ENV VER=7747db1
+ENV VER=b8d2274
 
 RUN curl -#L https://github.com/betaveros/noulith/tarball/$VER \
   | tar xz --strip-components 1
