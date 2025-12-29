@@ -34,6 +34,8 @@ RUN find . \( -name '*.a'     \
           -or -name '*_p*.so' \
           -or -name '*debug*' \) -delete
 
+RUN strip *.so
+
 COPY haskell.c .
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/haskell -s haskell.c
