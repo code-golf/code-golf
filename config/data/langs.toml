@@ -1552,8 +1552,8 @@ say 'Hello, World!';
 args       = [ '/usr/bin/reason', '-' ]
 env        = [ 'CLICOLOR_FORCE=1', 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1925
-size       = '181 MiB'
-version    = '3.17.0'
+size       = '178 MiB'
+version    = '3.17.2'
 website    = 'https://reasonml.github.io'
 example    = '''
 // Printing
