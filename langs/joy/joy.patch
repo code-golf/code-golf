@@ -1,0 +1,20 @@
+--- main.c
++++ main.c
+@@ -157,7 +157,7 @@
+      * First look for options. They start with -.
+      */
+     for (i = 1; i < argc; i++) {
+-	if (argv[i][0] == '-') {
++	if (argv[0][0] == '-') {
+ 	    for (j = 1; argv[i][j]; j++) {
+ 		switch (argv[i][j]) {
+ 		case 'a' : ptr = &argv[i][j + 1];
+@@ -220,7 +220,7 @@
+      * and cannot start with a digit, unless preceded by a path: e.g. './'.
+      */
+     for (i = 1; i < argc; i++) {
+-	ch = argv[i][0];
++	ch = argv[0][0];
+ 	if (!isdigit(ch)) {
+ 	    /*
+ 	     * The first file should also benefit from include logic. But in
