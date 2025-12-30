@@ -3,6 +3,7 @@ package routes
 import (
 	"encoding/json/v2"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"github.com/code-golf/code-golf/null"
@@ -17,7 +18,7 @@ func golferDisconnectGET(w http.ResponseWriter, r *http.Request) {
 		param(r, "connection"), session.Golfer(r).ID,
 	)
 
-	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+	http.Redirect(w, r, "/golfer/settings/connections", http.StatusSeeOther)
 }
 
 // GET /golfer/connect/{connection}
@@ -95,6 +96,20 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.AvatarURL = info.Picture
 		user.ID = info.Sub
 		user.Username = info.Nickname
+	case "gravatar":
+		var info struct {
+			AvatarURL string `json:"avatar_url"`
+			UserID    int    `json:"user_id"`
+			UserLogin string `json:"user_login"`
+		}
+
+		if err := json.UnmarshalRead(res.Body, &info); err != nil {
+			panic(err)
+		}
+
+		user.AvatarURL = info.AvatarURL
+		user.ID = strconv.Itoa(info.UserID)
+		user.Username = info.UserLogin
 	case "stack-overflow":
 		var info struct {
 			Items []struct {
@@ -113,6 +128,28 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.Username = info.Items[0].DisplayName
 	}
 
+	// Tidy up avatar URLs
+	if u, _ := url.Parse(user.AvatarURL); u != nil {
+		q := u.Query()
+
+		switch u.Host {
+		// Gravatar - https://docs.gravatar.com/sdk/images/
+		case "0.gravatar.com", "gravatar.com",
+			"secure.gravatar.com", "www.gravatar.com":
+			u.Host = "gravatar.com"
+
+			q.Set("d", "identicon")
+			q.Set("r", "PG")
+			q.Del("s")
+		// Stack Overflow
+		case "i.sstatic.net":
+			q.Del("s")
+		}
+
+		u.RawQuery = q.Encode()
+		user.AvatarURL = u.String()
+	}
+
 	session.Database(r).MustExec(
 		`INSERT INTO connections (avatar_url, connection, discriminator, id, user_id, username)
 		      VALUES             (        $1,         $2,            $3, $4,      $5,       $6)
@@ -128,5 +165,5 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 		user.Username,
 	)
 
-	http.Redirect(w, r, "/golfer/settings", http.StatusSeeOther)
+	http.Redirect(w, r, "/golfer/settings/connections", http.StatusSeeOther)
 }

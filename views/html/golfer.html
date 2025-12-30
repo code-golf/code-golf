@@ -2,11 +2,11 @@
     {{ $me := and $.Golfer (eq $.Golfer.ID .ID) }}
 
     <div class=grid id=profile>
-        <img src="/golfers/{{ .Name }}/avatar/176">
+        <img src="{{ avatar .AvatarURL 176 }}">
         <h1 title="{{ .Name }}{{ with .Pronouns.V }} ({{ . }}){{ end }}">
             {{ .Name }}
             {{ with .Pronouns.V }}<span id=pronouns>({{ . }})</span>{{ end }}
-        {{ with .Country }}
+        {{ with .CountryFlag }}
             <span class=flag title="{{ .Name }}">{{ .Flag }}</span>
         {{ end }}
         </h1>
@@ -26,7 +26,8 @@
             </form>
         {{ end }}
         {{ if $.Settings }}
-            <button class="btn blue" data-dialog=settings-dialog title=Settings>
+            <button class="btn blue" command=show-modal
+                commandfor=settings-dialog title=Settings>
                 {{ svg "gear-fill" }}
                 Page Settings
             </button>
@@ -76,14 +77,14 @@
     {{ if .Sponsor }}<div><p>💰<p class=yellow>Sponsor</div>{{ end }}
 
     {{ with len .HolesAuthored }}
-        <button data-dialog=holes-authored-dialog>
+        <button command=show-modal commandfor=holes-authored-dialog>
             <p>📚
             <p class=purple>{{ amount . "Hole" }} Authored
         </button>
     {{ end }}
 
     {{ with len .Referrals }}
-        <button data-dialog=referrals-dialog>
+        <button command=show-modal commandfor=referrals-dialog>
             <p>📣
             <p class=purple>{{ amount . "Referral" }}
         </button>
@@ -154,13 +155,7 @@
             <div>
                 <h1>{{ amount (len .) "Referral" }}</h1>
                 <ul>
-                {{ range . }}
-                    <li>
-                        <a href="/golfers/{{ . }}">
-                            <img loading=lazy src="/golfers/{{ . }}/avatar/48">
-                            {{ . }}
-                        </a>
-                {{ end }}
+                    {{ range . }}<li>{{ template "golfer-link" . }}{{ end }}
                 </ul>
             </div>
         </dialog>

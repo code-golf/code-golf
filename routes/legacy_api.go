@@ -26,7 +26,7 @@ func scoresAllGET(w http.ResponseWriter, r *http.Request) {
 		    SELECT hole,
 		           lang,
 		           scoring,
-		           login,
+		           name login,
 		           chars,
 		           bytes,
 		           submitted
@@ -264,6 +264,22 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
+			case "calendar":
+				if day == 1 {
+					if c := golfer.Earn(db, "turn-over-a-new-leaf"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
+			case "prime-numbers", "prime-numbers-long":
+				switch month {
+				case 2, 3, 5, 7, 11:
+					switch day {
+					case 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31:
+						if c := golfer.Earn(db, "prime-time"); c != nil {
+							out.Cheevos = append(out.Cheevos, *c)
+						}
+					}
+				}
 			case "star-wars-gpt", "star-wars-opening-crawl":
 				if month == time.May && day == 4 {
 					if c := golfer.Earn(db, "may-the-4ᵗʰ-be-with-you"); c != nil {
@@ -380,16 +396,13 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type entry struct {
-		Bytes      *int `json:"bytes"`
-		BytesChars *int `json:"bytes_chars"`
-		Chars      *int `json:"chars"`
-		CharsBytes *int `json:"chars_bytes"`
-		Golfer     struct {
-			ID   int    `json:"id"`
-			Name string `json:"name"`
-		} `json:"golfer"`
-		Me   bool `json:"me"`
-		Rank int  `json:"rank"`
+		Bytes      *int              `json:"bytes"`
+		BytesChars *int              `json:"bytes_chars"`
+		Chars      *int              `json:"chars"`
+		CharsBytes *int              `json:"chars_bytes"`
+		Golfer     Golfer.GolferLink `json:"golfer"`
+		Me         bool              `json:"me"`
+		Rank       int               `json:"rank"`
 	}
 
 	sqlWhere, sqlLimit := "true", "$6"
@@ -428,9 +441,9 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		       AND scoring = $5
 		       AND NOT failing
 		)   SELECT bytes, bytes_chars, chars, chars_bytes, me, rank,
-		           id "golfer.id", login "golfer.name"
+		           avatar_url "golfer.avatar_url", name "golfer.name"
 		      FROM ranks
-		      JOIN users ON id = user_id
+		      JOIN golfers_with_avatars ON id = user_id
 		 LEFT JOIN other_scoring USING(user_id)
 		     WHERE `+sqlWhere+`
 		  ORDER BY row

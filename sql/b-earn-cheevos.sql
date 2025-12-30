@@ -85,6 +85,10 @@ BEGIN
     IF hole = 'rock-paper-scissors-spock-lizard' AND lang = 'janet' THEN
         earned := earn(earned, 'dammit-janet', user_id); END IF;
 
+    -- 🔩 Down to the Metal
+    IF langs_for_hole @> '{assembly,rust}' THEN
+        earned := earn(earned, 'down-to-the-metal', user_id); END IF;
+
     -- 🐘 ElePHPant in the Room
     IF lang = 'php' THEN
         earned := earn(earned, 'elephpant-in-the-room', user_id); END IF;
@@ -166,6 +170,12 @@ BEGIN
     -- 🍹 Piña Colada
     IF langs_for_hole @> '{berry,coconut,elixir}' THEN
         earned := earn(earned, 'piña-colada', user_id); END IF;
+
+    -- 🛟 Ring Toss
+    SELECT COUNT(*) >= 9 INTO found FROM UNNEST(langs_for_hole)
+     WHERE unnest IN (SELECT id FROM langs WHERE experiment = 0 AND name LIKE '%O%');
+    IF hole = 'tower-of-hanoi' AND found THEN
+        earned := earn(earned, 'ring-toss', user_id); END IF;
 
     -- 🎮 S-box 360
     IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN

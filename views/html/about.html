@@ -113,30 +113,59 @@
 
         <dt>How are solutions ranked?
         <dd>
-            There are two scorings in use, bytes and chars. Bytes is the
-            number of bytes of a solution encoded in UTF-8. Chars is the
-            number of Unicode codepoints of a solution. Users may submit up to
-            two solutions per hole per language. This is handled automatically
-            when you enter two solutions and each minimizes a different
-            scoring. Each scoring has its own set of leaderboards. For the
-            chars scoring, both “A” (U+0041 Latin Capital Letter A) and “😉”
-            (U+1F609 Winking Face) cost the same despite the 1:4 ratio in byte
-            count in UTF-8.
+            <p>
+                There are two scorings in use, bytes and chars. Bytes is the
+                number of bytes of a solution encoded in UTF-8. Chars is the
+                number of Unicode codepoints of a solution. Users may submit up to
+                two solutions per hole per language. This is handled automatically
+                when you enter two solutions and each minimizes a different
+                scoring. Each scoring has its own set of leaderboards. For the
+                chars scoring, both “A” (U+0041 Latin Capital Letter A) and “😉”
+                (U+1F609 Winking Face) cost the same despite the 1:4 ratio in byte
+                count in UTF-8.
+
+            <p id=strokes>
+                Some experimental languages that make heavy use of multi-byte
+                characters (APL, UIUA, 05AB1E, BQN, Vyxal) have a third scoring
+                method that does not yet affect leaderboards or solution saving.
+                This method allows multi-byte characters commonly used in the
+                language to count for only one stroke, while all other characters
+                count as one stroke for every UTF-8 byte in their encoding.
+                Reference
+                <a href="https://github.com/code-golf/code-golf/pull/2513">PR#2513</a>
+                for more detail.
 
         <dt>How are solutions scored?
         <dd>
-            For each hole, in each language, up to 1,000 points are available.
-            The formula is:
+            There are two leaderboards. There is a global leaderboard and
+            a language specitic leaderboard.
+
+            <p>
+                For the language specific leaderboard, the best answer gets
+                1,000 points and the rest will get points inverseley
+                proportional to their length.
+
+            <p>
+                For example, if your solution is double the strokes of the the
+                best solution, it will get 500 ponts for the language specific
+                leaderboard.
+
+            <p>
+                For the global leaderboard, instead of using the best score
+                for a language, we use an <i>Par Value</i>, a value
+                always at least as high as the best score in a language.
+                
+            <p>
+                Getting exactly par will give you 1,000 points,
+                double the length will get half the points etc.
+
+            <p>The par for a hole in a language is calculated as follows:
+                
             <blockquote>
-                <i>Points</i> =
-                    <i>S<sub>b</sub></i> ÷ <i>S<sub>u</sub></i> × 1000
-            </blockquote>
-            Where <i>S<sub>u</sub></i> is the length of the user's solution,
-            and <i>S<sub>b</sub></i> is a Bayesian estimator of the form:
-            <blockquote>
-                <i>S<sub>b</sub></i> = ((<i>√n</i> + 2) ÷ (<i>√n</i> + 3))
+                <i>Par</i> = ((<i>√n</i> + 2) ÷ (<i>√n</i> + 3))
                     × <i>S</i> + (1 ÷ (<i>√n</i> + 3)) × <i>S<sub>a</sub></i>
             </blockquote>
+            
             <i>n</i> is the number of solutions in this hole in this language.
             <i>S</i> is the length of the shortest solution in this hole in
             this language.
@@ -144,8 +173,9 @@
             in this hole.
 
             <p>
-                The confidence interval is chosen such that the shortest
-                solution in any language will receive a score of at least 750.
+                The formula for par was chosen such that the shortest
+                solution in any language will always receive a score of at
+                least 750.
 
             <p>
                 Your overall score is the sum of your highest points in each
