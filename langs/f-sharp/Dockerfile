@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.100-alpine3.22-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0.101-alpine3.23-amd64 AS builder
 
 WORKDIR /f-sharp
 
