@@ -32,7 +32,10 @@ sub new-golfer(:$dbh = dbh, :$id = 1, :$name = 'Bob') is export {
         $id, $id, $name,
     );
 
-    $dbh.execute('INSERT INTO sessions (user_id) VALUES ($1) RETURNING id', $id).row.head;
+    $dbh.execute(
+        ｢INSERT INTO sessions (browser, user_id) VALUES ('', $1) RETURNING id｣,
+        $id,
+    ).row.head;
 }
 
 # Submit a solution and return the deserialised response.

@@ -219,7 +219,8 @@ CREATE TABLE notes (
 CREATE TABLE sessions (
     id        uuid      NOT NULL DEFAULT uuidv4() PRIMARY KEY,
     last_used timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
-    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE
+    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    browser   text      NOT NULL
 );
 
 CREATE TABLE solutions (

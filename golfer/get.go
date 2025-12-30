@@ -9,13 +9,15 @@ import (
 )
 
 // Get a Golfer given a session ID, updates the session's last used time.
-func Get(db *sqlx.DB, sessionID string) *Golfer {
+func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 	var golfer Golfer
 
 	if err := db.Get(
 		&golfer,
 		`WITH golfer AS (
-		    UPDATE sessions SET last_used = DEFAULT WHERE id = uuid_or_null($1)
+		    UPDATE sessions
+		       SET browser = $4, last_used = DEFAULT
+			 WHERE id = uuid_or_null($1)
 		    RETURNING user_id
 		), failing AS (
 		    SELECT hole, lang
@@ -68,6 +70,7 @@ func Get(db *sqlx.DB, sessionID string) *Golfer {
 		sessionID,
 		config.LatestHole,
 		config.LatestLang,
+		userAgent,
 	); errors.Is(err, sql.ErrNoRows) {
 		return nil
 	} else if err != nil {

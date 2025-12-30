@@ -12,7 +12,9 @@ import (
 func Golfer(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if cookie, _ := r.Cookie("__Host-session"); cookie != nil {
-			if golfer := golfer.Get(session.Database(r), cookie.Value); golfer != nil {
+			if golfer := golfer.Get(
+				session.Database(r), cookie.Value, r.UserAgent(),
+			); golfer != nil {
 				session.Get(r).Golfer = golfer
 
 				// Refresh the cookie.
