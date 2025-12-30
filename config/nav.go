@@ -39,6 +39,7 @@ func initNav() {
 					Links: []*NavLink{
 						{Name: "General", Path: "/golfer/settings"},
 						{Name: "Connections", Slug: "connections"},
+						{Name: "Sessions", Slug: "sessions"},
 					},
 				},
 				group("Manage Data", "page", "Export Data", "Delete Account"),

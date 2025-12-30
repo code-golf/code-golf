@@ -629,7 +629,7 @@ td .btn {
 }
 
 /* Stick headers below tabs if we have them */
-nav + main .sticky th { top: calc(5.75rem + 1px) }
+nav ~ main .sticky th { top: calc(5.75rem + 1px) }
 
 .tabs {
     display: flex;

@@ -133,6 +133,8 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Post("/settings/{page:connections}", golferSettingsConnectionsPOST)
 			r.Get("/settings/{page:delete-account}", golferSettingsDeleteAccountGET)
 			r.Get("/settings/{page:export-data}", golferSettingsExportDataGET)
+			r.Get("/settings/{page:sessions}", golferSettingsSessionsGET)
+			r.Post("/settings/{page:sessions}", golferSettingsSessionsPOST)
 			r.Post("/settings/reset", golferSettingsResetPOST)
 			r.Post("/settings/save", golferSettingsSavePOST)
 		})

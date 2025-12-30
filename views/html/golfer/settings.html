@@ -183,6 +183,32 @@
         <p><button class="btn red">Delete Account</button>
     </form>
 {{ end }}
+{{ else if eq .Title "Settings: Sessions" }}
+    {{ $thisSession := ( .Request.Cookie "__Host-session" ).Value }}
+
+    <table class="nowrap-first-second sticky">
+        <thead>
+            <tr>
+                <th>Browser
+                <th>OS
+                <th class=right>Last Used
+                <th>
+        <tbody>
+    {{ range .Data }}
+            <tr>
+                <td>{{ .Browser.Name }} {{ .Browser.Version }}
+                <td>{{ .Browser.OS }} {{ .Browser.OSVersion }}
+                <td class=right>{{ time .LastUsed }}
+                <td>
+                    <form method=post>
+                        <input name=id type=hidden value="{{ .ID }}">
+                        <button class="btn red"
+                            {{ if eq $thisSession .ID }} disabled {{ end }}>
+                            Remove
+                        </button>
+                    </form>
+    {{ end }}
+    </table>
 {{ end }}
 </main>
 
