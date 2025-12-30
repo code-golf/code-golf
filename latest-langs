@@ -79,6 +79,7 @@ constant %paths = (
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
     'Picat'        => 'picat-lang.org/download.html',
+    'Piet'         => 'packages.guix.gnu.org/packages/npiet',
     'PowerShell'   => 'endoflife.date/api/powershell.json',
     'Prolog'       => 'swi-prolog.discourse.group/c/releases',
     'Python'       => 'endoflife.date/api/python.json',
@@ -137,6 +138,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'githubusercontent' / { $res ~~ / <(<ver>)> / }
         when / 'gnome.org'         / { $res ~~ / 'Release ' <(<ver>)> / }
         when / 'golfscript.com'    / { $res ~~ / 'iogii-' <(<ver>)> / }
+        when / 'guix.gnu.org'      / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'jmvdveer'          / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'npmjs.org'         / { $res.&from-json[0]<version> }
         when / 'picat-lang.org'    / { $res ~~ / 'Version ' <(<ver>)> / }
