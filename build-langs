@@ -97,6 +97,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
             when 'Common Lisp' { $ver = "GNU CLISP $digits" }
             when 'D'           { $ver = "DMD $digits" }
             when 'Haskell'     { $ver = "GHC $digits" }
+            when 'Idris'       { $ver = "Idris 2 $digits" }
             when 'Java'        {
                 $ver = $ver.match(/ \d+ ( \. \d+ )* ( \+ \d+ )? /);
                 $ver = "OpenJDK $ver" ~ ( ".0" if $ver ne $digits );
