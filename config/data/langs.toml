@@ -546,7 +546,7 @@ example   = '''
 [Crap]
 args       = [ '/usr/bin/crap', '-' ]
 experiment = 1360
-size       = '1.79 MiB'
+size       = '1.80 MiB'
 version    = '2828c5b'
 website    = 'https://themanyone.github.io/crap/'
 example    = '''
