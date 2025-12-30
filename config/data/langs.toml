@@ -17,7 +17,7 @@ example    = '''
 
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
-size    = '549 KiB'
+size    = '648 KiB'
 version = '96b1cfc'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
-size       = '1.23 MiB'
-version    = 'Algol 68 Genie 3.10.7'
+size       = '1.40 MiB'
+version    = 'Algol 68 Genie 3.10.9'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -81,8 +81,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '4.93 MiB'
-version    = '692eb1e'
+size       = '4.91 MiB'
+version    = 'da1b9ca'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -197,8 +197,8 @@ BEGIN {
 
 [Bash]
 args    = [ '/usr/bin/bash', '-s', '-' ]
-size    = '1.27 MiB'
-version = '5.3.3'
+size    = '1.35 MiB'
+version = '5.3.9'
 website = 'https://www.gnu.org/software/bash/'
 example = '''
 # Printing
@@ -238,7 +238,7 @@ Next
 [Befunge]
 args       = [ '/usr/bin/befunge', '-' ]
 experiment = 428
-size       = '303 KiB'
+size       = '316 KiB'
 version    = '29e4cfa'
 website    = 'https://github.com/VorpalBlade/cfunge'
 example    = '''
@@ -279,8 +279,8 @@ end
 [BQN]
 args       = [ '/usr/bin/bqn', '-' ]
 experiment = 474
-size       = '1.26 MiB'
-version    = 'CBQN 0.9.0'
+size       = '1.28 MiB'
+version    = 'CBQN 0.10.0'
 website    = 'https://github.com/dzaima/CBQN'
 example    = '''
 # Printing
@@ -295,7 +295,7 @@ example    = '''
 
 [brainfuck]
 args    = [ '/usr/bin/brainfuck', '-xc', '$code' ]
-size    = '51.1 KiB'
+size    = '55.7 KiB'
 version = '103be5b'
 website = 'https://github.com/primo-ppcg/bfci'
 example = '''
@@ -322,7 +322,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 
 [C]
 args    = [ '/usr/bin/c', '-run', '-' ]
-size    = '1.73 MiB'
+size    = '1.74 MiB'
 version = 'TCC 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
@@ -348,7 +348,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '111 MiB'
-version = 'C# 14.0 on .NET 10.0.0'
+version = 'C# 14.0 on .NET 10.0.1'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -369,7 +369,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '112 MiB'
-version = 'Clang 21.1.6'
+version = 'Clang 21.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -396,8 +396,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '81.3 MiB'
-version = '0.11.0'
+size    = '78.9 MiB'
+version = '0.11.1'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -432,7 +432,7 @@ eaN*
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
 size    = '64.3 MiB'
-version = 'Babashka 1.12.212'
+version = 'Babashka 1.12.213'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -449,7 +449,7 @@ example = '''
 
 [COBOL]
 args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.21 MiB'
+size    = '4.25 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -484,7 +484,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '83.8 MiB'
+size    = '77.4 MiB'
 version = '3.1.2'
 website = 'https://coconut-lang.org'
 example = '''
@@ -506,7 +506,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffee', '/proc/self/fd/0' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '80.7 MiB'
+size       = '78.2 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '118 MiB'
-version = '3.10.1'
+version = '3.10.4'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -614,7 +614,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egel', '-' ]
 experiment = 1434
-size       = '7.41 MiB'
+size       = '7.50 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -637,7 +637,7 @@ none
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '57.1 MiB'
+size    = '57.2 MiB'
 version = '1.19.4'
 website = 'https://elixir-lang.org'
 example = '''
@@ -656,7 +656,7 @@ args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
 size     = '50.1 MiB'
-version  = 'OTP 28.2'
+version  = 'OTP 28.3'
 website  = 'https://www.erlang.org'
 example  = '''
 main(Args) ->
@@ -674,7 +674,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.0'
+version = 'F# 10.0 on .NET 10.0.1'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -695,8 +695,8 @@ let main args =
 
 [Factor]
 args    = [ '/usr/bin/factor', '/proc/self/fd/0' ]
-size    = '174 MiB'
-version = '0.100'
+size    = '178 MiB'
+version = '0.101'
 website = 'https://factorcode.org'
 example = '''
 ! Printing
@@ -712,7 +712,7 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '695 KiB'
+size       = '728 KiB'
 version    = '1.6.0'
 website    = 'https://fennel-lang.org'
 example    = '''
@@ -730,7 +730,7 @@ example    = '''
 
 [Forth]
 args    = [ '/usr/bin/forth', '/proc/self/fd/0' ]
-size    = '590 KiB'
+size    = '639 KiB'
 version = 'GNU Forth 0.7.3'
 website = 'https://www.gnu.org/software/gforth/'
 example = '''
@@ -752,7 +752,7 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '73.1 MiB'
+size    = '78.1 MiB'
 version = 'GNU Fortran 15.2.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '75.1 MiB'
+size    = '74.9 MiB'
 version = '1.13.0'
 website = 'https://gleam.run'
 example = '''
@@ -807,7 +807,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '323 MiB'
-version = '1.25.4'
+version = '1.25.5'
 website = 'https://go.dev'
 example = '''
 package main
@@ -836,7 +836,7 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-size       = '33.4 MiB'
+size       = '38.5 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
 example    = '''
@@ -855,7 +855,7 @@ args     = [ '/usr/bin/groovy', '-e', '$code' ]
 env      = [ 'JAVA_HOME=/opt/java' ]
 released = 2025-08-29
 size     = '71.9 MiB'
-version  = '5.0.2'
+version  = '5.0.3'
 website  = 'https://groovy-lang.org'
 example  = '''
 // Printing
@@ -964,7 +964,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '7.69 MiB'
+size    = '7.71 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -992,7 +992,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.30 MiB'
+size       = '2.26 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1013,7 +1013,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '41.0 MiB'
+size       = '43.3 MiB'
 version    = '1.1.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -1032,7 +1032,7 @@ example    = '''
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
-size       = '33.5 MiB'
+size       = '38.6 MiB'
 version    = '1.1'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
@@ -1065,7 +1065,7 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '911 KiB'
+size    = '977 KiB'
 version = '1.40.1'
 website = 'https://janet-lang.org'
 example = '''
@@ -1103,8 +1103,8 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '45.6 MiB'
-version = 'V8 14.2.231.21'
+size    = '46.2 MiB'
+version = 'V8 14.3.127.16'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1121,7 +1121,7 @@ for (let arg of arguments)
 
 [jq]
 args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
-size    = '989 KiB'
+size    = '1.03 MiB'
 version = '1.8.1'
 website = 'https://jqlang.github.io/jq/'
 example = '''
@@ -1148,7 +1148,7 @@ example    = '''
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '361 MiB'
-version = '1.12.2'
+version = '1.12.3'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1167,7 +1167,7 @@ end
 
 [K]
 args    = [ '/usr/bin/k', '/proc/self/fd/0' ]
-size    = '605 KiB'
+size    = '642 KiB'
 version = '717063f249'
 website = 'https://codeberg.org/ngn/k'
 example = '''
@@ -1184,7 +1184,7 @@ example = '''
 [Knight]
 args       = [ '/usr/bin/knight', '-e', '$code' ]
 experiment = 2360
-size       = '734 KiB'
+size       = '738 KiB'
 version    = 'd118d76'
 website    = 'https://github.com/synt7x/knightjit'
 example    = '''
@@ -1206,8 +1206,8 @@ example    = '''
 
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '136 MiB'
-version = '2.2.21'
+size    = '137 MiB'
+version = '2.3.0'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1224,8 +1224,8 @@ for (arg in args)
 
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
-size    = '362 KiB'
-version = '5.4.8'
+size    = '396 KiB'
+version = '5.5.0'
 website = 'https://www.lua.org'
 example = '''
 -- Printing
@@ -1245,8 +1245,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.12 MiB'
-version    = '0.701'
+size       = '5.19 MiB'
+version    = '0.703'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1265,7 +1265,7 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '14.9 MiB'
+size    = '15.0 MiB'
 version = '2.2.6'
 website = 'https://nim-lang.org'
 example = '''
@@ -1285,7 +1285,7 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '86.8 MiB'
+size    = '79.5 MiB'
 version = '5.4.0'
 website = 'https://ocaml.org'
 example = '''
@@ -1307,8 +1307,8 @@ Sys.argv
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '299 MiB'
-version    = '2025-11'
+size       = '297 MiB'
+version    = '2025-12'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1356,7 +1356,7 @@ end.
 
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
-size    = '5.66 MiB'
+size    = '5.67 MiB'
 version = '5.42.0'
 website = 'https://www.perl.org'
 example = '''
@@ -1375,7 +1375,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.0'
+version = '8.5.1'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1426,7 +1426,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '137 MiB'
-version    = 'PowerShell 7.5.4 on .NET 10.0.0'
+version    = 'PowerShell 7.5.4 on .NET 10.0.1'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1444,10 +1444,10 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-args    = [ '/usr/bin/prolog', '-g', 'halt', '/tmp/code.pl' ]
-env     = [ 'LC_ALL=C.UTF-8' ]
-size    = '49.3 MiB'
-version = 'SWI-Prolog 9.2.9'
+args    = [ '/usr/bin/prolog', '-' ]
+env     = [ 'LANG=C.UTF-8' ]
+size    = '57.3 MiB'
+version = 'SWI-Prolog 10.0.0'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -1465,8 +1465,8 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '30.4 MiB'
-version = '3.14.0'
+size    = '30.5 MiB'
+version = '3.14.2'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1486,7 +1486,7 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '17.5 MiB'
+size       = '17.6 MiB'
 version    = '2.2.0'
 website    = 'https://qore.org'
 example    = '''
@@ -1505,7 +1505,7 @@ foreach string arg in (ARGV)
 [R]
 args       = [ '/usr/bin/R', '-' ]
 args-quine = [ '/usr/bin/R', '-e', "source('stdin')" ]
-size       = '30.6 MiB'
+size       = '31.0 MiB'
 version    = '4.5.2'
 website    = 'https://www.r-project.org'
 example    = '''
@@ -1544,8 +1544,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '75.6 MiB'
-version   = 'Raku 6.d on Rakudo 2025.11'
+size      = '76.5 MiB'
+version   = 'Raku 6.d on Rakudo 2025.12'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1582,7 +1582,7 @@ foreach arg system/options/args [
 [Rexx]
 args       = [ '/usr/bin/rexx', '--args', '/proc/self/fd/0' ]
 experiment = 873
-size       = '1.12 MiB'
+size       = '1.13 MiB'
 version    = 'Regina 3.9.7'
 website    = 'https://regina-rexx.sourceforge.io'
 example    = '''
@@ -1603,7 +1603,7 @@ end
 [Rockstar]
 args      = [ '/usr/bin/rockstarwrapper', '-' ]
 redirects = [ 'rockstar-2' ]
-size      = '3.93 MiB'
+size      = '3.92 MiB'
 version   = '2.0.31'
 website   = 'https://codewithrockstar.com'
 example   = '''
@@ -1623,8 +1623,8 @@ end
 
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
-size    = '33.4 MiB'
-version = '3.4.7'
+size    = '38.5 MiB'
+version = '4.0.0'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -1643,8 +1643,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '406 MiB'
-version = '1.91.1'
+size    = '407 MiB'
+version = '1.92.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1684,7 +1684,7 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '7.43 MiB'
+size    = '7.47 MiB'
 version = 'Chez Scheme 10.3.0'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
@@ -1700,7 +1700,7 @@ example = '''
 
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
-size    = '244 KiB'
+size    = '245 KiB'
 version = 'GNU sed 4.9'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
@@ -1729,7 +1729,7 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.22 MiB'
+size    = '1.29 MiB'
 version = 'SQLite 3.51.1'
 website = 'https://sqlite.org'
 example = '''
@@ -1755,7 +1755,7 @@ SELECT arg FROM argv;
 [Squirrel]
 args       = [ '/usr/bin/squirrel', '-' ]
 experiment = 1598
-size       = '3.96 MiB'
+size       = '4.00 MiB'
 version    = '3.2'
 website    = 'http://squirrel-lang.org'
 example    = '''
@@ -1792,7 +1792,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '561 MiB'
-version = '6.2.1'
+version = '6.2.3'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -1811,7 +1811,7 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.67 MiB'
+size    = '5.81 MiB'
 version = '9.0.3'
 website = 'https://www.tcl-lang.org'
 example = '''
@@ -1856,7 +1856,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.1 MiB'
+size       = '19.0 MiB'
 version    = '0.17.3'
 website    = 'https://www.uiua.org'
 example    = '''
@@ -1873,8 +1873,8 @@ example    = '''
 [Umka]
 args       = [ '/usr/bin/umka', '-' ]
 experiment = 1921
-size       = '1.32 MiB'
-version    = '1.5.4'
+size       = '1.16 MiB'
+version    = '1.5.5'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
 import "std.um"
@@ -1921,7 +1921,7 @@ for arg in os.args[1..] {
 args       = [ '/usr/bin/vala', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1354
-size       = '99.6 MiB'
+size       = '104 MiB'
 version    = '0.56.18'
 website    = 'https://vala.dev'
 example    = '''
@@ -1985,7 +1985,7 @@ example    = '''
 
 [Wren]
 args    = [ '/usr/bin/wren', '-' ]
-size    = '505 KiB'
+size    = '517 KiB'
 version = '0.4.0'
 website = 'https://wren.io'
 example = '''

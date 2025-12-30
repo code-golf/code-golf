@@ -427,6 +427,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Calendar' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gregorian_calendar' },
 ]
+released = 2026-01-01
 synopsis = 'Print calendars for given months in given years.'
 preamble = '''
 <p>
@@ -1662,7 +1663,7 @@ preamble = '''
 '''
 
 ['Gray Code Decoder']
-category = 'Transform'
+category = 'Computing'
 experiment = 779
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
@@ -1959,11 +1960,11 @@ preamble = '''
 
 ['Kolakoski Constant']
 category = 'Mathematics'
-released = 2021-01-16
 links = [
     { name = 'OEIS A118270', url = '//oeis.org/A118270' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence#Kolakoski_Constant' },
 ]
+released = 2021-01-16
 synopsis = 'Print the first 1,000 digits of the Kolakoski constant.'
 preamble = '''
 {{- if eq .Name "Kolakoski Constant" -}}
@@ -2001,6 +2002,7 @@ preamble = '''
 [['Kolakoski Constant'.variants]]
 name     = 'Kolakoski Sequence'
 category = 'Sequence'
+released = 2021-01-16
 synopsis = 'Print the first 1,000 elements in the Kolakoski sequence.'
 links = [
     { name = 'OEIS A000002', url = '//oeis.org/A000002' },
@@ -2428,7 +2430,58 @@ preamble = '''
 
 [['Morse Decoder'.variants]]
 name     = 'Morse Encoder'
+released = 2018-02-18
 synopsis = 'Encode alphanumeric strings into International Morse Code.'
+
+['Multitap Input']
+category = 'Transform'
+experiment = 1952
+links = [
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Multi-tap' },
+]
+data = '''
+{
+    "A": "2", "B": "22", "C": "222",
+	"D": "3", "E": "33", "F": "333",
+	"G": "4", "H": "44", "I": "444",
+	"J": "5", "K": "55", "L": "555",
+	"M": "6", "N": "66", "O": "666",
+	"P": "7", "Q": "77", "R": "777", "S": "7777",
+	"T": "8", "U": "88", "V": "888",
+	"W": "9", "X": "99", "Y": "999", "Z": "9999",
+	" ": "0"
+}'''
+synopsis = 'Convert numeric button presses to text by the multi-tap system.'
+preamble = '''
+<p>
+    Many older mobile phone designs allow text to be entered on a numeric
+    E.161 keypad. The numbers 2-9 are labeled with letters:
+
+<ul>
+    <li>2: ABC
+    <li>3: DEF
+    <li>4: GHI
+    <li>5: JKL
+    <li>6: MNO
+    <li>7: PQRS
+    <li>8: TUV
+    <li>9: WXYZ
+</ul>
+
+<p>
+    Pressing a number key once enters the first letter shown on the button,
+    pressing it twice in a row enters the second letter shown on the button,
+    and so on. Two letters located on the same number key can be entered
+    consecutively by waiting a short period of time between entering each letter.
+    Pressing the 0 key enters a space.
+
+<p>
+    Given a sequence of button presses and pauses (represented by spaces),
+    print the equivalent text. No run of one digit will be longer than the number
+    of letters on that key. Pauses may occur between any two letters, not
+    just those on the same key.
+
+'''
 
 ['Musical Chords']
 category = 'Transform'
@@ -2762,6 +2815,89 @@ preamble = '''
 <p>The full grid should look like this:
 
 <pre>{{ .Answer }}</pre>
+'''
+
+[Numbrix]
+category = 'Gaming'
+experiment = 1151
+links = [
+    { name = 'Parade',       url = '//parade.com/numbrix' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Solve_a_Numbrix_puzzle' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Hidato' },
+]
+synopsis = 'Solve a Numbrix puzzle.'
+preamble = '''
+<p>
+    Numbrix is a logic puzzle game where the goal is to fill the empty squares
+    in a grid with unique, consecutive numbers that are horizontally or
+    vertically adjacent. Each puzzle begins with a number of arbitrary squares
+    in a pattern already occupied by unique numbers, but not necessarily
+    consecutive to other numbers in potentially adjacent squares.
+
+<p>
+    For example, take the following starting pattern:
+
+<pre>
+┏━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┓
+┃    │    │    │    │    │    │    │    │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 11 │ 12 │ 15 │ 18 │ 21 │ 62 │ 61 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │  6 │    │    │    │    │    │ 60 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 33 │    │    │    │    │    │ 57 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 32 │    │    │    │    │    │ 56 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 37 │    │  1 │    │    │    │ 73 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 38 │    │    │    │    │    │ 72 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │ 43 │ 44 │ 47 │ 48 │ 51 │ 76 │ 77 │    ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃    │    │    │    │    │    │    │    │    ┃
+┗━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┛
+</pre>
+
+<p>
+    Suppose a player starts the puzzle at number '1', then the player can reach
+    number '6' via four valid paths:
+
+<ul>
+    <li>Up → Up → Up → Left → Left
+    <li>Left → Up → Up → Up → Left
+    <li>Up → Left → Up → Up → Left
+    <li>Up → Up → Left → Up → Left
+</ul>
+
+<p>
+    When the above puzzle is solved, it might look something like this:
+
+<pre>
+┏━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┯━━━━┓
+┃  9 │ 10 │ 13 │ 14 │ 19 │ 20 │ 63 │ 64 │ 65 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃  8 │ 11 │ 12 │ 15 │ 18 │ 21 │ 62 │ 61 │ 66 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃  7 │  6 │  5 │ 16 │ 17 │ 22 │ 59 │ 60 │ 67 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 34 │ 33 │  4 │  3 │ 24 │ 23 │ 58 │ 57 │ 68 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 35 │ 32 │ 31 │  2 │ 25 │ 54 │ 55 │ 56 │ 69 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 36 │ 37 │ 30 │  1 │ 26 │ 53 │ 74 │ 73 │ 70 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 39 │ 38 │ 29 │ 28 │ 27 │ 52 │ 75 │ 72 │ 71 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 40 │ 43 │ 44 │ 47 │ 48 │ 51 │ 76 │ 77 │ 78 ┃
+┠────┼────┼────┼────┼────┼────┼────┼────┼────┨
+┃ 41 │ 42 │ 45 │ 46 │ 49 │ 50 │ 81 │ 80 │ 79 ┃
+┗━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┷━━━━┛
+</pre>
+
+<p>
+    Given a nine-by-nine grid with a starting pattern, print a solved Numbrix
+    puzzle.
 '''
 
 ['Odd Polyomino Tiling']
