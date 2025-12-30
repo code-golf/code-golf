@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
         if (dup2(open(input, O_RDONLY), STDIN_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(haskell, haskell, "--run", code[1], "-fdiagnostics-color=always", "-w", NULL);
+        execl(haskell, haskell, "--run", code[1], "-H14m", "-O", "-fdiagnostics-color=always", "-w", NULL);
         ERR_AND_EXIT("execl");
     }
 
