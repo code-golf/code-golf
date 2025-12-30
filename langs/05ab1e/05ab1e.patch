@@ -1,0 +1,31 @@
+--- lib/interp/interpreter.ex
++++ lib/interp/interpreter.ex
+@@ -58,7 +58,7 @@
+     def interp_string(string, stack, environment) do
+         dissected_string = String.split(string, "ÿ")
+
+-        {elements, stack, environment} = Enum.reduce(Enum.slice(dissected_string, 0..-2), {[], stack, environment}, 
++        {elements, stack, environment} = Enum.reduce(Enum.slice(dissected_string, 0..-2//1), {[], stack, environment},
+             fn (_, {acc, curr_stack, curr_env}) ->
+                 case Stack.pop(curr_stack, curr_env) do
+                     nil -> {acc, curr_stack, curr_env}
+--- lib/reading/input.ex
++++ lib/reading/input.ex
+@@ -31,7 +31,7 @@
+                 Globals.set(%{global_env | inputs: global_env.inputs ++ [result]})
+                 result
+             true ->
+-                result = to_string(input)
++                result = Base.decode64!(input)
+                 global_env = Globals.get()
+                 Globals.set(%{global_env | inputs: global_env.inputs ++ [result]})
+                 result
+@@ -50,7 +50,7 @@
+         cond do
+             input == :eof -> acc
+             input == "\n" -> acc
+-            true -> read_until_newline([String.trim_trailing(input, "\n") | acc])
++            true -> read_until_newline([Base.decode64!(String.trim_trailing(input, "\n")) | acc])
+         end
+     end
+ end

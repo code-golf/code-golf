@@ -36,13 +36,45 @@ int main(int argc, char* argv[]) {
     if (!(fd = open(input, O_CREAT | O_TRUNC | O_WRONLY, 0644)))
         ERR_AND_EXIT("open");
 
-    for (int i = 2; i < argc; i++)
-        if (write(fd, argv[i], strlen(argv[i])) < 0 || write(fd, "\n", sizeof(char)) < 0) {
-            if (close(fd))
-                ERR_AND_EXIT("close");
+    const char* table = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-            ERR_AND_EXIT("write");
+    for (int i = 2; i < argc; i++) {
+        int len = strlen(argv[i]);
+
+        char* arg, *str;
+
+        if (!(arg = str = malloc((len + 2) / 3 * 4 + 1)))
+            ERR_AND_EXIT("malloc");
+
+        int j, chunk;
+
+        typedef unsigned char UCHAR;
+
+        for (j = 0; j + 2 < len; j += 3) {
+            chunk = ((UCHAR*) argv[i])[j] << 16 | ((UCHAR*) argv[i])[j+1] << 8 | ((UCHAR*) argv[i])[j+2];
+
+            *str++ = table[chunk >> 18 & 63];
+            *str++ = table[chunk >> 12 & 63];
+            *str++ = table[chunk >> 6 & 63];
+            *str++ = table[chunk & 63];
         }
+
+        if (j < len) {
+            chunk = ((UCHAR*) argv[i])[j] << 16 | (j + 1 < len) * ((UCHAR*) argv[i])[j+1] << 8;
+
+            *str++ = table[chunk >> 18 & 63];
+            *str++ = table[chunk >> 12 & 63];
+            *str++ = j + 1 < len ? table[chunk >> 6 & 63] : '=';
+            *str++ = '=';
+        }
+
+        *str = 0;
+
+        if (!write(fd, arg, strlen(arg)) || !write(fd, "\n", sizeof(char)))
+            ERR_AND_EXIT("write");
+
+        free(arg);
+    }
 
     if (close(fd))
         ERR_AND_EXIT("close");
@@ -53,7 +85,7 @@ int main(int argc, char* argv[]) {
         if (dup2(open(input, O_RDONLY), STDIN_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(osabie, osabie, "/osabie", code, NULL);
+        execl(osabie, osabie, "/usr/local/bin/osabie", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -66,4 +98,7 @@ int main(int argc, char* argv[]) {
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
+
+    if (remove(code))
+        ERR_AND_EXIT("remove");
 }

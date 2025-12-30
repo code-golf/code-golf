@@ -1,7 +1,8 @@
 [05AB1E]
 args       = [ '/usr/bin/05ab1e', '-' ]
+env        = [ 'LANG=C.UTF-8' ]
 experiment = 233
-size       = '28.2 MiB'
+size       = '61.2 MiB'
 version    = 'c31668b'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
@@ -637,7 +638,7 @@ none
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '57.2 MiB'
+size    = '67.7 MiB'
 version = '1.19.4'
 website = 'https://elixir-lang.org'
 example = '''
@@ -655,7 +656,7 @@ for arg <- System.argv, do: IO.puts arg
 args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
-size     = '50.1 MiB'
+size     = '59.0 MiB'
 version  = 'OTP 28.3'
 website  = 'https://www.erlang.org'
 example  = '''
@@ -780,8 +781,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '74.9 MiB'
-version = '1.13.0'
+size    = '84.4 MiB'
+version = '1.14.0'
 website = 'https://gleam.run'
 example = '''
 import argv
