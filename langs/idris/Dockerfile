@@ -2,7 +2,7 @@ ARG VER=0.8.0
 
 FROM codegolf/lang-scheme
 
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 ARG VER
 
