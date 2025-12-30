@@ -1,6 +1,6 @@
 ARG VER=25.2.1
 
-FROM node:$VER-alpine3.22 AS builder
+FROM node:$VER-alpine3.23 AS builder
 
 RUN apk add --no-cache binutils
 
