@@ -74,6 +74,7 @@ for Q:ww<
     {off-the-grid} sudoku hexagony
     {ouroboros} quine python
     {pangramglot} pangram-grep 'brainfuck d hexagony javascript nim swift sql zig'
+    {ring-toss} tower-of-hanoi 'cobol factor fortran go groovy kotlin ocaml prolog python'
     {s-box-360} rijndael-s-box c-sharp
     {simon-sed} look-and-say sed
     {sinosphere} mahjong 'c j v'
@@ -111,6 +112,7 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     $earns.=subst: '{', '{go-forth,'          if $_ eq 'go';
     $earns.=subst: '{', '{just-kidding,'      if $_ eq 'k';
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';
+    $earns.=subst: '{', '{down-to-the-metal,' if $_ eq 'rust';
     $earns.=subst: ',}', '}';
 
     is save-solution(:hole<cubes> :lang($_)), $earns,

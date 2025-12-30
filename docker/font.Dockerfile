@@ -1,4 +1,4 @@
-FROM node:25.1.0-bookworm-slim
+FROM node:25.2.1-trixie-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
@@ -6,7 +6,7 @@ RUN apt-get update                                \
     ca-certificates curl fontforge fonttools make \
     python3-fontforge unzip woff2 zip
 
-ENV VER=397dec7
+ENV VER=bbe76d8
 
 WORKDIR /twemoji-colr
 
@@ -23,6 +23,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f30c.svg'            `# Milky Way`                    \
     '*/1f320.svg'            `# Shooting Star`                \
     '*/1f340.svg'            `# Four Leaf Clover`             \
+    '*/1f343.svg'            `# Leaf Fluttering in Wind`      \
     '*/1f355.svg'            `# Pizza`                        \
     '*/1f356.svg'            `# Meat on Bone`                 \
     '*/1f35e.svg'            `# Bread`                        \
@@ -76,11 +77,13 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f4e3.svg'            `# Megaphone`                    \
     '*/1f4eb.svg'            `# Mailbox`                      \
     '*/1f4f4.svg'            `# Mobile Phone Off`             \
+    '*/1f4fa.svg'            `# Television`                   \
     '*/1f511.svg'            `# Key`                          \
     '*/1f51e.svg'            `# No One Under Eighteen`        \
     '*/1f520.svg'            `# Input Latin Uppercase`        \
     '*/1f523.svg'            `# Input Symbols`                \
     '*/1f526.svg'            `# Flashlight`                   \
+    '*/1f529.svg'            `# Nut and Bolt`                 \
     '*/1f549.svg'            `# Om`                           \
     '*/1f596.svg'            `# Vulcan Salute`                \
     '*/1f5a5.svg'            `# Desktop Computer`             \
@@ -115,6 +118,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f697.svg'            `# Automobile`                   \
     '*/1f6a2.svg'            `# Ship`                         \
     '*/1f6a9.svg'            `# Triangular Flag on Post`      \
+    '*/1f6df.svg'            `# Ring Buoy`                    \
     '*/1f910.svg'            `# Zipper-Mouth Face`            \
     '*/1f947.svg'            `# 1st Place Medal`              \
     '*/1f948.svg'            `# 2nd Place Medal`              \

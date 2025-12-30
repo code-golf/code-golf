@@ -47,7 +47,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Request                            *http.Request
 		Settings                           []*config.Setting
 	}{
-		Banners:     banners(theGolfer, time.Now().UTC()),
+		Banners:     banners(theGolfer),
 		Cheevos:     config.CheevoTree,
 		CSS:         []cssLink{{config.Assets["css/common/base.css"], ""}},
 		Data:        data[0],
@@ -140,7 +140,8 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			"form-action 'self';"+
 			"font-src 'self';"+
 			"frame-ancestors 'none';"+
-			"img-src 'self' data: avatars.githubusercontent.com;"+
+			"img-src 'self' data: avatars.githubusercontent.com"+
+			" cdn.discordapp.com gravatar.com i.sstatic.net;"+
 			"script-src 'self' 'nonce-"+args.Nonce+"';"+
 			"style-src 'self' 'unsafe-inline'",
 	)

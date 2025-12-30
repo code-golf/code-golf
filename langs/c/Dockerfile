@@ -1,6 +1,6 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache build-base curl
+RUN apk add --no-cache curl gcc make musl-dev patch
 
 # Also rebuild Crap.
 ENV VER=0.9.27
@@ -8,9 +8,9 @@ ENV VER=0.9.27
 RUN curl -#L https://download.savannah.nongnu.org/releases/tinycc/tcc-$VER.tar.bz2 \
   | tar xj --strip-components 1
 
-COPY setvbuf.patch /
+COPY c.patch /
 
-RUN patch -p0 < setvbuf.patch
+RUN patch -p0 < c.patch
 
 RUN ./configure      \
     --config-musl    \
@@ -60,4 +60,4 @@ COPY --from=0 /usr/lib/tcc/libtcc1.a     /usr/lib/tcc/
 
 ENTRYPOINT ["c"]
 
-CMD ["-v"]
+CMD ["-version"]
