@@ -137,6 +137,7 @@ export const extensions : { [key: string]: any } = {
     // TODO 05ab1e
     // TODO algol-68
     'apl':           StreamLanguage.define(apl),
+    'arkscript':     StreamLanguage.define(clojure),
     // TODO arturo
     'assembly':      assembly(),
     'assembly-wiki': assembly({ byteDumps: false }),

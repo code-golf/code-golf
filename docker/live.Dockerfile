@@ -101,6 +101,7 @@ COPY --from=codegolf/lang-scheme       / /langs/scheme/rootfs/
 COPY --from=codegolf/lang-tcl          / /langs/tcl/rootfs/
 COPY --from=codegolf/lang-perl         / /langs/perl/rootfs/
 COPY --from=codegolf/lang-luau         / /langs/luau/rootfs/
+COPY --from=codegolf/lang-arkscript    / /langs/arkscript/rootfs/
 COPY --from=codegolf/lang-arturo       / /langs/arturo/rootfs/
 COPY --from=codegolf/lang-cobol        / /langs/cobol/rootfs/
 COPY --from=codegolf/lang-squirrel     / /langs/squirrel/rootfs/
