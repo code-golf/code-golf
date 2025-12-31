@@ -74,6 +74,7 @@ COPY --from=codegolf/lang-erlang       / /langs/erlang/rootfs/
 COPY --from=codegolf/lang-javascript   / /langs/javascript/rootfs/
 COPY --from=codegolf/lang-hy           / /langs/hy/rootfs/
 COPY --from=codegolf/lang-haxe         / /langs/haxe/rootfs/
+COPY --from=codegolf/lang-labyrinth    / /langs/labyrinth/rootfs/
 COPY --from=codegolf/lang-iogii        / /langs/iogii/rootfs/
 COPY --from=codegolf/lang-golfscript   / /langs/golfscript/rootfs/
 COPY --from=codegolf/lang-ruby         / /langs/ruby/rootfs/
