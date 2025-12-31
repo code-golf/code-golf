@@ -1029,6 +1029,23 @@ example    = '''
     (print arg))
 '''
 
+[Io]
+args       = [ '/usr/bin/io', '-' ]
+experiment = 182
+size       = '4.11 MiB'
+version    = '8d1566b'
+website    = 'https://iolanguage.org'
+example    = '''
+# Printing
+"Hello, World!" println
+
+# Looping
+for(i, 0, 9, i println)
+
+# Accessing arguments
+System args slice(1) foreach(println)
+'''
+
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
