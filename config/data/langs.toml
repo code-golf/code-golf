@@ -1119,6 +1119,25 @@ for (let arg of arguments)
     print(arg);
 '''
 
+[Joy]
+args       = [ '/usr/bin/joy', '/proc/self/fd/0' ]
+experiment = 1766
+size       = '438 KiB'
+version    = 'Moy a68b339'
+website    = 'https://github.com/Wodan58/Moy'
+example    = '''
+(* Printing *)
+"Hello, World!\n" putchars.
+
+(* Looping *)
+0 [9 <] [dup put '\n putch 1 +] while.
+
+(* Accessing arguments *)
+argv rest [putchars 10 putch] step.
+
+quit.
+'''
+
 [jq]
 args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
 size    = '1.03 MiB'
