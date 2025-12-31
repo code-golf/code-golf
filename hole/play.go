@@ -270,6 +270,17 @@ func runCode(
 
 	// Run arguments.
 	switch lang.ID {
+	case "amber":
+		// FIXME While unresolved upstream, try source edit instead.
+		args, esc := run.Args, strings.ReplaceAll
+		switch hole.ID {
+		case "emojify", "hexdump", "pangram-grep", "rot13":
+			args = nil
+			for _, arg := range run.Args {
+				args = append(args, esc(esc(esc(arg, "\\", "\\\\"), "`", "\\`"), "$", "\\$"))
+			}
+		}
+		cmd.Args = append(cmd.Args, args...)
 	case "awk", "brainfuck", "fish":
 		// Hole args passed through stdin for these langs separated by a null byte
 		args := ""

@@ -94,6 +94,7 @@ COPY --from=codegolf/lang-harbour      / /langs/harbour/rootfs/
 COPY --from=codegolf/lang-picat        / /langs/picat/rootfs/
 COPY --from=codegolf/lang-j            / /langs/j/rootfs/
 COPY --from=codegolf/lang-hare         / /langs/hare/rootfs/
+COPY --from=codegolf/lang-amber        / /langs/amber/rootfs/
 COPY --from=codegolf/lang-tex          / /langs/tex/rootfs/
 COPY --from=codegolf/lang-hexagony     / /langs/hexagony/rootfs/
 COPY --from=codegolf/lang-egel         / /langs/egel/rootfs/
