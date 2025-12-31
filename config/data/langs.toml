@@ -259,7 +259,7 @@ v Accessing arguments
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '1.00 MiB'
-version = 'eb57d7d'
+version = '7af8289'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
