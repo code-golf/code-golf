@@ -78,6 +78,28 @@ example    = '''
 ⎕←¨1↓2⎕NQ#'GetCommandLineArgs'
 '''
 
+[ArkScript]
+args       = [ '/usr/bin/arkscript', '-' ]
+env        = [ 'ARKSCRIPT_PATH=/usr/local/lib' ]
+experiment = 1656
+size       = '5.08 MiB'
+version    = '4.1.1'
+website    = 'https://arkscript-lang.dev'
+example    = '''
+(import std.List)
+(import std.Range)
+(import std.Sys)
+
+# Printing
+(print "Hello, World!")
+
+# Looping
+(range:map (range:range 0 10) (fun (i) (print i)))
+
+# Accessing arguments
+(list:map sys:args (fun (arg) (print arg)))
+'''
+
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915

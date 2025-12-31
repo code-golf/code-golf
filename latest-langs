@@ -17,6 +17,7 @@ constant %paths = (
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
     'APL'          => 'dyalog.com/download-zone.htm?p=download',
+    'ArkScript'    => 'github.com/ArkScript-lang/Ark/releases/latest',
     'Arturo'       => 'github.com/arturo-lang/arturo',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'AWK'          => 'ftp.gnu.org/gnu/gawk/?C=M;O=D',
