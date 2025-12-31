@@ -484,8 +484,8 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '77.4 MiB'
-version = '3.1.2'
+size    = '80.0 MiB'
+version = '3.2.0'
 website = 'https://coconut-lang.org'
 example = '''
 import sys

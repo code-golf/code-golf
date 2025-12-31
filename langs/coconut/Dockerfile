@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache clang curl llvm-dev make openssl-dev
 
-ENV PYVER=3.13.9 VER=3.1.2
+ENV PYVER=3.14.2 VER=3.2.0
 
 RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
   | tar xJ --strip-components 1
@@ -14,12 +14,12 @@ RUN CC='clang' ./configure     \
     --with-tail-call-interp    \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.13  \
-          /usr/lib/python3.13/lib-dynload/*.so
+ && strip /usr/bin/python3.14  \
+          /usr/lib/python3.14/lib-dynload/*.so
 
 RUN pip3 install coconut==$VER
 
-WORKDIR /usr/lib/python3.13
+WORKDIR /usr/lib/python3.14
 
 # Remove some unneeded libraries.
 RUN find . -name '*.opt-[12].pyc' -delete \
@@ -38,9 +38,9 @@ FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-*.so.1 /lib/
 COPY --from=0 /usr/bin/coconut    \
-              /usr/bin/python3.13 /usr/bin/
+              /usr/bin/python3.14 /usr/bin/
 COPY --from=0 /usr/lib/libz.so.1  /usr/lib/
-COPY --from=0 /usr/lib/python3.13 /usr/lib/python3.13
+COPY --from=0 /usr/lib/python3.14 /usr/lib/python3.14
 
 ENTRYPOINT ["coconut"]
 
