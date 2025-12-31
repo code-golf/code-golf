@@ -1,4 +1,4 @@
-# Also bump Gleam, Hush, Uiua.
+# Also bump Gleam, Hush, Uiua, WebAssembly.
 ARG VER=1.92.0
 
 FROM rust:$VER-alpine3.23 AS builder
