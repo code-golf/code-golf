@@ -780,7 +780,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '79.6 MiB'
+size    = '70.7 MiB'
 version = '1.14.0'
 website = 'https://gleam.run'
 example = '''
