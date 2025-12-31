@@ -77,8 +77,8 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
         given $name {
-            # Dotted decimal or hyphenated date.
-            my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
+            # Dotted decimal date.
+            my $digits = $ver ~~ / \d+ ( '.' \d+ )+ /;
 
             when 'ALGOL 68'    { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
