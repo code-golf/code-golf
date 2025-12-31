@@ -81,8 +81,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '4.91 MiB'
-version    = 'da1b9ca'
+size       = '4.92 MiB'
+version    = 'c8aa8b4'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing

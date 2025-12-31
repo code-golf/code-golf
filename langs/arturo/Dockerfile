@@ -1,6 +1,6 @@
 FROM nimlang/nim:2.2.6-alpine-slim AS builder
 
-ENV VER=da1b9ca
+ENV VER=c8aa8b4
 
 RUN curl -#L https://github.com/arturo-lang/arturo/tarball/$VER \
   | tar xz --strip-components 1
