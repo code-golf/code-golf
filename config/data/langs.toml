@@ -1411,6 +1411,25 @@ main(Args) =>
     end.
 '''
 
+[Pluto]
+args       = [ '/usr/bin/pluto', '-' ]
+experiment = 1375
+size       = '3.66 MiB'
+version    = '0.12.2'
+website    = 'https://pluto-lang.org'
+example    = '''
+-- Printing
+print("Hello, World!")
+
+-- Looping
+for i = 0, 9 do
+    print(i)
+end
+
+-- Accessing arguments
+arg:slice(1):foreach(print)
+'''
+
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
