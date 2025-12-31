@@ -44,6 +44,7 @@ COPY --from=codegolf/lang-odin         / /langs/odin/rootfs/
 COPY --from=codegolf/lang-crystal      / /langs/crystal/rootfs/
 COPY --from=codegolf/lang-zig          / /langs/zig/rootfs/
 COPY --from=codegolf/lang-factor       / /langs/factor/rootfs/
+COPY --from=codegolf/lang-reason       / /langs/reason/rootfs/
 COPY --from=codegolf/lang-kotlin       / /langs/kotlin/rootfs/
 COPY --from=codegolf/lang-powershell   / /langs/powershell/rootfs/
 COPY --from=codegolf/lang-dart         / /langs/dart/rootfs/

@@ -86,6 +86,7 @@ constant %paths = (
     'R'            => 'en.wikipedia.org/wiki/R_(programming_language)',
     'Racket'       => 'github.com/racket/racket/releases/latest',
     'Raku'         => 'github.com/rakudo/rakudo/releases/latest',
+    'Reason'       => 'opam.ocaml.org/packages/reason',
     'Rebol'        => 'en.wikipedia.org/wiki/Rebol',
     'Rexx'         => 'packages.gentoo.org/packages/dev-lang/regina-rexx',
     'Rockstar'     => 'github.com/RockstarLang/rockstar/releases/latest',
@@ -139,6 +140,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'golfscript.com'    / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'          / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'npmjs.org'         / { $res.&from-json[0]<version> }
+        when / 'opam.ocaml.org'    / { $res ~~ / 'version' .+? <(<ver>)> / }
         when / 'picat-lang.org'    / { $res ~~ / 'Version ' <(<ver>)> / }
         when / 'pypi.org'          / { $res.&from-json<info><version> }
         when / 'sourceforge'       / { $res ~~ / 'Latest' .+? <(<ver>)> / }
