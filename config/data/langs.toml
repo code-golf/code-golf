@@ -564,6 +564,26 @@ ARGV.each do |arg|
 end
 '''
 
+[Curry]
+args       = [ '/usr/bin/curry', '-' ]
+experiment = 1418
+size       = '94.2 MiB'
+version    = 'PAKCS 3.8.0'
+website    = 'https://www.curry-lang.org/pakcs/'
+example    = '''
+import System.Environment
+
+main = do
+  -- Printing
+  putStrLn "Hello, World!"
+
+  -- Looping
+  putStr . unlines . map show . take 10 $ [0..]
+
+  -- Accessing arguments
+  getArgs >>= putStrLn . unlines
+'''
+
 [D]
 args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]

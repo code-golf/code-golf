@@ -37,6 +37,7 @@ constant %paths = (
     'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
     'Common Lisp'  => 'en.wikipedia.org/wiki/CLISP',
     'Crystal'      => 'github.com/crystal-lang/crystal/releases/latest',
+    'Curry'        => 'en.wikipedia.org/wiki/Curry_(programming_language)',
     'D'            => 'en.wikipedia.org/wiki/D_(programming_language)',
     'Dart'         => 'en.wikipedia.org/wiki/Dart_(programming_language)',
     'Egel'         => 'github.com/egel-lang/egel/releases/latest',

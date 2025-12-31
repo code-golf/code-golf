@@ -1,3 +1,4 @@
+# Also bump Curry.
 ARG VER=10.0.0
 
 FROM swipl:$VER AS builder
@@ -7,6 +8,7 @@ RUN apt-get update                   \
     apt-get install --yes gcc
 
 RUN rm -r /usr/lib/swipl/demo \
+          \
           /usr/lib/swipl/doc
 
 RUN strip /usr/bin/swipl

@@ -95,6 +95,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
             when 'Clojure'     { $ver = "Babashka $digits" }
             when 'COBOL'       { $ver = "GnuCOBOL $digits" }
             when 'Common Lisp' { $ver = "GNU CLISP $digits" }
+            when 'Curry'       { $ver = "PAKCS $digits" }
             when 'D'           { $ver = "DMD $digits" }
             when 'Haskell'     { $ver = "GHC $digits" }
             when 'Java'        {
