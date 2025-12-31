@@ -20,6 +20,7 @@ COPY --from=codegolf/lang-powershell   / /langs/powershell/rootfs/
 COPY --from=codegolf/lang-dart         / /langs/dart/rootfs/
 COPY --from=codegolf/lang-assembly     / /langs/assembly/rootfs/
 COPY --from=codegolf/lang-f-sharp      / /langs/f-sharp/rootfs/
+COPY --from=codegolf/lang-jsfuck       / /langs/jsfuck/rootfs/
 COPY --from=codegolf/lang-cpp          / /langs/cpp/rootfs/
 COPY --from=codegolf/lang-c-sharp      / /langs/c-sharp/rootfs/
 COPY --from=codegolf/lang-vala         / /langs/vala/rootfs/
