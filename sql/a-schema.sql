@@ -84,15 +84,15 @@ CREATE TYPE lang AS ENUM (
     '05ab1e', 'algol-68', 'apl', 'arturo', 'assembly', 'awk', 'bash', 'basic',
     'befunge', 'berry', 'bqn', 'brainfuck', 'c', 'c-sharp', 'civet', 'cjam',
     'clojure', 'cobol', 'coconut', 'coffeescript', 'common-lisp', 'cpp',
-    'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang', 'f-sharp', 'factor',
-    'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go', 'golfscript',
-    'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy',
-    'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'knight',
-    'kotlin', 'lua', 'luau', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
-    'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku',
-    'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed',
-    'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v',
-    'vala', 'viml', 'vyxal', 'wren', 'zig'
+    'crap', 'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang', 'f-sharp',
+    'factor', 'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go',
+    'golfscript', 'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony',
+    'hush', 'hy', 'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia',
+    'k', 'knight', 'kotlin', 'lua', 'luau', 'nim', 'ocaml', 'odin', 'pascal',
+    'perl', 'php', 'picat', 'powershell', 'prolog', 'python', 'qore', 'r',
+    'racket', 'raku', 'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala',
+    'scheme', 'sed', 'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua',
+    'umka', 'v', 'vala', 'viml', 'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');

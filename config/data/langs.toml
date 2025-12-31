@@ -543,6 +543,28 @@ example   = '''
 )
 '''
 
+[Crap]
+args       = [ '/usr/bin/crap', '-' ]
+experiment = 1360
+size       = '1.80 MiB'
+version    = '2828c5b'
+website    = 'https://themanyone.github.io/crap/'
+example    = '''
+#include <stdio.h>
+#include "print.h"
+main
+    // Printing
+    puts  "Hello, World!"
+
+    // Looping
+    for  int i = 0; i < 10; i++
+        println  i
+
+    // Accessing arguments
+    for  int i = 1; i < argc; i++
+        puts  argv[i]
+'''
+
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
