@@ -1273,6 +1273,28 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[Nit]
+args       = [ '/usr/local/bin/nit', '-e', '$code' ]
+env        = [ 'PATH=/usr/bin' ]
+experiment = 1371
+size       = '105 MiB'
+version    = '32b9c90'
+website    = 'https://nitlanguage.org'
+example    = '''
+# Printing
+print "Hello, World!"
+
+# Looping
+for i in [0..9] do
+    print i
+end
+
+# Accessing arguments
+for arg in args do
+    print arg
+end
+'''
+
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
 size    = '79.5 MiB'
