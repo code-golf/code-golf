@@ -1253,6 +1253,28 @@ for _, arg in {...} do
 end
 '''
 
+[Mojo]
+args       = [ '/usr/bin/mojo', '-' ]
+experiment = 1780
+size       = '317 MiB'
+version    = 'Modular 25.7'
+website    = 'https://www.modular.com/mojo'
+example    = '''
+import sys
+
+def main():
+    # Printing
+    print("Hello, World!")
+
+    # Looping
+    for i in range(10):
+        print(i)
+
+    # Accessing arguments
+    for i in range(1, len(sys.argv())):
+        print(sys.argv()[i])
+'''
+
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
 size    = '15.0 MiB'
