@@ -1,12 +1,11 @@
 FROM alpine:3.23 AS builder
 
-ENV BIN='/usr/bin/fennel' VER=1.6.0
+ENV VER=1.6.1
 
-RUN wget -qO $BIN https://fennel-lang.org/downloads/fennel-$VER \
- && chmod +x $BIN
+ADD --chmod=777 https://fennel-lang.org/downloads/fennel-$VER /usr/bin/fennel
 
 # Rewrite shebang to bypass /usr/bin/env and go directly to /usr/bin/lua.
-RUN sed -i '1c#!/usr/bin/lua' $BIN
+RUN sed -i '1c#!/usr/bin/lua' /usr/bin/fennel
 
 FROM codegolf/lang-lua
 
