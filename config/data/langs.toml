@@ -1273,6 +1273,27 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[Noir]
+args       = [ '/usr/bin/noir', '-' ]
+experiment = 1197
+size       = '51.4 MiB'
+version    = '1.0.0'
+website    = 'https://www.noir-lang.org'
+example    = '''
+fn main() {
+    // Printing
+    println("Hello, World!");
+
+    // Looping
+    for i in 0 .. 10 {
+        println(i);
+    }
+
+    // Accessing arguments
+    
+}
+'''
+
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
 size    = '79.5 MiB'
