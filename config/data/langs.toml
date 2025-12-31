@@ -920,8 +920,8 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '339 MiB'
-version = 'GHC 9.8.2'
+size    = '229 MiB'
+version = 'GHC 9.14.1'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -1251,6 +1251,24 @@ end
 for _, arg in {...} do
     print(arg)
 end
+'''
+
+[Nibbles]
+args       = [ '/usr/bin/nibbles', '-' ]
+env        = [ 'PATH=/usr/bin' ]
+experiment = 1062
+size       = '289 MiB'
+version    = '5bbfddb'
+website    = 'https://golfscript.com/nibbles/'
+example    = '''
+# Printing
+"Hello, World!\n"
+
+# Looping
+`,10
+
+# Accessing arguments
+;@
 '''
 
 [Nim]

@@ -203,6 +203,12 @@ func runCode(
 			// in Kotlin. The '\n' guarantees we're not appending a ';' to another ';'.
 			code += "\nUnit"
 		}
+	case "nibbles":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && len(code) > 0 && !strings.Contains(code, `"`) {
+			run.Stderr = `Quine in Nibbles must have at least one '"' character.`
+			return nil
+		}
 	case "php":
 		code = "<?php " + code + " ;"
 	case "racket":
