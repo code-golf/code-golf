@@ -75,6 +75,7 @@ constant %paths = (
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
     'OCaml'        => 'github.com/ocaml/ocaml/releases/latest',
     'Odin'         => 'api.github.com/repos/odin-lang/Odin/releases',
+    'Ox'           => 'doornik.com/download.html',
     'Pascal'       => 'en.wikipedia.org/wiki/Free_Pascal',
     'Perl'         => 'endoflife.date/api/perl.json',
     'PHP'          => 'endoflife.date/api/php.json',
@@ -128,6 +129,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'chromium'          / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'codeberg'          / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'         / { $res.&from-json<crate><max_stable_version> }
+        when / 'doornik.com'       / { $res ~~ / 'version' .+? <(<ver>)> / }
         when / 'dyalog.com'        / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
         when / 'endoflife'         / { $res.&from-json[0]<latest>.match(/<(<ver>)>/).subst(/\+.*/) }
         when / 'fennel-lang'       / { $res ~~ / 'fennel-' <(<ver>)> / }

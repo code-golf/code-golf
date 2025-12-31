@@ -1322,6 +1322,32 @@ main :: proc() {
 }
 '''
 
+[Ox]
+args       = [ '/usr/bin/ox', '-' ]
+env        = [ 'KMP_DUPLICATE_LIB_OK=1', 'LD_LIBRARY_PATH=/usr/local/lib', 'OX9PATH=/usr/local/include' ]
+experiment = 1910
+size       = '5.80 MiB'
+version    = '9.30'
+website    = 'https://www.doornik.com'
+example    = '''
+#include <oxstd.oxh>
+
+main() {
+    decl i, args = arglist();
+
+    // Printing
+    println("Hello, World!");
+
+    // Looping
+    for (i = 0; i < 10; ++i)
+        println(i);
+
+    // Accessing arguments
+    for (i = 1; i < sizeof(args); ++i)
+        println(args[i]);
+}
+'''
+
 [Pascal]
 args    = [ '/usr/bin/pascal', '-' ]
 size    = '26.8 MiB'
