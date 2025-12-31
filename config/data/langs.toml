@@ -1411,6 +1411,23 @@ main(Args) =>
     end.
 '''
 
+[Pip]
+args       = [ '/usr/bin/python', '/usr/lib/pip.py', '-e', '$code', '--' ]
+experiment = 919
+size       = '30.8 MiB'
+version    = '1.2.1'
+website    = 'https://github.com/dloscutoff/pip'
+example    = '''
+; Printing
+P"Hello, World!"
+
+; Looping
+Fi,tPi
+
+; Accessing arguments
+FagPa
+'''
+
 [PowerShell]
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]

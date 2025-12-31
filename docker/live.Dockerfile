@@ -80,6 +80,7 @@ COPY --from=codegolf/lang-ruby         / /langs/ruby/rootfs/
 COPY --from=codegolf/lang-v            / /langs/v/rootfs/
 COPY --from=codegolf/lang-common-lisp  / /langs/common-lisp/rootfs/
 COPY --from=codegolf/lang-r            / /langs/r/rootfs/
+COPY --from=codegolf/lang-pip          / /langs/pip/rootfs/
 COPY --from=codegolf/lang-python       / /langs/python/rootfs/
 COPY --from=codegolf/lang-racket       / /langs/racket/rootfs/
 COPY --from=codegolf/lang-05ab1e       / /langs/05ab1e/rootfs/
