@@ -1253,6 +1253,23 @@ for _, arg in {...} do
 end
 '''
 
+[Nial]
+args       = [ '/usr/bin/nial', '-' ]
+experiment = 579
+size       = '608 KiB'
+version    = 'cdd6e81'
+website    = 'https://www.nial-array-language.org'
+example    = '''
+% Printing ;
+write 'Hello, World!';
+
+% Looping ;
+EACH write tell 10;
+
+% Accessing arguments ;
+EACH writescreen drop 4 sys_argv;
+'''
+
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
 size    = '15.0 MiB'
