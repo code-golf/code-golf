@@ -63,6 +63,7 @@ COPY --from=codegolf/lang-vyxal        / /langs/vyxal/rootfs/
 COPY --from=codegolf/lang-fortran      / /langs/fortran/rootfs/
 COPY --from=codegolf/lang-raku         / /langs/raku/rootfs/
 COPY --from=codegolf/lang-basic        / /langs/basic/rootfs/
+COPY --from=codegolf/lang-kamilalisp   / /langs/kamilalisp/rootfs/
 COPY --from=codegolf/lang-groovy       / /langs/groovy/rootfs/
 COPY --from=codegolf/lang-gleam        / /langs/gleam/rootfs/
 COPY --from=codegolf/lang-clojure      / /langs/clojure/rootfs/

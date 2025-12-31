@@ -3,7 +3,7 @@ FROM alpine:3.23 AS builder
 RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev \
                        libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
 
-# Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
+# Also rebuild CJam, Groovy, KamilaLisp, Kotlin, Scala, Vyxal.
 ENV VER=25.0.1 BUILD=8
 
 RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk_x64_alpine-linux_hotspot_${VER}_$BUILD.tar.gz \
