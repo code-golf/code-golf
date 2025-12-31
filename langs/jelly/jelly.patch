@@ -1,0 +1,11 @@
+--- jelly/interpreter.py
++++ jelly/interpreter.py
+@@ -1240,7 +1240,7 @@
+ 		return [1 if (upper_level + [i + 1] in indices) else 0 for i in range(shape[-1])]
+
+ def variadic_chain(chain, args):
+-	args = list(filter(None.__ne__, args))
++	args = [a for a in args if a is not None]
+ 	larg_save = atoms['⁸'].call
+ 	rarg_save = atoms['⁹'].call
+ 	if len(args) == 0:

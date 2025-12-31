@@ -1119,6 +1119,18 @@ for (let arg of arguments)
     print(arg);
 '''
 
+[Jelly]
+args       = [ '/usr/bin/jellywrapper', '-' ]
+env        = [ 'LANG=en_US.UTF-8', 'PYTHON_COLORS=1' ]
+experiment = 109
+size       = '125 MiB'
+version    = '70c9fd9'
+website    = 'https://github.com/DennisMitchell/jellylanguage'
+example    = '''
+Printing           Looping   Accessing arguments
+“Hello, World!¶”   ⁵Ḷ;       ³Y
+'''
+
 [jq]
 args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
 size    = '1.03 MiB'
