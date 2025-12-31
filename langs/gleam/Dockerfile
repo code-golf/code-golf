@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV VER=1.13.0
+ENV VER=1.14.0
 
 WORKDIR /gleam
 
@@ -19,9 +19,11 @@ RUN gleam new --name main . \
  && gleam add argv          \
  && gleam remove gleeunit
 
-COPY gleam.c /
+RUN strip cargo/bin/gleam
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleam -s /gleam.c
+COPY gleam.c .
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleam -s gleam.c
 
 FROM codegolf/lang-erlang
 

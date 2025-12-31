@@ -81,8 +81,8 @@ example    = '''
 [Arturo]
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
-size       = '4.91 MiB'
-version    = 'da1b9ca'
+size       = '4.92 MiB'
+version    = 'c8aa8b4'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing
@@ -259,7 +259,7 @@ v Accessing arguments
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '1.00 MiB'
-version = 'eb57d7d'
+version = '7af8289'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -484,8 +484,8 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '77.4 MiB'
-version = '3.1.2'
+size    = '80.0 MiB'
+version = '3.2.0'
 website = 'https://coconut-lang.org'
 example = '''
 import sys
@@ -592,7 +592,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '118 MiB'
-version = '3.10.4'
+version = '3.10.6'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -712,8 +712,8 @@ command-line get-global [ print ] each
 [Fennel]
 args       = [ '/usr/bin/fennel', '/proc/self/fd/0' ]
 experiment = 1144
-size       = '728 KiB'
-version    = '1.6.0'
+size       = '715 KiB'
+version    = '1.6.1'
 website    = 'https://fennel-lang.org'
 example    = '''
 ;; Printing
@@ -780,8 +780,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '74.9 MiB'
-version = '1.13.0'
+size    = '79.6 MiB'
+version = '1.14.0'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -1104,7 +1104,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '46.2 MiB'
-version = 'V8 14.3.127.16'
+version = 'V8 14.3.127.17'
 website = 'https://v8.dev'
 example = '''
 // Printing
