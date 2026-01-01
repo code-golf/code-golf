@@ -421,7 +421,6 @@ preamble = '''
 '''
 
 [Calendar]
-experiment = 908
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Calendar' },
