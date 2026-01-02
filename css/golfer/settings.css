@@ -2,6 +2,14 @@
 
 h2 { font-size: 1.25rem }
 
+#banners {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    > div { margin: 0 }
+}
+
 #connections {
     display: grid;
     gap: 1rem;

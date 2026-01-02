@@ -46,6 +46,11 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", data, "Settings: General")
 }
 
+// GET /golfer/settings/banners
+func golferSettingsBannersGET(w http.ResponseWriter, r *http.Request) {
+	render(w, r, "golfer/settings", nil, "Settings: Banners")
+}
+
 // GET /golfer/settings/export-data
 func golferSettingsExportDataGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", nil, "Settings: Export Data")
