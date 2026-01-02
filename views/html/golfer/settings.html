@@ -221,7 +221,7 @@
                 <th>
         <tbody>
     {{ range .Data }}
-            <tr>
+            <tr {{ if eq $thisSession .ID }} class=me {{ end }}>
                 <td>{{ .Browser.Name }} {{ .Browser.Version }}
                 <td>{{ .Browser.OS }} {{ .Browser.OSVersion }}
                 <td class=right>{{ time .LastUsed }}
