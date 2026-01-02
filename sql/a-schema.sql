@@ -79,6 +79,11 @@ CREATE TYPE hole AS ENUM (
     'φ', '√2', '𝑒'
 );
 
+-- FIXME Not wild about these being titlecase, all other enums are lowercase.
+CREATE TYPE hole_category AS ENUM (
+    'Art', 'Computing', 'Gaming', 'Mathematics', 'Sequence', 'Transform'
+);
+
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE lang AS ENUM (
@@ -193,11 +198,12 @@ CREATE VIEW golfers_with_avatars AS
 
 -- config/data/holes.toml is the canonical source of truth for hole data.
 -- This table is a shadow copy, updated on startup, used in DB queries.
--- TODO Move category here, remove config.HoleCategoryHstore.
+-- TODO Use category here, remove config.HoleCategoryHstore.
 CREATE UNLOGGED TABLE holes (
-    id         hole   NOT NULL PRIMARY KEY,
-    experiment int    NOT NULL,
-    name       citext NOT NULL
+    id         hole          NOT NULL PRIMARY KEY,
+    experiment int           NOT NULL,
+    name       citext        NOT NULL,
+    category   hole_category NOT NULL
 );
 
 -- Ditto for config/data/langs.toml.
