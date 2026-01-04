@@ -67,6 +67,7 @@ import { SQLite }                                   from '@codemirror/lang-sql';
 import { swift }                                    from '@codemirror/legacy-modes/mode/swift';
 import { tcl }                                      from '@codemirror/legacy-modes/mode/tcl';
 import { stex }                                     from '@codemirror/legacy-modes/mode/stex';
+import { vbScript }                                 from '@codemirror/legacy-modes/mode/vbscript';
 import { wrenLanguage }                             from '@exercism/codemirror-lang-wren';
 import { zig }                                      from 'codemirror-lang-zig';
 
@@ -225,6 +226,7 @@ export const extensions : { [key: string]: any } = {
     // TODO umka
     // TODO v
     'vala':          StreamLanguage.define(csharp),
+    'vbscript':      StreamLanguage.define(vbScript),
     // TODO viml
     // TODO vyxal
     'wren':          wren,
