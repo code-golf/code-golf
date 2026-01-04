@@ -1965,14 +1965,14 @@ example    = '''
 WScript.Echo "Hello, World!"
 
 ' Looping
-For I = 0 to 9
+For I = 0 To 9
     WScript.Echo I
 Next
 
 ' Accessing arguments
-Set objArgs = WScript.Arguments
-For I = 0 to objArgs.Count - 1
-    WScript.Echo objArgs(I)
+Set Args = WScript.Arguments
+For I = 0 To Args.Count
+    WScript.Echo Args(I)
 Next
 '''
 
