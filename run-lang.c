@@ -133,7 +133,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(rmdir),             // 84
 
         // Link Operations
-        ALLOW(link),         // 86 (Used by VBScript)
+        // ALLOW(link),      // 86
         // ALLOW(linkat),    // 265
         ALLOW(readlink),     // 89
         ALLOW(readlinkat),   // 267
@@ -170,8 +170,8 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // Extended File Attributes
         ALLOW(fgetxattr),        // 193 (Used by VBScript)
         // ALLOW(flistxattr),    // 196
-        ALLOW(fremovexattr),     // 199 (Used by VBScript)
-        ALLOW(fsetxattr),        // 190 (Used by VBScript)
+        // ALLOW(fremovexattr),  // 199
+        // ALLOW(fsetxattr),     // 190
         ALLOW(getxattr),         // 191 (Used by VBScript)
         // ALLOW(getxattrat),    // 464
         // ALLOW(lgetxattr),     // 192
@@ -521,7 +521,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         // ALLOW(mq_getsetattr),   // 245
         // ALLOW(mq_notify),       // 244
         // ALLOW(mq_open),         // 240
-        ALLOW(mq_timedreceive),    // 243 (Used by VBScript)
+        // ALLOW(mq_timedreceive), // 243
         // ALLOW(mq_timedsend),    // 242
         // ALLOW(mq_unlink),       // 241
 

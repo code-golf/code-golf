@@ -96,8 +96,7 @@ COPY --from=0 /usr/lib/wine/x86_64-unix/advapi32.dll.so        \
               /usr/lib/wine/x86_64-unix/ws2_32.*so             /usr/lib/wine/x86_64-unix/
 COPY --from=0 /usr/lib/wine/x86_64-windows/apisetschema.dll    /usr/lib/wine/x86_64-windows/
 COPY --from=0 /usr/share/wine/wine.inf                         /usr/share/wine/
-COPY --from=0 /usr/share/wine/nls/c_20127.nls                  \
-              /usr/share/wine/nls/l_intl.nls                   \
+COPY --from=0 /usr/share/wine/nls/l_intl.nls                   \
               /usr/share/wine/nls/locale.nls                   \
               /usr/share/wine/nls/sortdefault.nls              /usr/share/wine/nls/
 COPY --chown=nobody                                            \
