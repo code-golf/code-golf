@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* vbscript = "/usr/bin/wine", *code = "code.vbs";
+const char* vbscript = "/usr/bin/wine64", *code = "code.vbs";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {

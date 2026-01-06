@@ -2,7 +2,7 @@ FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes bison flex gcc make wget
+    apt-get install --yes bison flex gcc make wget xorg-dev
 
 ENV VER=10.0
 
@@ -17,26 +17,20 @@ RUN ./configure           \
     --prefix=/usr         \
     --without-alsa        \
     --without-coreaudio   \
-    --without-freetype    \
     --without-gettext     \
     --without-gnutls      \
     --without-oss         \
     --without-pulse       \
-    --without-x           \
  && make -j`nproc` install
 
 RUN strip /usr/bin/wineserver \
           /usr/lib/wine/x86_64-unix/*.so
 
-ADD --chmod=755 http://winetricks.org/winetricks /usr/bin
+ADD --chmod=755 http://winetricks.org/winetricks /usr/bin/winetricks
 
-RUN ln -s /usr/bin/wine64 /usr/bin/wine
+RUN WINE='wine64' WINEARCH='win64' WINEPREFIX='/Winedows' winetricks
 
-WORKDIR /Winedows
-
-RUN WINEARCH='win64' WINEPREFIX='/Winedows/System64' winetricks
-
-COPY vbscript.c .
+COPY vbscript.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/vbscript -s vbscript.c
 
@@ -46,7 +40,7 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                  \
               /lib/x86_64-linux-gnu/libgcc_s.so.1              /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2                      /lib64/
 COPY --from=0 /usr/bin/vbscript                                \
-              /usr/bin/wine                                    \
+              /usr/bin/wine64                                  \
               /usr/bin/wineserver                              /usr/bin/
 COPY --from=0 /usr/lib/locale                                  /usr/lib/locale
 COPY --from=0 /usr/lib/wine/x86_64-unix/advapi32.dll.so        \
@@ -96,11 +90,12 @@ COPY --from=0 /usr/lib/wine/x86_64-unix/advapi32.dll.so        \
               /usr/lib/wine/x86_64-unix/ws2_32.*so             /usr/lib/wine/x86_64-unix/
 COPY --from=0 /usr/lib/wine/x86_64-windows/apisetschema.dll    /usr/lib/wine/x86_64-windows/
 COPY --from=0 /usr/share/wine/wine.inf                         /usr/share/wine/
-COPY --from=0 /usr/share/wine/nls/l_intl.nls                   \
+COPY --from=0 /usr/share/wine/nls/c_20127.nls                  \
+              /usr/share/wine/nls/l_intl.nls                   \
               /usr/share/wine/nls/locale.nls                   \
               /usr/share/wine/nls/sortdefault.nls              /usr/share/wine/nls/
 COPY --chown=nobody                                            \
-     --from=0 /Winedows/System64                               /Winedows/System64
+     --from=0 /Winedows                                        /Winedows
 
 ENTRYPOINT ["vbscript"]
 

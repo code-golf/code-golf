@@ -1955,9 +1955,9 @@ int main(string[] args) {
 
 [VBScript]
 args       = [ '/usr/bin/vbscript', '-' ]
-env        = [ 'LANG=C.UTF-8', 'WINEDEBUG=-ntdll,-ntoskrnl,-service', 'WINEPREFIX=/Winedows/System64' ]
+env        = [ 'LANG=C.UTF-8', 'WINEDEBUG=-ntdll,-ntoskrnl,-service', 'WINEPREFIX=/Winedows' ]
 experiment = 350
-size       = '72.2 MiB'
+size       = '72.3 MiB'
 version    = 'Wine 10.0'
 website    = 'https://www.winehq.org'
 example    = '''
