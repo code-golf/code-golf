@@ -13,15 +13,17 @@ let searchParams = '';
 onload = () => {
     const savedLang = localStorage.getItem('code-search-lang');
     const savedHole = localStorage.getItem('code-search-hole');
-    savedLang && ((form.lang as any).value = savedLang);
-    savedHole && (form.hole.value = savedHole);
+    if (savedLang)
+        (form.lang as HTMLFormElement[string]).value = savedLang;
+    if (savedHole) 
+        form.hole.value = savedHole;
 };
 
 form.onsubmit = e => e.preventDefault();
 
 form.onchange = form.q.onkeyup = async () => {
     const hole    = form.hole.value;
-    const lang    = (form.lang as any).value;
+    const lang    = (form.lang as HTMLFormElement[string]).value;
     const pattern = form.regex.checked
         ? form.q.value : form.q.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
