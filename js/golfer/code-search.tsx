@@ -15,7 +15,7 @@ onload = () => {
     const savedHole = localStorage.getItem('code-search-hole');
     savedLang && ((form.lang as any).value = savedLang);
     savedHole && (form.hole.value = savedHole);
-}
+};
 
 form.onsubmit = e => e.preventDefault();
 
