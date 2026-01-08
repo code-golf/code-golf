@@ -9,12 +9,10 @@ options = [
 
 [['golfer/code-search']]
 id      = 'hole'
-name    = 'Default Hole'
 options = [ { id = 'all', name = 'All Holes' } ]
 
 [['golfer/code-search']]
 id      = 'lang'
-name    = 'Default Language'
 options = [ { id = 'all', name = 'All Languages' } ]
 
 [['golfer/profile']]
