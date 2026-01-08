@@ -22,12 +22,12 @@ form.onsubmit = e => e.preventDefault();
 
 form.onchange = form.q.onkeyup = async () => {
     const hole    = form.hole.value;
-    const lang    = (form.lang as HTMLFormElement[string]).value;
+    const lang    = (form.lang as any).value;
     const pattern = form.regex.checked
         ? form.q.value : form.q.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    localStorage.setItem('code-search-lang', lang);
     localStorage.setItem('code-search-hole', hole);
+    localStorage.setItem('code-search-lang', lang);
 
     try {
         new RegExp(pattern);
