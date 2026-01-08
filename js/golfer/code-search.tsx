@@ -20,6 +20,11 @@ onload = () => {
 
 form.onsubmit = e => e.preventDefault();
 
+const clearResults = form.onreset = () => {
+    searchParams = '';
+    $('#resultsOverview').innerText = $('#results').innerHTML = '';
+};
+
 form.onchange = form.q.onkeyup = async () => {
     const hole    = form.hole.value;
     const lang    = (form.lang as any).value;
@@ -49,7 +54,7 @@ form.onchange = form.q.onkeyup = async () => {
         fetchSolutionsDebounced();
     }
     else {
-        $('#resultsOverview').innerText = $('#results').innerHTML = '';
+        clearResults();
     }
 };
 
