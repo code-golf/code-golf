@@ -15,7 +15,7 @@ const loadStoredField = (key: string, field: HTMLFormElement[string]) => {
     const savedValue = localStorage.getItem(key);
     if (savedValue && [...field.options].some(o => o.value === savedValue))
         field.value = savedValue;
-}
+};
 
 onload = () => {
     loadStoredField('code-search-lang', formLang);
