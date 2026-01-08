@@ -10,13 +10,23 @@ const form = $<HTMLFormElement>('#search');
 
 let searchParams = '';
 
+onload = () => {
+    const savedLang = localStorage.getItem('code-search-lang');
+    const savedHole = localStorage.getItem('code-search-hole');
+    savedLang && ((form.lang as any).value = savedLang);
+    savedHole && (form.hole.value = savedHole);
+}
+
 form.onsubmit = e => e.preventDefault();
 
-form.onchange = form.q.onkeyup = onload = async () => {
+form.onchange = form.q.onkeyup = async () => {
     const hole    = form.hole.value;
     const lang    = (form.lang as any).value;
     const pattern = form.regex.checked
         ? form.q.value : form.q.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    localStorage.setItem('code-search-lang', lang);
+    localStorage.setItem('code-search-hole', hole);
 
     try {
         new RegExp(pattern);
