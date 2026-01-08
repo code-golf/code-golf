@@ -7,23 +7,26 @@ const langs: Record<string, string[]> = JSON.parse($('#langs').innerText);
 const holes: Record<string, string[]> = JSON.parse($('#holes').innerText);
 
 const form = $<HTMLFormElement>('#search');
+const formLang = form.lang as HTMLFormElement[string];
 
 let searchParams = '';
 
+const loadStoredField = (key: string, field: HTMLFormElement[string]) => {
+    const savedValue = localStorage.getItem(key);
+    if (savedValue && [...field.options].some(o => o.value === savedValue))
+        field.value = savedValue;
+}
+
 onload = () => {
-    const savedLang = localStorage.getItem('code-search-lang');
-    const savedHole = localStorage.getItem('code-search-hole');
-    if (savedLang)
-        (form.lang as HTMLFormElement[string]).value = savedLang;
-    if (savedHole) 
-        form.hole.value = savedHole;
+    loadStoredField('code-search-lang', formLang);
+    loadStoredField('code-search-hole', form.hole);
 };
 
 form.onsubmit = e => e.preventDefault();
 
 form.onchange = form.q.onkeyup = async () => {
     const hole    = form.hole.value;
-    const lang    = (form.lang as HTMLFormElement[string]).value;
+    const lang    = formLang.value;
     const pattern = form.regex.checked
         ? form.q.value : form.q.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
