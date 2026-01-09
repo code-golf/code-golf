@@ -8,7 +8,8 @@
 {{ if eq .Title "Statistics" }}
     <div id=overview>
         <a href=stats/cheevos>
-            <h2>Achievements</h2>
+            <h2 class=wide>Achievements</h2>
+            <h2 class=thin>Cheevos</h2>
             <span>
                 {{ .Data.Cheevos }}
                 <small>({{ comma .Data.CheevosEarned }} earned)</small>
