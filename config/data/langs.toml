@@ -716,8 +716,8 @@ let main args =
 '''
 
 [Factor]
-args    = [ '/usr/bin/factor', '/proc/self/fd/0' ]
-size    = '178 MiB'
+args    = [ '/usr/bin/factor', '-i=/usr/bin/factor.image', '-roots=/usr/lib/basis:/usr/lib/core', '/proc/self/fd/0' ]
+size    = '176 MiB'
 version = '0.101'
 website = 'https://factorcode.org'
 example = '''

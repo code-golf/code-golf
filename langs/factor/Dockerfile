@@ -1,27 +1,30 @@
-FROM debian:trixie-slim AS builder
+FROM alpine:3.23 AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl
+RUN apk add --no-cache bash clang curl git make patch
 
 ENV VER=0.101
 
-RUN curl -#L https://downloads.factorcode.org/releases/$VER/factor-linux-x86-64-$VER.tar.gz \
-  | tar xz --directory /usr/bin --strip-components 1
+RUN curl -#o factor.zip https://downloads.factorcode.org/releases/$VER/factor-src-$VER.zip \
+ && unzip -n factor
+
+COPY factor.patch /
+
+RUN patch -p0 < factor.patch
+
+WORKDIR /factor
+
+RUN ./build.sh compile \
+ && ./build.sh bootstrap
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
-              /lib/x86_64-linux-gnu/libdl.so.2      \
-              /lib/x86_64-linux-gnu/libgcc_s.so.1   \
-              /lib/x86_64-linux-gnu/libm.so.6       \
-              /lib/x86_64-linux-gnu/libpthread.so.0 \
-              /lib/x86_64-linux-gnu/librt.so.1      \
-              /lib/x86_64-linux-gnu/libstdc++.so.6  /lib/
-COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /usr/bin/factor /usr/bin/factor.image /usr/bin/
-COPY --from=0 /usr/bin/basis                        /usr/bin/basis
-COPY --from=0 /usr/bin/core                         /usr/bin/core
+COPY --from=0 /lib/ld-musl-*.so.1        /lib/
+COPY --from=0 /factor/factor             /usr/bin/
+COPY --from=0 /factor/factor.image.fresh /usr/bin/factor.image
+COPY --from=0 /usr/lib/libgcc_s.so.1     \
+              /usr/lib/libstdc++.so.6    /usr/lib/
+COPY --from=0 /factor/basis              /usr/lib/basis
+COPY --from=0 /factor/core               /usr/lib/core
 
 ENTRYPOINT ["factor"]
 
