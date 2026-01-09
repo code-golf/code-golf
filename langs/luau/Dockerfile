@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl g++ linux-headers make
 
-ENV VER=0.703
+ENV VER=0.704
 
 RUN curl -#L https://github.com/luau-lang/luau/archive/refs/tags/$VER.tar.gz \
   | tar xz --strip-components 1

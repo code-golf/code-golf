@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache cmake g++ git make
 
-ENV VER=4.1.1
+ENV VER=4.1.2
 
 RUN git clone --branch v$VER --recursive \
     https://github.com/ArkScript-lang/Ark

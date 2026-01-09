@@ -2,9 +2,9 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc musl-dev
 
-ENV VER=3510100
+ENV VER=3510200
 
-RUN curl -#L https://www.sqlite.org/2025/sqlite-autoconf-$VER.tar.gz \
+RUN curl -#L https://www.sqlite.org/2026/sqlite-autoconf-$VER.tar.gz \
   | tar xz --strip-components 1
 
 COPY sql.c /
