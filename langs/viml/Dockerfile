@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache dash gcc git make musl-dev ncurses-dev
 
-ENV VER=9.1.0447
+ENV VER=9.1.1230
 
 RUN git clone --branch v$VER --depth 1 https://github.com/vim/vim
 

@@ -1955,7 +1955,7 @@ int main(string[] args) {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
-size    = '24.1 MiB'
+size    = '25.2 MiB'
 version = '9.1'
 website = 'https://www.vim.org'
 example = '''
