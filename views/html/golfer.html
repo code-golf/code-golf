@@ -25,7 +25,8 @@
                 <button class="btn blue">{{ svg "person-plus" }} Follow Golfer</button>
             </form>
         {{ end }}
-        {{ if $.Settings }}
+        {{/* FIXME Stop misusing settings on code-search */}}
+        {{ if and $.Settings (ne $.Name "golfer/code-search") }}
             <button class="btn blue" command=show-modal
                 commandfor=settings-dialog title=Settings>
                 {{ svg "gear-fill" }}
