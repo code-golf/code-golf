@@ -6,7 +6,7 @@ CREATE TYPE cheevo AS ENUM (
     'archivist', 'assembly-required', 'bakers-dozen', 'big-brother',
     'biohazard', 'bird-is-the-word', 'black-box-testing', 'blackjack',
     'bullseye', 'busy-beaver', 'caffeinated', 'centenarian', 'cobowl',
-    'cunning-linguist', 'dammit-janet', 'different-strokes',
+    'count-to-ten', 'cunning-linguist', 'dammit-janet', 'different-strokes',
     'disappearing-act', 'dont-panic', 'double-slit-experiment',
     'down-to-the-metal', 'elephpant-in-the-room', 'emergency-room',
     'evil-scheme', 'fish-n-chips', 'five', 'flag-those-mines', 'fore',

@@ -1,8 +1,11 @@
 package routes
 
 import (
+	"database/sql"
+	"errors"
 	"net/http"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -155,6 +158,42 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 
 		progress.Progress = len(completedSteps)
 		data[cheevo.ID] = progress
+	}
+
+	if progress := data["count-to-ten"]; progress.Earned == nil {
+		var completedSteps pq.Int32Array
+		var hole *config.Hole
+		if err := db.QueryRow(
+			` SELECT hole, array_agg(DISTINCT LENGTH(langs.name))
+			    FROM stable_passing_solutions
+			    JOIN holes ON hole = holes.id
+			    JOIN langs ON lang = langs.id
+			   WHERE category = 'Sequence'
+			     AND LENGTH(langs.name) <= 10
+			     AND user_id = $1
+			GROUP BY hole
+			ORDER BY COUNT(DISTINCT LENGTH(langs.name)) DESC, hole
+			   LIMIT 1`,
+			golfer.ID,
+		).Scan(&hole, &completedSteps); err != nil && !errors.Is(err, sql.ErrNoRows) {
+			panic(err)
+		}
+
+		for i := 1; i <= 10; i++ {
+			step := Step{
+				Name:     strconv.Itoa(i),
+				Complete: slices.Contains(completedSteps, int32(i)),
+			}
+
+			if hole != nil {
+				step.Path = "/" + hole.ID
+			}
+
+			progress.Steps = append(progress.Steps, step)
+		}
+
+		progress.Progress = len(completedSteps)
+		data["count-to-ten"] = progress
 	}
 
 	if progress := data["never-eat-shredded-wheat"]; progress.Earned == nil {

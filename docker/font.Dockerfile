@@ -80,6 +80,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f4fa.svg'            `# Television`                   \
     '*/1f511.svg'            `# Key`                          \
     '*/1f51e.svg'            `# No One Under Eighteen`        \
+    '*/1f51f.svg'            `# Keycap Ten`                   \
     '*/1f520.svg'            `# Input Latin Uppercase`        \
     '*/1f523.svg'            `# Input Symbols`                \
     '*/1f526.svg'            `# Flashlight`                   \

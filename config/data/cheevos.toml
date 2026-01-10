@@ -137,6 +137,12 @@ emoji       = '🎳'
 description = 'Solve <a href=/ten-pin-bowling#cobol>Ten-pin Bowling in COBOL</a>.'
 
 [['Hole/Lang Specific']]
+name        = 'Count to Ten'
+emoji       = '🔟'
+description = 'Solve any Sequence hole using languages whose names have every length from 1 to 10.'
+target      = 10
+
+[['Hole/Lang Specific']]
 name        = 'Dammit, Janet!'
 emoji       = '👄'
 description = 'Solve <a href=/rock-paper-scissors-spock-lizard#janet>Rock-paper-scissors-Spock-lizard in Janet</a>.'

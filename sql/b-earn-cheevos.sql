@@ -81,6 +81,12 @@ BEGIN
     IF hole = 'ten-pin-bowling' AND lang = 'cobol' THEN
         earned := earn(earned, 'cobowl', user_id); END IF;
 
+    -- 🔟 Count to Ten
+    IF (SELECT category FROM holes WHERE id = hole) = 'Sequence' AND
+        (SELECT array_agg(LENGTH(name)) FROM langs WHERE id = ANY(langs_for_hole))
+            @> '{1,2,3,4,5,6,7,8,9,10}' THEN
+                earned := earn(earned, 'count-to-ten', user_id); END IF;
+
     -- 👄 Dammit, Janet!
     IF hole = 'rock-paper-scissors-spock-lizard' AND lang = 'janet' THEN
         earned := earn(earned, 'dammit-janet', user_id); END IF;

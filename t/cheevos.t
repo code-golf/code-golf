@@ -57,6 +57,7 @@ for Q:ww<
     {assembly-required} seven-segment assembly
     {bird-is-the-word} levenshtein-distance 'awk prolog sql'
     {cobowl} ten-pin-bowling cobol
+    {count-to-ten} collatz 'c jq fish perl janet pascal haskell hexagony brainfuck javascript'
     {dammit-janet} rock-paper-scissors-spock-lizard janet
     {elephpant-in-the-room} divisors php
     {emergency-room} 𝑒 r
