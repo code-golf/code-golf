@@ -137,6 +137,7 @@
                         <a href="/{{ .ID }}">
                             {{ svg .CategoryIcon }}
                             {{ .Name }}
+                            {{ if .Experiment }}{{ svg "flask" }}{{ end }}
                         </a>
                 {{ end }}
                 </ul>
