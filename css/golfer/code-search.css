@@ -1,9 +1,5 @@
 @import "./_golfer.css";
 
-.settings-btn {
-    display: none;
-}
-
 #search {
     display: grid;
     gap: .75rem;
