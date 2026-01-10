@@ -548,7 +548,7 @@ export async function submit(
     updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
 ): Promise<boolean> {
     if (!editor) return false;
-    $('h2').innerText = '…';
+    $('#status > h2').innerText = '…';
     $('#status').className = 'grey';
     $$('canvas').forEach(e => e.remove());
 
@@ -681,7 +681,7 @@ export async function submit(
         return btn;
     });
 
-    $('h2').replaceChildren(
+    $('#status > h2').replaceChildren(
         <span id="run-result-btns">{btns}</span>,
         <span id="pass-fail-msg"></span>,
         <span id="runtime"></span>,
