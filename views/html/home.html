@@ -18,10 +18,7 @@
 <main id=home>
 {{ if .Golfer }}
     <nav class=span>
-        <button class="btn blue" command=show-modal commandfor=settings-dialog title=Settings>
-            {{ svg "gear-fill" }}
-            Page Settings
-        </button>
+        {{ template "page-settings" . }}
     </nav>
 {{ end }}
 {{ range .Data }}
@@ -50,5 +47,4 @@
 {{ end }}
 </main>
 
-{{ template "settings-dialog" . }}
 {{ template "footer" }}

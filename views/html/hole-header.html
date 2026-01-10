@@ -61,11 +61,6 @@
             {{ svg "chevron-double-right-light" }} Next
         </a>
     {{ end }}
-    {{ if .Golfer }}
-        <button class="btn blue" command=show-modal commandfor=settings-dialog title=Settings>
-            {{ svg "gear-fill" }}
-            Page Settings
-        </button>
-    {{ end }}
+    {{ template "page-settings" . }}
     </nav>
 </header>
