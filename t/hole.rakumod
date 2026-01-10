@@ -110,7 +110,7 @@ class HoleWebDriver is WebDriver is export {
     # Methods whose names begin with "is" do exactly one assertion.
     method isResult(Str:D $expectedText, Str:D $context) {
         for ^5 {
-            if (my $text = $.find('h2').text) && $text ne '…' {
+            if (my $text = $.find("#status > h2").text) && $text ne '…' {
                 is $text, $expectedText, "Confirm the result of running the program, $context";
                 return;
             }
