@@ -55,6 +55,9 @@ func (p *Pager) Calculate() bool {
 	return false
 }
 
+// Page returns which page a given row will appear on.
+func Page(row int) int { return (row-1)/PerPage + 1 }
+
 func changePage(u *url.URL, page int) *url.URL {
 	q := u.Query()
 	if page == 1 {

@@ -31,7 +31,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"id":        config.ID,
 	"inc":       func(i int) int { return i + 1 },
 	"ord":       pretty.Ordinal,
-	"page":      func(i int) int { return i/pager.PerPage + 1 },
+	"page":      pager.Page,
 	"title":     pretty.Title,
 	"time":      pretty.Time,
 
