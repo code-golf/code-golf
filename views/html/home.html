@@ -16,14 +16,7 @@
 {{ end }}
 
 <main id=home>
-{{ if .Golfer }}
-    <nav class=span>
-        <button class="btn blue" command=show-modal commandfor=settings-dialog title=Settings>
-            {{ svg "gear-fill" }}
-            Page Settings
-        </button>
-    </nav>
-{{ end }}
+{{ template "page-settings" . }}
 {{ range .Data }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
@@ -50,5 +43,4 @@
 {{ end }}
 </main>
 
-{{ template "settings-dialog" . }}
 {{ template "footer" }}
