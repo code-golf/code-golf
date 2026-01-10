@@ -550,7 +550,6 @@ export async function submit(
     if (!editor) return false;
     $('#status > h2').innerText = '…';
     $('#status').className = 'grey';
-    $$('canvas').forEach(e => e.remove());
 
     const code = editor.state.doc.toString();
     lastSubmittedCode = code;

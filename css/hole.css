@@ -38,12 +38,6 @@ aside > h3 {
     writing-mode: sideways-lr;
 }
 
-canvas {
-    border: 1px solid var(--color);
-    image-rendering: crisp-edges;
-    width: 50%;
-}
-
 main .info {
     display: block;
     margin: 0;
