@@ -400,7 +400,7 @@ td, th {
 
 td.right > a { justify-content: right }
 
-td > a {
+td > :is(a, div) {
     align-items: center;
     display: flex;
     gap: .5rem;

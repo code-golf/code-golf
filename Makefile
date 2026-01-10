@@ -109,7 +109,7 @@ logs:
 	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 svgo:
-	@node_modules/.bin/svgo -f svg
+	@node_modules/.bin/svgo --recursive --folder svg
 
 test:
 	@GOEXPERIMENT=jsonv2 go test ./...

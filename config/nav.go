@@ -124,6 +124,7 @@ func initNav() {
 						{Name: "Golfers", Slug: "golfers"},
 						{Name: "Holes", Slug: "holes"},
 						{Name: "Languages", Slug: "langs"},
+						{Name: "Sessions", Slug: "sessions"},
 						{Name: "Unsolved Holes", Slug: "unsolved-holes"},
 					},
 				},

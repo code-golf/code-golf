@@ -75,6 +75,7 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/stats/{page:countries}", statsCountriesGET)
 		r.Get("/stats/{page:golfers}", statsGolfersGET)
 		r.Get("/stats/{page:(?:holes|langs)}", statsTableGET)
+		r.Get("/stats/{page:sessions}", statsSessionsGET)
 		r.Get("/stats/{page:unsolved-holes}", statsUnsolvedHolesGET)
 		r.Get("/wiki", wikiGET)
 		r.Get("/wiki/*", wikiGET)

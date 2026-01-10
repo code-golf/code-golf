@@ -13,6 +13,8 @@ table { width: 100% }
     gap: 1rem;
     grid-template-columns: repeat(2, 1fr);
 
+    > p { grid-column: 1 / -1 }
+
     > a:hover {
         background: var(--color);
         color: var(--background);

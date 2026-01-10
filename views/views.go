@@ -28,6 +28,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
 	"html":      func(html string) template.HTML { return template.HTML(html) },
+	"id":        config.ID,
 	"inc":       func(i int) int { return i + 1 },
 	"ord":       pretty.Ordinal,
 	"page":      func(i int) int { return i/pager.PerPage + 1 },
