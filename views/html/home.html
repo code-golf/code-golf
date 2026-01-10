@@ -16,7 +16,11 @@
 {{ end }}
 
 <main id=home>
-{{ template "page-settings" . }}
+{{ if .Golfer }}
+    <nav class="span">
+        {{ template "page-settings" . }}
+    </nav>
+{{ end }}
 {{ range .Data }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
