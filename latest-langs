@@ -105,6 +105,7 @@ constant %paths = (
     'Umka'         => 'github.com/vtereshkov/umka-lang/releases/latest',
     'V'            => 'raw.githubusercontent.com/vlang/v/refs/heads/master/CHANGELOG.md',
     'Vala'         => 'gitlab.gnome.org/GNOME/vala/-/tags',
+    'VBScript'     => 'winehq.org',
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
@@ -145,6 +146,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'sourceforge'       / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'sqlite.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'swi-prolog'        / { $res ~~ / 'stable' .+? <(<ver>)> / }
+        when / 'winehq.org'        / { $res ~~ / 'Stable' .+? <(<ver>)> / }
         when / 'ziglang.org'       / { $res ~~ / 'Release' .+? <(<ver>)> / }
         when / 'api.github.com'    / {
             $res.&from-json.grep(

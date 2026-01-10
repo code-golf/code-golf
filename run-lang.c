@@ -168,11 +168,11 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(utimes),          // 235
 
         // Extended File Attributes
-        // ALLOW(fgetxattr),     // 193
+        ALLOW(fgetxattr),        // 193 (Used by VBScript)
         // ALLOW(flistxattr),    // 196
         // ALLOW(fremovexattr),  // 199
         // ALLOW(fsetxattr),     // 190
-        // ALLOW(getxattr),      // 191
+        ALLOW(getxattr),         // 191 (Used by VBScript)
         // ALLOW(getxattrat),    // 464
         // ALLOW(lgetxattr),     // 192
         ALLOW(listxattr),        // 194
@@ -257,7 +257,7 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         \*********/
 
         // Socket Operations
-        // ALLOW(accept),   // 43 (Replaced by accept4)
+        ALLOW(accept),      // 43 (Used by VBScript)
         ALLOW(accept4),     // 288
         ALLOW(bind),        // 49
         ALLOW(connect),     // 42
