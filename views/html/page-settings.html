@@ -1,8 +1,8 @@
-<!-- FIXME Stop misusing settings on code-search -->
-{{ if and .Golfer .Settings (ne .Name "golfer/code-search") }}
-
 {{ $name := .Name }}
 {{ if eq $name "hole-tabs" }}{{ $name = "hole" }}{{ end }}
+
+<!-- FIXME Stop misusing settings on code-search -->
+{{ if and .Golfer .Settings (ne $name "golfer/code-search") }}
 
 <button class="btn blue" command=show-modal commandfor=settings-dialog>
     {{ svg "gear-fill" }}
