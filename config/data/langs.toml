@@ -942,8 +942,8 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '339 MiB'
-version = 'GHC 9.8.2'
+size    = '229 MiB'
+version = 'GHC 9.14.1'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
