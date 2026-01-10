@@ -253,12 +253,10 @@ BEGIN
     -------------------
 
     -- 🌈 Different Strokes
-    IF (SELECT COUNT(DISTINCT solutions.code) > 1 FROM solutions
-         WHERE solutions.user_id = user_id
-           AND solutions.hole    = hole
-           AND solutions.lang    = lang) THEN
-        earned := earn(earned, 'different-strokes', user_id);
-    END IF;
+    IF (SELECT COUNT(DISTINCT s.code) > 1
+          FROM stable_passing_solutions s
+         WHERE s.hole = hole AND s.lang = lang AND s.user_id = user_id) THEN
+        earned := earn(earned, 'different-strokes', user_id); END IF;
 
     -- 🔣 Polyglot
     IF array_length(langs_for_hole, 1) >= 12 THEN
