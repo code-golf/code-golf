@@ -1,5 +1,4 @@
 CREATE EXTENSION citext;
-CREATE EXTENSION hstore;
 
 CREATE TYPE cheevo AS ENUM (
     '0xdead', 'aged-like-fine-wine', 'alchemist', 'alphabet-soup',
@@ -198,7 +197,6 @@ CREATE VIEW golfers_with_avatars AS
 
 -- config/data/holes.toml is the canonical source of truth for hole data.
 -- This table is a shadow copy, updated on startup, used in DB queries.
--- TODO Use category here, remove config.HoleCategoryHstore.
 CREATE UNLOGGED TABLE holes (
     id         hole          NOT NULL PRIMARY KEY,
     experiment int           NOT NULL,

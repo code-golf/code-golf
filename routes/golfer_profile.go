@@ -146,13 +146,13 @@ rows:
 		      FROM rankings
 		     WHERE user_id = $1 AND NOT experimental
 		  ORDER BY hole, scoring, points DESC
-		) SELECT $2::hstore->hole::text category,
+		) SELECT category,
 		         ROUND(AVG((points)))   points,
 		         scoring                scoring
 		    FROM max_points_per_hole
+		    JOIN holes ON id = hole
 		GROUP BY scoring, category`,
 		golferInfo.ID,
-		config.HoleCategoryHstore,
 	); err != nil {
 		panic(err)
 	}

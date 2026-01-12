@@ -3,7 +3,6 @@ package config
 import (
 	"bytes"
 	"cmp"
-	"database/sql"
 	"embed"
 	"encoding/json"
 	"html/template"
@@ -13,7 +12,6 @@ import (
 	templateTxt "text/template"
 
 	"github.com/code-golf/code-golf/ordered"
-	"github.com/lib/pq/hstore"
 	"github.com/pelletier/go-toml/v2"
 )
 
@@ -32,9 +30,6 @@ var (
 	// All holes.
 	AllHoleByID = map[string]*Hole{}
 	AllHoleList []*Hole
-
-	// A map of hole ID to category for passing to SQL queries.
-	HoleCategoryHstore = hstore.Hstore{Map: map[string]sql.NullString{}}
 
 	// Aliases & Redirects
 	HoleAliases   = map[string]string{}
@@ -192,9 +187,6 @@ func initHoles() {
 		if hole.Experiment == 0 {
 			HoleByID[hole.ID] = hole
 			HoleList = append(HoleList, hole)
-
-			HoleCategoryHstore.Map[hole.ID] =
-				sql.NullString{String: hole.Category, Valid: true}
 		} else {
 			ExpHoleByID[hole.ID] = hole
 			ExpHoleList = append(ExpHoleList, hole)
