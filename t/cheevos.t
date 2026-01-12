@@ -43,6 +43,7 @@ for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     my $cheevos = %holes{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos to the start.
+    $cheevos.=subst: '{', '{smörgåsbord,'     if $_ eq 'catalans-constant';
     $cheevos.=subst: '{', '{interview-ready,' if $_ eq 'fizz-buzz';
     $cheevos.=subst: '{', '{solve-quine,'     if $_ eq 'quine';
     $cheevos.=subst: ',}', '}';

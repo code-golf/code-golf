@@ -274,6 +274,12 @@ BEGIN
     IF array_length(langs_for_hole, 1) >= 48 THEN
         earned := earn(earned, 'omniglutton', user_id); END IF;
 
+    -- 🥪 Smörgåsbord
+    IF (SELECT array_agg(DISTINCT category) = enum_range(null::hole_category)
+          FROM stable_passing_solutions s
+          JOIN holes ON s.hole = id AND s.user_id = user_id) THEN
+        earned := earn(earned, 'smörgåsbord', user_id); END IF;
+
     -----------------
     -- Progression --
     -----------------
