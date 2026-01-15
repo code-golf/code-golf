@@ -3,7 +3,7 @@ FROM alpine:3.23 AS builder
 RUN apk add --no-cache clang curl make
 
 # Also rebuild GolfScript, iogii.
-ENV VER=4.0.0
+ENV VER=4.0.1
 
 WORKDIR /ruby
 

@@ -370,7 +370,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '111 MiB'
-version = 'C# 14.0 on .NET 10.0.1'
+version = 'C# 14.0 on .NET 10.0.2'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -454,7 +454,7 @@ eaN*
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
 size    = '64.3 MiB'
-version = 'Babashka 1.12.213'
+version = 'Babashka 1.12.214'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -678,7 +678,7 @@ args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
 size     = '50.1 MiB'
-version  = 'OTP 28.3'
+version  = 'OTP 28.3.1'
 website  = 'https://www.erlang.org'
 example  = '''
 main(Args) ->
@@ -696,7 +696,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.1'
+version = 'F# 10.0 on .NET 10.0.2'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -858,7 +858,7 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-size       = '38.5 MiB'
+size       = '38.6 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
 example    = '''
@@ -1035,8 +1035,8 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '43.3 MiB'
-version    = '1.1.0'
+size       = '43.4 MiB'
+version    = '1.2.0'
 website    = 'https://hylang.org'
 example    = '''
 ; Printing
@@ -1054,8 +1054,8 @@ example    = '''
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
-size       = '38.6 MiB'
-version    = '1.1'
+size       = '38.7 MiB'
+version    = '1.1.1'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
 # Printing
@@ -1438,7 +1438,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '137 MiB'
-version    = 'PowerShell 7.5.4 on .NET 10.0.1'
+version    = 'PowerShell 7.5.4 on .NET 10.0.2'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1635,8 +1635,8 @@ end
 
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
-size    = '38.5 MiB'
-version = '4.0.0'
+size    = '38.6 MiB'
+version = '4.0.1'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing

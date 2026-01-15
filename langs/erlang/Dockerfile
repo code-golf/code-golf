@@ -5,7 +5,7 @@ RUN apt-get update                   \
     apt-get install --yes curl gcc make perl
 
 # Also rebuild Elixir, Gleam.
-ENV VER=28.3
+ENV VER=28.3.1
 
 WORKDIR /erlang
 
