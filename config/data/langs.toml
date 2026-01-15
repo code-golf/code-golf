@@ -104,7 +104,7 @@ example    = '''
 args       = [ '/usr/bin/arturo', '-e', '$code' ]
 experiment = 915
 size       = '4.94 MiB'
-version    = 'c09869c'
+version    = '0.10.0'
 website    = 'https://arturo-lang.io'
 example    = '''
 ; Printing

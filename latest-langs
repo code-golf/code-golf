@@ -18,7 +18,7 @@ constant %paths = (
     'ALGOL 68'     => 'jmvdveer.home.xs4all.nl/en.download.algol-68-genie-current.html',
     'APL'          => 'dyalog.com/download-zone.htm?p=download',
     'ArkScript'    => 'github.com/ArkScript-lang/Ark/releases/latest',
-    'Arturo'       => 'github.com/arturo-lang/arturo',
+    'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
     'AWK'          => 'ftp.gnu.org/gnu/gawk/?C=M;O=D',
     'Bash'         => 'ftp.gnu.org/gnu/bash/?C=M;O=D',
