@@ -12,12 +12,17 @@ WORKDIR /erlang
 RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN ./configure            \
-    --enable-m64-build     \
-    --prefix=/usr          \
-    --without-termcap      \
- && make -j`nproc` release \
- && make install           \
+RUN ./configure             \
+    --disable-jit           \
+    --enable-m64-build      \
+    --prefix=/usr           \
+    --without-crypto        \
+    --without-javac         \
+    --without-jinterface    \
+    --without-odbc          \
+    --without-termcap       \
+    --without-wx            \
+ && make -j release install \
  && strip /usr/bin/escript
 
 WORKDIR /usr/lib/erlang/lib
@@ -62,5 +67,3 @@ COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot \
 COPY --from=0 /usr/lib/locale                        /usr/lib/locale
 
 ENTRYPOINT ["erlang"]
-
-CMD ["--version"]
