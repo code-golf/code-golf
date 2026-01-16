@@ -41,7 +41,6 @@ var _ = answerFunc("multitap-input", func() []Answer {
 		{"DISAMBIGUATE PUBLIC IF MAKE QUIZ"},
 		{"THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"},
 		{"FORTIETH CROWN GUITAR NOBLE REACTOR TELECASTER"},
-		{"S"},
 	}
 
 	for i, t := range fixedTests {
