@@ -1953,6 +1953,29 @@ int main(string[] args) {
 }
 '''
 
+[VBScript]
+args       = [ '/usr/bin/vbscript', '-' ]
+env        = [ 'LANG=C.UTF-8', 'WINEDEBUG=-ntdll,-ntoskrnl,-service', 'WINEPREFIX=/Winedows' ]
+experiment = 350
+size       = '72.3 MiB'
+version    = 'Wine 10.0'
+website    = 'https://www.winehq.org'
+example    = '''
+' Printing
+WScript.Echo "Hello, World!"
+
+' Looping
+For I = 0 To 9
+    WScript.Echo I
+Next
+
+' Accessing arguments
+Set Args = WScript.Arguments
+For I = 0 To Args.Count
+    WScript.Echo Args(I)
+Next
+'''
+
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
 size    = '25.2 MiB'
