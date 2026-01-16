@@ -568,8 +568,8 @@ example   = '''
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '271 MiB'
-version = '1.18.2'
+size    = '298 MiB'
+version = '1.19.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
