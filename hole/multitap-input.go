@@ -39,6 +39,8 @@ var _ = answerFunc("multitap-input", func() []Answer {
 		{"XYLOPHONE INGREDIENT EACH A VERY"},
 		{"JUST ZERO TRAIN OPEN GUIDELINE WE"},
 		{"DISAMBIGUATE PUBLIC IF MAKE QUIZ"},
+		{"THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"},
+		{"FORTIETH CROWN GUITAR NOBLE REACTOR TELECASTER"},
 	}
 
 	for i, t := range fixedTests {
