@@ -9,7 +9,10 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-var cheevoBannerRegex = regexp.MustCompile(`^cheevo-(?:before|until)-\d{4}-\d{2}-\d{2}-`)
+var (
+	cheevoBannerRegex  = regexp.MustCompile(`^cheevo-(?:before|until)-\d{4}-\d{2}-\d{2}-`)
+	holeOfTheWeekRegex = regexp.MustCompile(`^hole-of-the-week-\d{4}-\d{2}-\d{2}$`)
+)
 
 // POST /golfer/{action:hide|restore}-banner
 func golferHideRestoreBannerPOST(w http.ResponseWriter, r *http.Request) {
@@ -25,6 +28,8 @@ func golferHideRestoreBannerPOST(w http.ResponseWriter, r *http.Request) {
 		_, valid = config.ExpHoleByID[holeID]
 	} else if prefix := cheevoBannerRegex.FindString(banner); prefix != "" {
 		_, valid = config.CheevoByID[banner[len(prefix):]]
+	} else {
+		valid = holeOfTheWeekRegex.MatchString(banner)
 	}
 
 	if valid {

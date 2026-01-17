@@ -217,6 +217,14 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 			return err
 		}
 	}
+
+	// FIXME This isn't the ideal way to run this. It needs to run early in
+	// order for people to see the banner but it also needs to run at least
+	// once a fortnight to update next week's hole of the week.
+	if err := config.PopulateHolesOfTheWeek(tx); err != nil {
+		return err
+	}
+
 	if err := tx.Commit(); err != nil {
 		return err
 	}

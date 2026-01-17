@@ -1,4 +1,5 @@
 # Test "ON DELETE" triggers when deleting a golfer.
+# TODO Check it works without DELETE perms like solutions_log, weekly_solves.
 use t;
 
 my $dbh = dbh;
