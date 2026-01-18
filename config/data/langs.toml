@@ -1258,7 +1258,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.21 MiB'
-version    = '0.704'
+version    = '0.705'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1387,7 +1387,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.1'
+version = '8.5.2'
 website = 'https://www.php.net'
 example = '''
 # Printing
