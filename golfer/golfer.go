@@ -43,7 +43,7 @@ type Golfer struct {
 	Settings                              Settings
 
 	// Has the golfer solved the latest hole/lang? Includes failing solutions.
-	SolvedLatestHole, SolvedLatestLang bool
+	SolvedHoleOfTheWeek, SolvedLatestHole, SolvedLatestLang bool
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.

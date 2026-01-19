@@ -39,6 +39,7 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		          COALESCE(r.name, '')                      referrer,
 		          u.settings                                settings,
 		          u.show_country                            show_country,
+		          w.week IS NOT NULL                        solved_hole_of_the_week,
 		          u.sponsor                                 sponsor,
 		          u.theme                                   theme,
 		          u.time_zone                               time_zone,
@@ -63,10 +64,11 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		                  WHERE user_id = u.id
 		                    AND lang = $3)                  solved_latest_lang
 		     FROM golfers_with_avatars u
-		     JOIN golfer g     ON u.id = g.user_id
-		LEFT JOIN users  r     ON r.id = u.referrer_id
-		LEFT JOIN points bytes ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
-		LEFT JOIN points chars ON u.id = chars.user_id AND chars.scoring = 'chars'`,
+		     JOIN golfer g        ON u.id = g.user_id
+		LEFT JOIN users  r        ON r.id = u.referrer_id
+		LEFT JOIN points bytes    ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
+		LEFT JOIN points chars    ON u.id = chars.user_id AND chars.scoring = 'chars'
+		LEFT JOIN weekly_solves w ON u.id = w.user_id AND w.week = this_week()`,
 		sessionID,
 		config.LatestHole,
 		config.LatestLang,

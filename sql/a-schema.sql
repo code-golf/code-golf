@@ -260,6 +260,23 @@ CREATE TABLE solutions_log (
     scoring   scoring   NOT NULL
 );
 
+CREATE FUNCTION this_week() RETURNS date AS $$
+    SELECT date_trunc('week', TIMEZONE('UTC', NOW()))::date
+$$ LANGUAGE SQL;
+
+CREATE TABLE weekly_holes (
+    week  date   NOT NULL PRIMARY KEY,
+    hole  hole   NOT NULL,
+    langs lang[] NOT NULL
+);
+
+CREATE TABLE weekly_solves (
+    week      date      NOT NULL REFERENCES weekly_holes(week) DEFAULT this_week(),
+    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    completed timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    PRIMARY KEY (week, user_id)
+);
+
 CREATE UNLOGGED TABLE wiki (
     slug    text   NOT NULL PRIMARY KEY,
     section text,
@@ -400,4 +417,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
+GRANT SELECT, INSERT                 ON TABLE weekly_holes    TO "code-golf";
+GRANT SELECT, INSERT                 ON TABLE weekly_solves   TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";

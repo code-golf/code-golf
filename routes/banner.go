@@ -167,5 +167,33 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 		})
 	}
 
+	// Hole of the Week.
+	hole, langs, week := config.HoleOfTheWeek()
+	if hole != nil && !golfer.SolvedHoleOfTheWeek {
+		body := `<a href="/` + hole.ID + `">` + hole.Name +
+			"</a> is the Hole of the Week. Solve it in either "
+
+		for i, lang := range langs {
+			if i > 0 {
+				body += ", "
+
+				if i == len(langs)-1 {
+					body += "or "
+				}
+			}
+
+			body += `<a href="/` + hole.ID + "#" + lang.ID + `">` + lang.Name + "</a>"
+		}
+
+		body += " within the next " + string(pretty.Time(week.AddDate(0, 0, 7))) +
+			" to complete the challenge."
+
+		banners = append(banners, banner{
+			HideKey: "hole-of-the-week-" + week.Format(time.DateOnly),
+			Type:    "info",
+			Body:    template.HTML(body),
+		})
+	}
+
 	return
 }
