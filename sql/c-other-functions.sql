@@ -273,15 +273,6 @@ BEGIN
            AND solutions.scoring = 'chars';
     END IF;
 
-    -- Hole of the Week.
-    IF (SELECT w.hole = hole AND lang = ANY(w.langs)
-          FROM weekly_holes w
-         WHERE week = this_week())
-    THEN
-        INSERT INTO weekly_solves (user_id) VALUES (user_id)
-            ON CONFLICT DO NOTHING;
-    END IF;
-
     -- Only earn cheevos if the hole and lang aren't experimental.
     SELECT experiment = 0 INTO found FROM holes WHERE id = hole;
     IF found THEN

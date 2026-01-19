@@ -372,6 +372,11 @@ emoji       = '🧪'
 description = 'Solve an <a href=/ideas>experimental hole</a>. Or solve any hole in an experimental language.'
 
 [[Miscellaneous]]
+name        = 'Catch of the Week'
+emoji       = '🎣'
+description = 'Solve your first Hole of the Week.'
+
+[[Miscellaneous]]
 name        = 'Different Strokes'
 emoji       = '🌈'
 description = 'Solve any hole using different bytes and chars solutions.'

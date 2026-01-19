@@ -252,6 +252,17 @@ BEGIN
     -- Miscellaneous --
     -------------------
 
+    -- 🎣 Catch of the Week.
+    IF (SELECT w.hole = hole AND lang = ANY(w.langs)
+          FROM weekly_holes w
+         WHERE week = this_week())
+    THEN
+        INSERT INTO weekly_solves (user_id) VALUES (user_id)
+            ON CONFLICT DO NOTHING;
+
+        earned := earn(earned, 'catch-of-the-week', user_id);
+    END IF;
+
     -- 🌈 Different Strokes
     IF (SELECT COUNT(DISTINCT s.code) > 1
           FROM stable_passing_solutions s

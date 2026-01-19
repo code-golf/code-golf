@@ -35,6 +35,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f382.svg'            `# Birthday Cake`                \
     '*/1f385.svg'            `# Santa Claus`                  \
     '*/1f388.svg'            `# Balloon`                      \
+    '*/1f3a3.svg'            `# Fishing Pole and Fish`        \
     '*/1f3ae.svg'            `# Video Game Controller`        \
     '*/1f3af.svg'            `# Direct Hit`                   \
     '*/1f3b3.svg'            `# Bowling`                      \

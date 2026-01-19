@@ -39,17 +39,27 @@ $client.get: 'https://app/about',
 is $dbh.execute('SELECT ARRAY(SELECT cheevo FROM cheevos)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
+# Fix the hole/langs of the week to ensure we trigger it.
+$dbh.execute: ｢UPDATE weekly_holes SET hole = 'isbn', langs = '{c,j,k}'｣;
+
+is $dbh.execute('SELECT user_id FROM weekly_solves').allrows.flat, [],
+    'weekly_solves starts empty';
+
 for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     my $cheevos = %holes{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos to the start.
-    $cheevos.=subst: '{', '{smörgåsbord,'     if $_ eq 'catalans-constant';
-    $cheevos.=subst: '{', '{interview-ready,' if $_ eq 'fizz-buzz';
-    $cheevos.=subst: '{', '{solve-quine,'     if $_ eq 'quine';
+    $cheevos.=subst: '{', '{smörgåsbord,'       if $_ eq 'catalans-constant';
+    $cheevos.=subst: '{', '{interview-ready,'   if $_ eq 'fizz-buzz';
+    $cheevos.=subst: '{', '{catch-of-the-week,' if $_ eq 'isbn';
+    $cheevos.=subst: '{', '{solve-quine,'       if $_ eq 'quine';
     $cheevos.=subst: ',}', '}';
 
     is save-solution(:hole($_) :lang<c>), $cheevos, "$_/c earns $cheevos";
 }
+
+is $dbh.execute('SELECT user_id FROM weekly_solves').allrows.flat, [1],
+    'weekly_solves now contains us';
 
 for Q:ww<
     {alchemist} game-of-life elixir
