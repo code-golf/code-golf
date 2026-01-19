@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"html/template"
 	"net/http"
 	"time"
 
@@ -12,7 +13,8 @@ import (
 
 // GET /rankings/misc/{type}
 func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
-	var desc, sql string
+	var desc template.HTML
+	var sql string
 
 	data := struct {
 		Pager *pager.Pager
@@ -67,6 +69,19 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			    SELECT user_id, COUNT(*) FROM authors GROUP BY user_id
 			) SELECT avatar_url, count, country_flag, name,
 			         RANK() OVER(ORDER BY count DESC),
+			         COUNT(*) OVER () total
+			    FROM holes
+			    JOIN golfers_with_avatars ON id = user_id
+			ORDER BY rank, name
+			   LIMIT $1 OFFSET $2`
+	case "holes-of-the-week":
+		desc, _ = config.HoleOfTheWeek()
+		sql = `WITH holes AS (
+			    SELECT user_id, COUNT(*), MAX(completed) submitted
+			      FROM weekly_solves
+			  GROUP BY user_id
+			) SELECT avatar_url, count, country_flag, name, submitted,
+			         RANK() OVER(ORDER BY count DESC, submitted),
 			         COUNT(*) OVER () total
 			    FROM holes
 			    JOIN golfers_with_avatars ON id = user_id

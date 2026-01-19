@@ -2,12 +2,14 @@ package config
 
 import (
 	"cmp"
+	"html/template"
 	"math/rand/v2"
 	"slices"
 	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/db"
+	"github.com/code-golf/code-golf/pretty"
 	"github.com/lib/pq"
 )
 
@@ -18,10 +20,32 @@ type holeOfTheWeek struct {
 
 var holes = map[time.Time]holeOfTheWeek{}
 
-func HoleOfTheWeek() (*Hole, Langs, time.Time) {
+func HoleOfTheWeek() (template.HTML, time.Time) {
 	thisWeek := thisWeek()
-	hl := holes[thisWeek]
-	return hl.Hole, hl.Langs, thisWeek
+	hl, ok := holes[thisWeek]
+	if !ok {
+		return "", thisWeek
+	}
+
+	html := `<a href="/` + hl.Hole.ID + `">` + hl.Hole.Name +
+		"</a> is the Hole of the Week. Solve it in either "
+
+	for i, lang := range hl.Langs {
+		if i > 0 {
+			html += ", "
+
+			if i == len(hl.Langs)-1 {
+				html += "or "
+			}
+		}
+
+		html += `<a href="/` + hl.Hole.ID + "#" + lang.ID + `">` + lang.Name + "</a>"
+	}
+
+	html += " within the next " + string(pretty.Time(thisWeek.AddDate(0, 0, 7))) +
+		" to complete the challenge."
+
+	return template.HTML(html), thisWeek
 }
 
 func PopulateHolesOfTheWeek(db db.Queryable) error {
