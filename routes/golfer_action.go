@@ -36,6 +36,8 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 			render(w, r, "golfer/follow-limit", limit, target.Name)
 			return
 		}
+
+		golfer.Earn(tx, "no-man-is-an-island")
 	}
 
 	var sql string

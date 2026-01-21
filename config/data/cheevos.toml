@@ -387,6 +387,11 @@ emoji       = '🔦'
 description = 'Solve an <a href=/ideas>experimental hole</a> in an experimental language.'
 
 [[Miscellaneous]]
+name        = 'No Man Is an Island'
+emoji       = '🏝️'
+description = 'Follow another golfer.'
+
+[[Miscellaneous]]
 name        = 'Polyglot'
 emoji       = '🔣'
 description = 'Solve any hole in a dozen different languages.'

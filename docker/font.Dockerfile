@@ -45,6 +45,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f3c6.svg'            `# Trophy`                       \
     '*/1f3cc.svg'            `# Person Golfing`               \
     '*/1f3db.svg'            `# Classical Building`           \
+    '*/1f3dd.svg'            `# Desert Island`                \
     '*/1f3de.svg'            `# National Park`                \
     '*/1f3e5.svg'            `# Hospital`                     \
     '*/1f409.svg'            `# Dragon`                       \

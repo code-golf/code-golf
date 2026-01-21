@@ -39,6 +39,15 @@ $client.get: 'https://app/about',
 is $dbh.execute('SELECT ARRAY(SELECT cheevo FROM cheevos)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
+new-golfer :$dbh :id(2) :name<Alice>;
+
+$client.post: 'https://app/golfers/Alice/follow',
+    headers => { cookie => "__Host-session=$session" };
+
+is $dbh.execute('SELECT ARRAY(SELECT cheevo FROM cheevos)').row,
+    '{rtfm,no-man-is-an-island}',
+    'POST /golfers/Alice/follow earns {no-man-is-an-island}';
+
 # Fix the hole/langs of the week to ensure we trigger it.
 $dbh.execute: ｢UPDATE weekly_holes SET hole = 'isbn', langs = '{c,j,k}'｣;
 
