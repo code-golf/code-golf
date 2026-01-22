@@ -1,4 +1,4 @@
-FROM node:25.2.1-trixie-slim
+FROM node:25.4-trixie-slim
 
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
