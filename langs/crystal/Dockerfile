@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.19.0-alpine AS builder
+FROM crystallang/crystal:1.19.1-alpine AS builder
 
 RUN apk add --no-cache dash \
  && apk del --no-cache libxml2-static python3
