@@ -248,11 +248,10 @@ BEGIN
     IF hole = 'zodiac-signs' AND found THEN
         earned := earn(earned, 'zoodiac-signs', user_id); END IF;
 
-    -------------------
-    -- Miscellaneous --
-    -------------------
+    -----------------------
+    -- Holes of the Week --
+    -----------------------
 
-    -- 🎣 Catch of the Week.
     IF (SELECT w.hole = hole AND lang = ANY(w.langs)
           FROM weekly_holes w
          WHERE week = this_week())
@@ -260,8 +259,18 @@ BEGIN
         INSERT INTO weekly_solves (user_id) VALUES (user_id)
             ON CONFLICT DO NOTHING;
 
+        -- 🎣 Catch of the Week.
         earned := earn(earned, 'catch-of-the-week', user_id);
+
+        -- 🪱 Early Bird Catches the Worm
+        IF date_part('dow', TIMEZONE('UTC', NOW())) = 1 THEN
+            earned := earn(earned, 'early-bird-catches-the-worm', user_id);
+        END IF;
     END IF;
+
+    -------------------
+    -- Miscellaneous --
+    -------------------
 
     -- 🌈 Different Strokes
     IF (SELECT COUNT(DISTINCT s.code) > 1

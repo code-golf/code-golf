@@ -148,6 +148,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1fa9b.svg'            `# Screwdriver`                  \
     '*/1fa9e.svg'            `# Mirror`                       \
     '*/1faa6.svg'            `# Headstone`                    \
+    '*/1fab1.svg'            `# Worm`                         \
     '*/2328.svg'             `# Keyboard`                     \
     '*/23f1.svg'             `# Stopwatch`                    \
     '*/2615.svg'             `# Hot Beverage`                 \

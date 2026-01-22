@@ -353,6 +353,18 @@ holes       = ['zodiac-signs']
 langs       = ['awk', 'basic', 'civet', 'factor', 'ocaml', 'perl', 'prolog', 'python', 'raku', 'swift', 'wren']
 target      = 3
 
+# Holes of the Week
+
+[['Holes of the Week']]
+name        = 'Catch of the Week'
+emoji       = '🎣'
+description = 'Solve your first Hole of the Week.'
+
+[['Holes of the Week']]
+name        = 'Early Bird Catches the Worm'
+emoji       = '🪱'
+description = 'Solve any Hole of the Week within the first day.'
+
 # Miscellaneous
 
 [[Miscellaneous]]
@@ -370,11 +382,6 @@ description = '<a href=/golfer/settings>Add a bio</a> to your profile.'
 name        = 'Black-box Testing'
 emoji       = '🧪'
 description = 'Solve an <a href=/ideas>experimental hole</a>. Or solve any hole in an experimental language.'
-
-[[Miscellaneous]]
-name        = 'Catch of the Week'
-emoji       = '🎣'
-description = 'Solve your first Hole of the Week.'
 
 [[Miscellaneous]]
 name        = 'Different Strokes'

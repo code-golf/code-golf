@@ -64,6 +64,10 @@ for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     $cheevos.=subst: '{', '{solve-quine,'       if $_ eq 'quine';
     $cheevos.=subst: ',}', '}';
 
+    # TODO Add proper datetime mocking/injection so we can test this logic.
+    $cheevos.=subst: '}', ',early-bird-catches-the-worm}'
+        if $_ eq 'isbn' && DateTime.now.day-of-week == 1;
+
     is save-solution(:hole($_) :lang<c>), $cheevos, "$_/c earns $cheevos";
 }
 
