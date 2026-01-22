@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/pelletier/go-toml/v2"
 )
@@ -47,6 +48,11 @@ type Lang struct {
 	Size                 string         `json:"size"`
 	Version              string         `json:"version"`
 	Website              string         `json:"website"`
+}
+
+// Fresh lang is one that was released in the last 1,000 hours (~42 days).
+func (l Lang) Fresh() bool {
+	return time.Since(l.Released.AsTime(time.UTC)) <= 1000*time.Hour
 }
 
 func initLangs() {

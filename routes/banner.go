@@ -157,8 +157,8 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 		})
 	}
 
-	// Latest lang (if unsolved).
-	if lang := config.LatestLang; !golfer.SolvedLatestLang {
+	// Latest lang (if unsolved and still fresh).
+	if lang := config.LatestLang; !golfer.SolvedLatestLang && lang.Fresh() {
 		banners = append(banners, banner{
 			HideKey: "latest-lang-" + lang.ID,
 			Type:    "info",

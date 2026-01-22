@@ -50,7 +50,7 @@ type RecAnnouncement struct {
 
 func init() {
 	// Is the latest lang still that fresh?
-	if time.Since(freshLang.Released.AsTime(time.UTC)) > 1000*time.Hour {
+	if !freshLang.Fresh() {
 		freshLang = nil
 	}
 
