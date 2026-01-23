@@ -134,7 +134,7 @@ func golferConnectGET(w http.ResponseWriter, r *http.Request) {
 
 		switch u.Host {
 		// Gravatar - https://docs.gravatar.com/sdk/images/
-		case "0.gravatar.com", "gravatar.com",
+		case "0.gravatar.com", "1.gravatar.com", "2.gravatar.com", "gravatar.com",
 			"secure.gravatar.com", "www.gravatar.com":
 			u.Host = "gravatar.com"
 
