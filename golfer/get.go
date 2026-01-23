@@ -17,8 +17,8 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		`WITH golfer AS (
 		    UPDATE sessions
 		       SET browser = $4, last_used = DEFAULT
-			 WHERE id = uuid_or_null($1)
-		    RETURNING user_id
+		     WHERE id = uuid_or_null($1)
+		 RETURNING user_id
 		), failing AS (
 		    SELECT hole, lang
 		      FROM solutions
