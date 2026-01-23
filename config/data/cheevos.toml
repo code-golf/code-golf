@@ -365,6 +365,11 @@ name        = 'Early Bird Catches the Worm'
 emoji       = '🪱'
 description = 'Solve any Hole of the Week within the first day.'
 
+[['Holes of the Week']]
+name        = 'Out of Spec'
+emoji       = '📜'
+description = 'Solve any Hole of the Week using a language that wasn’t selected.'
+
 # Miscellaneous
 
 [[Miscellaneous]]

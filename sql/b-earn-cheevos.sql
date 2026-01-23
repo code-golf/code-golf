@@ -252,19 +252,23 @@ BEGIN
     -- Holes of the Week --
     -----------------------
 
-    IF (SELECT w.hole = hole AND lang = ANY(w.langs)
-          FROM weekly_holes w
-         WHERE week = this_week())
+    IF (SELECT w.hole = hole FROM weekly_holes w WHERE week = this_week())
     THEN
-        INSERT INTO weekly_solves (user_id) VALUES (user_id)
-            ON CONFLICT DO NOTHING;
+        IF (SELECT lang = ANY(w.langs) FROM weekly_holes w WHERE week = this_week())
+        THEN
+            INSERT INTO weekly_solves (user_id) VALUES (user_id)
+                ON CONFLICT DO NOTHING;
 
-        -- 🎣 Catch of the Week.
-        earned := earn(earned, 'catch-of-the-week', user_id);
+            -- 🎣 Catch of the Week.
+            earned := earn(earned, 'catch-of-the-week', user_id);
 
-        -- 🪱 Early Bird Catches the Worm
-        IF date_part('dow', TIMEZONE('UTC', NOW())) = 1 THEN
-            earned := earn(earned, 'early-bird-catches-the-worm', user_id);
+            -- 🪱 Early Bird Catches the Worm
+            IF date_part('dow', TIMEZONE('UTC', NOW())) = 1 THEN
+                earned := earn(earned, 'early-bird-catches-the-worm', user_id);
+            END IF;
+        ELSE
+            -- 📜 Out of Spec
+            earned := earn(earned, 'out-of-spec', user_id);
         END IF;
     END IF;
 

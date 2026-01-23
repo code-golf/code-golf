@@ -74,6 +74,9 @@ for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
 is $dbh.execute('SELECT user_id FROM weekly_solves').allrows.flat, [1],
     'weekly_solves now contains us';
 
+is save-solution(:hole<isbn> :lang<perl>), '{out-of-spec}',
+    'isbn/perl earns {out-of-spec}';
+
 for Q:ww<
     {alchemist} game-of-life elixir
     {alphabet-soup} scrambled-sort 'c d j'

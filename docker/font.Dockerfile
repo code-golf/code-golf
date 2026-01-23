@@ -76,6 +76,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f4d0.svg'            `# Triangular Ruler`             \
     '*/1f4d5.svg'            `# Closed Book`                  \
     '*/1f4da.svg'            `# Books`                        \
+    '*/1f4dc.svg'            `# Scroll`                       \
     '*/1f4e3.svg'            `# Megaphone`                    \
     '*/1f4eb.svg'            `# Mailbox`                      \
     '*/1f4f4.svg'            `# Mobile Phone Off`             \
