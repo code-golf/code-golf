@@ -21,7 +21,7 @@ type holeOfTheWeek struct {
 var holes = map[time.Time]holeOfTheWeek{}
 
 func HoleOfTheWeek() (template.HTML, time.Time) {
-	thisWeek := thisWeek()
+	thisWeek := ThisWeek()
 	hl, ok := holes[thisWeek]
 	if !ok {
 		return "", thisWeek
@@ -49,7 +49,7 @@ func HoleOfTheWeek() (template.HTML, time.Time) {
 }
 
 func PopulateHolesOfTheWeek(db db.Queryable) error {
-	thisWeek := thisWeek()
+	thisWeek := ThisWeek()
 	nextWeek := thisWeek.AddDate(0, 0, 7)
 
 	for _, week := range []time.Time{thisWeek, nextWeek} {
@@ -85,8 +85,8 @@ func PopulateHolesOfTheWeek(db db.Queryable) error {
 	return nil
 }
 
-// thisWeek returns the start of the current week (Monday, NOT Sunday).
-func thisWeek() time.Time {
+// ThisWeek returns the start of the current week (Monday, NOT Sunday).
+func ThisWeek() time.Time {
 	year, month, day := time.Now().UTC().Date()
 	today := time.Date(year, month, day, 0, 0, 0, 0, time.UTC)
 	return today.AddDate(0, 0, -(int(today.Weekday())+6)%7)

@@ -23,7 +23,7 @@ func TestThisWeek(t *testing.T) {
 		synctest.Test(t, func(t *testing.T) {
 			time.Sleep(time.Until(parseTime(tt.now)))
 
-			assert.Equal(t, parseTime(tt.thisWeek), thisWeek(), tt.msg)
+			assert.Equal(t, parseTime(tt.thisWeek), ThisWeek(), tt.msg)
 		})
 	}
 }

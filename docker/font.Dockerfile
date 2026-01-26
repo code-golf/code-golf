@@ -21,6 +21,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f0cf.svg'            `# Joker`                        \
     '*/1f308.svg'            `# Rainbow`                      \
     '*/1f30c.svg'            `# Milky Way`                    \
+    '*/1f31d.svg'            `# Full Moon with Face`          \
     '*/1f320.svg'            `# Shooting Star`                \
     '*/1f340.svg'            `# Four Leaf Clover`             \
     '*/1f343.svg'            `# Leaf Fluttering in Wind`      \
@@ -48,6 +49,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f3dd.svg'            `# Desert Island`                \
     '*/1f3de.svg'            `# National Park`                \
     '*/1f3e5.svg'            `# Hospital`                     \
+    '*/1f3f0.svg'            `# European Castle`              \
     '*/1f409.svg'            `# Dragon`                       \
     '*/1f40b.svg'            `# Whale`                        \
     '*/1f40d.svg'            `# Sanke`                        \
@@ -150,6 +152,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1fa9e.svg'            `# Mirror`                       \
     '*/1faa6.svg'            `# Headstone`                    \
     '*/1fab1.svg'            `# Worm`                         \
+    '*/1fab2.svg'            `# Beetle`                       \
     '*/2328.svg'             `# Keyboard`                     \
     '*/23f1.svg'             `# Stopwatch`                    \
     '*/2615.svg'             `# Hot Beverage`                 \

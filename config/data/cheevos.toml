@@ -361,6 +361,24 @@ emoji       = '🎣'
 description = 'Solve your first Hole of the Week.'
 
 [['Holes of the Week']]
+name        = 'Hold the Fort(night)'
+emoji       = '🏰'
+description = 'Solve two Holes of the Week in a row.'
+target      = 2
+
+[['Holes of the Week']]
+name        = 'Once in a Blue Moon'
+emoji       = '🌝'
+description = 'Solve four Holes of the Week in a row.'
+target      = 4
+
+[['Holes of the Week']]
+name        = 'Eight Days a Week'
+emoji       = '🪲'
+description = 'Solve eight Holes of the Week in a row.'
+target      = 8
+
+[['Holes of the Week']]
 name        = 'Early Bird Catches the Worm'
 emoji       = '🪱'
 description = 'Solve any Hole of the Week within the first day.'
