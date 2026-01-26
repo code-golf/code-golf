@@ -1,4 +1,4 @@
-ARG VER=5.0.3
+ARG VER=5.0.4
 
 FROM alpine:3.23 AS builder
 

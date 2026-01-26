@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache gcc git make musl-dev perl
 
-ENV VER=2025.12
+ENV VER=2026.01
 
 RUN git clone --branch $VER https://github.com/rakudo/rakudo
 
