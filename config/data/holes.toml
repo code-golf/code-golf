@@ -2435,8 +2435,9 @@ synopsis = 'Encode alphanumeric strings into International Morse Code.'
 ['Multitap Input']
 category = 'Transform'
 experiment = 1952
+released = 2026-02-01
 links = [
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Multi-tap' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Multi-tap' },
 ]
 data = '''
 {
@@ -2479,7 +2480,6 @@ preamble = '''
     print the equivalent text. No run of one digit will be longer than the number
     of letters on that key. Pauses may occur between any two letters, not
     just those on the same key.
-
 '''
 
 ['Musical Chords']
