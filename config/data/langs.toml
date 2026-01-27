@@ -1106,7 +1106,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '52.3 MiB'
-version = 'OpenJDK 25.0.1'
+version = 'OpenJDK 25.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 void main(String[] args) {
