@@ -2434,7 +2434,6 @@ synopsis = 'Encode alphanumeric strings into International Morse Code.'
 
 ['Multitap Input']
 category = 'Transform'
-experiment = 1952
 released = 2026-02-01
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Multi-tap' },
