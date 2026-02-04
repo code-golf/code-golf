@@ -1,15 +1,12 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ $diamondDeltas  := eq .Path "/rankings/misc/diamond-deltas" }}
 {{ $holesOfTheWeek := eq .Path "/rankings/misc/holes-of-the-week" }}
-{{ $mostTiedGolds  := eq .Path "/rankings/misc/most-tied-golds" }}
-{{ $oldestMedal    := hasPrefix .Path "/rankings/misc/oldest-" }}
 {{ $solutions      := eq .Path "/rankings/misc/solutions" }}
 
-{{ $hasGolfer    := not $mostTiedGolds }}
-{{ $hasHole      := or $diamondDeltas $mostTiedGolds $oldestMedal }}
-{{ $hasSubmitted := or $holesOfTheWeek $oldestMedal }}
+{{ $hasGolfer    := true }}
+{{ $hasHole      := false }}
+{{ $hasSubmitted := $holesOfTheWeek }}
 
 <main id=two-pane>
     {{ template "nav" . }}
@@ -24,9 +21,7 @@
             {{ if $hasHole }}
                 <th>Hole
             {{ end }}
-            {{ if not $oldestMedal }}
                 <th class=right>Total
-            {{ end }}
             {{ if $hasSubmitted }}
                 <th class=right>Submitted
             {{ end }}
@@ -52,9 +47,7 @@
                         <span>{{ .Hole.Name }}</span>
                     </a>
             {{ end }}
-            {{ if not $oldestMedal }}
                 <td class=right>{{ comma .Count }}
-            {{ end }}
             {{ if $hasSubmitted }}
                 <td class=right>{{ time (.Submitted.In $.Location) }}
             {{ end }}

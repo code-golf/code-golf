@@ -82,14 +82,21 @@ func initNav() {
 			},
 		},
 
+		"rankings/history": {
+			Path: "/rankings/history/{type}/{hole}/{lang}/{scoring}",
+			Groups: []*LinkGroup{
+				group("Scoring", "scoring", "All", "Bytes", "Chars"),
+				groupLangs(false),
+				groupHoles(false),
+				group("", "type", "💎 Diamond Deltas", "Most Tied 🥇 Golds", "Oldest 💎 Diamonds", "Oldest 🦄 Unicorns"),
+			},
+		},
+
 		"rankings/misc": {
 			OnePerRow: true,
 			Path:      "/rankings/misc/{type}",
 			Groups: []*LinkGroup{
-				group("", "type", "💎 Diamond Deltas", "Followers",
-					"Holes Authored", "Holes of the Week",
-					"Most Tied 🥇 Golds", "Oldest 💎 Diamonds",
-					"Oldest 🦄 Unicorns", "Referrals", "Solutions"),
+				group("", "type", "Followers", "Holes Authored", "Holes of the Week", "Referrals", "Solutions"),
 			},
 		},
 

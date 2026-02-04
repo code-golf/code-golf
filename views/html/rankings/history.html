@@ -1,0 +1,74 @@
+{{ template "header" . }}
+{{ template "rankings" . }}
+
+{{/* Detect which specific view we are on to toggle columns */}}
+{{ $tied := hasPrefix .Path "/rankings/history/most-tied-golds" }}
+{{ $deltas := hasPrefix .Path "/rankings/history/diamond-deltas" }}
+{{ $oldest := hasPrefix .Path "/rankings/history/oldest-" }}
+
+{{/* Most Tied Golds lists Holes, the others list Golfers */}}
+{{ $hasGolfer := not $tied }}
+
+<main id=two-pane>
+    {{ template "nav" . }}
+
+    {{/* Adjust table width classes based on columns */}}
+    <table class="nowrap-second{{ if $hasGolfer }}-third{{ end }} sticky">
+        <thead>
+            <tr>
+                <th>#
+                    {{ if $hasGolfer }}
+                <th>Golfer
+                    {{ end }}
+                <th>Hole
+                    {{ if $deltas }}
+                <th class=right>Delta
+                    {{ else if $oldest }}
+                <th class=right>Date
+                    {{ else }}
+                <th class=right>Count
+                    {{ end }}
+        <tbody>
+
+            {{/* Get current user name for highlighting */}}
+            {{ $name := "" }}
+            {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+
+            {{ range .Data.Rows }}
+            {{/*
+            Highlight row if:
+            1. It's a golfer list and names match.
+            2. It's the Tied Golds list and .Me is true (passed from SQL).
+            */}}
+            <tr {{ if or .Me (and $hasGolfer (eq $name .Name)) }} class=me {{ end }}>
+
+                {{/* Rank */}}
+                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+
+                    {{/* Golfer Column */}}
+                    {{ if $hasGolfer }}
+                <td>{{ template "golfer-link" . }}
+                    {{ end }}
+
+                    {{/* Hole / Lang / Scoring Column */}}
+                <td>
+                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ .Scoring }}">
+                        {{ svg .Lang.ID }}
+                        {{ svg .Scoring }}
+                        <span>{{ .Hole.Name }}</span>
+                    </a>
+
+                    {{/* Metric Column */}}
+                <td class=right>
+                    {{ if $oldest }}
+                    {{ time (.Submitted.In $.Location) }}
+                    {{ else }}
+                    {{ comma .Count }}
+                    {{ end }}
+                    {{ end }}
+    </table>
+
+    {{ template "pagination" .Data.Pager }}
+</main>
+
+{{ template "footer" }}
