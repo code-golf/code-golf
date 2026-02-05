@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"html/template"
 	"net/http"
 	"time"
 
@@ -41,14 +40,14 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var desc template.HTML
+	var description string
 	var sql string
-	
+
 	args := []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 
 	switch t := param(r, "type"); t {
 	case "diamond-deltas":
-		desc = "Deltas between diamonds and silvers."
+		description = "Deltas between diamonds and silvers."
 		sql = `WITH diamonds AS (
 			    SELECT *
 			      FROM rankings
@@ -78,7 +77,7 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 		}
 		args = append(args, userID) // $6
 
-		desc = "Most tied gold medals"
+		description = "Most tied gold medals"
 		sql = `SELECT hole, lang, scoring, COUNT(*) count,
 			          RANK() OVER(ORDER BY COUNT(*) DESC),
 			          COUNT(*) FILTER (WHERE user_id = $6) > 0 me,
@@ -96,9 +95,9 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 		medal := "unicorn"
 		if t == "oldest-diamonds" {
 			medal = "diamond"
-			desc = "💎 Oldest diamonds (uncontested gold medals)."
+			description = "💎 Oldest diamonds (uncontested gold medals)."
 		} else {
-			desc = "🦄 Oldest unicorns (uncontested solves)."
+			description = "🦄 Oldest unicorns (uncontested solves)."
 		}
 		args = append(args, medal) // $6
 
@@ -143,9 +142,8 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 	if data.Scoring != "all" {
 		descSuffix += " in " + data.Scoring
 	}
-	if descSuffix != "" {
-		desc = template.HTML(string(desc) + descSuffix)
-	}
 
-	render(w, r, "rankings/history", data, "Rankings: History", desc)
+	description += descSuffix
+
+	render(w, r, "rankings/history", data, "Rankings: History", description)
 }

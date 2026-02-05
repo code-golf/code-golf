@@ -1,71 +1,51 @@
-{{ template "header" . }}
+{{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{/* Detect which specific view we are on to toggle columns */}}
-{{ $tied := hasPrefix .Path "/rankings/history/most-tied-golds" }}
-{{ $deltas := hasPrefix .Path "/rankings/history/diamond-deltas" }}
-{{ $oldest := hasPrefix .Path "/rankings/history/oldest-" }}
+{{ $mostTiedGolds  := eq .Path "/rankings/misc/most-tied-golds" }}
+{{ $oldestMedal    := hasPrefix .Path "/rankings/misc/oldest-" }}
 
-{{/* Most Tied Golds lists Holes, the others list Golfers */}}
-{{ $hasGolfer := not $tied }}
+{{ $hasGolfer    := not $mostTiedGolds }}
 
 <main id=two-pane>
     {{ template "nav" . }}
 
-    {{/* Adjust table width classes based on columns */}}
-    <table class="nowrap-second{{ if $hasGolfer }}-third{{ end }} sticky">
+    <table class="nowrap-second-third sticky">
         <thead>
             <tr>
                 <th>#
-                    {{ if $hasGolfer }}
+            {{ if $hasGolfer }}
                 <th>Golfer
-                    {{ end }}
+            {{ end }}
                 <th>Hole
-                    {{ if $deltas }}
-                <th class=right>Delta
-                    {{ else if $oldest }}
-                <th class=right>Date
-                    {{ else }}
-                <th class=right>Count
-                    {{ end }}
+            {{ if not $oldestMedal }}
+                <th class=right>Total
+            {{ end }}
+            {{ if $oldestMedal }}
+                <th class=right>Submitted
+            {{ end }}
         <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
-            {{/* Get current user name for highlighting */}}
-            {{ $name := "" }}
-            {{ with .Golfer }}{{ $name = .Name }}{{ end }}
-
-            {{ range .Data.Rows }}
-            {{/*
-            Highlight row if:
-            1. It's a golfer list and names match.
-            2. It's the Tied Golds list and .Me is true (passed from SQL).
-            */}}
+        {{ range .Data.Rows }}
             <tr {{ if or .Me (and $hasGolfer (eq $name .Name)) }} class=me {{ end }}>
-
-                {{/* Rank */}}
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
-
-                    {{/* Golfer Column */}}
-                    {{ if $hasGolfer }}
+            {{ if $hasGolfer }}
                 <td>{{ template "golfer-link" . }}
-                    {{ end }}
-
-                    {{/* Hole / Lang / Scoring Column */}}
+            {{ end }}
                 <td>
                     <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ .Scoring }}">
                         {{ svg .Lang.ID }}
                         {{ svg .Scoring }}
                         <span>{{ .Hole.Name }}</span>
                     </a>
-
-                    {{/* Metric Column */}}
-                <td class=right>
-                    {{ if $oldest }}
-                    {{ time (.Submitted.In $.Location) }}
-                    {{ else }}
-                    {{ comma .Count }}
-                    {{ end }}
-                    {{ end }}
+            {{ if not $oldestMedal }}
+                <td class=right>{{ comma .Count }}
+            {{ end }}
+            {{ if $oldestMedal }}
+                <td class=right>{{ time (.Submitted.In $.Location) }}
+            {{ end }}
+        {{ end }}
     </table>
 
     {{ template "pagination" .Data.Pager }}
