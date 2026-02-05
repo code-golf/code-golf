@@ -119,6 +119,7 @@ COPY --from=codegolf/lang-rexx         / /langs/rexx/rootfs/
 COPY --from=codegolf/lang-jq           / /langs/jq/rootfs/
 COPY --from=codegolf/lang-berry        / /langs/berry/rootfs/
 COPY --from=codegolf/lang-janet        / /langs/janet/rootfs/
+COPY --from=codegolf/lang-lily         / /langs/lily/rootfs/
 COPY --from=codegolf/lang-knight       / /langs/knight/rootfs/
 COPY --from=codegolf/lang-fennel       / /langs/fennel/rootfs/
 COPY --from=codegolf/lang-fish         / /langs/fish/rootfs/

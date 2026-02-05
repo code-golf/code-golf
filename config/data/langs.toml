@@ -1234,6 +1234,29 @@ for (arg in args)
     println(arg)
 '''
 
+[Lily]
+args       = [ '/usr/bin/lily', '-s', '$code' ]
+experiment = 2577
+size       = '970 KiB'
+version    = '2.3'
+website    = 'https://lily-lang.org'
+example    = '''
+import sys
+
+# Printing
+print("Hello, World!")
+
+# Looping
+for i in 0...9: {
+    print(i)
+}
+
+# Accessing arguments
+for arg in sys.argv.slice(1): {
+    print(arg)
+}
+'''
+
 [Lua]
 args    = [ '/usr/bin/lua', '-' ]
 size    = '396 KiB'
