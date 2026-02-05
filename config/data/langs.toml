@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.40 MiB'
-version    = 'Algol 68 Genie 3.10.9'
+version    = 'Algol 68 Genie 3.10.10'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -82,8 +82,8 @@ example    = '''
 args       = [ '/usr/bin/arkscript', '-' ]
 env        = [ 'ARKSCRIPT_PATH=/usr/local/lib' ]
 experiment = 1656
-size       = '5.13 MiB'
-version    = '4.1.2'
+size       = '5.16 MiB'
+version    = '4.2.0'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
@@ -301,8 +301,8 @@ end
 [BQN]
 args       = [ '/usr/bin/bqn', '-' ]
 experiment = 474
-size       = '1.28 MiB'
-version    = 'CBQN 0.10.0'
+size       = '1.30 MiB'
+version    = 'CBQN 0.11.0'
 website    = 'https://github.com/dzaima/CBQN'
 example    = '''
 # Printing
@@ -829,7 +829,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '324 MiB'
-version = '1.25.6'
+version = '1.25.7'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1258,7 +1258,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.37 MiB'
-version    = '0.706'
+version    = '0.707'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1319,8 +1319,8 @@ Sys.argv
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '297 MiB'
-version    = '2026-01'
+size       = '299 MiB'
+version    = '2026-02'
 website    = 'https://odin-lang.org'
 example    = '''
 package main

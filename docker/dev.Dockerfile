@@ -1,4 +1,4 @@
-FROM golang:1.25.6-alpine3.23
+FROM golang:1.25.7-alpine3.23
 
 ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 
@@ -11,8 +11,8 @@ COPY --from=codegolf/lang-rust         / /langs/rust/rootfs/
 COPY --from=codegolf/lang-julia        / /langs/julia/rootfs/
 COPY --from=codegolf/lang-haskell      / /langs/haskell/rootfs/
 COPY --from=codegolf/lang-go           / /langs/go/rootfs/
-COPY --from=codegolf/lang-crystal      / /langs/crystal/rootfs/
 COPY --from=codegolf/lang-odin         / /langs/odin/rootfs/
+COPY --from=codegolf/lang-crystal      / /langs/crystal/rootfs/
 COPY --from=codegolf/lang-zig          / /langs/zig/rootfs/
 COPY --from=codegolf/lang-factor       / /langs/factor/rootfs/
 COPY --from=codegolf/lang-kotlin       / /langs/kotlin/rootfs/
@@ -82,8 +82,8 @@ COPY --from=codegolf/lang-awk          / /langs/awk/rootfs/
 COPY --from=codegolf/lang-c            / /langs/c/rootfs/
 COPY --from=codegolf/lang-algol-68     / /langs/algol-68/rootfs/
 COPY --from=codegolf/lang-bash         / /langs/bash/rootfs/
-COPY --from=codegolf/lang-sql          / /langs/sql/rootfs/
 COPY --from=codegolf/lang-bqn          / /langs/bqn/rootfs/
+COPY --from=codegolf/lang-sql          / /langs/sql/rootfs/
 COPY --from=codegolf/lang-rebol        / /langs/rebol/rootfs/
 COPY --from=codegolf/lang-umka         / /langs/umka/rootfs/
 COPY --from=codegolf/lang-rexx         / /langs/rexx/rootfs/
