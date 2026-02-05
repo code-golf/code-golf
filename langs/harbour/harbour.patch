@@ -1,0 +1,55 @@
+#==============================================================================
+# ../../../arc4.c:80:15: fatal error: sys/sysctl.h: No such file or directory
+# See: https://www.man7.org/linux/man-pages/man2/sysctl.2.html
+#      https://github.com/harbour/core/blob/cfb7bdc/src/rtl/arc4.c#L57-L58
+#==============================================================================
+--- /src/rtl/arc4.c
++++ /src/rtl/arc4.c
+@@ -47,29 +43,39 @@
+  * RC4 is a registered trademark of RSA Laboratories.
+  */
+
+-#include "arc4.h"
++#include "hbarc4.h"
+ #include "hbdate.h"
+ #include "hbthread.h"
+
+ /* XXX: Check and possibly extend this to other Unix-like platforms */
+ #if ( defined( HB_OS_BSD ) && ! defined( HB_OS_DARWIN ) ) || \
+-    ( defined( HB_OS_LINUX ) && ! defined ( HB_OS_ANDROID ) && ! defined ( __WATCOMC__ ) )
+-#  define HAVE_SYS_SYSCTL_H
++    ( defined( HB_OS_LINUX ) && \
++      ! defined( HB_OS_ANDROID ) && \
++      ! defined( __WATCOMC__ ) && \
++      ! defined( __EMSCRIPTEN__ ) )
++   /*
++    * sysctl() on Linux has fallen into depreciation. Not available in current
++    * runtime C libraries, like musl and glibc >= 2.30.
++    */
++#  if ! defined( HB_NO_SYSCTL ) && \
++      ( ! defined( HB_OS_LINUX ) || \
++        ( ( defined( __GLIBC__ ) && ! ( ( __GLIBC__ > 2 ) || ( ( __GLIBC__ == 2 ) && ( __GLIBC_MINOR__ >= 30 ) ) ) ) ) || \
++        defined( __UCLIBC__ ) )
++#     define HAVE_SYS_SYSCTL_H
++#  endif
+ #  define HAVE_DECL_CTL_KERN
+ #  define HAVE_DECL_KERN_RANDOM
+ #  if defined( HB_OS_LINUX )
+ #     define HAVE_DECL_RANDOM_UUID
+-#  else
+-#     define HAVE_DECL_KERN_ARND
+ #  endif
+ #endif
+
+ #if defined( HB_OS_WIN )
+-#  include <wincrypt.h>
+-#  include <process.h>
++#  if ! defined( __TINYC__ )
++#     include <wincrypt.h>
++#  endif
+ #elif defined( HB_OS_DOS ) || defined( HB_OS_OS2 )
+ #  include <sys/types.h>
+-#  include <process.h>
+ #else
+ #  if ! defined( __WATCOMC__ )
+ #     include <sys/param.h>
