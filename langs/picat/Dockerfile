@@ -2,7 +2,7 @@ FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl g++ make
+    apt-get install --yes curl g++ make patch
 
 ENV VER=39
 
@@ -10,12 +10,16 @@ RUN curl -# https://picat-lang.org/download/picat${VER}_src.tar.gz | tar xz
 
 WORKDIR /Picat/emu
 
+COPY picat.patch .
+
+RUN patch -p0 < picat.patch
+
 RUN make -fMakefile.linux64 -j`nproc` \
  && strip picat
 
-COPY picat.c /
+COPY picat.c .
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/picat -s /picat.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/picat -s picat.c
 
 FROM codegolf/lang-base
 
