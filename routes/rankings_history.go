@@ -10,12 +10,13 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GET /rankings/history/{type}/{hole}/{lang}/{scoring}
+// GET /rankings/history/{hole}/{lang}/{scoring}/{type}
 func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		HoleID, LangID, Scoring string
-		Pager                   *pager.Pager
-		Rows                    []struct {
+		Hole, PrevHole, NextHole *config.Hole
+		HoleID, LangID, Scoring  string
+		Pager                    *pager.Pager
+		Rows                     []struct {
 			golfer.GolferLink
 			Hole      *config.Hole
 			Lang      *config.Lang
@@ -40,6 +41,10 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
+	}
+
 	var description string
 	var sql string
 
@@ -47,7 +52,7 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 
 	switch t := param(r, "type"); t {
 	case "diamond-deltas":
-		description = "Deltas between diamonds and silvers."
+		description = "Deltas between diamonds and silvers"
 		sql = `WITH diamonds AS (
 			    SELECT *
 			      FROM rankings
@@ -95,9 +100,9 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 		medal := "unicorn"
 		if t == "oldest-diamonds" {
 			medal = "diamond"
-			description = "💎 Oldest diamonds (uncontested gold medals)."
+			description = "💎 Oldest diamonds (uncontested gold medals)"
 		} else {
-			description = "🦄 Oldest unicorns (uncontested solves)."
+			description = "🦄 Oldest unicorns (uncontested solves)"
 		}
 		args = append(args, medal) // $6
 
@@ -132,18 +137,15 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	descSuffix := ""
-	if hole, ok := config.HoleByID[data.HoleID]; ok {
-		descSuffix += " in " + hole.Name
+	if data.Hole != nil {
+		description += " in " + data.Hole.Name
 	}
 	if lang, ok := config.LangByID[data.LangID]; ok {
-		descSuffix += " in " + lang.Name
+		description += " in " + lang.Name
 	}
 	if data.Scoring != "all" {
-		descSuffix += " in " + data.Scoring
+		description += " in " + data.Scoring
 	}
-
-	description += descSuffix
 
 	render(w, r, "rankings/history", data, "Rankings: History", description)
 }

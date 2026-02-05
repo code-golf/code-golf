@@ -83,12 +83,12 @@ func initNav() {
 		},
 
 		"rankings/history": {
-			Path: "/rankings/history/{type}/{hole}/{lang}/{scoring}",
+			Path: "/rankings/history/{hole}/{lang}/{scoring}/{type}",
 			Groups: []*LinkGroup{
+				group("", "type", "💎 Diamond Deltas", "Most Tied 🥇 Golds", "Oldest 💎 Diamonds", "Oldest 🦄 Unicorns"),
 				group("Scoring", "scoring", "All", "Bytes", "Chars"),
 				groupLangs(false),
 				groupHoles(false),
-				group("", "type", "💎 Diamond Deltas", "Most Tied 🥇 Golds", "Oldest 💎 Diamonds", "Oldest 🦄 Unicorns"),
 			},
 		},
 

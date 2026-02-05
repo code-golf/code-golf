@@ -1,7 +1,7 @@
 <h1>
     <span>{{ .Title }}</span>
 
-{{ if and (or (eq .Name "rankings/holes") (eq .Name "rankings/medals")) .Data.Hole }}
+{{ if and (or (eq .Name "rankings/holes") (eq .Name "rankings/medals") (eq .Name "rankings/history")) .Data.Hole }}
     <nav>
         <a class="btn orange"
             href="/{{ .Name }}/{{ .Data.PrevHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
@@ -45,7 +45,7 @@
         Medals
     </a>
     <a {{ if hasPrefix .Path "/rankings/history/" }} class=on {{ end }}
-        href=/rankings/history/diamond-deltas/all/all/all>
+        href=/rankings/history/all/all/all/diamond-deltas>
         History
     </a>
     <a {{ if hasPrefix .Path "/rankings/misc/" }} class=on {{ end }}
