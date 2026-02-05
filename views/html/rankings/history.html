@@ -1,15 +1,18 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ $mostTiedGolds  := eq .Path "/rankings/misc/most-tied-golds" }}
-{{ $oldestMedal    := hasPrefix .Path "/rankings/misc/oldest-" }}
+{{ $mostTiedGolds  := hasSuffix .Path "/most-tied-golds" }}
+{{ $oldestDiamonds := hasSuffix .Path "/oldest-diamonds" }}
+{{ $oldestUnicorns := hasSuffix .Path "/oldest-unicorns" }}
+
+{{ $oldest         := or $oldestDiamonds $oldestUnicorns }}
 
 {{ $hasGolfer    := not $mostTiedGolds }}
 
 <main id=two-pane>
     {{ template "nav" . }}
 
-    <table class="nowrap-second-third sticky">
+    <table class="nowrap-second sticky">
         <thead>
             <tr>
                 <th>#
@@ -17,10 +20,10 @@
                 <th>Golfer
             {{ end }}
                 <th>Hole
-            {{ if not $oldestMedal }}
+            {{ if not $oldest }}
                 <th class=right>Total
             {{ end }}
-            {{ if $oldestMedal }}
+            {{ if $oldest }}
                 <th class=right>Submitted
             {{ end }}
         <tbody>
@@ -39,10 +42,10 @@
                         {{ svg .Scoring }}
                         <span>{{ .Hole.Name }}</span>
                     </a>
-            {{ if not $oldestMedal }}
+            {{ if not $oldest }}
                 <td class=right>{{ comma .Count }}
             {{ end }}
-            {{ if $oldestMedal }}
+            {{ if $oldest }}
                 <td class=right>{{ time (.Submitted.In $.Location) }}
             {{ end }}
         {{ end }}
