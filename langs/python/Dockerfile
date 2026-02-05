@@ -3,7 +3,7 @@ FROM alpine:3.23 AS builder
 RUN apk add --no-cache clang curl llvm-dev make
 
 # Also bump Coconut, Hy.
-ENV VER=3.14.2
+ENV VER=3.14.3
 
 RUN curl -#L https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz \
   | tar xJ --strip-components 1

@@ -353,6 +353,41 @@ holes       = ['zodiac-signs']
 langs       = ['awk', 'basic', 'civet', 'factor', 'ocaml', 'perl', 'prolog', 'python', 'raku', 'swift', 'wren']
 target      = 3
 
+# Holes of the Week
+
+[['Holes of the Week']]
+name        = 'Catch of the Week'
+emoji       = '🎣'
+description = 'Solve your first Hole of the Week.'
+
+[['Holes of the Week']]
+name        = 'Hold the Fort(night)'
+emoji       = '🏰'
+description = 'Solve two Holes of the Week in a row.'
+target      = 2
+
+[['Holes of the Week']]
+name        = 'Once in a Blue Moon'
+emoji       = '🌝'
+description = 'Solve four Holes of the Week in a row.'
+target      = 4
+
+[['Holes of the Week']]
+name        = 'Eight Days a Week'
+emoji       = '🪲'
+description = 'Solve eight Holes of the Week in a row.'
+target      = 8
+
+[['Holes of the Week']]
+name        = 'Early Bird Catches the Worm'
+emoji       = '🪱'
+description = 'Solve any Hole of the Week within the first day.'
+
+[['Holes of the Week']]
+name        = 'Out of Spec'
+emoji       = '📜'
+description = 'Solve any Hole of the Week using a language that wasn’t selected.'
+
 # Miscellaneous
 
 [[Miscellaneous]]
@@ -380,6 +415,11 @@ description = 'Solve any hole using different bytes and chars solutions.'
 name        = 'Double-slit Experiment'
 emoji       = '🔦'
 description = 'Solve an <a href=/ideas>experimental hole</a> in an experimental language.'
+
+[[Miscellaneous]]
+name        = 'No Man Is an Island'
+emoji       = '🏝️'
+description = 'Follow another golfer.'
 
 [[Miscellaneous]]
 name        = 'Polyglot'

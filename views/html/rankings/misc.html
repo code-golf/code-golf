@@ -1,13 +1,15 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ $diamondDeltas := eq .Path "/rankings/misc/diamond-deltas" }}
-{{ $mostTiedGolds := eq .Path "/rankings/misc/most-tied-golds" }}
-{{ $oldestMedal   := hasPrefix .Path "/rankings/misc/oldest-" }}
-{{ $solutions     := eq .Path "/rankings/misc/solutions" }}
+{{ $diamondDeltas  := eq .Path "/rankings/misc/diamond-deltas" }}
+{{ $holesOfTheWeek := eq .Path "/rankings/misc/holes-of-the-week" }}
+{{ $mostTiedGolds  := eq .Path "/rankings/misc/most-tied-golds" }}
+{{ $oldestMedal    := hasPrefix .Path "/rankings/misc/oldest-" }}
+{{ $solutions      := eq .Path "/rankings/misc/solutions" }}
 
-{{ $hasGolfer := not $mostTiedGolds }}
-{{ $hasHole   := or $diamondDeltas $mostTiedGolds $oldestMedal }}
+{{ $hasGolfer    := not $mostTiedGolds }}
+{{ $hasHole      := or $diamondDeltas $mostTiedGolds $oldestMedal }}
+{{ $hasSubmitted := or $holesOfTheWeek $oldestMedal }}
 
 <main id=two-pane>
     {{ template "nav" . }}
@@ -22,10 +24,11 @@
             {{ if $hasHole }}
                 <th>Hole
             {{ end }}
-            {{ if $oldestMedal }}
-                <th class=right>Submitted
-            {{ else }}
+            {{ if not $oldestMedal }}
                 <th class=right>Total
+            {{ end }}
+            {{ if $hasSubmitted }}
+                <th class=right>Submitted
             {{ end }}
             {{ if $solutions }}
                 <th class=right>Bytes
@@ -49,10 +52,11 @@
                         <span>{{ .Hole.Name }}</span>
                     </a>
             {{ end }}
-            {{ if $oldestMedal }}
-                <td class=right>{{ time (.Submitted.In $.Location) }}
-            {{ else }}
+            {{ if not $oldestMedal }}
                 <td class=right>{{ comma .Count }}
+            {{ end }}
+            {{ if $hasSubmitted }}
+                <td class=right>{{ time (.Submitted.In $.Location) }}
             {{ end }}
             {{ if $solutions }}
                 <td class=right>{{ comma .Bytes }}

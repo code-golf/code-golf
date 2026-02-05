@@ -20,6 +20,7 @@
 #define __NR_open_tree_attr 467
 #define __NR_file_getattr   468
 #define __NR_file_setattr   469
+#define __NR_listns         470
 
 #define NOBODY 65534
 
@@ -374,7 +375,8 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(setuid),    // 105
 
         // Namespaces
-        // ALLOW(setns), // 308
+        // ALLOW(setns),  // 308
+        // ALLOW(listns), // 470
 
         // Resource Limits
         ALLOW(getrlimit), // 97

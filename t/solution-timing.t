@@ -14,7 +14,6 @@ is save-solution(:code<qwerty>, :time(101)), 101,
 is save-solution(:code<cool>, :time(789)), 789,
     'Slower shorter solution did update runtime';
 
-todo 'FIXME';
 is save-solution(:code<bean>, :time(999)), 999,
     "Slower same length solution did update runtime";
 

@@ -39,17 +39,43 @@ $client.get: 'https://app/about',
 is $dbh.execute('SELECT ARRAY(SELECT cheevo FROM cheevos)').row, '{rtfm}',
     'GET /about earns {rtfm}';
 
+new-golfer :$dbh :id(2) :name<Alice>;
+
+$client.post: 'https://app/golfers/Alice/follow',
+    headers => { cookie => "__Host-session=$session" };
+
+is $dbh.execute('SELECT ARRAY(SELECT cheevo FROM cheevos)').row,
+    '{rtfm,no-man-is-an-island}',
+    'POST /golfers/Alice/follow earns {no-man-is-an-island}';
+
+# Fix the hole/langs of the week to ensure we trigger it.
+$dbh.execute: ｢UPDATE weekly_holes SET hole = 'isbn', langs = '{c,j,k}'｣;
+
+is $dbh.execute('SELECT user_id FROM weekly_solves').allrows.flat, [],
+    'weekly_solves starts empty';
+
 for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
     my $cheevos = %holes{ my $i = ++$ } // '{}';
 
     # Add hole-specific cheevos to the start.
-    $cheevos.=subst: '{', '{smörgåsbord,'     if $_ eq 'catalans-constant';
-    $cheevos.=subst: '{', '{interview-ready,' if $_ eq 'fizz-buzz';
-    $cheevos.=subst: '{', '{solve-quine,'     if $_ eq 'quine';
+    $cheevos.=subst: '{', '{smörgåsbord,'       if $_ eq 'catalans-constant';
+    $cheevos.=subst: '{', '{interview-ready,'   if $_ eq 'fizz-buzz';
+    $cheevos.=subst: '{', '{catch-of-the-week,' if $_ eq 'isbn';
+    $cheevos.=subst: '{', '{solve-quine,'       if $_ eq 'quine';
     $cheevos.=subst: ',}', '}';
+
+    # TODO Add proper datetime mocking/injection so we can test this logic.
+    $cheevos.=subst: '}', ',early-bird-catches-the-worm}'
+        if $_ eq 'isbn' && DateTime.now.day-of-week == 1;
 
     is save-solution(:hole($_) :lang<c>), $cheevos, "$_/c earns $cheevos";
 }
+
+is $dbh.execute('SELECT user_id FROM weekly_solves').allrows.flat, [1],
+    'weekly_solves now contains us';
+
+is save-solution(:hole<isbn> :lang<perl>), '{out-of-spec}',
+    'isbn/perl earns {out-of-spec}';
 
 for Q:ww<
     {alchemist} game-of-life elixir

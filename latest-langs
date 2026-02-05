@@ -71,6 +71,7 @@ constant %paths = (
     'K'            => 'codeberg.org/ngn/k',
     'Knight'       => 'github.com/synt7x/knightjit',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
+    'Lily'         => 'gitlab.com/FascinatedBox/lily/-/tags',
     'Lua'          => 'github.com/lua/lua/releases/latest',
     'Luau'         => 'github.com/luau-lang/luau/releases/latest',
     'Nim'          => 'en.wikipedia.org/wiki/Nim_(programming_language)',
@@ -99,7 +100,7 @@ constant %paths = (
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
     'Swift'        => 'github.com/swiftlang/swift/releases/latest',
-    'Tcl'          => 'en.wikipedia.org/wiki/Tcl',
+    'Tcl'          => 'en.wikipedia.org/wiki/Tcl_(programming_language)',
     'TeX'          => 'en.wikipedia.org/wiki/TeX',
     'Uiua'         => 'api.github.com/repos/uiua-lang/uiua/tags',
     'Umka'         => 'github.com/vtereshkov/umka-lang/releases/latest',
@@ -135,6 +136,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'gentoo.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'git.sr.ht'         / { $res ~~ / 'refs/' <(<ver>)> / }
         when / 'githubusercontent' / { $res ~~ / <(<ver>)> / }
+        when / 'gitlab.com'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'gnome.org'         / { $res ~~ / 'Release ' <(<ver>)> / }
         when / 'golfscript.com'    / { $res ~~ / 'iogii-' <(<ver>)> / }
         when / 'jmvdveer'          / { $res ~~ / 'algol68g-' <(<ver>)> / }

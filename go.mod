@@ -7,12 +7,12 @@ require (
 	github.com/agnivade/levenshtein v1.2.1
 	github.com/buildkite/terminal-to-html/v3 v3.16.8
 	github.com/bwmarrin/discordgo v0.29.0
-	github.com/go-chi/chi/v5 v5.2.4
+	github.com/go-chi/chi/v5 v5.2.5
 	github.com/go-git/go-billy/v5 v5.7.0
 	github.com/go-git/go-git/v5 v5.16.4
 	github.com/gorilla/feeds v1.2.0
 	github.com/jmoiron/sqlx v1.4.0
-	github.com/lib/pq v1.10.9
+	github.com/lib/pq v1.11.1
 	github.com/mileusna/useragent v1.3.5
 	github.com/oddg/hungarian-algorithm v0.0.0-20170809162819-9567cbc363de
 	github.com/pelletier/go-toml/v2 v2.2.4
@@ -28,7 +28,7 @@ require (
 	dario.cat/mergo v1.0.2 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/ProtonMail/go-crypto v1.3.0 // indirect
-	github.com/cloudflare/circl v1.6.2 // indirect
+	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/cyphar/filepath-securejoin v0.6.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect

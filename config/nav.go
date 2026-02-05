@@ -87,9 +87,9 @@ func initNav() {
 			Path:      "/rankings/misc/{type}",
 			Groups: []*LinkGroup{
 				group("", "type", "💎 Diamond Deltas", "Followers",
-					"Holes Authored", "Most Tied 🥇 Golds",
-					"Oldest 💎 Diamonds", "Oldest 🦄 Unicorns", "Referrals",
-					"Solutions"),
+					"Holes Authored", "Holes of the Week",
+					"Most Tied 🥇 Golds", "Oldest 💎 Diamonds",
+					"Oldest 🦄 Unicorns", "Referrals", "Solutions"),
 			},
 		},
 

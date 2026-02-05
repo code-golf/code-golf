@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache clang curl dash llvm-dev make
 
-ENV CPPFLAGS='-march=x86-64-v3' VER=2026-01
+ENV CPPFLAGS='-march=x86-64-v3' VER=2026-02
 
 RUN curl -#L https://github.com/odin-lang/Odin/archive/refs/tags/dev-$VER.tar.gz \
   | tar xz --directory /usr/local/lib --strip-components 1

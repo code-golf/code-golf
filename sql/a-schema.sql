@@ -4,21 +4,24 @@ CREATE TYPE cheevo AS ENUM (
     '0xdead', 'aged-like-fine-wine', 'alchemist', 'alphabet-soup',
     'archivist', 'assembly-required', 'bakers-dozen', 'big-brother',
     'biohazard', 'bird-is-the-word', 'black-box-testing', 'blackjack',
-    'bullseye', 'busy-beaver', 'caffeinated', 'centenarian', 'cobowl',
-    'count-to-ten', 'cunning-linguist', 'dammit-janet', 'different-strokes',
-    'disappearing-act', 'dont-panic', 'double-slit-experiment',
-    'down-to-the-metal', 'elephpant-in-the-room', 'emergency-room',
-    'evil-scheme', 'fish-n-chips', 'five', 'flag-those-mines', 'fore',
-    'forty-winks', 'full-stack-dev', 'go-forth', 'going-postal',
-    'gone-in-60-holes', 'happy-birthday-code-golf', 'happy-go-lucky',
-    'hello-world', 'hextreme-agony', 'horse-of-a-different-color',
+    'bullseye', 'busy-beaver', 'caffeinated', 'catch-of-the-week',
+    'centenarian', 'cobowl', 'count-to-ten', 'cunning-linguist',
+    'dammit-janet', 'different-strokes', 'disappearing-act', 'dont-panic',
+    'double-slit-experiment', 'down-to-the-metal',
+    'early-bird-catches-the-worm', 'eight-days-a-week',
+    'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
+    'five', 'flag-those-mines', 'fore', 'forty-winks', 'full-stack-dev',
+    'go-forth', 'going-postal', 'gone-in-60-holes',
+    'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
+    'hextreme-agony', 'hold-the-fortnight', 'horse-of-a-different-color',
     'how-about-second-pi', 'hugs-and-kisses', 'inception', 'independence-day',
     'interview-ready', 'into-space', 'its-over-9000', 'jeweler',
     'just-kidding', 'like-comment-subscribe', 'marathon-runner',
     'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'neunundneunzig-luftballons',
-    'never-eat-shredded-wheat', 'off-the-grid', 'omniglot', 'omniglutton',
-    'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
+    'never-eat-shredded-wheat', 'no-man-is-an-island', 'off-the-grid',
+    'omniglot', 'omniglutton', 'once-in-a-blue-moon', 'ouroboros',
+    'out-of-spec', 'overflowing', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
     'prime-time', 'real-programmers', 'right-on', 'ring-toss', 'rm-rf',
     'rtfm', 'rule-34', 's-box-360', 'simon-sed', 'sinosphere', 'slowcoach',
@@ -93,11 +96,11 @@ CREATE TYPE lang AS ENUM (
     'f-sharp', 'factor', 'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go',
     'golfscript', 'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony',
     'hush', 'hy', 'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia',
-    'k', 'knight', 'kotlin', 'lua', 'luau', 'nim', 'ocaml', 'odin', 'pascal',
-    'perl', 'php', 'picat', 'powershell', 'prolog', 'python', 'qore', 'r',
-    'racket', 'raku', 'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala',
-    'scheme', 'sed', 'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua',
-    'umka', 'v', 'vala', 'viml', 'vyxal', 'wren', 'zig'
+    'k', 'knight', 'kotlin', 'lily', 'lua', 'luau', 'nim', 'ocaml', 'odin',
+    'pascal', 'perl', 'php', 'picat', 'powershell', 'prolog', 'python',
+    'qore', 'r', 'racket', 'raku', 'rebol', 'rexx', 'rockstar', 'ruby',
+    'rust', 'scala', 'scheme', 'sed', 'sql', 'squirrel', 'stax', 'swift',
+    'tcl', 'tex', 'uiua', 'umka', 'v', 'vala', 'viml', 'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -260,6 +263,23 @@ CREATE TABLE solutions_log (
     scoring   scoring   NOT NULL
 );
 
+CREATE FUNCTION this_week() RETURNS date AS $$
+    SELECT date_trunc('week', TIMEZONE('UTC', NOW()))::date
+$$ LANGUAGE SQL;
+
+CREATE TABLE weekly_holes (
+    week  date   NOT NULL PRIMARY KEY,
+    hole  hole   NOT NULL,
+    langs lang[] NOT NULL
+);
+
+CREATE TABLE weekly_solves (
+    week      date      NOT NULL REFERENCES weekly_holes(week) DEFAULT this_week(),
+    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    completed timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    PRIMARY KEY (week, user_id)
+);
+
 CREATE UNLOGGED TABLE wiki (
     slug    text   NOT NULL PRIMARY KEY,
     section text,
@@ -400,4 +420,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
+GRANT SELECT, INSERT                 ON TABLE weekly_holes    TO "code-golf";
+GRANT SELECT, INSERT                 ON TABLE weekly_solves   TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";

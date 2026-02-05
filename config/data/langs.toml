@@ -43,7 +43,7 @@ x is a no-op.
 args       = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
 experiment = 856
 size       = '1.40 MiB'
-version    = 'Algol 68 Genie 3.10.9'
+version    = 'Algol 68 Genie 3.10.10'
 website    = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example    = '''
 # Printing #
@@ -82,8 +82,8 @@ example    = '''
 args       = [ '/usr/bin/arkscript', '-' ]
 env        = [ 'ARKSCRIPT_PATH=/usr/local/lib' ]
 experiment = 1656
-size       = '5.13 MiB'
-version    = '4.1.2'
+size       = '5.16 MiB'
+version    = '4.2.0'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
@@ -123,7 +123,7 @@ loop arg [a] [
 [Assembly]
 args     = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
 assembly = true
-size     = '114 MiB'
+size     = '116 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
 example  = '''
@@ -301,8 +301,8 @@ end
 [BQN]
 args       = [ '/usr/bin/bqn', '-' ]
 experiment = 474
-size       = '1.28 MiB'
-version    = 'CBQN 0.10.0'
+size       = '1.30 MiB'
+version    = 'CBQN 0.11.0'
 website    = 'https://github.com/dzaima/CBQN'
 example    = '''
 # Printing
@@ -419,7 +419,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '78.9 MiB'
-version = '0.11.1'
+version = '0.11.2'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -506,7 +506,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '80.0 MiB'
+size    = '78.8 MiB'
 version = '3.2.0'
 website = 'https://coconut-lang.org'
 example = '''
@@ -569,7 +569,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '298 MiB'
-version = '1.19.0'
+version = '1.19.1'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -802,7 +802,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '70.7 MiB'
+size    = '70.4 MiB'
 version = '1.14.0'
 website = 'https://gleam.run'
 example = '''
@@ -829,7 +829,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '324 MiB'
-version = '1.25.6'
+version = '1.25.7'
 website = 'https://go.dev'
 example = '''
 package main
@@ -877,7 +877,7 @@ args     = [ '/usr/bin/groovy', '-e', '$code' ]
 env      = [ 'JAVA_HOME=/opt/java' ]
 released = 2025-08-29
 size     = '71.9 MiB'
-version  = '5.0.3'
+version  = '5.0.4'
 website  = 'https://groovy-lang.org'
 example  = '''
 // Printing
@@ -1014,7 +1014,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.26 MiB'
+size       = '2.20 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1106,7 +1106,7 @@ example = '''
 [Java]
 args    = [ '/usr/bin/java', '-' ]
 size    = '52.3 MiB'
-version = 'OpenJDK 25.0.1'
+version = 'OpenJDK 25.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 void main(String[] args) {
@@ -1219,7 +1219,7 @@ example    = '''
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '137 MiB'
-version = '2.3.0'
+version = '2.3.10'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1232,6 +1232,29 @@ for (i in 0..9)
 // Accessing arguments
 for (arg in args)
     println(arg)
+'''
+
+[Lily]
+args       = [ '/usr/bin/lily', '-s', '$code' ]
+experiment = 2577
+size       = '970 KiB'
+version    = '2.3'
+website    = 'https://lily-lang.org'
+example    = '''
+import sys
+
+# Printing
+print("Hello, World!")
+
+# Looping
+for i in 0...9: {
+    print(i)
+}
+
+# Accessing arguments
+for arg in sys.argv.slice(1): {
+    print(arg)
+}
 '''
 
 [Lua]
@@ -1257,8 +1280,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.21 MiB'
-version    = '0.704'
+size       = '5.37 MiB'
+version    = '0.707'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1319,8 +1342,8 @@ Sys.argv
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '297 MiB'
-version    = '2026-01'
+size       = '299 MiB'
+version    = '2026-02'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1387,7 +1410,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.1'
+version = '8.5.2'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1478,7 +1501,7 @@ example = '''
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
 size    = '30.5 MiB'
-version = '3.14.2'
+version = '3.14.3'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1557,7 +1580,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '76.5 MiB'
-version   = 'Raku 6.d on Rakudo 2025.12'
+version   = 'Raku 6.d on Rakudo 2026.01'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1655,8 +1678,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '407 MiB'
-version = '1.92.0'
+size    = '405 MiB'
+version = '1.93.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1868,8 +1891,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '19.0 MiB'
-version    = '0.17.3'
+size       = '29.4 MiB'
+version    = '0.18.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing

@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache clang curl llvm-dev make openssl-dev
 
-ENV PYVER=3.14.2 VER=3.2.0
+ENV PYVER=3.14.3 VER=3.2.0
 
 RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
   | tar xJ --strip-components 1

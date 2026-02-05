@@ -157,13 +157,22 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 		})
 	}
 
-	// Latest lang (if unsolved).
-	if lang := config.LatestLang; !golfer.SolvedLatestLang {
+	// Latest lang (if unsolved and still fresh).
+	if lang := config.LatestLang; !golfer.SolvedLatestLang && lang.Fresh() {
 		banners = append(banners, banner{
 			HideKey: "latest-lang-" + lang.ID,
 			Type:    "info",
 			Body: template.HTML(lang.Name +
 				" is now live! Why not try and solve a hole in it?"),
+		})
+	}
+
+	// Hole of the Week.
+	if html, week := config.HoleOfTheWeek(); html != "" && !golfer.SolvedHoleOfTheWeek {
+		banners = append(banners, banner{
+			HideKey: "hole-of-the-week-" + week.Format(time.DateOnly),
+			Type:    "info",
+			Body:    html,
 		})
 	}
 

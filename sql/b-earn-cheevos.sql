@@ -248,6 +248,48 @@ BEGIN
     IF hole = 'zodiac-signs' AND found THEN
         earned := earn(earned, 'zoodiac-signs', user_id); END IF;
 
+    -----------------------
+    -- Holes of the Week --
+    -----------------------
+
+    IF (SELECT w.hole = hole FROM weekly_holes w WHERE week = this_week())
+    THEN
+        IF (SELECT lang = ANY(w.langs) FROM weekly_holes w WHERE week = this_week())
+        THEN
+            INSERT INTO weekly_solves (user_id) VALUES (user_id)
+                ON CONFLICT DO NOTHING;
+
+            -- 🎣 Catch of the Week.
+            earned := earn(earned, 'catch-of-the-week', user_id);
+
+            -- 🏰 Hold the Fort(night)
+            IF 2 = (SELECT COUNT(*) FROM weekly_solves w
+                WHERE w.user_id = user_id AND week >= this_week() - 7) THEN
+                earned := earn(earned, 'hold-the-fortnight', user_id);
+            END IF;
+
+            -- 🌝 Once in a Blue Moon
+            IF 4 = (SELECT COUNT(*) FROM weekly_solves w
+                WHERE w.user_id = user_id AND week >= this_week() - 3 * 7) THEN
+                earned := earn(earned, 'once-in-a-blue-moon', user_id);
+            END IF;
+
+            -- 🪲 Eight Days a Week
+            IF 8 = (SELECT COUNT(*) FROM weekly_solves w
+                WHERE w.user_id = user_id AND week >= this_week() - 7 * 7) THEN
+                earned := earn(earned, 'eight-days-a-week', user_id);
+            END IF;
+
+            -- 🪱 Early Bird Catches the Worm
+            IF date_part('dow', TIMEZONE('UTC', NOW())) = 1 THEN
+                earned := earn(earned, 'early-bird-catches-the-worm', user_id);
+            END IF;
+        ELSE
+            -- 📜 Out of Spec
+            earned := earn(earned, 'out-of-spec', user_id);
+        END IF;
+    END IF;
+
     -------------------
     -- Miscellaneous --
     -------------------

@@ -91,7 +91,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id, hole, lang
 		) SELECT cheevo, date, avatar_url, name, hole, lang
 		    FROM data JOIN golfers_with_avatars ON id = user_id
-		ORDER BY date DESC, name LIMIT $4`,
+		ORDER BY date DESC, name, cheevo LIMIT $4`,
 		followedGolfersInFeed,
 		golferInfo.ID,
 		golferInfo.FollowLimit(),
