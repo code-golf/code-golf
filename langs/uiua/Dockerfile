@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl
 
-ENV CRT='x86_64-unknown-linux-musl' VER=0.17.3
+ENV CRT='x86_64-unknown-linux-musl' VER=0.18.0
 
 RUN curl -#L https://github.com/uiua-lang/uiua/archive/refs/tags/$VER.tar.gz \
   | tar xz --strip-components 1

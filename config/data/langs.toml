@@ -1219,7 +1219,7 @@ example    = '''
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '137 MiB'
-version = '2.3.0'
+version = '2.3.10'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1891,8 +1891,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '18.5 MiB'
-version    = '0.17.3'
+size       = '29.4 MiB'
+version    = '0.18.0'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
