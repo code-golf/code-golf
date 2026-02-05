@@ -15,6 +15,7 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Hole, PrevHole, NextHole *config.Hole
 		HoleID, LangID, Scoring  string
+		Type                     string
 		Pager                    *pager.Pager
 		Rows                     []struct {
 			golfer.GolferLink
@@ -32,6 +33,7 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 		LangID:  param(r, "lang"),
 		Pager:   pager.New(r),
 		Scoring: param(r, "scoring"),
+		Type:    param(r, "type"),
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -50,7 +52,7 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 
 	args := []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 
-	switch t := param(r, "type"); t {
+	switch data.Type {
 	case "diamond-deltas":
 		description = "Deltas between diamonds and silvers"
 		sql = `WITH diamonds AS (
@@ -98,7 +100,7 @@ func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 
 	case "oldest-diamonds", "oldest-unicorns":
 		medal := "unicorn"
-		if t == "oldest-diamonds" {
+		if data.Type == "oldest-diamonds" {
 			medal = "diamond"
 			description = "💎 Oldest diamonds (uncontested gold medals)"
 		} else {
