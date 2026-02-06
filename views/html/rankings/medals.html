@@ -1,7 +1,6 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{/* Determine which view we are in */}}
 {{ $overall        := hasPrefix .Path "/rankings/medals/overall" }}
 {{ $mostTiedGolds  := hasPrefix .Path "/rankings/medals/most-tied-golds" }}
 {{ $oldestDiamonds := hasPrefix .Path "/rankings/medals/oldest-diamonds" }}
