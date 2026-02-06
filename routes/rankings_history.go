@@ -10,7 +10,7 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-// GET /rankings/history/{hole}/{lang}/{scoring}/{type}
+// GET /rankings/history/{type}/{hole}/{lang}/{scoring}
 func rankingsHistoryGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Hole, PrevHole, NextHole *config.Hole

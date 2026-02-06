@@ -6,7 +6,7 @@
 {{ if and (or (eq .Name "rankings/holes") (eq .Name "rankings/medals") $history) .Data.Hole }}
     <nav>
         <a class="btn orange"
-            href="/{{ .Name }}/{{ .Data.PrevHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}{{ if $history }}/{{ .Data.Type }}{{ end }}"
+            href="/{{ .Name }}{{ if $history }}/{{ .Data.Type }}{{ end }}/{{ .Data.PrevHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
            title="{{ .Data.PrevHole.Name }}">
             {{ svg "chevron-double-left-light" }} Prev Hole
         </a>
@@ -15,7 +15,7 @@
             {{ svg "play" }} Play Hole
         </a>
         <a class="btn orange"
-            href="/{{ .Name }}/{{ .Data.NextHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}{{ if $history }}/{{ .Data.Type }}{{ end }}"
+            href="/{{ .Name }}{{ if $history }}/{{ .Data.Type }}{{ end }}/{{ .Data.NextHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
            title="{{ .Data.NextHole.Name }}">
             {{ svg "chevron-double-right-light" }} Next Hole
         </a>
@@ -47,8 +47,8 @@
         Medals
     </a>
     <a {{ if hasPrefix .Path "/rankings/history/" }} class=on {{ end }}
-        href=/rankings/history/all/all/all/diamond-deltas>
-        Hist<span class=wide>ory</span>
+        href=/rankings/history/diamond-deltas/all/all/all>
+        History
     </a>
     <a {{ if hasPrefix .Path "/rankings/misc/" }} class=on {{ end }}
         href=/rankings/misc/followers>
