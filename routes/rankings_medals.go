@@ -77,7 +77,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		    JOIN golfers_with_avatars ON id = user_id
 		ORDER BY rank, name
 		   LIMIT $4 OFFSET $5`
-		   
+
 	case "diamond-deltas":
 		description = "Deltas between diamonds and silvers"
 		sql = `WITH diamonds AS (
