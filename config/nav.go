@@ -74,8 +74,9 @@ func initNav() {
 		},
 
 		"rankings/medals": {
-			Path: "/rankings/medals/{hole}/{lang}/{scoring}",
+			Path: "/rankings/medals/{type}/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
+				group("", "type", "Overall", "💎 Diamond Deltas", "Most Tied 🥇 Golds", "Oldest 💎 Diamonds", "Oldest 🦄 Unicorns"),
 				group("Scoring", "scoring", "All", "Bytes", "Chars"),
 				groupLangs(false),
 				groupHoles(false),
