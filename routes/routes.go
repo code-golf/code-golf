@@ -62,7 +62,6 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/rankings/langs/{lang}/{scoring}", rankingsLangsGET)
 		r.Get("/rankings/medals/{type}/{hole}/{lang}/{scoring}", rankingsMedalsGET)
 		r.Get("/rankings/misc/{type}", rankingsMiscGET)
-		r.Get("/rankings/history/{type}/{hole}/{lang}/{scoring}", rankingsHistoryGET)
 		r.Get("/recent/{lang}", recentGET)
 		r.Get("/recent/cheevos/{cheevo}", recentCheevosGET)
 		r.Get("/recent/golfers", recentGolfersGET)

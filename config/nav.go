@@ -83,16 +83,6 @@ func initNav() {
 			},
 		},
 
-		"rankings/history": {
-			Path: "/rankings/history/{type}/{hole}/{lang}/{scoring}",
-			Groups: []*LinkGroup{
-				group("", "type", "💎 Diamond Deltas", "Most Tied 🥇 Golds", "Oldest 💎 Diamonds", "Oldest 🦄 Unicorns"),
-				group("Scoring", "scoring", "All", "Bytes", "Chars"),
-				groupLangs(false),
-				groupHoles(false),
-			},
-		},
-
 		"rankings/misc": {
 			OnePerRow: true,
 			Path:      "/rankings/misc/{type}",
