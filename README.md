@@ -147,7 +147,7 @@ URL slugs are consistently abbreviated (e.g. cheevos, langs, stats) but page
 titles aren't (e.g. Achievements, Languages, Statistics).
 
 Paginated URLs use a trailing number but only on pages after the first (e.g.
-/rankings/medals/all, /rankings/medals/all/2, etc.).
+/rankings/medals/overall/all/all/all, /rankings/medals/overall/all/all/all/2, etc.).
 
 ## arm64/aarch64 Architecture (Ex: Apple Silicon)
 

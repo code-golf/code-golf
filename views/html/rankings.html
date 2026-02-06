@@ -1,10 +1,12 @@
 <h1>
     <span>{{ .Title }}</span>
 
-{{ if and (or (eq .Name "rankings/holes") (eq .Name "rankings/medals")) .Data.Hole }}
+{{ $medals := eq .Name "rankings/medals" }}
+
+{{ if and (or (eq .Name "rankings/holes") $medals) .Data.Hole }}
     <nav>
         <a class="btn orange"
-            href="/{{ .Name }}/{{ .Data.PrevHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
+            href="/{{ .Name }}{{ if $medals }}/{{ .Data.Type }}{{ end }}/{{ .Data.PrevHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
            title="{{ .Data.PrevHole.Name }}">
             {{ svg "chevron-double-left-light" }} Prev Hole
         </a>
@@ -13,7 +15,7 @@
             {{ svg "play" }} Play Hole
         </a>
         <a class="btn orange"
-            href="/{{ .Name }}/{{ .Data.NextHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
+            href="/{{ .Name }}{{ if $medals }}/{{ .Data.Type }}{{ end }}/{{ .Data.NextHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"
            title="{{ .Data.NextHole.Name }}">
             {{ svg "chevron-double-right-light" }} Next Hole
         </a>
@@ -41,12 +43,12 @@
     </a>
 
     <a {{ if hasPrefix .Path "/rankings/medals/" }} class=on {{ end }}
-        href=/rankings/medals/all/all/all>
+        href=/rankings/medals/overall/all/all/all>
         Medals
     </a>
 
     <a {{ if hasPrefix .Path "/rankings/misc/" }} class=on {{ end }}
-        href=/rankings/misc/diamond-deltas>
+        href=/rankings/misc/followers>
         Misc<span class=wide>ellaneous</span>
     </a>
 </nav>

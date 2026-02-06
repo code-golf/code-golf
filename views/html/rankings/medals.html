@@ -1,6 +1,14 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
+{{ $overall        := hasPrefix .Path "/rankings/medals/overall" }}
+{{ $mostTiedGolds  := hasPrefix .Path "/rankings/medals/most-tied-golds" }}
+{{ $oldestDiamonds := hasPrefix .Path "/rankings/medals/oldest-diamonds" }}
+{{ $oldestUnicorns := hasPrefix .Path "/rankings/medals/oldest-unicorns" }}
+
+{{ $oldest         := or $oldestDiamonds $oldestUnicorns }}
+{{ $hasGolfer      := not $mostTiedGolds }}
+
 <main id=two-pane>
     {{ template "nav" . }}
 
@@ -8,25 +16,56 @@
         <thead>
             <tr>
                 <th>#
+            {{ if $hasGolfer }}
                 <th>Golfer
+            {{ end }}
+            {{ if $overall }}
+                {{/* Overall / Medal Table Headers */}}
                 <th class="right wide" title="Unicorns (uncontested solves)">🦄
                 <th class="right wide" title="Diamonds (uncontested gold medals)">💎
                 <th class=right        title="Gold medals">🥇
                 <th class=right        title="Silver medals">🥈
                 <th class=right        title="Bronze medals">🥉
+            {{ else }}
+                {{/* Specific Rankings Headers */}}
+                    <th>Hole
+                {{ if not $oldest }}
+                    <th class=right>Total
+                {{ end }}
+                {{ if $oldest }}
+                    <th class=right>Submitted
+                {{ end }}
+            {{ end }}
         <tbody>
         {{ $name := "" }}
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr {{ if eq $name .Name }} class=me {{ end }}>
-                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
-                <td>{{ template "golfer-link" . }}
-                <td class="right wide">{{ comma .Unicorn }}
-                <td class="right wide">{{ comma .Diamond }}
-                <td class=right       >{{ comma .Gold    }}
-                <td class=right       >{{ comma .Silver  }}
-                <td class=right       >{{ comma .Bronze  }}
+                <tr {{ if or .Me (and $hasGolfer (eq $name .Name)) }} class=me {{ end }}>
+                    <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+                {{ if $hasGolfer }}
+                    <td>{{ template "golfer-link" . }}
+                {{ end }}
+            {{ if $overall }}
+                    <td class="right wide">{{ comma .Unicorn }}
+                    <td class="right wide">{{ comma .Diamond }}
+                    <td class=right       >{{ comma .Gold    }}
+                    <td class=right       >{{ comma .Silver  }}
+                    <td class=right       >{{ comma .Bronze  }}
+            {{ else }}
+                    <td>
+                        <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ .Scoring }}">
+                            {{ svg .Lang.ID }}
+                            {{ svg .Scoring }}
+                            <span>{{ .Hole.Name }}</span>
+                        </a>
+                {{ if not $oldest }}
+                    <td class=right>{{ comma .Count }}
+                {{ end }}
+                {{ if $oldest }}
+                    <td class=right>{{ time (.Submitted.In $.Location) }}
+                {{ end }}
+            {{ end }}
         {{ end }}
     </table>
 
