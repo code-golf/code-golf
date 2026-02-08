@@ -435,6 +435,8 @@ tfoot td { border: 0 }
 thead th {
     background: var(--background);
     border-bottom-width: 2px;
+
+    &[colspan] { max-width: 0 } /* #722, #2583 Fix column widths on WebKit */
 }
 
 .alert, .info, .success {

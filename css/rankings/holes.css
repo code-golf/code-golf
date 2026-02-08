@@ -7,7 +7,6 @@
 }
 
 th:has(#chart-container) {
-    max-width: 0;  /* Issue #2583 WebKit fix */
     padding: 0;
     position: initial;
 }
