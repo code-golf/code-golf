@@ -60,17 +60,25 @@ func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		Cheevo        *config.Cheevo
 		Golfers, Rank int
 		Percent       string
+		Earned        bool
+	}
+
+	var userID int
+	if golfer := session.Golfer(r); golfer != nil {
+		userID = golfer.ID
 	}
 
 	var data []row
 	if err := session.Database(r).Select(
 		&data,
-		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
+		`SELECT RANK() OVER (ORDER BY COUNT(*) DESC)              rank,
 		         cheevo                                           cheevo,
 		         COUNT(*)                                         golfers,
-		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
+		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent,
+		         COUNT(*) FILTER (WHERE user_id = $1) > 0         earned
 		    FROM cheevos
 		GROUP BY cheevo`,
+		userID,
 	); err != nil {
 		panic(err)
 	}
