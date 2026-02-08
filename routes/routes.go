@@ -45,6 +45,8 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Get("/rankings/langs/bytes", redir("/rankings/langs/all/bytes"))
 	r.Get("/rankings/langs/chars", redir("/rankings/langs/all/chars"))
 	r.Get("/rankings/medals", redir("/rankings/medals/overall/all/all/all"))
+	r.Get("/rankings/medals/{hole}/{lang}/{scoring}",
+		redir("/rankings/medals/overall/{hole}/{lang}/{scoring}"))
 	r.Get("/rankings/misc", redir("/rankings/misc/followers"))
 	r.Get("/rankings/solutions", redir("/rankings/misc/solutions"))
 	r.Get("/recent", redir("/recent/solutions/all/all/bytes"))
