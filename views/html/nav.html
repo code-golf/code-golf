@@ -17,7 +17,7 @@
     {{ end }}
     </select>
 {{ else }}
-    {{ range $i, $group := $nav.ReverseGroups }}
+    {{ range $i, $group := $nav.GroupsInPathOrder }}
         {{ $val := param $.Request $group.Slug }}
         {{ if gt (len $group.Links) 3 }}
             <select name="{{ $group.Slug }}">
@@ -47,14 +47,15 @@
 {{ end }}
 </form>
 
-<!-- HACK wiki wants wide top links and not wide bottom links -->
+<!-- HACK wiki and medals wants wide top links and not wide bottom links -->
 {{ $wiki := eq .Name "wiki" }}
+{{ $medals := eq .Name "rankings/medals" }}
 
 <nav {{ if and $nav.OnePerRow (not $wiki) }} id=one-per-row {{ end }}>
 {{ range $nav.Groups }}
     {{ with .Name }}<h2>{{ . }}</h2>{{ end }}
 
-    {{ $hack := and $wiki (eq .Name "") }}
+    {{ $hack := and (or $wiki $medals) (eq .Name "") }}
     {{ range .Links }}
         {{ if .Heading }}
             <h2>{{ .Name }}</h2>

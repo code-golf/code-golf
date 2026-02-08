@@ -177,7 +177,6 @@ func main() {
 		if i%1000 == 0 {
 			fmt.Printf("Progress %d/%d\n", i+1, len(infoList))
 		}
-
 		if info.Submitted <= lastUpdateTime {
 			// Ignore old solutions. This is only correct when all solutions
 			// come from this script. But it's useful in that case.

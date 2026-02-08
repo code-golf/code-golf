@@ -1,33 +1,19 @@
 {{ template "header"   . }}
 {{ template "rankings" . }}
 
-{{ $diamondDeltas  := eq .Path "/rankings/misc/diamond-deltas" }}
 {{ $holesOfTheWeek := eq .Path "/rankings/misc/holes-of-the-week" }}
-{{ $mostTiedGolds  := eq .Path "/rankings/misc/most-tied-golds" }}
-{{ $oldestMedal    := hasPrefix .Path "/rankings/misc/oldest-" }}
 {{ $solutions      := eq .Path "/rankings/misc/solutions" }}
-
-{{ $hasGolfer    := not $mostTiedGolds }}
-{{ $hasHole      := or $diamondDeltas $mostTiedGolds $oldestMedal }}
-{{ $hasSubmitted := or $holesOfTheWeek $oldestMedal }}
 
 <main id=two-pane>
     {{ template "nav" . }}
 
-    <table class="nowrap-second{{ if $hasHole }}-third{{ end }} sticky">
+    <table class="nowrap-second sticky">
         <thead>
             <tr>
                 <th>#
-            {{ if $hasGolfer }}
                 <th>Golfer
-            {{ end }}
-            {{ if $hasHole }}
-                <th>Hole
-            {{ end }}
-            {{ if not $oldestMedal }}
                 <th class=right>Total
-            {{ end }}
-            {{ if $hasSubmitted }}
+            {{ if $holesOfTheWeek }}
                 <th class=right>Submitted
             {{ end }}
             {{ if $solutions }}
@@ -39,23 +25,11 @@
         {{ with .Golfer }}{{ $name = .Name }}{{ end }}
 
         {{ range .Data.Rows }}
-            <tr {{ if or .Me (and $hasGolfer (eq $name .Name)) }} class=me {{ end }}>
+            <tr {{ if or .Me (and (eq $name .Name)) }} class=me {{ end }}>
                 <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
-            {{ if $hasGolfer }}
                 <td>{{ template "golfer-link" . }}
-            {{ end }}
-            {{ if $hasHole }}
-                <td>
-                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ .Scoring }}">
-                        {{ svg .Lang.ID }}
-                        {{ svg .Scoring }}
-                        <span>{{ .Hole.Name }}</span>
-                    </a>
-            {{ end }}
-            {{ if not $oldestMedal }}
                 <td class=right>{{ comma .Count }}
-            {{ end }}
-            {{ if $hasSubmitted }}
+            {{ if $holesOfTheWeek }}
                 <td class=right>{{ time (.Submitted.In $.Location) }}
             {{ end }}
             {{ if $solutions }}
