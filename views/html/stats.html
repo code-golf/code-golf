@@ -67,7 +67,7 @@
                 <th class=right>Percent
         <tbody>
         {{ range .Data }}
-            <tr>
+            <tr {{ if .Earned }} class=me {{ end }}>
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
                     <a href="/rankings/cheevos/{{ .Cheevo.ID }}"
