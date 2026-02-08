@@ -177,8 +177,8 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.Type == "overall" {
-		description += ". Ranked by golds, then diamonds, then silvers, then bronzes."
+		description += ". Ranked by golds, then diamonds, then silvers, then bronzes"
 	}
 
-	render(w, r, "rankings/medals", data, "Rankings: Medals", description)
+	render(w, r, "rankings/medals", data, "Rankings: Medals", description+".")
 }
