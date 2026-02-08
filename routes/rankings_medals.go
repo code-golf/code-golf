@@ -55,7 +55,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	// 1. Determine SQL and base Description based on Type
 	switch data.Type {
 	case "overall":
-		description = "Medals counts"
+		description = "Overall medal counts"
 		sql = `WITH counts AS (
 		    SELECT user_id,
 		           COUNT(*) FILTER (WHERE medal = 'unicorn') unicorn,
