@@ -2,6 +2,7 @@
 {{ template "rankings" . }}
 
 {{ $overall        := hasPrefix .Path "/rankings/medals/overall" }}
+{{ $diamondDeltas  := hasPrefix .Path "/rankings/medals/diamond-deltas" }}
 {{ $mostTiedGolds  := hasPrefix .Path "/rankings/medals/most-tied-golds" }}
 {{ $oldestDiamonds := hasPrefix .Path "/rankings/medals/oldest-diamonds" }}
 {{ $oldestUnicorns := hasPrefix .Path "/rankings/medals/oldest-unicorns" }}
@@ -12,7 +13,7 @@
 <main id=two-pane>
     {{ template "nav" . }}
 
-    <table class="nowrap-second sticky">
+    <table class="nowrap-second{{ if (or $diamondDeltas $oldest) }}-third{{ end }} sticky">
         <thead>
             <tr>
                 <th>#
