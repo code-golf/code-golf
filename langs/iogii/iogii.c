@@ -1,13 +1,11 @@
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* iogii = "/usr/local/bin/iogii", *haskell = "/usr/local/bin/ghc", *code[] = {"code.iog", "code.hs"}, *input = "argv.txt";
+const char* iogii = "/usr/local/bin/iogii", *code = "code.iog";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -20,7 +18,7 @@ int main(int argc, char* argv[]) {
 
     FILE* fp;
 
-    if (!(fp = fopen(code[0], "w")))
+    if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
     char buffer[4096];
@@ -33,63 +31,14 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    pid_t pid;
-    int fd;
+    int iargc = argc + 2;
+    char** iargv = malloc(iargc * sizeof(char*));
+    iargv[0] = (char*) iogii;
+    iargv[1] = (char*) code;
+    iargv[2] = "--";
+    memcpy(&iargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    iargv[iargc - 1] = NULL;
 
-    if (!(pid = fork())) {
-        if (!dup2(fd = open(code[1], O_CREAT | O_TRUNC | O_WRONLY, 0644), STDOUT_FILENO))
-            ERR_AND_EXIT("dup2");
-
-        if (close(fd))
-            ERR_AND_EXIT("close");
-
-        execl(iogii, iogii, "-hs", code[0], NULL);
-        ERR_AND_EXIT("execl");
-    }
-
-    int status;
-
-    waitpid(pid, &status, 0);
-
-    if (!WIFEXITED(status))
-        exit(EXIT_FAILURE);
-
-    if (WEXITSTATUS(status))
-        return WEXITSTATUS(status);
-
-    if (remove(code[0]))
-        ERR_AND_EXIT("remove");
-
-    if (!(fd = open(input, O_CREAT | O_TRUNC | O_WRONLY, 0644)))
-        ERR_AND_EXIT("open");
-
-    for (int i = 2; i < argc; i++)
-        if (!write(fd, argv[i], strlen(argv[i])) || !write(fd, "\n", sizeof(char))) {
-            if (close(fd))
-                ERR_AND_EXIT("close");
-
-            ERR_AND_EXIT("write");
-        }
-
-    if (close(fd))
-        ERR_AND_EXIT("close");
-
-    if (!(pid = fork())) {
-        if (dup2(open(input, O_RDONLY), STDIN_FILENO))
-            ERR_AND_EXIT("dup2");
-
-        execl(haskell, haskell, "-fdiagnostics-color=always", "-w", "--run", code[1], NULL);
-        ERR_AND_EXIT("execl");
-    }
-
-    waitpid(pid, &status, 0);
-
-    if (!WIFEXITED(status))
-        exit(EXIT_FAILURE);
-
-    if (WEXITSTATUS(status))
-        return WEXITSTATUS(status);
-
-    if (remove(code[1]))
-        ERR_AND_EXIT("remove");
+    execv(iogii, iargv);
+    ERR_AND_EXIT("execv");
 }
