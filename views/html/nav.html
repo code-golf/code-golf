@@ -17,7 +17,7 @@
     {{ end }}
     </select>
 {{ else }}
-    {{ range $i, $group := $nav.ReverseGroups }}
+    {{ range $i, $group := $nav.GroupsInPathOrder }}
         {{ $val := param $.Request $group.Slug }}
         {{ if gt (len $group.Links) 3 }}
             <select name="{{ $group.Slug }}">

@@ -19,12 +19,14 @@ type LinkGroup struct {
 }
 
 type Navigaton struct {
-	Path      string
-	Groups    []*LinkGroup
-	OnePerRow bool
+	Path                      string
+	Groups, GroupsInPathOrder []*LinkGroup
+	OnePerRow                 bool
 }
 
 var Nav map[string]*Navigaton
+
+var pathSlug = regexp.MustCompile("{[a-z]+}")
 
 // TODO OnePerRow needs a better name because it also means a single dropdown,
 // maybe something like unified/single namespace.
@@ -130,8 +132,9 @@ func initNav() {
 		},
 	}
 
-	// Set the link Path template and pre-fill the one slug we can.
 	for _, nav := range Nav {
+
+		// Set the link Path template and pre-fill the one slug we can.
 		for _, group := range nav.Groups {
 			for _, link := range group.Links {
 				if link.Path == "" {
@@ -143,13 +146,23 @@ func initNav() {
 				}
 			}
 		}
+
+		// Groups are in desktop order, for mobile we want path order.
+		for _, s := range pathSlug.FindAllString(nav.Path, -1) {
+			slug := s[1 : len(s)-1]
+
+			for _, group := range nav.Groups {
+				if group.Slug == slug {
+					nav.GroupsInPathOrder = append(nav.GroupsInPathOrder, group)
+					break
+				}
+			}
+		}
 	}
 }
 
-var PathSlug = regexp.MustCompile("{[a-z]+}")
-
 func (l NavLink) PopulatePath(r *http.Request) string {
-	if Path := PathSlug.ReplaceAllStringFunc(l.Path, func(s string) string {
+	if Path := pathSlug.ReplaceAllStringFunc(l.Path, func(s string) string {
 		value, _ := url.QueryUnescape(r.PathValue(s[1 : len(s)-1]))
 		return value
 	}); Path != r.URL.Path {
@@ -157,17 +170,6 @@ func (l NavLink) PopulatePath(r *http.Request) string {
 	}
 
 	return ""
-}
-
-func (n *Navigaton) ReverseGroups() []*LinkGroup {
-	len := len(n.Groups)
-	groups := make([]*LinkGroup, len)
-
-	for i, group := range n.Groups {
-		groups[len-i-1] = group
-	}
-
-	return groups
 }
 
 func group(name, slug string, linkNames ...string) *LinkGroup {
