@@ -59,8 +59,8 @@ func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
 	type row struct {
 		Cheevo        *config.Cheevo
 		Golfers, Rank int
+		Me            bool
 		Percent       string
-		Earned        bool
 	}
 
 	var data []row
@@ -70,7 +70,7 @@ func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		         cheevo                                           cheevo,
 		         COUNT(*)                                         golfers,
 		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent,
-		         COUNT(*) FILTER (WHERE user_id = $1) > 0         earned
+		         COUNT(*) FILTER (WHERE user_id = $1) > 0         me
 		    FROM cheevos
 		GROUP BY cheevo`,
 		session.Golfer(r),
