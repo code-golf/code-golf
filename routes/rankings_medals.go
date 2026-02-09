@@ -104,11 +104,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 
 	case "most-tied-golds":
 		description = "Most tied gold medals"
-		var userID int
-		if golfer := session.Golfer(r); golfer != nil {
-			userID = golfer.ID
-		}
-		args = append(args, userID) // $6
+		args = append(args, session.Golfer(r)) // $6
 
 		sql = `SELECT hole, lang, scoring, COUNT(*) count,
 			          RANK() OVER(ORDER BY COUNT(*) DESC),

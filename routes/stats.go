@@ -63,11 +63,6 @@ func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		Earned        bool
 	}
 
-	var userID int
-	if golfer := session.Golfer(r); golfer != nil {
-		userID = golfer.ID
-	}
-
 	var data []row
 	if err := session.Database(r).Select(
 		&data,
@@ -78,7 +73,7 @@ func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
 		         COUNT(*) FILTER (WHERE user_id = $1) > 0         earned
 		    FROM cheevos
 		GROUP BY cheevo`,
-		userID,
+		session.Golfer(r),
 	); err != nil {
 		panic(err)
 	}
