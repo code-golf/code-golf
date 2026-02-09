@@ -163,12 +163,7 @@ func (g *Golfer) SaveSettings(db *sqlx.DB) {
 
 func (g Golfer) SponsorOrAdmin() bool { return g.Sponsor || g.Admin }
 
-func (g *Golfer) Value() (driver.Value, error) {
-	if g == nil {
-		return nil, nil
-	}
-	return int64(g.ID), nil
-}
+func (g Golfer) Value() (driver.Value, error) { return int64(g.ID), nil }
 
 func (s *Settings) Scan(v any) error { return json.Unmarshal(v.([]byte), &s) }
 
