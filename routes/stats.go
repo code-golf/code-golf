@@ -56,14 +56,13 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /stats/{page:cheevos}
 func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
+	var data []struct {
 		Cheevo        *config.Cheevo
 		Golfers, Rank int
 		Me            bool
 		Percent       string
 	}
 
-	var data []row
 	if err := session.Database(r).Select(
 		&data,
 		`SELECT RANK() OVER (ORDER BY COUNT(*) DESC)              rank,
