@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.25
+	@go mod tidy -compat=1.26
 	@npm upgrade
 
 cert:
@@ -76,7 +76,7 @@ mathjax-fonts:
 
 lint:
 	@docker run --rm -v $(CURDIR):/app -w /app -e GOEXPERIMENT=jsonv2 \
-	    golangci/golangci-lint:v2.8.0 golangci-lint run
+	    golangci/golangci-lint:v2.9.0 golangci-lint run
 
 	@node_modules/.bin/eslint js
 
