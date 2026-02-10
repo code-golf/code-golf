@@ -2,9 +2,10 @@ FROM alpine:3.22 AS builder
 
 RUN apk add --no-cache autoconf cmake curl g++ gfortran linux-headers make python3
 
-ENV CXXFLAGS='-flto' LDFLAGS='-flto' VER=1.12.4
+ENV CXXFLAGS='-flto' LDFLAGS='-flto' VER=1.12.5
 
-RUN curl -#L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz | tar xz
+RUN curl -#L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
+  | tar xz
 
 WORKDIR /julia-$VER
 
@@ -14,9 +15,9 @@ RUN strip -s /usr/bin/julia \
              /usr/lib/julia/*.so
 
 WORKDIR /usr/lib/julia
+
 # Delete unused libraries.
-RUN rm libcurl.so* \
-       libgfortran.so*
+RUN rm libcurl.so* libgfortran.so*
 
 FROM codegolf/lang-base
 

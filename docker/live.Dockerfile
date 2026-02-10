@@ -1,4 +1,4 @@
-FROM golang:1.25.7-alpine3.23
+FROM golang:1.26.0-alpine3.23
 
 ENV CGO_ENABLED=0 GOAMD64=v4 GOEXPERIMENT=jsonv2 GOPATH=
 
@@ -38,8 +38,8 @@ FROM scratch
 COPY --from=codegolf/lang-swift        / /langs/swift/rootfs/
 COPY --from=codegolf/lang-rust         / /langs/rust/rootfs/
 COPY --from=codegolf/lang-julia        / /langs/julia/rootfs/
-COPY --from=codegolf/lang-haskell      / /langs/haskell/rootfs/
 COPY --from=codegolf/lang-go           / /langs/go/rootfs/
+COPY --from=codegolf/lang-haskell      / /langs/haskell/rootfs/
 COPY --from=codegolf/lang-odin         / /langs/odin/rootfs/
 COPY --from=codegolf/lang-crystal      / /langs/crystal/rootfs/
 COPY --from=codegolf/lang-zig          / /langs/zig/rootfs/

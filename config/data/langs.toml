@@ -828,8 +828,8 @@ pub fn main() {
 [Go]
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
-size    = '324 MiB'
-version = '1.25.7'
+size    = '349 MiB'
+version = '1.26.0'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1159,8 +1159,8 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '361 MiB'
-version = '1.12.4'
+size    = '360 MiB'
+version = '1.12.5'
 website = 'https://julialang.org'
 example = '''
 # Printing
