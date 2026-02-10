@@ -92,6 +92,12 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		}
 	}
 
+	// Migrate legacy config key.
+	if _, ok := golfer.Settings["hole"]["multi-window-layout"]; ok {
+		golfer.Settings["hole"]["layout"] = "tabs"
+		delete(golfer.Settings["hole"], "multi-window-layout")
+	}
+
 	return &golfer
 }
 
