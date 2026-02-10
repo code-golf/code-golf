@@ -48,7 +48,9 @@ $ make dev
 $ go run utils/update_sql_from_api.go
 ```
 
-6. Navigate to https://localhost
+6. Optionally, you can login locally by visiting https://localhost/callback?username=foo with a custom username. Using your code.golf username can show data fetched in step 5.
+
+7. Navigate to https://localhost
 
 ## Hacking
 
