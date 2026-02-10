@@ -4,6 +4,8 @@ RUN apk add --no-cache cmake g++ git make
 
 ENV VER=4.2.0
 
+# Use git rather than curl because GitHub archives don't contain submodules
+# See https://github.com/dear-github/dear-github/issues/214
 RUN git clone --branch v$VER --recursive \
     https://github.com/ArkScript-lang/Ark
 
@@ -33,3 +35,5 @@ COPY --from=0 /usr/local/lib/Ark/std          /usr/local/lib/std
 ENV PATH=/usr/bin:$PATH
 
 ENTRYPOINT ["arkscript"]
+
+CMD ["--version"]
