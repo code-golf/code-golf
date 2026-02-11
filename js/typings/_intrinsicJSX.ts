@@ -19,6 +19,7 @@ declare global {
       button:   any;
       code:     any;
       col:      any;
+      dialog:   any;
       div:      any;
       h1:       any;
       h2:       any;

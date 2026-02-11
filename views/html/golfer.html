@@ -128,7 +128,7 @@
     </nav>
 
     {{ with .HolesAuthored }}
-        <dialog id=holes-authored-dialog>
+        <dialog closedby=any id=holes-authored-dialog>
             <div>
                 <h1>{{ amount (len .) "Hole" }} Authored</h1>
                 <ul>
@@ -146,7 +146,7 @@
     {{ end }}
 
     {{ with .Referrals }}
-        <dialog id=referrals-dialog>
+        <dialog closedby=any id=referrals-dialog>
             <div>
                 <h1>{{ amount (len .) "Referral" }}</h1>
                 <ul>

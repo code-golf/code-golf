@@ -43,10 +43,23 @@ for (const input of $$<any>('[list]')) {
     };
 }
 
-// Close dialogs when clicking outside of them.
+// Safari 26.2 doesn't support but has it on the proto, so test attr instead.
+// See https://github.com/tak-dcxi/dialog-closedby-polyfill/issues/13
+const closedByAnySupported = (() => {
+    try {
+        const dialog = <dialog closedby="any"></dialog>;
+        return dialog.closedBy === 'any';
+    } catch {
+        return false;
+    }
+})();
+
+// Polyfill closedby="any"
+// https://caniuse.com/mdn-html_elements_dialog_closedby
 // onmousedown not onclick, see https://stackoverflow.com/questions/25864259
-for (const dialog of $$<HTMLDialogElement>('dialog'))
-    dialog.onmousedown = e => e.target == dialog ? dialog.close() : null;
+if (!closedByAnySupported)
+    for (const dialog of $$<HTMLDialogElement>('dialog[closedby="any"]'))
+        dialog.onmousedown = e => e.target == dialog ? dialog.close() : null;
 
 // Polyfill command="show-modal"
 // https://caniuse.com/mdn-api_commandevent_command
