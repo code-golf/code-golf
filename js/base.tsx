@@ -49,7 +49,8 @@ const closedByAnySupported = (() => {
     try {
         const dialog = <dialog closedby="any"></dialog>;
         return dialog.closedBy === 'any';
-    } catch {
+    }
+    catch {
         return false;
     }
 })();
