@@ -93,7 +93,7 @@ func getHomeCards(r *http.Request) (cards []Card) {
 	}
 
 	switch golfer.Settings["home"]["order-by"] {
-	case "alphabetical-asc": // name desc.
+	case "alphabetical-asc": // name asc.
 		slices.SortFunc(cards, cmpHoleNameLowercase)
 	case "alphabetical-desc": // name desc.
 		slices.SortFunc(cards, func(a, b Card) int {
