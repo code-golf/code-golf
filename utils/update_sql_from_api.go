@@ -174,9 +174,12 @@ func main() {
 	updateCount := 0
 
 	for i, info := range infoList {
-		if i%1000 == 0 {
-			fmt.Printf("Progress %d/%d\n", i+1, len(infoList))
-		}
+		const width = 72
+
+		currentProgress, totalProgress := (i+1)*width/len(infoList), float64(i+1)*100/float64(len(infoList))
+
+		fmt.Printf("\r%s %6.1f%%", strings.Repeat("#", currentProgress)+strings.Repeat(" ", width-currentProgress), totalProgress)
+
 		if info.Submitted <= lastUpdateTime {
 			// Ignore old solutions. This is only correct when all solutions
 			// come from this script. But it's useful in that case.
@@ -212,5 +215,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("Update count: %d\n", updateCount)
+	fmt.Printf("\nUpdate count: %d\n", updateCount)
 }
