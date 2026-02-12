@@ -51,6 +51,19 @@ name    = 'Show Whitespace in Editor'
 default = true
 
 [[home]]
+id      = 'show-from'
+name    = 'Show From'
+options = [ { id = 'all', name = 'All Categories' } ]
+
+[[home]]
+id      = 'filter-by'
+options = [
+    { id = 'all',      name = 'All'      },
+    { id = 'unsolved', name = 'Unsolved' },
+    { id = 'solved',   name = 'Solved'   },
+]
+
+[[home]]
 id      = 'order-by'
 name    = 'Order By'
 options = [

@@ -15,6 +15,9 @@
     </div>
 {{ end }}
 
+{{ $category := setting .Golfer "home" "show-from" }}
+{{ $solution := setting .Golfer "home" "filter-by" }}
+
 <main id=home>
 {{ if .Golfer }}
     <nav class=span>
@@ -22,6 +25,12 @@
     </nav>
 {{ end }}
 {{ range .Data }}
+    {{ if $.Golfer }}
+        {{ if or (and      .Lang  (eq $solution "unsolved"))
+                 (and (not .Lang) (eq $solution "solved")) }}
+            {{ continue }}
+        {{ end }}
+    {{ end }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
         {{ $lang    := index $.Golfer.Settings "home" "points-for" }}
