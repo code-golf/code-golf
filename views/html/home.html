@@ -19,10 +19,28 @@
 
 <main id=home>
 {{ if .Golfer }}
-    <nav class=span>
-        {{ template "page-settings" . }}
-    </nav>
+    <div class=span>
+        <form action=/golfer/settings/save class=tabs method=post>
+            <input name=page type=hidden value="{{ .Name }}">
+            <input name=path type=hidden value="{{ .Path }}">
+
+    {{ range $setting := .Settings }}
+        {{ if ne .ID "show-hole-cards" }}{{ continue }}{{ end }}
+
+        {{ range $setting.Options }}
+            <button name="{{ $setting.ID }}" value="{{ .ID }}"
+                {{ if eq $show .ID }} disabled {{ end }}>
+                {{ .Name }}
+            </button>
+        {{ end }}
+    {{ end }}
+        </form>
+        <nav>
+            {{ template "page-settings" . }}
+        </nav>
+    </div>
 {{ end }}
+
 {{ range .Data }}
     {{ if $.Golfer }}
         {{ if or (and      .Lang  (eq $show "unsolved"))
@@ -30,6 +48,7 @@
             {{ continue }}
         {{ end }}
     {{ end }}
+
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
         {{ $lang    := index $.Golfer.Settings "home" "points-for" }}
