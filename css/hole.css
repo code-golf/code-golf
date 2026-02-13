@@ -332,6 +332,8 @@ h2 {
 
     > a:not([href]), select.selectActive { border-color: var(--color) }
 
+    > a.has-solution { border-color: var(--green) }
+
     > a {
         align-items: center;
         border: 1px solid var(--grey);

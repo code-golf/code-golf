@@ -62,6 +62,14 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 		return u, nil
 	},
 
+	"map": func(kv ...any) map[any]any {
+		m := make(map[any]any, len(kv)/2)
+		for i := 0; i < len(kv); i += 2 {
+			m[kv[i]] = kv[i+1]
+		}
+		return m
+	},
+
 	"param": func(r *http.Request, key string) string {
 		value, _ := url.QueryUnescape(r.PathValue(key))
 		return value
