@@ -51,16 +51,12 @@ name    = 'Show Whitespace in Editor'
 default = true
 
 [[home]]
-id      = 'show-from'
-name    = 'Show From'
-options = [ { id = 'all', name = 'All Categories' } ]
-
-[[home]]
-id      = 'filter-by'
+id      = 'show-hole-cards'
+name    = 'Show Hole Cards'
 options = [
     { id = 'all',      name = 'All'      },
-    { id = 'unsolved', name = 'Unsolved' },
     { id = 'solved',   name = 'Solved'   },
+    { id = 'unsolved', name = 'Unsolved' },
 ]
 
 [[home]]

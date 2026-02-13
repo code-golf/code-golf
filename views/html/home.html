@@ -15,8 +15,7 @@
     </div>
 {{ end }}
 
-{{ $category := setting .Golfer "home" "show-from" }}
-{{ $solution := setting .Golfer "home" "filter-by" }}
+{{ $show := setting .Golfer .Name "show-hole-cards" }}
 
 <main id=home>
 {{ if .Golfer }}
@@ -26,8 +25,8 @@
 {{ end }}
 {{ range .Data }}
     {{ if $.Golfer }}
-        {{ if or (and      .Lang  (eq $solution "unsolved"))
-                 (and (not .Lang) (eq $solution "solved")) }}
+        {{ if or (and      .Lang  (eq $show "unsolved"))
+                 (and (not .Lang) (eq $show "solved")) }}
             {{ continue }}
         {{ end }}
     {{ end }}
