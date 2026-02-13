@@ -267,6 +267,8 @@ function updateLangPicker() {
             if (chars && bytes != chars) text += '/' + comma(chars);
 
             tab.append(<sup>{text}</sup>);
+
+            tab.classList.add('has-solution');
         }
         else if (!localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
                  !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
