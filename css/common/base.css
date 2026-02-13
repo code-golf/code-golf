@@ -680,11 +680,6 @@ body > .tabs {
     justify-content: space-between;
 }
 
-#home > .grid {
-    border: 2px solid var(--color);
-    padding: 1rem;
-}
-
 #popups {
     align-items: flex-end;
     display: flex;
