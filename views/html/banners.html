@@ -1,0 +1,25 @@
+{{ $verb := "hide" }}{{ if .Hidden }}{{ $verb = "restore" }}{{ end }}
+
+{{ range .Root.Banners }}
+    {{ if and $.Root.Golfer
+        (eq $.Hidden (not (index $.Root.Golfer.Settings "hide-banner" .HideKey))) }}
+            {{ continue }}
+    {{ end }}
+
+    <div class="{{ .Type }}">
+    {{ if eq .Type "alert" }}
+        {{ svg "exclamation" }}
+    {{ else if eq .Type "info" }}
+        {{ svg "info-circle" }}
+    {{ end }}
+        <p>{{ .Body }}
+
+    {{ if and $.Root.Golfer .HideKey }}
+        <form action="/golfer/{{ $verb }}-banner" method=post>
+            <input name=banner type=hidden value="{{ .HideKey }}">
+            <input name=path type=hidden value="{{ $.Root.Path }}">
+            <button title="{{ title $verb }} banner">{{ svg "x" }}</button>
+        </form>
+    {{ end }}
+    </div>
+{{ end }}

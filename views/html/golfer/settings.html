@@ -100,27 +100,7 @@
     <div id=banners>
         <h2>Hidden Banners</h2>
 
-    <!-- FIXME Keep in sync with header.html -->
-    {{ range .Banners }}
-        {{ if not (index $.Golfer.Settings "hide-banner" .HideKey) }}
-            {{ continue }}
-        {{ end }}
-
-        <div class="{{ .Type }}">
-        {{ if eq .Type "alert" }}
-            {{ svg "exclamation" }}
-        {{ else if eq .Type "info" }}
-            {{ svg "info-circle" }}
-        {{ end }}
-            <p>{{ .Body }}
-
-            <form action=/golfer/restore-banner method=post>
-                <input name=banner type=hidden value="{{ .HideKey }}">
-                <input name=path type=hidden value="{{ $.Path }}">
-                <button title="Restore banner">{{ svg "x" }}</button>
-            </form>
-        </div>
-    {{ end }}
+        {{ template "banners" (map "Hidden" true "Root" .) }}
     </div>
 {{ else if eq .Title "Settings: Connections" }}
     <form method=post>

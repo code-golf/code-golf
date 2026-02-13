@@ -125,26 +125,4 @@
     </nav>
 </header>
 
-<!-- FIXME Keep in sync with /golfer/settings/banners -->
-{{ range .Banners }}
-    {{ if and $.Golfer (index $.Golfer.Settings "hide-banner" .HideKey) }}
-        {{ continue }}
-    {{ end }}
-
-    <div class="{{ .Type }}">
-    {{ if eq .Type "alert" }}
-        {{ svg "exclamation" }}
-    {{ else if eq .Type "info" }}
-        {{ svg "info-circle" }}
-    {{ end }}
-        <p>{{ .Body }}
-
-    {{ if and $.Golfer .HideKey }}
-        <form action=/golfer/hide-banner method=post>
-            <input name=banner type=hidden value="{{ .HideKey }}">
-            <input name=path type=hidden value="{{ $.Path }}">
-            <button title="Hide banner">{{ svg "x" }}</button>
-        </form>
-    {{ end }}
-    </div>
-{{ end }}
+{{ template "banners" (map "Hidden" false "Root" .) }}
