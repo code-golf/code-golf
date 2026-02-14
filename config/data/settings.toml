@@ -51,8 +51,20 @@ name    = 'Show Whitespace in Editor'
 default = true
 
 [[home]]
-id      = 'show-hole-cards'
-name    = 'Show Hole Cards'
+id      = 'pick-category'
+name    = 'Show Cards For'
+options = [
+    { id = 'all',    name = 'All Categories' },
+    { id = 'red',    name = 'Art'            },
+    { id = 'orange', name = 'Computing'      },
+    { id = 'yellow', name = 'Gaming'         },
+    { id = 'green',  name = 'Mathematics'    },
+    { id = 'blue',   name = 'Sequence'       },
+    { id = 'purple', name = 'Transform'      },
+]
+
+[[home]]
+id      = 'with-solution'
 options = [
     { id = 'all',      name = 'All'      },
     { id = 'solved',   name = 'Solved'   },

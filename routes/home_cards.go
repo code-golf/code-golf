@@ -28,9 +28,15 @@ func init() {
 }
 
 func getGolferCards(r *http.Request, cards []Card) (golferCards []Card) {
-	golfer := session.Golfer(r)
+	settings := session.Golfer(r).Settings["home"]
+
 	for _, c := range cards {
-		if show := golfer.Settings["home"]["show-hole-cards"]; c.Lang == nil && show == "solved" || c.Lang != nil && show == "unsolved" {
+		if opt := settings["pick-category"]; opt != "all" {
+			if opt != c.Hole.CategoryColor {
+				continue
+			}
+		}
+		if opt := settings["with-solution"]; c.Lang == nil && opt == "solved" || c.Lang != nil && opt == "unsolved" {
 			continue
 		}
 		golferCards = append(golferCards, c)
@@ -41,7 +47,7 @@ func getGolferCards(r *http.Request, cards []Card) (golferCards []Card) {
 			strings.ToLower(b.Hole.Name))
 	}
 
-	switch golfer.Settings["home"]["order-by"] {
+	switch settings["order-by"] {
 	case "alphabetical-asc": // name asc.
 		slices.SortFunc(golferCards, cmpHoleNameLowercase)
 	case "alphabetical-desc": // name desc.

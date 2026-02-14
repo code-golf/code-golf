@@ -15,36 +15,23 @@
     </div>
 {{ end }}
 
-{{ $show := setting .Golfer .Name "show-hole-cards" }}
+{{ $category := setting .Golfer .Name "pick-category" }}
+{{ $solution := setting .Golfer .Name "with-solution" }}
 
 <main id=home>
 {{ if .Golfer }}
-    <div class=span>
-        <form action=/golfer/settings/save class=tabs method=post>
-            <input name=page type=hidden value="{{ .Name }}">
-            <input name=path type=hidden value="{{ .Path }}">
-
-    {{ range $setting := .Settings }}
-        {{ if ne .ID "show-hole-cards" }}{{ continue }}{{ end }}
-
-        {{ range $setting.Options }}
-            <button name="{{ $setting.ID }}" value="{{ .ID }}"
-                {{ if eq $show .ID }} disabled {{ end }}>
-                {{ .Name }}
-            </button>
-        {{ end }}
-    {{ end }}
-        </form>
-        <nav>
-            {{ template "page-settings" . }}
-        </nav>
-    </div>
+    <nav class=span>
+        {{ template "page-settings" . }}
+    </nav>
 {{ end }}
 
 {{ range .Data }}
     {{ if $.Golfer }}
-        {{ if or (and      .Lang  (eq $show "unsolved"))
-                 (and (not .Lang) (eq $show "solved")) }}
+        {{ if ne $category "all" }}
+            {{ if ne $category .Hole.CategoryColor }}{{ continue }}{{ end }}
+        {{ end }}
+        {{ if or (and      .Lang  (eq $solution "unsolved"))
+                 (and (not .Lang) (eq $solution "solved")) }}
             {{ continue }}
         {{ end }}
     {{ end }}
