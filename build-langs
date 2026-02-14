@@ -54,8 +54,8 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
 
     # Version.
     if $id ~~ any <
-        05ab1e apl arkscript assembly befunge berry brainfuck cjam
-        erlang fish golfscript hexagony k knight lily luau stax umka
+        05ab1e apl assembly befunge berry brainfuck cjam erlang
+        fish golfscript hexagony k knight lily luau stax umka
     > {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
 
@@ -77,8 +77,8 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
         given $name {
-            # Dotted decimal or hyphenated date.
-            my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
+            # Dotted decimal or hyphenated date. Must be at least two parts.
+            my $digits = $ver ~~ / \d+ (<[.-]>) \d+ [ $0 \d+ ]* /;
 
             when 'ALGOL 68'    { $ver = "Algol 68 Genie $digits" }
             when 'AWK'

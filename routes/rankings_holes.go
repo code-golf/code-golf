@@ -1,8 +1,6 @@
 package routes
 
 import (
-	"database/sql"
-	"errors"
 	"html/template"
 	"net/http"
 	"strings"
@@ -17,8 +15,11 @@ import (
 // GET /rankings/holes/{hole}/{lang}/{scoring}
 func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Distribution                          []struct{ Frequency, Strokes int }
-		Strokes                               int
+		Distribution []struct {
+			Frequency int  `json:"frequency"`
+			Me        bool `json:"me"`
+			Strokes   int  `json:"strokes"`
+		}
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
 		Pager                                 *pager.Pager
@@ -154,29 +155,18 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.LangID != "all" && data.HoleID != "all" {
-		query = `SELECT strokes  strokes,
-					  COUNT(*) frequency
-				 FROM rankings
-				WHERE hole = $1 AND lang = $2 AND scoring = $3
-			 GROUP BY strokes
-			 ORDER BY strokes`
-		if err := session.Database(r).Select(&data.Distribution, query, data.HoleID, data.LangID, data.Scoring); err != nil {
+		if err := session.Database(r).Select(
+			&data.Distribution,
+			` SELECT strokes                                  strokes,
+			         COUNT(*)                                 frequency,
+			         COUNT(*) FILTER (WHERE user_id = $4) > 0 me
+			    FROM rankings
+			   WHERE hole = $1 AND lang = $2 AND scoring = $3
+			GROUP BY strokes
+			ORDER BY strokes`,
+			data.HoleID, data.LangID, data.Scoring, session.Golfer(r),
+		); err != nil {
 			panic(err)
-		}
-		golfer := session.Golfer(r)
-		if golfer != nil {
-			if err := session.Database(r).Get(
-				&data,
-				`SELECT strokes  strokes
-				FROM rankings
-				WHERE hole = $1 AND lang = $2 AND scoring = $3 AND user_id = $4`,
-				data.HoleID,
-				data.LangID,
-				data.Scoring,
-				golfer.ID,
-			); err != nil && !errors.Is(err, sql.ErrNoRows) {
-				panic(err)
-			}
 		}
 	}
 

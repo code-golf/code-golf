@@ -38,8 +38,12 @@ options = [
 ]
 
 [[hole]]
-id   = 'multi-window-layout'
-name = 'Multi-Window Layout (WIP)'
+id   = 'layout'
+name = 'Layout'
+options = [
+    { id = '',     name = 'Classic' },
+    { id = 'tabs', name = 'Multi-Window (WIP)' },
+]
 
 [[hole]]
 id      = 'show-whitespace'

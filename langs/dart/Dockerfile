@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ git ninja-build python3
 
-ENV PATH=/depot_tools:$PATH VER=3.10.6
+ENV PATH=/depot_tools:$PATH VER=3.10.9
 
 RUN git clone --progress https://chromium.googlesource.com/chromium/tools/depot_tools
 

@@ -7,8 +7,10 @@ import { Chart, BarController,
 const dataElement = $('#chart-data');
 if (dataElement) {
     const scoring = location.pathname.split('/').filter(Boolean).pop();
-    const {golfer, golfers} = JSON.parse(dataElement.innerText) as {golfer: number, golfers: {strokes: number, frequency: number}[]};
+    const golfers = JSON.parse(dataElement.innerText) as
+        {frequency: number, me: boolean, strokes: number}[];
     if (golfers.length > 0) {
+        const golfer = golfers.find(g => g.me)?.strokes;
         const strokes = golfers.map(({strokes}) => strokes);
         const frequencies = golfers.map(({frequency}) => frequency);
         let total = 0;

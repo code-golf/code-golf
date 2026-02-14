@@ -1,0 +1,42 @@
+<dialog closedby=any id=delete-dialog>
+    <form action=/golfer/delete-solution autocomplete=off method=post>
+        <h2>Delete Solution</h2>
+        <p>
+            Are you sure you want to delete your <b></b> solution(s) for
+            <b>{{ .Data.Hole.Name }}</b>?
+        <p>
+            If you have separate bytes and chars solutions then <b>both</b>
+            will be deleted.
+        <p>This is irreversible, please backup any code you care about.
+        <p>Type <b>I understand</b> and press confirm to continue.</p>
+        <input name=text placeholder="I understand">
+        <input name=hole value="{{ .Data.Hole.ID }}" type=hidden>
+        <input name=lang type=hidden>
+        <menu>
+            <!-- Enter submits the first button, we flip the order in CSS -->
+            <button class="btn green" disabled name=confirm>Confirm</button>
+            <button class="btn red" formmethod=dialog>Cancel</button>
+        </menu>
+    </form>
+</dialog>
+
+<div id=popups></div>
+
+<script id=keymap type=application/json>
+    {{ setting .Golfer "hole" "editor-keymap" }}
+</script>
+
+<script id=case-fold type=application/json>{{ .Data.Hole.CaseFold }}</script>
+<script id=languages type=application/json>{{ .Data.Langs         }}</script>
+<script id=solutions type=application/json>{{ .Data.Solutions     }}</script>
+
+<script id=has-notes type=application/json>
+    {{ with .Golfer }}{{ .HasNotes }}{{ else }}false{{ end }}
+</script>
+
+<script id=sponsor type=application/json>
+    {{ with .Golfer }}{{ .SponsorOrAdmin }}{{ else }}false{{ end }}
+</script>
+
+<script id=renamed-holes type=application/json>{{ .Data.HoleRedirects }}</script>
+<script id=renamed-langs type=application/json>{{ .Data.LangRedirects }}</script>

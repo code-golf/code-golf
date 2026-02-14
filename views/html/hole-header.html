@@ -34,7 +34,7 @@
 
 <header id=page-header>
 {{ with .Data.Authors }}
-    <dialog id=authors-dialog>
+    <dialog closedby=any id=authors-dialog>
         <div>
             <h1>{{ $.Data.Hole.Name }} Authors</h1>
             <ul>{{ range . }}<li>{{ template "golfer-link" . }}{{ end }}</ul>

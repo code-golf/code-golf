@@ -10,7 +10,7 @@ const char* arkscript = "/usr/local/bin/arkscript", *code = "code.ark";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
-        exit(EXIT_SUCCESS);
+        execv(arkscript, argv);
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");

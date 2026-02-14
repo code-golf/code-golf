@@ -56,9 +56,12 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	golfer := session.Golfer(r)
+	view := "hole"
+	if golfer := session.Golfer(r); golfer != nil {
+		if layout := golfer.Settings["hole"]["layout"].(string); layout != "" {
+			view += "-" + layout
+		}
 
-	if golfer != nil {
 		// Fetch all the code per lang.
 		rows, err := session.Database(r).Query(
 			`SELECT code, lang, scoring
@@ -89,11 +92,6 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		if err := rows.Err(); err != nil {
 			panic(err)
 		}
-	}
-
-	view := "hole"
-	if golfer != nil && golfer.Settings["hole"]["multi-window-layout"].(bool) {
-		view = "hole-tabs"
 	}
 
 	render(w, r, view, data, data.Hole.Name, data.Hole.Synopsis)
