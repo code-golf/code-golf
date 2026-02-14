@@ -56,12 +56,11 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		data.OtherScoring = "bytes"
 	}
 
-	var query string
+	var sql string
 	var bind []any
 
 	if data.HoleID == "all" && data.LangID == "all" {
-		query = `
-			  SELECT avatar_url                                  avatar_url,
+		sql = `SELECT avatar_url                                  avatar_url,
 			         country_flag                                country_flag,
 			         holes                                       holes,
 			         name                                        name,
@@ -78,7 +77,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 		bind = []any{data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else if data.HoleID == "all" {
-		query = `WITH summed AS (
+		sql = `WITH summed AS (
 			    SELECT user_id,
 			           COUNT(*)             holes,
 			           SUM(points_for_lang) points,
@@ -105,7 +104,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else if data.LangID == "all" {
-		query = `SELECT avatar_url       avatar_url,
+		sql = `SELECT avatar_url       avatar_url,
 			          country_flag     country_flag,
 			          lang             lang,
 			          name             name,
@@ -125,7 +124,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 
 		bind = []any{data.HoleID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	} else {
-		query = `SELECT avatar_url       avatar_url,
+		sql = `SELECT avatar_url       avatar_url,
 			          country_flag     country_flag,
 			          lang             lang,
 			          name             name,
@@ -146,7 +145,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 		bind = []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
 	}
 
-	if err := session.Database(r).Select(&data.Rows, query, bind...); err != nil {
+	if err := session.Database(r).Select(&data.Rows, sql, bind...); err != nil {
 		panic(err)
 	}
 
