@@ -60,35 +60,14 @@ int main(int argc, char* argv[]) {
     if (remove(code[0]))
         ERR_AND_EXIT("remove");
 
-    if (!(fd = open(input, O_CREAT | O_TRUNC | O_WRONLY, 0644)))
-        ERR_AND_EXIT("open");
-
-    for (int i = 2; i < argc; i++)
-        if (!write(fd, argv[i], strlen(argv[i])) || !write(fd, "\n", sizeof(char))) {
-            if (close(fd))
-                ERR_AND_EXIT("close");
-
-            ERR_AND_EXIT("write");
-        }
-
-    if (close(fd))
-        ERR_AND_EXIT("close");
-
-    if (!(pid = fork())) {
-        if (dup2(open(input, O_RDONLY), STDIN_FILENO))
-            ERR_AND_EXIT("dup2");
-
-        execl(ghcii, ghcii, code[1], NULL);
-        ERR_AND_EXIT("execl");
-    }
-
-    waitpid(pid, &status, 0);
-
-    if (!WIFEXITED(status))
-        exit(EXIT_FAILURE);
-
-    if (WEXITSTATUS(status))
-        return WEXITSTATUS(status);
+    int iargc = argc + 1;
+    char** iargv = malloc(iargc * sizeof(char*));
+    iargv[0] = (char*) ghcii;
+    iargv[1] = (char*) code[1];  
+    memcpy(&iargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    iargv[iargc - 1] = NULL;
+    execv(ghcii, iargv);
+    ERR_AND_EXIT("execv");
 
     if (remove(code[1]))
         ERR_AND_EXIT("remove");
