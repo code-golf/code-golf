@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev qbe scdoc
 
-ENV VER=0.25.2
+ENV VER=0.26.0
 
 WORKDIR /harec
 
