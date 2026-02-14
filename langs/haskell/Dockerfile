@@ -1,5 +1,6 @@
 FROM alpine:3.23 AS builder
 
+# Also bump iogii.
 ENV VER=9.8.2
 
 RUN apk add --no-cache ghc=$VER-r2 musl-dev
