@@ -38,8 +38,8 @@
     "style-mod": ""
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "",
-    "@typescript-eslint/parser": "",
+    "@typescript-eslint/eslint-plugin": "^8.55.1-alpha.4",
+    "@typescript-eslint/parser": "^8.55.1-alpha.4",
     "eslint": "",
     "svgo": ""
   }
