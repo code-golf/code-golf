@@ -15,27 +15,13 @@
     </div>
 {{ end }}
 
-{{ $category := setting .Golfer .Name "pick-category" }}
-{{ $solution := setting .Golfer .Name "with-solution" }}
-
 <main id=home>
 {{ if .Golfer }}
     <nav class=span>
         {{ template "page-settings" . }}
     </nav>
 {{ end }}
-
 {{ range .Data }}
-    {{ if $.Golfer }}
-        {{ if ne $category "all" }}
-            {{ if ne $category .Hole.CategoryColor }}{{ continue }}{{ end }}
-        {{ end }}
-        {{ if or (and      .Lang  (eq $solution "unsolved"))
-                 (and (not .Lang) (eq $solution "solved")) }}
-            {{ continue }}
-        {{ end }}
-    {{ end }}
-
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
         {{ $lang    := index $.Golfer.Settings "home" "points-for" }}
