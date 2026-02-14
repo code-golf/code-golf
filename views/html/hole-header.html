@@ -49,7 +49,14 @@
     <h1>{{ .Data.Hole.Name }}</h1>
     <nav>
     {{ with .Data.PrevHole }}
-        <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
+        <a class="btn orange"
+        {{ if $.Golfer }}
+            {{ $lang := index $.Golfer.Settings "home" "points-for" }}
+            href='{{ .ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'
+        {{ else }}
+            href="{{ .ID }}"
+        {{ end }}
+            title="{{ .Name }}">
             {{ svg "chevron-double-left-light" }} Prev
         </a>
     {{ end }}
@@ -57,7 +64,14 @@
             {{ svg "dice-light" }} Random
         </a>
     {{ with .Data.NextHole }}
-        <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
+        <a class="btn orange"
+        {{ if $.Golfer }}
+            {{ $lang := index $.Golfer.Settings "home" "points-for" }}
+            href='{{ .ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'
+        {{ else }}
+            href="{{ .ID }}"
+        {{ end }}
+            title="{{ .Name }}">
             {{ svg "chevron-double-right-light" }} Next
         </a>
     {{ end }}
