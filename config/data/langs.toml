@@ -816,12 +816,10 @@ pub fn main() {
   io.println("Hello, World!")
 
   // Looping
-  list.range(0, 9)
-  |> list.each(fn(i) { io.println(int.to_string(i)) })
+  int.range(0, 10, Nil, fn(_, i) { io.println(int.to_string(i)) })
 
   // Accessing arguments
-  argv.load().arguments
-  |> list.each(fn(arg) { io.println(arg) })
+  argv.load().arguments |> list.each(fn(arg) { io.println(arg) })
 }
 '''
 
