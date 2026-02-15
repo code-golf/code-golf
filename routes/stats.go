@@ -65,7 +65,7 @@ func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
 
 	if err := session.Database(r).Select(
 		&data,
-		`SELECT RANK() OVER (ORDER BY COUNT(*) DESC)              rank,
+		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
 		         cheevo                                           cheevo,
 		         COUNT(*)                                         golfers,
 		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent,

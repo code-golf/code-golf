@@ -57,26 +57,26 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	case "overall":
 		description = "Overall medal counts"
 		sql = `WITH counts AS (
-		    SELECT user_id,
-		           COUNT(*) FILTER (WHERE medal = 'unicorn') unicorn,
-		           COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
-		           COUNT(*) FILTER (WHERE medal = 'gold'   ) gold,
-		           COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
-		           COUNT(*) FILTER (WHERE medal = 'bronze' ) bronze
-		      FROM medals
-		     WHERE $1 IN ('all', hole::text)
-		       AND $2 IN ('all', lang::text)
-		       AND $3 IN ('all', scoring::text)
-		  GROUP BY user_id
-		) SELECT RANK() OVER(
-		             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
-		         ),
-		         unicorn, diamond, gold, silver, bronze,
-		         avatar_url, country_flag, name, COUNT(*) OVER() total
-		    FROM counts
-		    JOIN golfers_with_avatars ON id = user_id
-		ORDER BY rank, name
-		   LIMIT $4 OFFSET $5`
+			    SELECT user_id,
+			           COUNT(*) FILTER (WHERE medal = 'unicorn') unicorn,
+			           COUNT(*) FILTER (WHERE medal = 'diamond') diamond,
+			           COUNT(*) FILTER (WHERE medal = 'gold'   ) gold,
+			           COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
+			           COUNT(*) FILTER (WHERE medal = 'bronze' ) bronze
+			      FROM medals
+			     WHERE $1 IN ('all', hole::text)
+			       AND $2 IN ('all', lang::text)
+			       AND $3 IN ('all', scoring::text)
+			  GROUP BY user_id
+			) SELECT RANK() OVER(
+			             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
+			         ),
+			         unicorn, diamond, gold, silver, bronze,
+			         avatar_url, country_flag, name, COUNT(*) OVER() total
+			    FROM counts
+			    JOIN golfers_with_avatars ON id = user_id
+			ORDER BY rank, name
+			   LIMIT $4 OFFSET $5`
 
 	case "diamond-deltas":
 		description = "Deltas between diamonds and silvers"
@@ -130,17 +130,17 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		args = append(args, medal) // $6
 
 		sql = `SELECT avatar_url, country_flag, name,
-			         hole, lang, scoring, submitted,
-			         RANK() OVER(ORDER BY submitted),
-			         COUNT(*) OVER () total
-			    FROM medals
-			    JOIN golfers_with_avatars ON id = user_id
-			   WHERE medal = $6
-			     AND $1 IN ('all', hole::text)
-			     AND $2 IN ('all', lang::text)
-			     AND $3 IN ('all', scoring::text)
-			ORDER BY rank, hole, lang, scoring, name
-			   LIMIT $4 OFFSET $5`
+			          hole, lang, scoring, submitted,
+			          RANK() OVER(ORDER BY submitted),
+			          COUNT(*) OVER () total
+			     FROM medals
+			     JOIN golfers_with_avatars ON id = user_id
+			    WHERE medal = $6
+			      AND $1 IN ('all', hole::text)
+			      AND $2 IN ('all', lang::text)
+			      AND $3 IN ('all', scoring::text)
+			 ORDER BY rank, hole, lang, scoring, name
+			    LIMIT $4 OFFSET $5`
 
 	default:
 		w.WriteHeader(http.StatusNotFound)

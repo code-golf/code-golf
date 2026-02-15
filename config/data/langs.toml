@@ -589,8 +589,8 @@ end
 [D]
 args    = [ '/usr/bin/D', '-' ]
 env     = [ 'PATH=/usr/bin' ]
-size    = '95.9 MiB'
-version = 'DMD 2.111.0'
+size    = '98.7 MiB'
+version = 'DMD 2.112.0'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -816,12 +816,10 @@ pub fn main() {
   io.println("Hello, World!")
 
   // Looping
-  list.range(0, 9)
-  |> list.each(fn(i) { io.println(int.to_string(i)) })
+  int.range(0, 10, Nil, fn(_, i) { io.println(int.to_string(i)) })
 
   // Accessing arguments
-  argv.load().arguments
-  |> list.each(fn(arg) { io.println(arg) })
+  argv.load().arguments |> list.each(fn(arg) { io.println(arg) })
 }
 '''
 
@@ -919,8 +917,8 @@ NEXT
 args       = [ '/usr/bin/harewrapper', '-' ]
 env        = [ 'PATH=/usr/local/bin:/usr/bin' ]
 experiment = 1323
-size       = '10.9 MiB'
-version    = '0.25.2'
+size       = '11.2 MiB'
+version    = '0.26.0'
 website    = 'https://harelang.org'
 example    = '''
 use fmt;
@@ -1054,7 +1052,7 @@ example    = '''
 [iogii]
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
-size       = '38.7 MiB'
+size       = '8.78 MiB'
 version    = '1.1.2'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
@@ -1125,8 +1123,8 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '46.4 MiB'
-version = 'V8 14.4.258.24'
+size    = '46.6 MiB'
+version = 'V8 14.5.201.7'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1410,7 +1408,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.2'
+version = '8.5.3'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1679,7 +1677,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '405 MiB'
-version = '1.93.0'
+version = '1.93.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
