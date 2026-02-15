@@ -50,6 +50,11 @@ id      = 'show-whitespace'
 name    = 'Show Whitespace in Editor'
 default = true
 
+[[hole]]
+id      = 'clear-sample-code'
+name    = 'Always Clear Sample Code'
+default = false
+
 [[home]]
 id      = 'order-by'
 name    = 'Order By'
