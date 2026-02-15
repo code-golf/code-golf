@@ -66,9 +66,7 @@ int main(int argc, char* argv[]) {
     iargv[1] = (char*) code[1];
     memcpy(&iargv[2], &argv[2], (argc - 2) * sizeof(char*));
     iargv[iargc - 1] = NULL;
+
     execv(ghcii, iargv);
     ERR_AND_EXIT("execv");
-
-    if (remove(code[1]))
-        ERR_AND_EXIT("remove");
 }
