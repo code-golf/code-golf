@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* iogii = "/usr/local/bin/iogii", *ghcii = "/usr/bin/ghcii", *code[2] = {"code.iog", "code.ism"}, *input = "argv.txt";
+const char* iogii = "/usr/local/bin/iogii", *ghcii = "/usr/bin/ghcii", *code[2] = {"code.iog", "code.ism"};
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -34,9 +34,10 @@ int main(int argc, char* argv[]) {
         ERR_AND_EXIT("fclose");
 
     pid_t pid;
-    int fd;
 
     if (!(pid = fork())) {
+        int fd;
+
         if (!dup2(fd = open(code[1], O_CREAT | O_TRUNC | O_WRONLY, 0644), STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 
