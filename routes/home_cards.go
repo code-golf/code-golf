@@ -106,10 +106,10 @@ func getGolferCards(r *http.Request, cards []Card) (golferCards []Card) {
 }
 
 // Get prev/next hole with order based on homepage settings.
-func getPrevNextHole(r *http.Request, hole *config.Hole) (prev, next *config.Hole) {
+func getPrevNextHole(r *http.Request, hole *config.Hole, b bool) (prev, next *config.Hole) {
 	cards := expCardList
 	if hole.Experiment == 0 {
-		cards = getHomeCards(r)
+		cards = getHomeCards(r, b)
 	}
 	i := slices.IndexFunc(cards, func(c Card) bool { return c.Hole.ID == hole.ID })
 
@@ -129,9 +129,11 @@ func getPrevNextHole(r *http.Request, hole *config.Hole) (prev, next *config.Hol
 }
 
 // Get homepage cards with order based on homepage settings.
-func getHomeCards(r *http.Request) (cards []Card) {
+func getHomeCards(r *http.Request, b bool) (cards []Card) {
 	golfer := session.Golfer(r)
-	if golfer == nil {
+
+	// Return unfiltered cards to guest users or upon caller request.
+	if golfer == nil || !b {
 		return cardList
 	}
 

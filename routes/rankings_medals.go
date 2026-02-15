@@ -46,7 +46,8 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
-		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
+		// This page has its own filters, so use the unfiltered home cards.
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole, false)
 	}
 
 	var description, sql string
