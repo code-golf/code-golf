@@ -675,9 +675,9 @@ body > .tabs {
 
 #home { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
 
-#home > nav {
+#home > div {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 #popups {
