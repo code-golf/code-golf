@@ -111,21 +111,24 @@ func getPrevNextHole(r *http.Request, hole *config.Hole, b bool) (prev, next *co
 	if hole.Experiment == 0 {
 		cards = getHomeCards(r, b)
 	}
-	i := slices.IndexFunc(cards, func(c Card) bool { return c.Hole.ID == hole.ID })
 
-	if i == 0 {
-		prev = cards[len(cards)-1].Hole
-	} else {
-		prev = cards[i-1].Hole
+	if i := slices.IndexFunc(cards, func(c Card) bool { return c.Hole.ID == hole.ID }); i >= 0 {
+		if i == 0 {
+			prev = cards[len(cards)-1].Hole
+		} else {
+			prev = cards[i-1].Hole
+		}
+
+		if i == len(cards)-1 {
+			next = cards[0].Hole
+		} else {
+			next = cards[i+1].Hole
+		}
+
+		return
 	}
 
-	if i == len(cards)-1 {
-		next = cards[0].Hole
-	} else {
-		next = cards[i+1].Hole
-	}
-
-	return
+	return cards[0].Hole, cards[len(cards)-1].Hole
 }
 
 // Get homepage cards with order based on homepage settings.
