@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     int iargc = argc + 1;
     char** iargv = malloc(iargc * sizeof(char*));
     iargv[0] = (char*) ghcii;
-    iargv[1] = (char*) code[1];  
+    iargv[1] = (char*) code[1];
     memcpy(&iargv[2], &argv[2], (argc - 2) * sizeof(char*));
     iargv[iargc - 1] = NULL;
     execv(ghcii, iargv);
