@@ -728,13 +728,13 @@ export function updateLocalStorage(code: string) {
 export function updateRestoreLinkVisibility(editor: any) {
     const restoreLink = $('#restoreLink');
     if (restoreLink instanceof HTMLAnchorElement) {
-        const serverCode = getSolutionCode(lang, solution);
-        const sampleCode = currentLang.example;
+        const serverCode  = getSolutionCode(lang, solution);
+        const exampleCode = currentLang.example;
         const currentCode = editor?.state.doc.toString();
         restoreLink.classList.toggle('hide',
-            (!serverCode && currentCode !== sampleCode) || currentCode === serverCode);
+            (!serverCode && currentCode !== exampleCode) || currentCode === serverCode);
         restoreLink.textContent =
-            currentCode === sampleCode ? 'Clear sample code' : 'Restore solution';
+            currentCode === exampleCode ? 'Clear example code' : 'Restore solution';
     }
 }
 

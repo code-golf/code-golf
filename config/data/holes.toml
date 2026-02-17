@@ -4621,10 +4621,10 @@ preamble = '''
 experiment = 1404
 category  = 'Art'
 redirects = ["placeholder"]
-synopsis  = 'Golf the code.golf sample code.'
+synopsis  = 'Golf the code.golf example code.'
 preamble  = '''
 <p>
-    Output the same output as the sample code would produce.
+    Output the same output as the example code would produce.
     The string <b>"Hello, World!"</b>, the integers <b>0</b> to <b>9</b>,
     and any number of <b>arguments</b>. Everything on an individual line.
 '''
