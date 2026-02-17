@@ -1085,8 +1085,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '977 KiB'
-version = '1.40.1'
+size    = '985 KiB'
+version = '1.41.1'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1889,8 +1889,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '29.4 MiB'
-version    = '0.18.0'
+size       = '29.5 MiB'
+version    = '0.18.1'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
@@ -1976,8 +1976,8 @@ int main(string[] args) {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
-size    = '25.2 MiB'
-version = '9.1'
+size    = '24.4 MiB'
+version = '9.2'
 website = 'https://www.vim.org'
 example = '''
 " Printing
