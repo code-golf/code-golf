@@ -46,24 +46,26 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Nav                                *config.Navigaton
 		Request                            *http.Request
 		Settings                           []*config.Setting
+		SettingValues                      map[string]map[string]any
 	}{
-		Banners:     banners(theGolfer),
-		Cheevos:     config.CheevoTree,
-		CSS:         []cssLink{{config.Assets["css/common/base.css"], ""}},
-		Data:        data[0],
-		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
-		Golfer:      theGolfer,
-		GolferInfo:  session.GolferInfo(r),
-		Holes:       make(map[string][]string),
-		JS:          []string{config.Assets["js/base.tsx"]},
-		Langs:       make(map[string][]string),
-		Name:        name,
-		Nonce:       rand.Text(),
-		Path:        r.URL.Path,
-		Request:     r,
-		Settings:    config.Settings[strings.TrimSuffix(name, "-tabs")],
-		Theme:       theme,
-		Title:       "Code Golf",
+		Banners:       banners(theGolfer),
+		Cheevos:       config.CheevoTree,
+		CSS:           []cssLink{{config.Assets["css/common/base.css"], ""}},
+		Data:          data[0],
+		Description:   "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
+		Golfer:        theGolfer,
+		GolferInfo:    session.GolferInfo(r),
+		Holes:         make(map[string][]string),
+		JS:            []string{config.Assets["js/base.tsx"]},
+		Langs:         make(map[string][]string),
+		Name:          name,
+		Nonce:         rand.Text(),
+		Path:          r.URL.Path,
+		Request:       r,
+		Settings:      config.Settings[strings.TrimSuffix(name, "-tabs")],
+		SettingValues: session.Settings(r),
+		Theme:         theme,
+		Title:         "Code Golf",
 	}
 
 	// Mapping lang & hole IDs to a list of known names (the first is the primary one)
