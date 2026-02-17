@@ -25,11 +25,8 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	golferInfo := session.GolferInfo(r)
 
 	location := time.UTC
-	followedGolfersInFeed := true
 	if golfer := session.Golfer(r); golfer != nil {
 		location = golfer.Location()
-		followedGolfersInFeed =
-			golfer.Settings["golfer/profile"]["followed-golfers-in-feed"].(bool)
 	}
 
 	data := struct {
@@ -92,7 +89,7 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		) SELECT cheevo, date, avatar_url, name, hole, lang
 		    FROM data JOIN golfers_with_avatars ON id = user_id
 		ORDER BY date DESC, name, cheevo LIMIT $4`,
-		followedGolfersInFeed,
+		session.Settings(r)["golfer/profile"]["followed-golfers-in-feed"],
 		golferInfo.ID,
 		golferInfo.FollowLimit(),
 		limit,
