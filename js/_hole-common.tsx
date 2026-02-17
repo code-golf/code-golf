@@ -136,7 +136,7 @@ const solutions    = JSON.parse($('#solutions').innerText);
 
 const settings = JSON.parse($('#settings').innerText);
 
-const vimMode = settings.keymap === 'vim';
+const vimMode = settings['editor-keymap'] === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
 const baseExtensions = [...vimModeExtensions, ...extensions.base, ...extensions.editor];
