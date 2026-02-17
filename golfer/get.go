@@ -79,19 +79,6 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		panic(err)
 	}
 
-	// Populate missing settings with default values.
-	for page, settings := range config.Settings {
-		if _, ok := golfer.Settings[page]; !ok {
-			golfer.Settings[page] = map[string]any{}
-		}
-
-		for _, setting := range settings {
-			if _, ok := golfer.Settings[page][setting.ID]; !ok {
-				golfer.Settings[page][setting.ID] = setting.Default
-			}
-		}
-	}
-
 	// Migrate legacy config key.
 	if _, ok := golfer.Settings["hole"]["multi-window-layout"]; ok {
 		golfer.Settings["hole"]["layout"] = "tabs"
