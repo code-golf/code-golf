@@ -53,7 +53,9 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Get("/users/{name}", redir("/golfers/{name}"))
 
 	// HTML routes that need middleware.Golfer.
-	r.With(middleware.RedirHolesLangs, middleware.Golfer).Group(func(r chi.Router) {
+	r.With(
+		middleware.RedirHolesLangs, middleware.Golfer, middleware.Settings,
+	).Group(func(r chi.Router) {
 		r.Get("/", homeGET)
 		r.Get("/{hole}", holeGET)
 		r.Get("/about", aboutGET)

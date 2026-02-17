@@ -1,3 +1,5 @@
+hide-banner = []
+
 [['golfer/cheevos']]
 id      = 'show-cheevos'
 name    = 'Show Achievements'
