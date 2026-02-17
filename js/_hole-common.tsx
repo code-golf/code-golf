@@ -746,7 +746,7 @@ export function setCodeForLangAndSolution(editor: any) {
             setSolution(0);
     }
 
-    var code = localStorage.getItem(getAutoSaveKey(lang, solution)) ||
+    let code = localStorage.getItem(getAutoSaveKey(lang, solution)) ||
         getSolutionCode(lang, solution);
 
     if ($('#editor').classList.contains('show-example-code'))
