@@ -46,14 +46,14 @@ options = [
 ]
 
 [[hole]]
-id      = 'show-whitespace'
-name    = 'Show Whitespace in Editor'
+id      = 'show-example-code'
+name    = 'Show Example Code for Language'
 default = true
 
 [[hole]]
-id      = 'clear-sample-code'
-name    = 'Always Clear Sample Code'
-default = false
+id      = 'show-whitespace'
+name    = 'Show Whitespace in Editor'
+default = true
 
 [[home]]
 id      = 'order-by'

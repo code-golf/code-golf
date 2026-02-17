@@ -2,7 +2,6 @@ import { ASMStateField }                               from '@defasm/codemirror'
 import { $, $$, avatar, byteLen, charLen, comma, ord, strokeLen } from './_util';
 import { Vim }                                         from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions }         from './_codemirror';
-import { EditorSelection }                             from '@codemirror/state';
 import LZString                                        from 'lz-string';
 import { getAllowedStrokes }                           from './lang-allowed-strokes';
 
@@ -747,21 +746,13 @@ export function setCodeForLangAndSolution(editor: any) {
             setSolution(0);
     }
 
-    setState(localStorage.getItem(getAutoSaveKey(lang, solution)) ||
-        getSolutionCode(lang, solution) || currentLang.example, editor);
+    var code = localStorage.getItem(getAutoSaveKey(lang, solution)) ||
+        getSolutionCode(lang, solution);
 
-    // Clear sample code by default if set and return focus to the editor.
-    const sampleCode = currentLang.example;
-    const currentCode = editor?.state.doc.toString();
-    if ($('#editor').className === 'clear-sample-code')
-        if (currentCode === sampleCode) {
-            setCode('', editor);
+    if ($('#editor').classList.contains('show-example-code'))
+        code ||= currentLang.example;
 
-            editor?.dispatch({
-                selection: EditorSelection.cursor(0), scrollIntoView: true,
-            });
-            editor.focus();
-        }
+    setState(code, editor);
 
     if (currentLang.assembly) scoring = 0;
     const charsTab = $('#scoringTabs a:last-child');

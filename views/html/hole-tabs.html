@@ -2,7 +2,7 @@
 {{ template "hole-header" . }}
 
 {{ $showWhitespace := setting .Golfer "hole" "show-whitespace" }}
-{{ $clearSampleCode := setting .Golfer "hole" "clear-sample-code" }}
+{{ $showExampleCode := setting .Golfer "hole" "show-example-code" }}
 <main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
     <nav class=tabs id=picker data-style='{{ setting .Golfer "hole" "lang-picker-style" }}'></nav>
     {{ template "hole-info" . }}
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div id=editor {{ if $clearSampleCode }} class=clear-sample-code {{ end }}></div>
+    <div id=editor {{ if $showExampleCode }} class=show-example-code {{ end }}></div>
     <div id=golden-container></div>
 </main>
 
