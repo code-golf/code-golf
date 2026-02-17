@@ -2,9 +2,8 @@
 {{ template "hole-header" . }}
 
 {{ $showWhitespace := index .SettingValues "hole" "show-whitespace" }}
-{{ $showExampleCode := index .SettingValues "hole" "show-example-code" }}
 <main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
-    <nav class=tabs id=picker data-style='{{ index .SettingValues "hole" "lang-picker-style" }}'></nav>
+    <nav class=tabs id=picker></nav>
     {{ template "hole-info" . }}
     <div id="picker-status-row">
         <nav class="tabs hide" id=solutionPicker></nav>
@@ -24,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div id=editor {{ if $showExampleCode }} class=show-example-code {{ end }}></div>
+    <div id=editor></div>
     <div id=golden-container></div>
 </main>
 

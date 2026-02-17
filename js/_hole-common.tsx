@@ -134,7 +134,9 @@ export const hole         = decodeURI(location.pathname.slice(1));
 const scorings     = ['Bytes', 'Chars'];
 const solutions    = JSON.parse($('#solutions').innerText);
 
-const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
+const settings = JSON.parse($('#settings').innerText);
+
+const vimMode = settings.keymap === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
 const baseExtensions = [...vimModeExtensions, ...extensions.base, ...extensions.editor];
@@ -251,8 +253,8 @@ function updateLangPicker() {
 
     // Hybrid language selector: make it easy to see your existing solutions and their lengths.
     const picker = $('#picker');
-    const icon   = picker.dataset.style?.includes('icon')  ?? true;
-    const label  = picker.dataset.style?.includes('label') ?? true;
+    const icon   = settings['lang-picker-style'].includes('icon');
+    const label  = settings['lang-picker-style'].includes('label');
     picker.replaceChildren(...sortedLangs.map(l => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
@@ -749,8 +751,7 @@ export function setCodeForLangAndSolution(editor: any) {
     let code = localStorage.getItem(getAutoSaveKey(lang, solution)) ||
         getSolutionCode(lang, solution);
 
-    if ($('#editor').classList.contains('show-example-code'))
-        code ||= currentLang.example;
+    if (settings['show-example-code']) code ||= currentLang.example;
 
     setState(code, editor);
 
