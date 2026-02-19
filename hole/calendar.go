@@ -8,22 +8,20 @@ import (
 )
 
 func generate(month, year int) string {
-	first, total := int((time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC).Weekday()-1+7)%7), time.Date(year, time.Month(month)+1, 0, 0, 0, 0, 0, time.UTC).Day()
+	first := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+	days := first.AddDate(0, 1, -1).Day()
+	offset := (int(first.Weekday()) + 6) % 7
 
 	var calendar strings.Builder
 	calendar.WriteString("Mo Tu We Th Fr Sa Su\n")
-	calendar.WriteString(strings.Repeat("   ", first))
+	calendar.WriteString(strings.Repeat("   ", offset))
 
-	for i := 1; i <= total; i++ {
-		fmt.Fprintf(&calendar, "%2d ", i)
+	for day := 1; day <= days; day++ {
+		fmt.Fprintf(&calendar, "%2d ", day)
 
-		if (first+i)%7 == 0 {
+		if (day+offset)%7 == 0 || day == days {
 			calendar.WriteByte('\n')
 		}
-	}
-
-	if (first+total)%7 != 0 {
-		calendar.WriteByte('\n')
 	}
 
 	return calendar.String()
