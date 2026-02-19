@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ git ninja-build python3
 
-ENV PATH=/depot_tools:$PATH VER=3.10.9
+ENV PATH=/depot_tools:$PATH VER=3.11.0
 
 RUN git clone --progress https://chromium.googlesource.com/chromium/tools/depot_tools
 
@@ -13,10 +13,6 @@ WORKDIR /dart
 RUN fetch --force dart
 
 WORKDIR /dart/sdk
-
-# Remove this conflicting folder so that `gclient` can
-# sync dependencies with the SDK version after checkout.
-RUN rm -r third_party/perfetto
 
 RUN git checkout $VER \
  && gclient sync -D
