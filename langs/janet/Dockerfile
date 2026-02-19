@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-ENV LDFLAGS='-static' LIBJANET_LDFLAGS='' VER=1.41.1
+ENV LDFLAGS='-static' LIBJANET_LDFLAGS='' VER=1.41.2
 
 RUN curl -#L https://github.com/janet-lang/janet/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1
