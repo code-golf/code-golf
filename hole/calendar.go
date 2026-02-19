@@ -7,12 +7,8 @@ import (
 	"time"
 )
 
-func generate(s string) string {
+func generate(month, year int) string {
 	var calendar strings.Builder
-
-	fields := strings.Fields(s)
-	month, year := parseInt(fields[0]), parseInt(fields[1])
-
 	calendar.WriteString("Mo Tu We Th Fr Sa Su\n")
 
 	first, total := int((time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC).Weekday()-1+7)%7), time.Date(year, time.Month(month)+1, 0, 0, 0, 0, 0, time.UTC).Day()
@@ -68,11 +64,11 @@ var _ = answerFunc("calendar", func() []Answer {
 			year = 1800 + 100*(i-18)
 		}
 
-		argument := fmt.Sprintf("%.2d %d", month+1, year)
+		month++
 
 		tests[i] = test{
-			argument,
-			generate(argument),
+			fmt.Sprintf("%.2d %d", month, year),
+			generate(month, year),
 		}
 
 		i++
