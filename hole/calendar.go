@@ -41,9 +41,9 @@ func isLeap(year int) bool {
 }
 
 var _ = answerFunc("calendar", func() []Answer {
-	tests := make([]test, 0, 50)
+	tests := make([]test, 50)
 
-	for i := 0; i < 50; {
+	for i := 0; i < len(tests); {
 		month, year := rand.IntN(12), randInt(1800, 2400)
 
 		if i < 12 {
@@ -68,14 +68,14 @@ var _ = answerFunc("calendar", func() []Answer {
 			year = 1800 + 100*(i-18)
 		}
 
-		i++
-
 		argument := fmt.Sprintf("%.2d %d", month+1, year)
 
-		tests = append(tests, test{
+		tests[i] = test{
 			argument,
 			generate(argument),
-		})
+		}
+
+		i++
 	}
 
 	return outputTests(shuffle(tests))
