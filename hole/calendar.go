@@ -7,24 +7,24 @@ import (
 	"time"
 )
 
-func generate(month, year int) string {
+func calendar(month, year int) string {
 	first := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
 	days := first.AddDate(0, 1, -1).Day()
 	offset := (int(first.Weekday()) + 6) % 7
 
-	var calendar strings.Builder
-	calendar.WriteString("Mo Tu We Th Fr Sa Su\n")
-	calendar.WriteString(strings.Repeat("   ", offset))
+	var cal strings.Builder
+	cal.WriteString("Mo Tu We Th Fr Sa Su\n")
+	cal.WriteString(strings.Repeat("   ", offset))
 
 	for day := 1; day <= days; day++ {
-		fmt.Fprintf(&calendar, "%2d ", day)
+		fmt.Fprintf(&cal, "%2d ", day)
 
 		if (day+offset)%7 == 0 || day == days {
-			calendar.WriteByte('\n')
+			cal.WriteByte('\n')
 		}
 	}
 
-	return calendar.String()
+	return cal.String()
 }
 
 func isLeap(year int) bool {
@@ -63,7 +63,7 @@ var _ = answerFunc("calendar", func() []Answer {
 
 		tests[i] = test{
 			fmt.Sprintf("%.2d %d", month, year),
-			generate(month, year),
+			calendar(month, year),
 		}
 
 		i++
