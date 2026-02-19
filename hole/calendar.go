@@ -22,7 +22,7 @@ func generate(s string) string {
 	}
 
 	for i := 1; i <= total; i++ {
-		calendar.WriteString(fmt.Sprintf("%2d ", i))
+		fmt.Fprintf(&calendar, "%2d ", i)
 
 		if (first+i)%7 == 0 {
 			calendar.WriteByte('\n')
@@ -44,8 +44,6 @@ var _ = answerFunc("calendar", func() []Answer {
 	tests := make([]test, 0, 50)
 
 	for i := 0; i < 50; {
-		var argument strings.Builder
-
 		month, year := rand.IntN(12), randInt(1800, 2400)
 
 		if i < 12 {
@@ -72,11 +70,11 @@ var _ = answerFunc("calendar", func() []Answer {
 
 		i++
 
-		argument.WriteString(fmt.Sprintf("%.2d %d", month+1, year))
+		argument := fmt.Sprintf("%.2d %d", month+1, year)
 
 		tests = append(tests, test{
-			argument.String(),
-			generate(argument.String()),
+			argument,
+			generate(argument),
 		})
 	}
 
