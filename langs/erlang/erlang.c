@@ -6,7 +6,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* erlang = "/usr/bin/escript", *erlc = "/usr/bin/erlc", *code = "main.erl";
+const char* erlang = "/usr/bin/erl", *code = "main.erl";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))
@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
     if (!(fp = fopen(code, "w")))
         ERR_AND_EXIT("fopen");
 
-    if (!fputs("-module(main).\n-export([main/1]).\n", fp))
+    if (!fputs("-module(main).\n-export([main/0,main/1]).\nmain()->main([]).\n", fp))
         ERR_AND_EXIT("fputs");
 
     char buffer[4096];
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
         if (!dup2(STDERR_FILENO, STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 
-        execl(erlc, erlc, code, NULL);
+        execl(erlang, erlang, "-compile", code, NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -56,11 +56,15 @@ int main(int argc, char* argv[]) {
     if (remove(code))
         ERR_AND_EXIT("remove");
 
-    int eargc = argc + 1;
+    int eargc = argc + 6;
     char** eargv = malloc(eargc * sizeof(char*));
     eargv[0] = (char*) erlang;
-    eargv[1] = "main.beam";
-    memcpy(&eargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    eargv[1] = "-s";
+    eargv[2] = "init";
+    eargv[3] = "stop";
+    eargv[4] = "-S";
+    eargv[5] = eargv[6] = "main";
+    memcpy(&eargv[7], &argv[2], (argc - 2) * sizeof(char*));
     eargv[eargc - 1] = NULL;
 
     execv(erlang, eargv);
