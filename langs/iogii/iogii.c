@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* iogii = "/usr/local/bin/iogii", *ghcii = "/usr/bin/ghcii", *code[2] = {"code.iog", "code.ism"}, *input = "argv.txt";
+const char* iogii = "/usr/local/bin/iogii", *ghcii = "/usr/bin/ghcii", *code[2] = {"code.iog", "code.ism"};
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -34,9 +34,10 @@ int main(int argc, char* argv[]) {
         ERR_AND_EXIT("fclose");
 
     pid_t pid;
-    int fd;
 
     if (!(pid = fork())) {
+        int fd;
+
         if (!dup2(fd = open(code[1], O_CREAT | O_TRUNC | O_WRONLY, 0644), STDOUT_FILENO))
             ERR_AND_EXIT("dup2");
 
@@ -60,36 +61,13 @@ int main(int argc, char* argv[]) {
     if (remove(code[0]))
         ERR_AND_EXIT("remove");
 
-    if (!(fd = open(input, O_CREAT | O_TRUNC | O_WRONLY, 0644)))
-        ERR_AND_EXIT("open");
+    int iargc = argc + 1;
+    char** iargv = malloc(iargc * sizeof(char*));
+    iargv[0] = (char*) ghcii;
+    iargv[1] = (char*) code[1];
+    memcpy(&iargv[2], &argv[2], (argc - 2) * sizeof(char*));
+    iargv[iargc - 1] = NULL;
 
-    for (int i = 2; i < argc; i++)
-        if (!write(fd, argv[i], strlen(argv[i])) || !write(fd, "\n", sizeof(char))) {
-            if (close(fd))
-                ERR_AND_EXIT("close");
-
-            ERR_AND_EXIT("write");
-        }
-
-    if (close(fd))
-        ERR_AND_EXIT("close");
-
-    if (!(pid = fork())) {
-        if (dup2(open(input, O_RDONLY), STDIN_FILENO))
-            ERR_AND_EXIT("dup2");
-
-        execl(ghcii, ghcii, code[1], NULL);
-        ERR_AND_EXIT("execl");
-    }
-
-    waitpid(pid, &status, 0);
-
-    if (!WIFEXITED(status))
-        exit(EXIT_FAILURE);
-
-    if (WEXITSTATUS(status))
-        return WEXITSTATUS(status);
-
-    if (remove(code[1]))
-        ERR_AND_EXIT("remove");
+    execv(ghcii, iargv);
+    ERR_AND_EXIT("execv");
 }

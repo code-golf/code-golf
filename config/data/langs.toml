@@ -453,8 +453,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/clojure', '-e', '$code' ]
-size    = '64.3 MiB'
-version = 'Babashka 1.12.214'
+size    = '68.6 MiB'
+version = 'Babashka 1.12.215'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -613,8 +613,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '118 MiB'
-version = '3.10.9'
+size    = '119 MiB'
+version = '3.11.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1085,8 +1085,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '977 KiB'
-version = '1.40.1'
+size    = '985 KiB'
+version = '1.41.2'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1124,7 +1124,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '46.6 MiB'
-version = 'V8 14.5.201.7'
+version = 'V8 14.5.201.9'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1318,8 +1318,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '79.5 MiB'
-version = '5.4.0'
+size    = '79.6 MiB'
+version = '5.4.1'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -1479,8 +1479,8 @@ ForEach ($arg in $args) {
 [Prolog]
 args    = [ '/usr/bin/prolog', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '57.3 MiB'
-version = 'SWI-Prolog 10.0.0'
+size    = '57.4 MiB'
+version = 'SWI-Prolog 10.0.1'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -1889,8 +1889,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '29.4 MiB'
-version    = '0.18.0'
+size       = '29.5 MiB'
+version    = '0.18.1'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
@@ -1976,8 +1976,8 @@ int main(string[] args) {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
-size    = '25.2 MiB'
-version = '9.1'
+size    = '24.4 MiB'
+version = '9.2'
 website = 'https://www.vim.org'
 example = '''
 " Printing

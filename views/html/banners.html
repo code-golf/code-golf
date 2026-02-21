@@ -2,7 +2,7 @@
 
 {{ range .Root.Banners }}
     {{ if and $.Root.Golfer
-        (eq $.Hidden (not (index $.Root.Golfer.Settings "hide-banner" .HideKey))) }}
+        (eq $.Hidden (not (index $.Root.SettingValues "hide-banner" .HideKey))) }}
             {{ continue }}
     {{ end }}
 

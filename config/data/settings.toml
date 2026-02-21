@@ -1,3 +1,5 @@
+hide-banner = []
+
 [['golfer/cheevos']]
 id      = 'show-cheevos'
 name    = 'Show Achievements'
@@ -44,6 +46,11 @@ options = [
     { id = '',     name = 'Classic' },
     { id = 'tabs', name = 'Multi-Window (WIP)' },
 ]
+
+[[hole]]
+id      = 'show-example-code'
+name    = 'Show Example Code for Language'
+default = true
 
 [[hole]]
 id      = 'show-whitespace'

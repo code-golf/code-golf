@@ -2,7 +2,7 @@
 {{ if eq $name "hole-tabs" }}{{ $name = "hole" }}{{ end }}
 
 {{ range $i, $setting := .Settings }}
-    {{ $value := index $.Golfer.Settings $name .ID }}
+    {{ $value := index $.SettingValues $name .ID }}
 
 {{ if .Checkbox }}
     <fieldset>

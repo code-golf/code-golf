@@ -134,7 +134,9 @@ export const hole         = decodeURI(location.pathname.slice(1));
 const scorings     = ['Bytes', 'Chars'];
 const solutions    = JSON.parse($('#solutions').innerText);
 
-const vimMode = JSON.parse($('#keymap').innerText) === 'vim';
+const settings = JSON.parse($('#settings').innerText);
+
+const vimMode = settings['editor-keymap'] === 'vim';
 const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
 const baseExtensions = [...vimModeExtensions, ...extensions.base, ...extensions.editor];
@@ -251,8 +253,8 @@ function updateLangPicker() {
 
     // Hybrid language selector: make it easy to see your existing solutions and their lengths.
     const picker = $('#picker');
-    const icon   = picker.dataset.style?.includes('icon')  ?? true;
-    const label  = picker.dataset.style?.includes('label') ?? true;
+    const icon   = settings['lang-picker-style'].includes('icon');
+    const label  = settings['lang-picker-style'].includes('label');
     picker.replaceChildren(...sortedLangs.map(l => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
@@ -728,13 +730,13 @@ export function updateLocalStorage(code: string) {
 export function updateRestoreLinkVisibility(editor: any) {
     const restoreLink = $('#restoreLink');
     if (restoreLink instanceof HTMLAnchorElement) {
-        const serverCode = getSolutionCode(lang, solution);
-        const sampleCode = currentLang.example;
+        const serverCode  = getSolutionCode(lang, solution);
+        const exampleCode = currentLang.example;
         const currentCode = editor?.state.doc.toString();
         restoreLink.classList.toggle('hide',
-            (!serverCode && currentCode !== sampleCode) || currentCode === serverCode);
+            (!serverCode && currentCode !== exampleCode) || currentCode === serverCode);
         restoreLink.textContent =
-            currentCode === sampleCode ? 'Clear sample code' : 'Restore solution';
+            currentCode === exampleCode ? 'Clear example code' : 'Restore solution';
     }
 }
 
@@ -746,8 +748,12 @@ export function setCodeForLangAndSolution(editor: any) {
             setSolution(0);
     }
 
-    setState(localStorage.getItem(getAutoSaveKey(lang, solution)) ||
-        getSolutionCode(lang, solution) || currentLang.example, editor);
+    let code = localStorage.getItem(getAutoSaveKey(lang, solution)) ||
+        getSolutionCode(lang, solution);
+
+    if (settings['show-example-code']) code ||= currentLang.example;
+
+    setState(code, editor);
 
     if (currentLang.assembly) scoring = 0;
     const charsTab = $('#scoringTabs a:last-child');

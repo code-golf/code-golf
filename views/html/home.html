@@ -46,9 +46,9 @@
 {{ range .Data }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if $.Golfer }}
-        {{ $lang    := index $.Golfer.Settings $.Name "points-for" }}
-        {{ $scoring := index $.Golfer.Settings $.Name "scoring"    }}
-        {{ if eq (index $.Golfer.Settings $.Name "navigate-to") "rankings" }}
+        {{ $lang    := index $.SettingValues $.Name "points-for" }}
+        {{ $scoring := index $.SettingValues $.Name "scoring"    }}
+        {{ if eq (index $.SettingValues $.Name "navigate-to") "rankings" }}
             href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
         {{ else }}
             href='{{ .Hole.ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'

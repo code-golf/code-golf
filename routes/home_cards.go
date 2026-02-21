@@ -142,8 +142,9 @@ func getHomeCards(r *http.Request, b bool) (cards []Card) {
 
 	var query string
 	var bind []any
+	var settings = session.Settings(r)["home"]
 
-	if lang := golfer.Settings["home"]["points-for"]; lang == "all" {
+	if lang := settings["points-for"]; lang == "all" {
 		query = `WITH points AS (
 			   SELECT DISTINCT ON (hole) hole, lang, points
 			     FROM rankings
@@ -153,7 +154,7 @@ func getHomeCards(r *http.Request, b bool) (cards []Card) {
 			     FROM holes
 			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
-		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID}
+		bind = []any{settings["scoring"], golfer.ID}
 	} else {
 		query = `WITH points AS (
 			   SELECT hole, lang, points_for_lang
@@ -163,7 +164,7 @@ func getHomeCards(r *http.Request, b bool) (cards []Card) {
 			     FROM holes
 			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
-		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID, lang}
+		bind = []any{settings["scoring"], golfer.ID, lang}
 	}
 
 	if err := session.Database(r).Select(&cards, query, bind...); err != nil {

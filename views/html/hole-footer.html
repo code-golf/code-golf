@@ -22,8 +22,8 @@
 
 <div id=popups></div>
 
-<script id=keymap type=application/json>
-    {{ setting .Golfer "hole" "editor-keymap" }}
+<script id=settings type=application/json>
+    {{ index .SettingValues "hole" }}
 </script>
 
 <script id=case-fold type=application/json>{{ .Data.Hole.CaseFold }}</script>

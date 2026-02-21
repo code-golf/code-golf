@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-ENV VER=5.4.0
+ENV VER=5.4.1
 
 RUN curl -#L https://github.com/ocaml/ocaml/archive/refs/tags/$VER.tar.gz \
   | tar xz --strip-components 1

@@ -1,13 +1,13 @@
 {{ template "header"      . }}
 {{ template "hole-header" . }}
 
-{{ $showWhitespace := setting .Golfer "hole" "show-whitespace" }}
+{{ $showWhitespace := index .SettingValues "hole" "show-whitespace" }}
 <main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
     <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
         <summary>Details</summary>
         {{ template "hole-details" . }}
     </details>
-    <nav class=tabs id=picker data-style='{{ setting .Golfer "hole" "lang-picker-style" }}'></nav>
+    <nav class=tabs id=picker></nav>
     <nav class=tabs id=solutionPicker></nav>
     <div id=editor-and-rankings>
         <div id=editor>
