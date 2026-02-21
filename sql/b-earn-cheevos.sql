@@ -57,7 +57,8 @@ BEGIN
 
     -- 📚 Archivist
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
-     WHERE unnest IN ('basic', 'cobol', 'common-lisp', 'forth', 'fortran');
+     WHERE unnest IN
+           ('algol-68', 'basic', 'cobol', 'common-lisp', 'forth', 'fortran');
     IF hole = 'isbn' AND found THEN
         earned := earn(earned, 'archivist', user_id); END IF;
 
