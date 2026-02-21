@@ -892,23 +892,23 @@ for (arg in args)
 [Harbour]
 args       = [ '/usr/bin/harbour', '-' ]
 experiment = 1614
-size       = '12.2 MiB'
+size       = '2.75 MiB'
 version    = '3.0.0'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
 
 // Printing
-?? "Hello, World!"
+OutStd( "Hello, World!" + hb_eol() )
 
 // Looping
 FOR i := 0 TO 9
-    ? hb_ntos( i )
+    OutStd( hb_ntos( i ) + hb_eol() )
 NEXT
 
 // Accessing arguments
 FOR i := 1 TO PCount()
-    ? hb_PValue( i )
+    OutStd( hb_PValue( i ) + hb_eol() )
 NEXT
 '''
 
