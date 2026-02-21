@@ -15,8 +15,9 @@
     </div>
 {{ end }}
 
-{{ $show := setting .Golfer .Name "with-solution" }}
-
+{{ $lang    := index .SettingValues .Name "points-for"    }}
+{{ $scoring := index .SettingValues .Name "scoring"       }}
+{{ $show    := index .SettingValues .Name "with-solution" }}
 <main id=home>
 {{ if .Golfer }}
     <div class=span>
@@ -27,7 +28,7 @@
     {{ range $setting := .Settings }}
         {{ if ne .ID "with-solution" }}
             <input name="{{ .ID }}" type=hidden
-                value="{{ index $.Golfer.Settings $.Name .ID }}">
+                value="{{ index $.SettingValues $.Name .ID }}">
             {{ continue }}
         {{ end }}
         {{ range $setting.Options }}
@@ -45,16 +46,10 @@
 {{ end }}
 {{ range .Data }}
     <a class="card {{ .Hole.CategoryColor }}"
-    {{ if $.Golfer }}
-        {{ $lang    := index $.SettingValues $.Name "points-for" }}
-        {{ $scoring := index $.SettingValues $.Name "scoring"    }}
-        {{ if eq (index $.SettingValues $.Name "navigate-to") "rankings" }}
-            href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
-        {{ else }}
-            href='{{ .Hole.ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'
-        {{ end }}
+    {{ if eq (index $.SettingValues $.Name "navigate-to") "rankings" }}
+        href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
     {{ else }}
-        href="{{ .Hole.ID }}"
+        href='{{ .Hole.ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'
     {{ end }}
         title="{{ .Hole.Name }} ({{ .Hole.Category }})">
         <h2>{{ .Hole.Name }}</h2>

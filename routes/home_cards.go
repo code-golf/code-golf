@@ -28,7 +28,7 @@ func init() {
 }
 
 func getGolferCards(r *http.Request, cards []Card) (golferCards []Card) {
-	settings := session.Golfer(r).Settings["home"]
+	settings := session.Settings(r)["home"]
 
 	for _, c := range cards {
 		if opt := settings["pick-category"]; opt != "all" {
