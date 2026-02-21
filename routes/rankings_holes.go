@@ -47,7 +47,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.Hole = config.AllHoleByID[data.HoleID]; data.Hole != nil {
-		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
+		// This page has its own filters, so use the unfiltered home cards.
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole, false)
 	}
 
 	if data.Scoring == "bytes" {
