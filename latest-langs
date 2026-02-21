@@ -93,7 +93,7 @@ constant %paths = (
     'Rockstar'     => 'github.com/RockstarLang/rockstar/releases/latest',
     'Ruby'         => 'endoflife.date/api/ruby.json',
     'Rust'         => 'github.com/rust-lang/rust/releases/latest',
-    'Scala'        => 'github.com/scala/scala/releases/latest',
+    'Scala'        => 'github.com/VirtusLab/scala-cli/releases/latest',
     'Scheme'       => 'github.com/cisco/ChezScheme/releases/latest',
     'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
     'SQL'          => 'sqlite.org/index.html',
