@@ -27,9 +27,7 @@ func init() {
 	}
 }
 
-func getGolferCards(r *http.Request, cards []Card) (golferCards []Card) {
-	settings := session.Settings(r)["home"]
-
+func getGolferCards(cards []Card, settings map[string]any) (golferCards []Card) {
 	for _, c := range cards {
 		if opt := settings["cards-from"]; opt != "all" {
 			if opt != c.Hole.CategoryColor {
@@ -171,5 +169,5 @@ func getHomeCards(r *http.Request, b bool) (cards []Card) {
 		panic(err)
 	}
 
-	return getGolferCards(r, cards)
+	return getGolferCards(cards, settings)
 }
