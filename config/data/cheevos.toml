@@ -110,7 +110,7 @@ name        = 'Archivist'
 emoji       = '📚'
 description = 'Solve <a href=/isbn>ISBN</a> in any three languages that predate ISBN.'
 holes       = ['isbn']
-langs       = ['basic', 'cobol', 'common-lisp', 'forth', 'fortran']
+langs       = ['algol-68', 'basic', 'cobol', 'common-lisp', 'forth', 'fortran']
 target      = 3
 
 [['Hole/Lang Specific']]
