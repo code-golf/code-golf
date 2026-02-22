@@ -58,8 +58,8 @@ name    = 'Show Whitespace in Editor'
 default = true
 
 [[home]]
-id      = 'pick-category'
-name    = 'Show Cards For'
+id      = 'cards-from'
+name    = 'Show Cards From'
 options = [
     { id = 'all',    name = 'All Categories' },
     { id = 'red',    name = 'Art'            },
@@ -71,7 +71,7 @@ options = [
 ]
 
 [[home]]
-id      = 'with-solution'
+id      = 'scoring-cards'
 options = [
     { id = 'all',      name = 'All'      },
     { id = 'solved',   name = 'Solved'   },

@@ -17,7 +17,7 @@
 
 {{ $lang    := index .SettingValues .Name "points-for"    }}
 {{ $scoring := index .SettingValues .Name "scoring"       }}
-{{ $show    := index .SettingValues .Name "with-solution" }}
+{{ $show    := index .SettingValues .Name "scoring-cards" }}
 <main id=home>
 {{ if .Golfer }}
     <div class=span>
@@ -26,7 +26,7 @@
             <input name=path type=hidden value="{{ .Path }}">
 
     {{ range $setting := .Settings }}
-        {{ if ne .ID "with-solution" }}
+        {{ if ne .ID "scoring-cards" }}
             <input name="{{ .ID }}" type=hidden
                 value="{{ index $.SettingValues $.Name .ID }}">
             {{ continue }}

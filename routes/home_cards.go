@@ -31,12 +31,12 @@ func getGolferCards(r *http.Request, cards []Card) (golferCards []Card) {
 	settings := session.Settings(r)["home"]
 
 	for _, c := range cards {
-		if opt := settings["pick-category"]; opt != "all" {
+		if opt := settings["cards-from"]; opt != "all" {
 			if opt != c.Hole.CategoryColor {
 				continue
 			}
 		}
-		if opt := settings["with-solution"]; c.Lang == nil && opt == "solved" || c.Lang != nil && opt == "unsolved" {
+		if opt := settings["scoring-cards"]; c.Lang == nil && opt == "solved" || c.Lang != nil && opt == "unsolved" {
 			continue
 		}
 		golferCards = append(golferCards, c)
