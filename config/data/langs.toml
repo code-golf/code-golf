@@ -193,8 +193,8 @@ syscall
 
 [AWK]
 args    = [ '/usr/bin/awk', '-v', 'RS=\0', '$code' ]
-size    = '1.87 MiB'
-version = 'GNU AWK 5.3.2'
+size    = '2.30 MiB'
+version = 'GNU AWK 5.4.0'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -1278,8 +1278,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.37 MiB'
-version    = '0.708'
+size       = '5.51 MiB'
+version    = '0.709'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
