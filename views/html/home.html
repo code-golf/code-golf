@@ -15,9 +15,6 @@
     </div>
 {{ end }}
 
-{{ $lang    := index .SettingValues .Name "points-for"    }}
-{{ $scoring := index .SettingValues .Name "scoring"       }}
-{{ $show    := index .SettingValues .Name "scoring-cards" }}
 <main id=home>
 {{ if .Golfer }}
     <div class=span>
@@ -33,7 +30,7 @@
         {{ end }}
         {{ range $setting.Options }}
             <button name="{{ $setting.ID }}" value="{{ .ID }}"
-                {{ if eq $show .ID }} disabled {{ end }}>
+            {{ if eq (index $.SettingValues $.Name "scoring-cards") .ID }} disabled {{ end }}>
                 {{ .Name }}
             </button>
         {{ end }}
@@ -45,6 +42,8 @@
     </div>
 {{ end }}
 {{ range .Data }}
+    {{ $lang    := index $.SettingValues $.Name "points-for" }}
+    {{ $scoring := index $.SettingValues $.Name "scoring"    }}
     <a class="card {{ .Hole.CategoryColor }}"
     {{ if eq (index $.SettingValues $.Name "navigate-to") "rankings" }}
         href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
