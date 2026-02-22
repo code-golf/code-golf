@@ -87,17 +87,16 @@ version    = '4.2.0'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
-(import std.Range)
 (import std.Sys)
 
 # Printing
 (print "Hello, World!")
 
 # Looping
-(range:map (range:range 0 10) (fun (i) (print i)))
+(list:forEach (list:iota 0 10) (fun (i) (print i)))
 
 # Accessing arguments
-(list:map sys:args (fun (arg) (print arg)))
+(list:forEach sys:args (fun (arg) (print arg)))
 '''
 
 [Arturo]
