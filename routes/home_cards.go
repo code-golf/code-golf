@@ -29,14 +29,16 @@ func init() {
 
 func getGolferCards(cards []Card, settings map[string]any) (golferCards []Card) {
 	for _, c := range cards {
-		if opt := settings["cards-from"]; opt != "all" {
-			if opt != c.Hole.CategoryColor {
+		if show := settings["cards-from"]; show != "all" {
+			if show != c.Hole.CategoryColor {
 				continue
 			}
 		}
-		if opt := settings["scoring-cards"]; c.Lang == nil && opt == "solved" || c.Lang != nil && opt == "unsolved" {
+
+		if show := settings["scoring-cards"]; c.Lang == nil && show == "solved" || c.Lang != nil && show == "unsolved" {
 			continue
 		}
+
 		golferCards = append(golferCards, c)
 	}
 
@@ -133,7 +135,7 @@ func getPrevNextHole(r *http.Request, hole *config.Hole, b bool) (prev, next *co
 func getHomeCards(r *http.Request, b bool) (cards []Card) {
 	golfer := session.Golfer(r)
 
-	// Return unfiltered cards to guest users or upon caller request.
+	// Return the default cards to guest users or upon caller request.
 	if golfer == nil || !b {
 		return cardList
 	}
