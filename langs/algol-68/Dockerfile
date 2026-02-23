@@ -7,9 +7,12 @@ ENV LDFLAGS='-static' VER=3.10.10
 RUN curl -#L https://jmvdveer.home.xs4all.nl/algol68g-$VER.tar.gz \
   | tar xz --strip-components 1
 
-RUN ./configure   \
-    --prefix=/usr \
- && make install  \
+RUN ./configure             \
+    --enable-arch=x86-64-v3 \
+    --enable-generic        \
+    --enable-stable         \
+    --prefix=/usr           \
+ && make install            \
  && strip /usr/bin/a68g
 
 FROM codegolf/lang-base
