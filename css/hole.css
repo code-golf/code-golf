@@ -334,15 +334,15 @@ h2 {
 
     > a.has-solution { border-color: var(--green) }
 
-    > a {
+    > a, select {
         align-items: center;
         border: 1px solid var(--grey);
         border-radius: .25rem;
         display: flex;
-        font-size: 80%;
+        font-size: 72%;
         gap: .5rem;
         height: 2.375rem;
-        justify-content: space-between;
+        justify-content: center;
         padding: .375rem .5rem;
         width: 9.531rem;
 

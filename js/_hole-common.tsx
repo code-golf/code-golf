@@ -261,8 +261,6 @@ function updateLangPicker() {
         if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
         if (label) tab.append(l.name);
 
-        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
-
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
             const chars = charLen(getSolutionCode(l.id, 1));
@@ -278,6 +276,8 @@ function updateLangPicker() {
                  !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
             return null;
         }
+
+        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
 
         return tab;
     }).filter((x: Node | null) => x), ...selectNodes);
