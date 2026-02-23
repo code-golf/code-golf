@@ -270,6 +270,9 @@ func runCode(
 
 	// Run arguments.
 	switch lang.ID {
+	case "algol-68":
+		args := strings.Join(run.Args, "\n")
+		cmd.Args = append(cmd.Args, []string{args}...)
 	case "awk", "brainfuck", "fish":
 		// Hole args passed through stdin for these langs separated by a null byte
 		args := ""
