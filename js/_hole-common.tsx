@@ -261,6 +261,8 @@ function updateLangPicker() {
         if (icon)  tab.append(<svg><use href={l['logo-url']+'#a'}/></svg>);
         if (label) tab.append(l.name);
 
+        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
+
         if (getSolutionCode(l.id, 0)) {
             const bytes = byteLen(getSolutionCode(l.id, 0));
             const chars = charLen(getSolutionCode(l.id, 1));
@@ -276,8 +278,6 @@ function updateLangPicker() {
                  !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
             return null;
         }
-
-        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
 
         return tab;
     }).filter((x: Node | null) => x), ...selectNodes);
@@ -303,7 +303,9 @@ export async function refreshScores(editor: any) {
      || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
         $('#solutionPicker').replaceChildren(...scorings.map((scoring, iNumber) => {
             const i = iNumber as 0 | 1;
-            const a = <a>Fewest {scoring}</a>;
+            const a = <a><svg><use href={"/dist/svg/" +
+                ['bytes-MIU3NVUA', 'chars-57HAGKFJ'][i] + ".svg#a"}/></svg>
+                Fewest {scoring}</a>;
 
             const code = getSolutionCode(lang, i);
             if (code) a.append(' ', <sup>{comma(getScoring(code, i))}</sup>);

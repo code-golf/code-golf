@@ -339,9 +339,12 @@ h2 {
         border: 1px solid var(--grey);
         border-radius: .25rem;
         display: flex;
+        font-size: 80%;
         gap: .5rem;
         height: 2.375rem;
+        justify-content: space-between;
         padding: .375rem .5rem;
+        width: 9.531rem;
 
         svg {
             height: 1rem;
