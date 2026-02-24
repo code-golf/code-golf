@@ -6,7 +6,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-func sponsors(db *sqlx.DB) (limits []rateLimit) {
+func sponsors(db *sqlx.DB) (limits []rateLimit, err error) {
 	var query struct {
 		RateLimit rateLimit
 		Viewer    struct {
@@ -21,7 +21,7 @@ func sponsors(db *sqlx.DB) (limits []rateLimit) {
 	}
 
 	if err := client.Query(context.Background(), &query, nil); err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	limits = append(limits, query.RateLimit)
@@ -38,9 +38,5 @@ func sponsors(db *sqlx.DB) (limits []rateLimit) {
 		)
 	}
 
-	if err := tx.Commit(); err != nil {
-		panic(err)
-	}
-
-	return
+	return limits, tx.Commit()
 }

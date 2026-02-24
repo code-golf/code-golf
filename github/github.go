@@ -41,7 +41,7 @@ func Run(db *sqlx.DB, hourly bool) {
 		limit rateLimit
 	)
 
-	var jobs []func(*sqlx.DB) []rateLimit
+	var jobs []func(*sqlx.DB) ([]rateLimit, error)
 	if hourly {
 		jobs = append(jobs, updateUsernames)
 	} else {
@@ -49,7 +49,13 @@ func Run(db *sqlx.DB, hourly bool) {
 	}
 
 	for _, job := range jobs {
-		for _, limit = range job(db) {
+		limits, err := job(db)
+		if err != nil {
+			log.Print(err)
+			continue
+		}
+
+		for _, limit = range limits {
 			cost += limit.Cost
 		}
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/shurcooL/graphql"
 )
 
-func pullRequests(db *sqlx.DB) (limits []rateLimit) {
+func pullRequests(db *sqlx.DB) (limits []rateLimit, err error) {
 	pullRequests := map[int]time.Time{}
 
 	var query struct {
@@ -30,7 +30,7 @@ func pullRequests(db *sqlx.DB) (limits []rateLimit) {
 
 	for {
 		if err := client.Query(context.Background(), &query, variables); err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		limits = append(limits, query.RateLimit)
