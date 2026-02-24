@@ -40,9 +40,9 @@ x is a no-op.
 '''
 
 ['ALGOL 68']
-args     = [ '/usr/bin/algol-68', '--execute', '$code', '--exit' ]
+args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
-size     = '1.40 MiB'
+size     = '1.37 MiB'
 version  = 'Algol 68 Genie 3.10.10'
 website  = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example  = '''
