@@ -389,8 +389,8 @@ foreach (String arg in args)
 
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
-size    = '112 MiB'
-version = 'Clang 21.1.8'
+size    = '115 MiB'
+version = 'Clang 22.1.0'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '46.6 MiB'
-version = 'V8 14.5.201.9'
+version = 'V8 14.5.201.12'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1297,8 +1297,8 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.0 MiB'
-version = '2.2.6'
+size    = '14.9 MiB'
+version = '2.2.8'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1558,8 +1558,8 @@ for (arg in commandArgs(TRUE)) {
 [Racket]
 args       = [ '/usr/bin/racket', '-e', '$code', '--' ]
 experiment = 1358
-size       = '29.6 MiB'
-version    = '9.0'
+size       = '29.7 MiB'
+version    = '9.1'
 website    = 'https://racket-lang.org'
 example    = '''
 ; Printing
