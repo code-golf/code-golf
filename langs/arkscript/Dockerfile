@@ -6,6 +6,9 @@ ENV VER=4.3.0
 
 ADD https://github.com/ArkScript-lang/Ark.git#v$VER /arkscript
 
+# HACK Tweak the CMake file to link libArkReactor statically.
+RUN sed -i 's/ArkReactor SHARED/ArkReactor STATIC/' /arkscript/CMakeLists.txt
+
 RUN cmake -B build -S arkscript     \
     -DARK_BUILD_EXE='ON'            \
     -DARK_ENABLE_SYSTEM='OFF'       \
@@ -18,12 +21,11 @@ RUN cmake -B build -S arkscript     \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1       /lib/
-COPY --from=0 /usr/bin/arkscript        /usr/bin/
-COPY --from=0 /usr/lib/libArkReactor.so \
-              /usr/lib/libgcc_s.so.1    \
-              /usr/lib/libstdc++.so.6   /usr/lib/
-COPY --from=0 /usr/lib/Ark/std/*.ark    /usr/lib/std/
+COPY --from=0 /lib/ld-musl-*.so.1     /lib/
+COPY --from=0 /usr/bin/arkscript      /usr/bin/
+COPY --from=0 /usr/lib/libgcc_s.so.1  \
+              /usr/lib/libstdc++.so.6 /usr/lib/
+COPY --from=0 /usr/lib/Ark/std/*.ark  /usr/lib/std/
 
 ENTRYPOINT ["arkscript"]
 
