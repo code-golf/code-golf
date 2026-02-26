@@ -25,7 +25,7 @@ COPY --from=0 /lib/ld-musl-*.so.1     /lib/
 COPY --from=0 /usr/bin/arkscript      /usr/bin/
 COPY --from=0 /usr/lib/libgcc_s.so.1  \
               /usr/lib/libstdc++.so.6 /usr/lib/
-COPY --from=0 /usr/lib/Ark/std/*.ark  /usr/lib/std/
+COPY --from=0 /usr/lib/Ark            /usr/lib/Ark
 
 ENTRYPOINT ["arkscript"]
 
