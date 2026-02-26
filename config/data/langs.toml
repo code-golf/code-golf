@@ -80,10 +80,10 @@ example    = '''
 
 [ArkScript]
 args       = [ '/usr/bin/arkscript', '-' ]
-env        = [ 'ARKSCRIPT_PATH=/usr/local/lib' ]
+env        = [ 'ARKSCRIPT_PATH=/usr/lib' ]
 experiment = 1656
-size       = '5.16 MiB'
-version    = '4.2.0'
+size       = '5.19 MiB'
+version    = '4.3.0'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
