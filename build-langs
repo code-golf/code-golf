@@ -54,8 +54,8 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
 
     # Version.
     if $id ~~ any <
-        05ab1e apl assembly befunge berry brainfuck cjam erlang
-        fish golfscript hexagony k knight lily luau stax umka
+        05ab1e apl assembly befunge berry brainfuck cjam erlang fish
+        golfscript hexagony k knight luau stax umka
     > {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
 
@@ -69,7 +69,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     else {
         # Some langs output their version number over stderr so merge out/err.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
-            :in, :out, :merge(so $id eq 'forth' | 'scheme');
+            :in, :out, :merge(so $id ~~ any < forth lily scheme >);
 
         $proc.in.say: 'puts [info patchlevel]' if $id eq 'tcl';
         $proc.in.close;
