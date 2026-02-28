@@ -617,11 +617,12 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Simple_continued_fraction' },
 ]
 experiment = 2503
+released = 2026-03-01
 synopsis = 'Convert fractions to continued fractions.'
 preamble = '''
 <p>
     For each fraction argument <code>a/b</code>, print its continued fraction
-    expansion.
+    expansion in the form <code>[a0; a1, a2, ..., an]</code>.
 '''
 
 [Crossword]
@@ -2759,7 +2760,7 @@ acbcab
     processing the entirety of <b>each</b> input string, followed by a space,
     followed by either <code>Accept</code> (if the NFA can reach any accept
     state by processing the string, or, in other words, if the final set of
-    valid states contains an accept state) or <code>Accept</code> (otherwise).
+    valid states contains an accept state) or <code>Reject</code> (otherwise).
     In this case, we may end at either <code>0</code> or <code>3</code> and
     one of them is an accept state (<code>3</code>), so we print
     <code>{0,3} Accept</code>.

@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache cmake curl g++ linux-headers ninja python3
 
-ENV VER=21.1.8
+ENV VER=22.1.0
 
 RUN curl -#L https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz \
   | tar xz --strip-components 1
@@ -27,8 +27,8 @@ RUN cmake -G Ninja                    \
 
 RUN ninja install
 
-RUN strip /usr/lib/libLLVM.so.21.1 \
-          /usr/lib/libclang-cpp.so.21.1
+RUN strip /usr/lib/libLLVM.so.22.1 \
+          /usr/lib/libclang-cpp.so.22.1
 
 COPY cpp.c /
 
@@ -48,10 +48,10 @@ COPY --from=0 /usr/include/sys/*.h              /usr/include/sys/
 COPY --from=0 /usr/lib/Scrt1.o                  \
               /usr/lib/crti.o                   \
               /usr/lib/crtn.o                   \
-              /usr/lib/libLLVM.so.21.1          \
+              /usr/lib/libLLVM.so.22.1          \
               /usr/lib/libbfd-2.45.1.so         \
               /usr/lib/libc.so                  \
-              /usr/lib/libclang-cpp.so.21.1     \
+              /usr/lib/libclang-cpp.so.22.1     \
               /usr/lib/libctf.so.0              \
               /usr/lib/libgcc_s.so              \
               /usr/lib/libgcc_s.so.1            \

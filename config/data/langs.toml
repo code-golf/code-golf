@@ -80,10 +80,10 @@ example    = '''
 
 [ArkScript]
 args       = [ '/usr/bin/arkscript', '-' ]
-env        = [ 'ARKSCRIPT_PATH=/usr/local/lib' ]
+env        = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 experiment = 1656
-size       = '5.16 MiB'
-version    = '4.2.0'
+size       = '2.83 MiB'
+version    = '4.3.0'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
@@ -389,8 +389,8 @@ foreach (String arg in args)
 
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
-size    = '112 MiB'
-version = 'Clang 21.1.8'
+size    = '115 MiB'
+version = 'Clang 22.1.0'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -418,7 +418,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '78.9 MiB'
-version = '0.11.2'
+version = '0.11.3'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '46.6 MiB'
-version = 'V8 14.5.201.9'
+version = 'V8 14.5.201.12'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.51 MiB'
-version    = '0.709'
+size       = '5.53 MiB'
+version    = '0.710'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1297,8 +1297,8 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '15.0 MiB'
-version = '2.2.6'
+size    = '14.9 MiB'
+version = '2.2.8'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1558,8 +1558,8 @@ for (arg in commandArgs(TRUE)) {
 [Racket]
 args       = [ '/usr/bin/racket', '-e', '$code', '--' ]
 experiment = 1358
-size       = '29.6 MiB'
-version    = '9.0'
+size       = '29.7 MiB'
+version    = '9.1'
 website    = 'https://racket-lang.org'
 example    = '''
 ; Printing
@@ -1824,7 +1824,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '561 MiB'
-version = '6.2.3'
+version = '6.2.4'
 website = 'https://swift.org'
 example = '''
 // Printing
