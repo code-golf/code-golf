@@ -1,6 +1,20 @@
 --- /src/a68g/genie-unix.c
 +++ /src/a68g/genie-unix.c
-@@ -228,10 +228,9 @@
+@@ -174,10 +174,9 @@
+   POP_OBJECT (p, &a68g_index, A68G_INT);
+   if (VALUE (&a68g_index) >= 1 && VALUE (&a68g_index) <= A68G (argc)) {
+     char *q = A68G (argv)[VALUE (&a68g_index) - 1];
+-// Allow for spaces ending in # to have A68 comment syntax with '#!'.
+-    size_t n = strlen (q);
+-    while (n > 0 && (IS_SPACE (q[n - 1]) || q[n - 1] == '#')) {
+-      q[--n] = NULL_CHAR;
++    size_t n = strlen (q) - 1;
++    while (n > 0 && IS_SPACE (q[n - 1])) {
++      q[--n] = ' ';
+     }
+     PUSH_REF (p, c_to_a_string (p, q, DEFAULT_WIDTH));
+   } else {
+@@ -228,10 +227,9 @@
    }
    if (k >= 1 && k <= A68G (argc)) {
      char *q = A68G (argv)[k - 1];
