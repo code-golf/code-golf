@@ -1234,7 +1234,7 @@ for (arg in args)
 [Lily]
 args       = [ '/usr/bin/lily', '-s', '$code' ]
 experiment = 2577
-size       = '970 KiB'
+size       = '336 KiB'
 version    = '2.3'
 website    = 'https://lily-lang.org'
 example    = '''
