@@ -418,7 +418,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '78.9 MiB'
-version = '0.11.2'
+version = '0.11.3'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.51 MiB'
-version    = '0.709'
+size       = '5.53 MiB'
+version    = '0.710'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1824,7 +1824,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '561 MiB'
-version = '6.2.3'
+version = '6.2.4'
 website = 'https://swift.org'
 example = '''
 // Printing
