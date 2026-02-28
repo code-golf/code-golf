@@ -83,7 +83,7 @@ args       = [ '/usr/bin/arkscript', '-' ]
 env        = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 experiment = 1656
 size       = '2.83 MiB'
-version    = '4.3.0'
+version    = '4.3.2'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
