@@ -25,6 +25,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"56155a6", "2026-03-01 00:03:47", "continued-fractions", true},
 		{"97670ea", "2026-02-21 17:44:10", "algol-68", false},
 		{"71f1bf6", "2026-02-01 00:00:03", "multitap-input", true},
 		{"fe8fa9d", "2026-01-01 00:01:23", "calendar", true},
