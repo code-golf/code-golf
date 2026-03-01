@@ -303,7 +303,9 @@ export async function refreshScores(editor: any) {
      || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
         $('#solutionPicker').replaceChildren(...scorings.map((scoring, iNumber) => {
             const i = iNumber as 0 | 1;
-            const a = <a>Fewest {scoring}</a>;
+            const a = <a><svg><use href={'/dist/svg/' +
+                ['bytes-MIU3NVUA', 'chars-57HAGKFJ'][i] + '.svg#a'}/></svg>
+                Fewest {scoring}</a>;
 
             const code = getSolutionCode(lang, i);
             if (code) a.append(' ', <sup>{comma(getScoring(code, i))}</sup>);

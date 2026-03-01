@@ -12,7 +12,7 @@ import (
 func holeGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
 		Authors                      []golfer.GolferLink
-		HideDetails                  bool
+		HideDetails, HideLangPicker  bool
 		Hole, PrevHole, NextHole     *config.Hole
 		HoleRedirects, LangRedirects map[string]string
 		Langs                        map[string]*config.Lang
@@ -36,6 +36,10 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 
 	if c, _ := r.Cookie("hide-details"); c != nil {
 		data.HideDetails = true
+	}
+
+	if c, _ := r.Cookie("hide-lang-picker"); c != nil {
+		data.HideLangPicker = true
 	}
 
 	if c, _ := r.Cookie("rankings-view"); c != nil {
