@@ -83,7 +83,7 @@ args       = [ '/usr/bin/arkscript', '-' ]
 env        = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 experiment = 1656
 size       = '2.83 MiB'
-version    = '4.3.2'
+version    = '4.3.3'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
@@ -1576,8 +1576,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '76.5 MiB'
-version   = 'Raku 6.d on Rakudo 2026.01'
+size      = '76.6 MiB'
+version   = 'Raku 6.d on Rakudo 2026.02'
 website   = 'https://raku.org'
 example   = '''
 # Printing
