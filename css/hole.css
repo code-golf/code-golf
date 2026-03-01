@@ -327,6 +327,11 @@ h2 {
     gap: 0.2rem;
 }
 
+#active {
+    float: right;
+    font-weight: bold;
+}
+
 #picker, #solutionPicker {
     gap: .25rem;
 
