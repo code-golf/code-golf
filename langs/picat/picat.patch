@@ -1,0 +1,20 @@
+--- init.c
++++ init.c
+@@ -396,11 +396,14 @@
+ {
+     BPLONG tmp;
+     BPLONG parg;
+-
++    char* arg = main_arg;
++    for (int i = 0, j = 0; i <= strlen(main_arg); i++)
++        if (main_arg[i] != '+')
++            arg[j++] = main_arg[i];
+ #ifdef PICAT
+-    parg = c_str_to_picat_str0(main_arg);
++    parg = c_str_to_picat_str0(arg);
+ #else
+-    parg = bp_build_atom(main_arg);
++    parg = bp_build_atom(arg);
+ #endif
+     tmp = main_args;
+     main_args = bp_build_list();
