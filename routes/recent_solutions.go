@@ -45,7 +45,7 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if data.Hole = config.AllHoleByID[data.HoleID]; data.Hole != nil {
-		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole, false)
 	}
 
 	if err := session.Database(r).Select(

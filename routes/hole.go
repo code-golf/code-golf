@@ -32,7 +32,7 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
+	data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole, true)
 
 	if c, _ := r.Cookie("hide-details"); c != nil {
 		data.HideDetails = true
