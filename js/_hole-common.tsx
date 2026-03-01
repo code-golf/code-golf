@@ -220,7 +220,7 @@ export function setCode(code: string, editor: EditorView | null) {
 }
 
 // Set/clear the hide-lang-picker cookie on language picker toggling.
-export function updateHideLangPickerCookie() {
+export function toggleHideLangPickerCookie() {
     $('#lang-picker').ontoggle = (e: Event) => document.cookie =
         'hide-lang-picker=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
 }
