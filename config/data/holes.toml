@@ -616,7 +616,6 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Continued_fraction' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Simple_continued_fraction' },
 ]
-experiment = 2503
 released = 2026-03-01
 synopsis = 'Convert fractions to continued fractions.'
 preamble = '''
