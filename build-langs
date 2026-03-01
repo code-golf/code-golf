@@ -109,6 +109,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
                 $ver = "Raku $1[0] on Rakudo $0[0]";
             }
             when 'Rexx'        { $ver = "Regina $digits" }
+            when 'Scala'       { $ver = "Scala CLI $digits" }
             when 'Scheme'      { $ver = "Chez Scheme $digits" }
             when 'SQL'         { $ver = "SQLite $digits" }
             default            { $ver = $digits }
