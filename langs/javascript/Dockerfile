@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ git pkgconf procps python3
 
-ENV PATH=/depot_tools:$PATH VER=14.5.201.9
+ENV PATH=/depot_tools:$PATH VER=14.5.201.12
 
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools \
  && fetch v8

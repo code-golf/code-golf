@@ -2,6 +2,7 @@ package config
 
 import (
 	"cmp"
+	"fmt"
 	"html/template"
 	"math/rand/v2"
 	"slices"
@@ -12,6 +13,8 @@ import (
 	"github.com/code-golf/code-golf/pretty"
 	"github.com/lib/pq"
 )
+
+var firstWeek = time.Date(2026, time.January, 19, 0, 0, 0, 0, time.UTC).Unix()
 
 type holeOfTheWeek struct {
 	Hole  *Hole
@@ -27,8 +30,12 @@ func HoleOfTheWeek() (template.HTML, time.Time) {
 		return "", thisWeek
 	}
 
-	html := `<a href="/` + hl.Hole.ID + `">` + hl.Hole.Name +
-		"</a> is the Hole of the Week. Solve it in either "
+	weekNo := 1 + int((thisWeek.Unix()-firstWeek)/(7*86_400))
+	html := fmt.Sprintf(
+		`<a href="/%s">%s</a> is the %d<sup>%s</sup> Hole of the Week.
+			Solve it in either `,
+		hl.Hole.ID, hl.Hole.Name, weekNo, pretty.Ordinal(weekNo),
+	)
 
 	for i, lang := range hl.Langs {
 		if i > 0 {

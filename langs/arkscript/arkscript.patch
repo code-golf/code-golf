@@ -1,0 +1,11 @@
+--- CMakeLists.txt
++++ CMakeLists.txt
+@@ -70,7 +70,7 @@
+         ${ark_SOURCE_DIR}/thirdparties/fmt/src/format.cc)
+
+ if (NOT ARK_EMSCRIPTEN)
+-    add_library(ArkReactor SHARED ${SOURCE_FILES})
++    add_library(ArkReactor STATIC ${SOURCE_FILES})
+     enable_lto(ArkReactor)
+     set_target_properties(ArkReactor PROPERTIES
+             INSTALL_NAME_DIR "@rpath"

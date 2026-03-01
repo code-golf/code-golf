@@ -8,7 +8,7 @@ import (
 )
 
 // Updates the usernames of every GitHub connection.
-func updateUsernames(db *sqlx.DB) (limits []rateLimit) {
+func updateUsernames(db *sqlx.DB) (limits []rateLimit, err error) {
 	const batchSize = 100 // GitHub limits us to 100 nodes per query.
 
 	var ids []string
@@ -18,21 +18,21 @@ func updateUsernames(db *sqlx.DB) (limits []rateLimit) {
 		   FROM connections WHERE connection = 'github'`,
 	)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		var id string
 		if err := rows.Scan(&id); err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		ids = append(ids, id)
 
 		if len(ids) == batchSize {
 			if limit, err := updateUsernamesBatch(db, ids); err != nil {
-				panic(err)
+				return nil, err
 			} else {
 				limits = append(limits, *limit)
 			}
@@ -43,17 +43,13 @@ func updateUsernames(db *sqlx.DB) (limits []rateLimit) {
 
 	if len(ids) > 0 {
 		if limit, err := updateUsernamesBatch(db, ids); err != nil {
-			panic(err)
+			return nil, err
 		} else {
 			limits = append(limits, *limit)
 		}
 	}
 
-	if err := rows.Err(); err != nil {
-		panic(err)
-	}
-
-	return
+	return limits, rows.Err()
 }
 
 func updateUsernamesBatch(db *sqlx.DB, ids []string) (*rateLimit, error) {
