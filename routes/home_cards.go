@@ -27,33 +27,116 @@ func init() {
 	}
 }
 
-// Get prev/next hole with order based on homepage settings.
-func getPrevNextHole(r *http.Request, hole *config.Hole) (prev, next *config.Hole) {
-	cards := expCardList
-	if hole.Experiment == 0 {
-		cards = getHomeCards(r)
-	}
-	i := slices.IndexFunc(cards, func(c Card) bool { return c.Hole.ID == hole.ID })
+func getGolferCards(cards []Card, settings map[string]any) (golferCards []Card) {
+	for _, c := range cards {
+		if show := settings["cards-from"]; show != "all" {
+			if show != c.Hole.CategoryColor {
+				continue
+			}
+		}
 
-	if i == 0 {
-		prev = cards[len(cards)-1].Hole
-	} else {
-		prev = cards[i-1].Hole
+		if show := settings["scoring-cards"]; c.Lang == nil && show == "solved" || c.Lang != nil && show == "unsolved" {
+			continue
+		}
+
+		golferCards = append(golferCards, c)
 	}
 
-	if i == len(cards)-1 {
-		next = cards[0].Hole
-	} else {
-		next = cards[i+1].Hole
+	cmpHoleNameLowercase := func(a, b Card) int {
+		return cmp.Compare(strings.ToLower(a.Hole.Name),
+			strings.ToLower(b.Hole.Name))
+	}
+
+	switch settings["order-by"] {
+	case "alphabetical-asc": // name asc.
+		slices.SortFunc(golferCards, cmpHoleNameLowercase)
+	case "alphabetical-desc": // name desc.
+		slices.SortFunc(golferCards, func(a, b Card) int {
+			return cmpHoleNameLowercase(b, a)
+		})
+	case "category-asc": // category asc, name asc.
+		slices.SortFunc(golferCards, func(a, b Card) int {
+			if c := cmp.Compare(a.Hole.Category, b.Hole.Category); c != 0 {
+				return c
+			}
+			return cmpHoleNameLowercase(a, b)
+		})
+	case "category-desc": // category desc, name asc.
+		slices.SortFunc(golferCards, func(a, b Card) int {
+			if c := cmp.Compare(b.Hole.Category, a.Hole.Category); c != 0 {
+				return c
+			}
+			return cmpHoleNameLowercase(a, b)
+		})
+	case "points-asc": // points asc, name asc.
+		slices.SortFunc(golferCards, func(a, b Card) int {
+			if c := cmp.Compare(a.Points, b.Points); c != 0 {
+				return c
+			}
+			return cmpHoleNameLowercase(a, b)
+		})
+	case "points-desc": // points desc, name asc.
+		slices.SortFunc(golferCards, func(a, b Card) int {
+			if c := cmp.Compare(b.Points, a.Points); c != 0 {
+				return c
+			}
+			return cmpHoleNameLowercase(a, b)
+		})
+	case "released-asc": // released asc, name asc.
+		slices.SortFunc(golferCards, func(a, b Card) int {
+			if c := cmp.Compare(
+				a.Hole.Released.String(), b.Hole.Released.String(),
+			); c != 0 {
+				return c
+			}
+			return cmpHoleNameLowercase(a, b)
+		})
+	case "released-desc": // released desc, name asc.
+		slices.SortFunc(golferCards, func(a, b Card) int {
+			if c := cmp.Compare(
+				b.Hole.Released.String(), a.Hole.Released.String(),
+			); c != 0 {
+				return c
+			}
+			return cmpHoleNameLowercase(a, b)
+		})
 	}
 
 	return
 }
 
+// Get prev/next hole with order based on homepage settings.
+func getPrevNextHole(r *http.Request, hole *config.Hole, b bool) (prev, next *config.Hole) {
+	cards := expCardList
+	if hole.Experiment == 0 {
+		cards = getHomeCards(r, b)
+	}
+
+	if i := slices.IndexFunc(cards, func(c Card) bool { return c.Hole.ID == hole.ID }); i >= 0 {
+		if i == 0 {
+			prev = cards[len(cards)-1].Hole
+		} else {
+			prev = cards[i-1].Hole
+		}
+
+		if i == len(cards)-1 {
+			next = cards[0].Hole
+		} else {
+			next = cards[i+1].Hole
+		}
+
+		return
+	}
+
+	return cards[0].Hole, cards[len(cards)-1].Hole
+}
+
 // Get homepage cards with order based on homepage settings.
-func getHomeCards(r *http.Request) (cards []Card) {
+func getHomeCards(r *http.Request, b bool) (cards []Card) {
 	golfer := session.Golfer(r)
-	if golfer == nil {
+
+	// Return the default cards to guest users or upon caller request.
+	if golfer == nil || !b {
 		return cardList
 	}
 
@@ -88,65 +171,5 @@ func getHomeCards(r *http.Request) (cards []Card) {
 		panic(err)
 	}
 
-	cmpHoleNameLowercase := func(a, b Card) int {
-		return cmp.Compare(strings.ToLower(a.Hole.Name),
-			strings.ToLower(b.Hole.Name))
-	}
-
-	switch settings["order-by"] {
-	case "alphabetical-asc": // name asc.
-		slices.SortFunc(cards, cmpHoleNameLowercase)
-	case "alphabetical-desc": // name desc.
-		slices.SortFunc(cards, func(a, b Card) int {
-			return cmpHoleNameLowercase(b, a)
-		})
-	case "category-asc": // category asc, name asc.
-		slices.SortFunc(cards, func(a, b Card) int {
-			if c := cmp.Compare(a.Hole.Category, b.Hole.Category); c != 0 {
-				return c
-			}
-			return cmpHoleNameLowercase(a, b)
-		})
-	case "category-desc": // category desc, name asc.
-		slices.SortFunc(cards, func(a, b Card) int {
-			if c := cmp.Compare(b.Hole.Category, a.Hole.Category); c != 0 {
-				return c
-			}
-			return cmpHoleNameLowercase(a, b)
-		})
-	case "points-asc": // points asc, name asc.
-		slices.SortFunc(cards, func(a, b Card) int {
-			if c := cmp.Compare(a.Points, b.Points); c != 0 {
-				return c
-			}
-			return cmpHoleNameLowercase(a, b)
-		})
-	case "points-desc": // points desc, name asc.
-		slices.SortFunc(cards, func(a, b Card) int {
-			if c := cmp.Compare(b.Points, a.Points); c != 0 {
-				return c
-			}
-			return cmpHoleNameLowercase(a, b)
-		})
-	case "released-asc": // released asc, name asc.
-		slices.SortFunc(cards, func(a, b Card) int {
-			if c := cmp.Compare(
-				a.Hole.Released.String(), b.Hole.Released.String(),
-			); c != 0 {
-				return c
-			}
-			return cmpHoleNameLowercase(a, b)
-		})
-	case "released-desc": // released desc, name asc.
-		slices.SortFunc(cards, func(a, b Card) int {
-			if c := cmp.Compare(
-				b.Hole.Released.String(), a.Hole.Released.String(),
-			); c != 0 {
-				return c
-			}
-			return cmpHoleNameLowercase(a, b)
-		})
-	}
-
-	return
+	return getGolferCards(cards, settings)
 }

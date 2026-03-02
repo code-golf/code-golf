@@ -17,24 +17,40 @@
 
 <main id=home>
 {{ if .Golfer }}
-    <nav class=span>
-        {{ template "page-settings" . }}
-    </nav>
+    <div class=span>
+        <form action=/golfer/settings/save class=tabs method=post>
+            <input name=page type=hidden value="{{ .Name }}">
+            <input name=path type=hidden value="{{ .Path }}">
+
+    {{ range $setting := .Settings }}
+        {{ if ne .ID "scoring-cards" }}
+            <input name="{{ .ID }}" type=hidden
+                value="{{ index $.SettingValues $.Name .ID }}">
+            {{ continue }}
+        {{ end }}
+        {{ range $setting.Options }}
+            <button name="{{ $setting.ID }}" value="{{ .ID }}"
+            {{ if eq (index $.SettingValues $.Name "scoring-cards") .ID }} disabled {{ end }}>
+                {{ .Name }}
+            </button>
+        {{ end }}
+    {{ end }}
+        </form>
+        <nav>
+            {{ template "page-settings" . }}
+        </nav>
+    </div>
 {{ end }}
 {{ range .Data }}
+    {{ $lang    := index $.SettingValues $.Name "points-for" }}
+    {{ $scoring := index $.SettingValues $.Name "scoring"    }}
     <a class="card {{ .Hole.CategoryColor }}"
-    {{ if $.Golfer }}
-        {{ $lang    := index $.SettingValues $.Name "points-for" }}
-        {{ $scoring := index $.SettingValues $.Name "scoring"    }}
-        {{ if eq (index $.SettingValues $.Name "navigate-to") "rankings" }}
-            href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
-        {{ else }}
-            href='{{ .Hole.ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'
-        {{ end }}
+    {{ if eq (index $.SettingValues $.Name "navigate-to") "rankings" }}
+        href="rankings/holes/{{ .Hole.ID }}/{{ $lang }}/{{ $scoring }}"
     {{ else }}
-        href="{{ .Hole.ID }}"
+        href='{{ .Hole.ID }}{{ if ne $lang "all" }}#{{ $lang }}{{ end }}'
     {{ end }}
-       title="{{ .Hole.Name }} ({{ .Hole.Category }})">
+        title="{{ .Hole.Name }} ({{ .Hole.Category }})">
         <h2>{{ .Hole.Name }}</h2>
         {{ svg .Hole.CategoryIcon }}
     {{ if .Lang }}

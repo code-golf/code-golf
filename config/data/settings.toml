@@ -58,6 +58,27 @@ name    = 'Show Whitespace in Editor'
 default = true
 
 [[home]]
+id      = 'cards-from'
+name    = 'Show Cards From'
+options = [
+    { id = 'all',    name = 'All Categories' },
+    { id = 'red',    name = 'Art'            },
+    { id = 'orange', name = 'Computing'      },
+    { id = 'yellow', name = 'Gaming'         },
+    { id = 'green',  name = 'Mathematics'    },
+    { id = 'blue',   name = 'Sequence'       },
+    { id = 'purple', name = 'Transform'      },
+]
+
+[[home]]
+id      = 'scoring-cards'
+options = [
+    { id = 'all',      name = 'All'      },
+    { id = 'solved',   name = 'Solved'   },
+    { id = 'unsolved', name = 'Unsolved' },
+]
+
+[[home]]
 id      = 'order-by'
 name    = 'Order By'
 options = [
