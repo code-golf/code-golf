@@ -4,9 +4,9 @@ import {
     DragSource, LayoutManager, ComponentContainer, ResolvedLayoutConfig,
     RootItemConfig,
 } from 'golden-layout';
-import { EditorView }              from './_codemirror';
-import diffView                    from './_diff';
-import { $, $$, amount, throttle } from './_util';
+import { EditorView }              from '../_codemirror';
+import diffView                    from '../_diff';
+import { $, $$, amount, throttle } from '../_util';
 import {
     init, hole, setSolution,
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
@@ -19,9 +19,9 @@ import {
     ctrlEnter,
     getLastSubmittedCode,
     Scorings,
-} from './_hole-common';
-import { highlightCodeBlocks } from './_wiki';
-import UnprintableElement from './_unprintable';
+} from '../_hole-common';
+import { highlightCodeBlocks } from '../_wiki';
+import UnprintableElement from '../_unprintable';
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};

@@ -1,6 +1,6 @@
-import { EditorView }    from './_codemirror';
-import diffView          from './_diff';
-import { $, $$, amount } from './_util';
+import { EditorView }    from '../_codemirror';
+import diffView          from '../_diff';
+import { $, $$, amount } from '../_util';
 import {
     init, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
@@ -10,8 +10,8 @@ import {
     ctrlEnter,
     getLastSubmittedCode,
     Scorings,
-} from './_hole-common';
-import UnprintableElement from './_unprintable';
+} from '../_hole-common';
+import UnprintableElement from '../_unprintable';
 
 const editor = new EditorView({
     dispatch: tr => {

@@ -1,5 +1,4 @@
-@import "./hole.css";
-@import "./golden-layout/_base.css";
+@import "../golden-layout/_base.css";
 
 /* Body background --light-grey to allow code box etc contrast as --background */
 body {

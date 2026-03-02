@@ -62,7 +62,6 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Nonce:         rand.Text(),
 		Path:          r.URL.Path,
 		Request:       r,
-		Settings:      config.Settings[strings.TrimSuffix(name, "-tabs")],
 		SettingValues: session.Settings(r),
 		Theme:         theme,
 		Title:         "Code Golf",
@@ -94,7 +93,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.Location = time.UTC
 	}
 
-	// Get route specific CSS, JS, and navigation by splitting the name.
+	// Get route specific CSS, JS, nav, and settings by splitting the name.
 	// e.g. foo/bar/baz → foo, foo/bar, foo/bar/baz.
 	subName := ""
 	for part := range strings.SplitSeq(name, "/") {
@@ -102,6 +101,10 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 
 		if nav, ok := config.Nav[subName]; ok {
 			args.Nav = nav
+		}
+
+		if settings, ok := config.Settings[subName]; ok {
+			args.Settings = settings
 		}
 
 		if url, ok := config.Assets["css/"+subName+".css"]; ok {
