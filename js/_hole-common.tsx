@@ -255,6 +255,7 @@ function updateLangPicker() {
     const picker = $('#picker');
     const icon   = settings['lang-picker-style'].includes('icon');
     const label  = settings['lang-picker-style'].includes('label');
+    const flask  = settings['show-experiment-flask'];
     picker.replaceChildren(...sortedLangs.map(l => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
@@ -277,7 +278,8 @@ function updateLangPicker() {
             return null;
         }
 
-        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
+        if (flask && l.experiment)
+            tab.append(<svg><use href="#flask"/></svg>);
 
         return tab;
     }).filter((x: Node | null) => x), ...selectNodes);
