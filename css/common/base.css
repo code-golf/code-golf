@@ -595,13 +595,13 @@ td .btn {
 
 .nowrap-first,        .nowrap-second       { --nowrap-cols: 1 }
 .nowrap-first-second, .nowrap-second-third { --nowrap-cols: 2 }
-.nowrap-first-second-third                 { --nowrap-cols: 3 }
+.nowrap-first-third-fourth                 { --nowrap-cols: 3 }
 
 .nowrap-first              td:is(:nth-child(1)),
 .nowrap-second             td:is(:nth-child(2)),
 .nowrap-first-second       td:is(:nth-child(1), :nth-child(2)),
 .nowrap-second-third       td:is(:nth-child(2), :nth-child(3)),
-.nowrap-first-second-third td:is(:nth-child(1), :nth-child(2), :nth-child(3)) {
+.nowrap-first-third-fourth td:is(:nth-child(1), :nth-child(3), :nth-child(4)) {
     max-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;

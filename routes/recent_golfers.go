@@ -17,13 +17,16 @@ func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 
 		Cheevos config.Cheevos
 		Date    time.Time
+		Holes   *int
 		Langs   config.Langs
 	}
 
 	if err := session.Database(r).Select(
 		&data,
-		`WITH langs AS (
-		    SELECT user_id, array_agg(DISTINCT lang) langs
+		`WITH solutions AS (
+		    SELECT user_id,
+		           COUNT(DISTINCT hole)     holes,
+		           array_agg(DISTINCT lang) langs
 		      FROM solutions
 		     WHERE NOT failing
 		  GROUP BY user_id
@@ -33,10 +36,10 @@ func recentGolfersGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id
 		  ORDER BY date DESC
 		     LIMIT $1
-		)  SELECT avatar_url, country_flag, cheevos, date, name, langs
+		)  SELECT avatar_url, country_flag, cheevos, date, holes, langs, name
 		     FROM cheevos
 		     JOIN golfers_with_avatars ON id = user_id
-		LEFT JOIN langs USING (user_id)
+		LEFT JOIN solutions USING (user_id)
 		 ORDER BY date DESC`,
 		pager.PerPage,
 	); err != nil {

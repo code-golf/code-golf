@@ -2,10 +2,11 @@
 {{ template "recent" . }}
 
 <main>
-    <table class="nowrap-first-second-third sticky">
+    <table class="nowrap-first-third-fourth sticky">
         <thead>
             <tr>
                 <th>Golfer
+                <th class="right wide">Holes
                 <th>Languages
                 <th class=wide>Cheevos
                 <th class=right>Date
@@ -16,6 +17,7 @@
         {{ range .Data }}
             <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ template "golfer-link" . }}
+                <td class="right wide">{{ with .Holes }}{{ . }}{{ end }}
                 <td>
                     <div>
                     {{ range .Langs }}{{ svg .ID "title" .Name }}{{ end }}
