@@ -1,22 +1,21 @@
 package hole
 
 import (
-	"math/rand/v2"
 	"fmt"
+	"math/rand/v2"
 )
 
 func generateRuleset(length int) string {
-  ruleset := ""
-  for range length {
-    ruleset += []string{"L", "R"}[rand.IntN(2)]
-  }
-  return ruleset
+	ruleset := ""
+	for range length {
+		ruleset += []string{"L", "R"}[rand.IntN(2)]
+	}
+	return ruleset
 }
-
 
 func computeGrid(ruleset string) string {
 	var directions = [][]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
-	
+
 	numStates := len(ruleset)
 	outp := ""
 
@@ -57,11 +56,10 @@ var _ = answerFunc("langtons-ant", func() []Answer {
 	tests := make([]test, 25)
 
 	for i := range tests {
-		ruleset := generateRuleset(rand.IntN(8)+2)
+		ruleset := generateRuleset(rand.IntN(8) + 2)
 
 		tests[i] = test{ruleset, computeGrid(ruleset)}
 	}
 
 	return outputTests(shuffle(tests))
 })
-
