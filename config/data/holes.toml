@@ -2014,7 +2014,7 @@ links = [
     { name = 'Wikipedia', url = 'https://en.wikipedia.org/wiki/Langton%27s_ant' },
 ]
 experiment = 2038
-synopsis = 'Print the state of the grid after 1000 steps of Langton\'s ant.'
+synopsis = "Print the state of the grid after 1000 steps of Langton's ant."
 preamble = '''
 <p>
     Langton's ant is a two-dimensional Turing machine that acts on a
