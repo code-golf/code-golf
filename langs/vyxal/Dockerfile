@@ -1,13 +1,9 @@
-FROM alpine:3.23 AS builder
+FROM codegolf/lang-java AS builder
 
 ENV VER=3.10.3
 
-RUN wget -qO vyxal.jar https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar
+ADD --chmod=755 https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar vyxal.jar
 
-FROM codegolf/lang-java
+ENTRYPOINT ["/opt/java/bin/java", "-jar", "vyxal.jar"]
 
-COPY --from=0 /vyxal.jar /
-
-ENTRYPOINT ["/opt/java/bin/java"]
-
-CMD ["-jar", "vyxal.jar", "-h"]
+CMD ["--version"]
