@@ -451,7 +451,7 @@ eaN*
 '''
 
 [Clojure]
-args    = [ '/usr/bin/clojure', '-e', '$code' ]
+args    = [ '/usr/bin/bb', '/proc/self/fd/0' ]
 size    = '68.6 MiB'
 version = 'Babashka 1.12.215'
 website = 'https://babashka.org'
