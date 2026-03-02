@@ -566,12 +566,12 @@ td .btn {
     width: 1rem;
 }
 
-.color:nth-of-type(6n+1), .red    { background: var(--red)    }
-.color:nth-of-type(6n+2), .orange { background: var(--orange) }
-.color:nth-of-type(6n+3), .yellow { background: var(--yellow) }
-.color:nth-of-type(6n+4), .green  { background: var(--green)  }
-.color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
-.color:nth-of-type(6n+6), .purple { background: var(--purple) }
+.red    { background: var(--red)    }
+.orange { background: var(--orange) }
+.yellow { background: var(--yellow) }
+.green  { background: var(--green)  }
+.blue   { background: var(--blue)   }
+.purple { background: var(--purple) }
 
 .flag {
     overflow: visible;
@@ -593,31 +593,19 @@ td .btn {
 
 [class^=nowrap-] { white-space: nowrap }
 
-.nowrap-first  td:nth-child(1),
-.nowrap-second td:nth-child(2) {
-    max-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-}
+.nowrap-first,        .nowrap-second       { --nowrap-cols: 1 }
+.nowrap-first-second, .nowrap-second-third { --nowrap-cols: 2 }
+.nowrap-first-third-fourth                 { --nowrap-cols: 3 }
 
-.nowrap-first-second td:nth-child(1),
-.nowrap-first-second td:nth-child(2),
-.nowrap-second-third td:nth-child(2),
-.nowrap-second-third td:nth-child(3) {
+.nowrap-first              td:is(:nth-child(1)),
+.nowrap-second             td:is(:nth-child(2)),
+.nowrap-first-second       td:is(:nth-child(1), :nth-child(2)),
+.nowrap-second-third       td:is(:nth-child(2), :nth-child(3)),
+.nowrap-first-third-fourth td:is(:nth-child(1), :nth-child(3), :nth-child(4)) {
     max-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 50%;
-}
-
-.nowrap-first-second-third td:nth-child(1),
-.nowrap-first-second-third td:nth-child(2),
-.nowrap-first-second-third td:nth-child(3) {
-    max-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 33%;
+    width: calc(100% / var(--nowrap-cols));
 }
 
 .right { text-align: right }
