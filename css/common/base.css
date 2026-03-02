@@ -391,6 +391,13 @@ tbody th { text-align: right }
 tbody tr > :first-child { border-left: 1px solid var(--color) }
 tbody tr > :last-child { border-right: 1px solid var(--color) }
 
+/* Add the right border to the last visible (non .wide) cell on mobile. */
+@media (max-width: 34rem) {
+    tbody tr > :nth-last-child(1 of :not(.wide)) {
+        border-right: 1px solid var(--color);
+    }
+}
+
 td, th {
     border-bottom: 1px solid var(--color);
     line-height: 2rem;
