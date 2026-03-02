@@ -332,11 +332,6 @@ h2 {
     font-weight: bold;
 }
 
-#picker {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-}
-
 #picker, #solutionPicker {
     gap: .25rem;
 
@@ -351,7 +346,6 @@ h2 {
         display: flex;
         gap: .5rem;
         height: 2.375rem;
-        justify-content: center;
         padding: .375rem .5rem;
 
         svg {
