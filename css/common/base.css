@@ -566,12 +566,12 @@ td .btn {
     width: 1rem;
 }
 
-.color:nth-of-type(6n+1), .red    { background: var(--red)    }
-.color:nth-of-type(6n+2), .orange { background: var(--orange) }
-.color:nth-of-type(6n+3), .yellow { background: var(--yellow) }
-.color:nth-of-type(6n+4), .green  { background: var(--green)  }
-.color:nth-of-type(6n+5), .blue   { background: var(--blue)   }
-.color:nth-of-type(6n+6), .purple { background: var(--purple) }
+.red    { background: var(--red)    }
+.orange { background: var(--orange) }
+.yellow { background: var(--yellow) }
+.green  { background: var(--green)  }
+.blue   { background: var(--blue)   }
+.purple { background: var(--purple) }
 
 .flag {
     overflow: visible;
