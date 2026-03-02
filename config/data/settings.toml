@@ -40,6 +40,11 @@ options = [
 ]
 
 [[hole]]
+id      = 'show-solution-length'
+name    = 'Show Solution Length(s) in Language'
+default = true
+
+[[hole]]
 id   = 'layout'
 name = 'Layout'
 options = [
