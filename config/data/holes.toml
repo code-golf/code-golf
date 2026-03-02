@@ -2008,7 +2008,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence' },
 ]
 
-['Langton's Ant']
+['Langton’s Ant']
 category = 'Computing'
 links = [
     { name = 'Wikipedia', url = 'https://en.wikipedia.org/wiki/Langton%27s_ant' },
