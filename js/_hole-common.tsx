@@ -250,14 +250,14 @@ function updateLangPicker() {
             location.hash = '#' + target.value;
         });
 
-        $('#active').innerText = currentLang.name;
-
         langSelect.value = currentLangUnused ? lang : '';
         if (currentLangUnused) {
             langSelect.classList.add('selectActive');
         }
         selectNodes.push(langSelect);
     }
+
+    $('#active').innerText = currentLang.name;
 
     // Hybrid language selector: make it easy to see your existing solutions and their lengths.
     const picker = $('#picker');
