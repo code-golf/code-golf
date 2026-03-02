@@ -285,7 +285,7 @@ function updateLangPicker() {
             return null;
         }
 
-        if (l.experiment) tab.append(<svg><use href='#flask'/></svg>);
+        if (l.experiment) tab.append(<svg><use href="#flask"/></svg>);
 
         return tab;
     }).filter((x: Node | null) => x), ...selectNodes);
@@ -312,7 +312,7 @@ export async function refreshScores(editor: any) {
         $('#solutionPicker').replaceChildren(...scorings.map((scoring, iNumber) => {
             const i = iNumber as 0 | 1;
             const a = <a><svg><use href={
-                `/dist/svg/${scoring.toLowerCase()}-${['MIU3NVUA','57HAGKFJ'][i]}.svg#a`
+                `#${scoring.toLowerCase()}`
             }/></svg>Fewest {scoring}</a>;
 
             const code = getSolutionCode(lang, i);

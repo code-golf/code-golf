@@ -14,11 +14,11 @@
                 <th>Golfer
                 <th class=right>Total
             {{ if $holesOfTheWeek }}
-                <th class=right>Submitted
+                <th class="right wide">Submitted
             {{ end }}
             {{ if $solutions }}
-                <th class=right>Bytes
-                <th class=right>Chars
+                <th class="right wide">Bytes
+                <th class="right wide">Chars
             {{ end }}
         <tbody>
         {{ $name := "" }}
@@ -30,11 +30,11 @@
                 <td>{{ template "golfer-link" . }}
                 <td class=right>{{ comma .Count }}
             {{ if $holesOfTheWeek }}
-                <td class=right>{{ time (.Submitted.In $.Location) }}
+                <td class="right wide">{{ time (.Submitted.In $.Location) }}
             {{ end }}
             {{ if $solutions }}
-                <td class=right>{{ comma .Bytes }}
-                <td class=right>{{ comma .Chars }}
+                <td class="right wide">{{ comma .Bytes }}
+                <td class="right wide">{{ comma .Chars }}
             {{ end }}
         {{ end }}
     </table>

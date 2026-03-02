@@ -32,8 +32,8 @@
                 <th>#
                 <th>Language
                 <th class=right colspan=3>Medals
-                <th class=right>Points
-                <th class=right>{{ title .Data.Scoring }}
+                <th class="right wide">Points
+                <th class="right wide">{{ title .Data.Scoring }}
         <tbody>
         {{ range .Data.Rows }}
             <tr>
@@ -46,8 +46,8 @@
                 <td class=right>{{ with .Golds   }}{{ . }}🥇{{ end }}
                 <td class=right>{{ with .Silvers }}{{ . }}🥈{{ end }}
                 <td class=right>{{ with .Bronzes }}{{ . }}🥉{{ end }}
-                <td class=right>{{ comma .Points  }}
-                <td class=right>{{ comma .Strokes }}
+                <td class="right wide">{{ comma .Points  }}
+                <td class="right wide">{{ comma .Strokes }}
         {{ end }}
     </table>
 {{ end }}
