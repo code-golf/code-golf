@@ -5,8 +5,6 @@ import (
 	"fmt"
 )
 
-var directions = [][]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
-
 func generateRuleset(length int) string {
   ruleset := ""
   for range length {
@@ -17,6 +15,8 @@ func generateRuleset(length int) string {
 
 
 func computeGrid(ruleset string) string {
+	var directions = [][]int{{0, -1}, {1, 0}, {0, 1}, {-1, 0}}
+	
 	numStates := len(ruleset)
 	outp := ""
 
