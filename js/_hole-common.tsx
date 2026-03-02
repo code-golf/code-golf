@@ -231,11 +231,6 @@ function updateLangPicker() {
     const experimentalLangGroup = <optgroup label="Experimental"></optgroup>;
     let currentLangUnused = false;
 
-    // <svg><use href={currentLang['logo-url']+'#a'}/></svg>
-    $('#active').innerText = currentLang.name;
-    // if (currentLang.experiment)
-    //     <svg><use href='#flask'/></svg>
-
     for (const l of sortedLangs) {
         if (!getSolutionCode(l.id, 0) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
@@ -254,6 +249,8 @@ function updateLangPicker() {
             const target = e.target as HTMLSelectElement;
             location.hash = '#' + target.value;
         });
+
+        $('#active').innerText = currentLang.name;
 
         langSelect.value = currentLangUnused ? lang : '';
         if (currentLangUnused) {
