@@ -43,8 +43,8 @@ options = [
 id   = 'layout'
 name = 'Layout'
 options = [
-    { id = '',     name = 'Classic' },
-    { id = 'tabs', name = 'Multi-Window (WIP)' },
+    { id = 'classic', name = 'Classic' },
+    { id = 'tabs',    name = 'Multi-Window (WIP)' },
 ]
 
 [[hole]]

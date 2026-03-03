@@ -93,10 +93,6 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	view := "hole"
-	if layout := session.Settings(r)["hole"]["layout"].(string); layout != "" {
-		view += "-" + layout
-	}
-
+	view := "hole/" + session.Settings(r)["hole"]["layout"].(string)
 	render(w, r, view, data, data.Hole.Name, data.Hole.Synopsis)
 }

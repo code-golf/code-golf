@@ -1,14 +1,9 @@
-FROM alpine:3.23 AS builder
+FROM codegolf/lang-base AS builder
 
-ENV VER=1.12.215
+ENV VER=1.12.216
 
-RUN wget -O- https://github.com/babashka/babashka/releases/download/v$VER/babashka-$VER-linux-amd64-static.tar.gz \
-  | tar xz --directory /usr/bin
+ADD --unpack https://github.com/babashka/babashka/releases/download/v$VER/babashka-$VER-linux-amd64-static.tar.gz /usr/bin
 
-FROM codegolf/lang-base
-
-COPY --from=0 /usr/bin/bb /usr/bin/clojure
-
-ENTRYPOINT ["clojure"]
+ENTRYPOINT ["bb"]
 
 CMD ["--version"]

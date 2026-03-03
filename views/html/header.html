@@ -37,7 +37,7 @@
     <link rel=stylesheet href="{{ .Path }}" {{- with .Media }} media="{{ . }}" {{- end }}>
 {{ end }}
 
-{{ if or (eq .Name "hole-tabs") (eq .Name "wiki") }}
+{{ if or (eq .Name "hole/tabs") (eq .Name "wiki") }}
     <script nonce="{{ $.Nonce }}">
         MathJax = {
             chtml:   { fontURL:    '/mathjax-fonts' },

@@ -1,5 +1,5 @@
-{{ $name := $.Name }}
-{{ if eq $name "hole-tabs" }}{{ $name = "hole" }}{{ end }}
+{{ $name := .Name }}
+{{ if hasPrefix $name "hole/" }}{{ $name = "hole" }}{{ end }}
 
 {{ range $i, $setting := .Settings }}
     {{ $value := index $.SettingValues $name .ID }}
