@@ -75,7 +75,7 @@ BEGIN
     -- ☕ Caffeinated
     SELECT COUNT(*) >= 2 INTO found FROM UNNEST(langs_for_hole)
      WHERE unnest IN ('civet', 'java', 'javascript');
-    IF found THEN
+    IF hole != 'tutorial' AND found THEN
         earned := earn(earned, 'caffeinated', user_id); END IF;
 
     -- 🎳 COBOWL
@@ -93,11 +93,11 @@ BEGIN
         earned := earn(earned, 'dammit-janet', user_id); END IF;
 
     -- 🔩 Down to the Metal
-    IF langs_for_hole @> '{assembly,rust}' THEN
+    IF hole != 'tutorial' AND langs_for_hole @> '{assembly,rust}' THEN
         earned := earn(earned, 'down-to-the-metal', user_id); END IF;
 
     -- 🐘 ElePHPant in the Room
-    IF lang = 'php' THEN
+    IF hole != 'tutorial' AND lang = 'php' THEN
         earned := earn(earned, 'elephpant-in-the-room', user_id); END IF;
 
     -- 🏥 Emergency Room
@@ -123,7 +123,7 @@ BEGIN
         earned := earn(earned, 'full-stack-dev', user_id); END IF;
 
     -- 🏞️ Go Forth!
-    IF langs_for_hole @> '{go,forth}' THEN
+    IF hole != 'tutorial' AND langs_for_hole @> '{go,forth}' THEN
         earned := earn(earned, 'go-forth', user_id); END IF;
 
     -- 📫 Going Postal
@@ -151,7 +151,7 @@ BEGIN
         earned := earn(earned, 'jeweler', user_id); END IF;
 
     -- 😛 Just Kidding
-    IF langs_for_hole @> '{j,k}' THEN
+    IF hole != 'tutorial' AND langs_for_hole @> '{j,k}' THEN
         earned := earn(earned, 'just-kidding', user_id); END IF;
 
     -- 🐑 Mary Had a Little Lambda
@@ -179,7 +179,7 @@ BEGIN
         earned := earn(earned, 'pangramglot', user_id); END IF;
 
     -- 🍹 Piña Colada
-    IF langs_for_hole @> '{berry,coconut,elixir}' THEN
+    IF hole != 'tutorial' AND langs_for_hole @> '{berry,coconut,elixir}' THEN
         earned := earn(earned, 'piña-colada', user_id); END IF;
 
     -- 🛟 Ring Toss
@@ -213,11 +213,11 @@ BEGIN
         earned := earn(earned, 'sounds-quite-nice', user_id); END IF;
 
     -- 🧑‍💻 TeXnical Know-how
-    IF lang = 'tex' THEN
+    IF hole != 'tutorial' AND lang = 'tex' THEN
         earned := earn(earned, 'texnical-know-how', user_id); END IF;
 
     -- 🐪 Tim Toady
-    IF langs_for_hole @> '{perl,raku}' THEN
+    IF hole != 'tutorial' AND langs_for_hole @> '{perl,raku}' THEN
         earned := earn(earned, 'tim-toady', user_id); END IF;
 
     -- ⌨️ Typesetter
