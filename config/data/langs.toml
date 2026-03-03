@@ -452,8 +452,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/bb', '/proc/self/fd/0' ]
-size    = '68.6 MiB'
-version = 'Babashka 1.12.215'
+size    = '68.8 MiB'
+version = 'Babashka 1.12.216'
 website = 'https://babashka.org'
 example = '''
 ; Printing
