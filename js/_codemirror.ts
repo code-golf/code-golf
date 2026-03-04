@@ -191,6 +191,7 @@ export const extensions : { [key: string]: any } = {
     'k':             k(),
     'knight':        knight(),
     'kotlin':        StreamLanguage.define(kotlin),
+    // TODO lily
     'lua':           StreamLanguage.define(lua),
     'luau':          StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
