@@ -658,7 +658,7 @@ none
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '57.2 MiB'
+size    = '57.0 MiB'
 version = '1.19.5'
 website = 'https://elixir-lang.org'
 example = '''
@@ -676,8 +676,8 @@ for arg <- System.argv, do: IO.puts arg
 args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
-size     = '50.1 MiB'
-version  = 'OTP 28.3.1'
+size     = '50.0 MiB'
+version  = 'OTP 28.3.3'
 website  = 'https://www.erlang.org'
 example  = '''
 main(Args) ->
@@ -801,7 +801,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '70.4 MiB'
+size    = '70.2 MiB'
 version = '1.14.0'
 website = 'https://gleam.run'
 example = '''
