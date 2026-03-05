@@ -148,6 +148,14 @@ preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of ζ(3).
 '''
 
+['Alphabetic Numbers']
+category = 'Sequence'
+synopsis = 'Print all numbers from 0 to 1,000 in alphabetic order.'
+experiment = 2618
+preamble = '''
+<p>Print all numbers from <b>0</b> (<code>zero</code>) to <b>1,000</b> (<code>one thousand</code>) inclusive, in alphabetic order of their <a href="spelling-numbers">English written names</a>, each on their own line.</p>
+'''
+
 ['Arabic to Roman']
 category = 'Transform'
 released = 2017-07-22
