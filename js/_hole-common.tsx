@@ -642,8 +642,7 @@ export async function submit(
         });
 
         const ms = Math.round(run.time_ns / 10**6);
-        // Only show runtime if it's more than 1000ms, for a bit less clutter in general.
-        $('#runtime').innerText = ms > 1000 ? `(${ms}ms)` : '';
+        $('#runtime').innerText = `(${ms}ms)`;
 
         // 3rd party integrations.
         let thirdParty = '';
