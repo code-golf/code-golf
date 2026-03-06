@@ -1,4 +1,4 @@
-FROM golang:1.26.0-alpine3.23
+FROM golang:1.26.1-alpine3.23
 
 ENV CGO_ENABLED=0 GOAMD64=v4 GOEXPERIMENT=jsonv2 GOPATH=
 
