@@ -1761,8 +1761,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.29 MiB'
-version = 'SQLite 3.51.2'
+size    = '1.30 MiB'
+version = 'SQLite 3.52.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
