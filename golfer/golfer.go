@@ -66,6 +66,8 @@ type GolferInfo struct {
 
 	// Start date
 	Started time.Time
+
+	UUID string
 }
 
 type FailingSolutions []struct{ Hole, Lang string }

@@ -139,7 +139,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          COALESCE(silver, 0)                   silver,
 		          sponsor,
 		          started,
-		          COALESCE(unicorn, 0)                  unicorn
+		          COALESCE(unicorn, 0)                  unicorn,
+		          uuid
 		     FROM golfers_with_avatars
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
