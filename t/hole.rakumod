@@ -99,19 +99,19 @@ class HoleWebDriver is WebDriver is export {
 
     # Methods whose names begin with "is" do exactly one assertion.
     method isFailing(Str:D $context) {
-        $.isResult: "☹️\nFail", $context;
+        $.likeResult: /^ '☹️' \s+ Fail \s '(' <[\d,]>+ 'ms)' $/, $context;
     }
 
     # Methods whose names begin with "is" do exactly one assertion.
     method isPassing(Str:D $context) {
-        $.isResult: "😀\nPass", $context;
+        $.likeResult: /^ '😀' \s+ Pass \s '(' <[\d,]>+ 'ms)' $/, $context;
     }
 
-    # Methods whose names begin with "is" do exactly one assertion.
-    method isResult(Str:D $expectedText, Str:D $context) {
+    # Methods whose names begin with "like" do exactly one assertion.
+    method likeResult(Regex:D $expectedText, Str:D $context) {
         for ^5 {
             if (my $text = $.find("#status > h2").text) && $text ne '…' {
-                is $text, $expectedText, "Confirm the result of running the program, $context";
+                like $text, $expectedText, "Confirm the result of running the program, $context";
                 return;
             }
 
