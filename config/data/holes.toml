@@ -2016,6 +2016,24 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence' },
 ]
 
+['Langton’s Ant']
+category = 'Computing'
+links = [
+    { name = 'Wikipedia', url = 'https://en.wikipedia.org/wiki/Langton%27s_ant' },
+]
+experiment = 2038
+synopsis = 'Print the state of the grid after 1000 steps of Langton’s ant.'
+preamble = '''
+<p>
+    Langton's ant is a two-dimensional Turing machine that acts on a
+	two-dimensional grid. Given a ruleset, the automaton first turns
+	according to the ruleset, increments the cells it is on, and then
+	moves forward one step. The ant starts in the center of a 33x33 
+	grid initialized to all 0s facing up. Given a ruleset, print the
+	state of the grid after 1000 steps of the automaton. Do not indicate
+	the location of the ant.
+'''
+
 ['Leap Years']
 category = 'Sequence'
 links = [
