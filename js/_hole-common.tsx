@@ -642,7 +642,7 @@ export async function submit(
         });
 
         const ms = Math.round(run.time_ns / 10**6);
-        $('#runtime').innerText = `(${ms}ms)`;
+        $('#runtime').innerText = `(${comma(ms)}ms)`;
 
         // 3rd party integrations.
         let thirdParty = '';
