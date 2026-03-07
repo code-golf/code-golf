@@ -19,6 +19,7 @@ import {
     ctrlEnter,
     getLastSubmittedCode,
     Scorings,
+    toggleHideLangPickerCookie,
 } from '../_hole-common';
 import { highlightCodeBlocks } from '../_wiki';
 import UnprintableElement from '../_unprintable';
@@ -58,6 +59,8 @@ let holeLangNotesEditor: EditorView | null = null;
 let substitutions: {pattern: RegExp, replacement: string}[] = [];
 
 init(true, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => editor);
+
+toggleHideLangPickerCookie();
 
 const goldenContainer = $('#golden-container');
 

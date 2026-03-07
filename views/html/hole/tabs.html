@@ -3,8 +3,8 @@
 
 {{ $showWhitespace := index .SettingValues "hole" "show-whitespace" }}
 <main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
-    <nav class=tabs id=picker></nav>
-    {{ template "hole-info" . }}
+    {{ template "hole-lang-picker" . }}
+    {{ template "hole-info"        . }}
     <div id="picker-status-row">
         <nav class="tabs hide" id=solutionPicker></nav>
         <div id=panel-btns>

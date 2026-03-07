@@ -1,4 +1,8 @@
-<div class=hide>{{ svg "flask" "id" "flask" }}</div><!-- For JS lang picker -->
+<div class=hide>
+    {{ svg "flask" "id" "flask" }}
+    {{ svg "bytes" "id" "bytes" }}
+    {{ svg "chars" "id" "chars" }}
+</div><!-- For JS lang/scoring picker -->
 
 {{ if .Data.Hole.Experiment }}
     <div {{ if eq .Data.Hole.ID "tutorial" }} class=info {{ else }} class=alert {{ end }}>
