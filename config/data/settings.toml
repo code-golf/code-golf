@@ -40,6 +40,11 @@ options = [
 ]
 
 [[hole]]
+id      = 'show-experiment-flask'
+name    = 'Show Icon for Experimental Language'
+default = true
+
+[[hole]]
 id   = 'layout'
 name = 'Layout'
 options = [
