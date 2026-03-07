@@ -270,16 +270,15 @@ func runCode(
 
 	// Run arguments.
 	switch lang.ID {
-	case "awk", "brainfuck", "fish":
-		// Hole args passed through stdin for these langs separated by a null byte
-		args := ""
-		for _, arg := range run.Args {
-			args += arg + "\x00"
-		}
-		cmd.Stdin = strings.NewReader(args)
-	case "sed":
+	// Hole args passed through stdin for these langs separated by a null byte
+	case "awk", "brainfuck", "fish", "sed":
+		args := strings.Join(run.Args, "\x00")
+
 		// For sed we always need to append a null byte, even if no args exist
-		args := strings.Join(run.Args, "\x00") + "\x00"
+		if args != "" || lang.ID == "sed" {
+			args += "\x00"
+		}
+
 		cmd.Stdin = strings.NewReader(args)
 	default:
 		cmd.Args = append(cmd.Args, run.Args...)
