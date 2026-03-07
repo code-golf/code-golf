@@ -255,6 +255,7 @@ function updateLangPicker() {
     const picker = $('#picker');
     const icon   = settings['lang-picker-style'].includes('icon');
     const label  = settings['lang-picker-style'].includes('label');
+    const length = settings['show-solution-length'];
     picker.replaceChildren(...sortedLangs.map(l => {
         const tab = <a href={l.id == lang ? null : '#'+l.id} title={l.name}></a>;
 
@@ -262,14 +263,15 @@ function updateLangPicker() {
         if (label) tab.append(l.name);
 
         if (getSolutionCode(l.id, 0)) {
-            const bytes = byteLen(getSolutionCode(l.id, 0));
-            const chars = charLen(getSolutionCode(l.id, 1));
+            if (length) {
+                const bytes = byteLen(getSolutionCode(l.id, 0));
+                const chars = charLen(getSolutionCode(l.id, 1));
 
-            let text = comma(bytes);
-            if (chars && bytes != chars) text += '/' + comma(chars);
+                let text = comma(bytes);
+                if (chars && bytes != chars) text += '/' + comma(chars);
 
-            tab.append(<sup>{text}</sup>);
-
+                tab.append(<sup>{text}</sup>);
+            }
             tab.classList.add('has-solution');
         }
         else if (!localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
