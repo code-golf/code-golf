@@ -27,8 +27,10 @@ func golferDeleteSolutionPOST(w http.ResponseWriter, r *http.Request) {
 		hole, lang, golfer.ID,
 	)
 
-	// TODO Add "flash" messages so we can show the cheevo after the redirect.
-	golfer.Earn(tx, "rm-rf")
+	if hole != "tutorial" {
+		// TODO Add "flash" messages so we can show the cheevo after the redirect.
+		golfer.Earn(tx, "rm-rf")
+	}
 
 	if err := tx.Commit(); err != nil {
 		panic(err)
