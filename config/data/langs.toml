@@ -613,7 +613,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '119 MiB'
-version = '3.11.0'
+version = '3.11.1'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '46.6 MiB'
-version = 'V8 14.5.201.12'
+version = 'V8 14.5.201.17'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1929,8 +1929,8 @@ fn main() {
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '34.4 MiB'
-version = '0.5.0'
+size    = '43.4 MiB'
+version = '0.5.1'
 website = 'https://vlang.io'
 example = '''
 import os
