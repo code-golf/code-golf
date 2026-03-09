@@ -43,7 +43,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.55 MiB'
-version  = 'Algol 68 Genie 3.10.12'
+version  = 'Algol 68 Genie 3.10.13'
 website  = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example  = '''
 # Printing #
@@ -418,7 +418,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '78.9 MiB'
-version = '0.11.3'
+version = '0.11.4'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -658,7 +658,7 @@ none
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '57.0 MiB'
+size    = '57.1 MiB'
 version = '1.19.5'
 website = 'https://elixir-lang.org'
 example = '''
@@ -677,7 +677,7 @@ args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
 size     = '50.0 MiB'
-version  = 'OTP 28.3.3'
+version  = 'OTP 28.4'
 website  = 'https://www.erlang.org'
 example  = '''
 main(Args) ->
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.53 MiB'
-version    = '0.710'
+size       = '5.55 MiB'
+version    = '0.711'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1389,7 +1389,7 @@ end.
 [Perl]
 args    = [ '/usr/bin/perl', '-E', '$code', '--' ]
 size    = '5.67 MiB'
-version = '5.42.0'
+version = '5.42.1'
 website = 'https://www.perl.org'
 example = '''
 # Printing
