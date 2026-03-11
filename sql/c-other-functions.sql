@@ -276,12 +276,11 @@ BEGIN
     END IF;
 
     -- Only earn cheevos if the hole and lang aren't experimental.
-    SELECT experiment = 0 INTO found FROM holes WHERE id = hole;
-    IF found THEN
-        SELECT experiment = 0 INTO found FROM langs WHERE id = lang;
-        IF found THEN
-            ret.earned := earn_cheevos(hole, lang, user_id);
-        END IF;
+    IF (SELECT experiment = 0 FROM holes WHERE id = hole) AND
+       (SELECT experiment = 0 FROM langs WHERE id = lang) THEN
+        ret.earned := earn_cheevos(hole, lang, user_id);
+    ELSE
+        ret.earned := '{}';
     END IF;
 
     RETURN ret;

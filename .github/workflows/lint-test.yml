@@ -22,4 +22,7 @@ jobs:
       - run: make test
       - run: go install filippo.io/mkcert@latest
       - run: make cert
+
       - run: make e2e
+        env:
+          COMPOSE_PARALLEL_LIMIT: 1

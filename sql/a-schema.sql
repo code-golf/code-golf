@@ -38,10 +38,10 @@ CREATE TYPE connection AS ENUM (
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '24-game', '99-bottles-of-beer',
-    'abundant-numbers', 'abundant-numbers-long', 'apérys-constant',
-    'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
-    'ascii-table', 'billiards', 'binary-lambda-calculus', 'brainfuck',
-    'calendar', 'card-number-validation', 'catalan-numbers',
+    'abundant-numbers', 'abundant-numbers-long', 'alphabetic-numbers', 
+    'apérys-constant', 'arabic-to-roman', 'arithmetic-numbers', 'arrows', 
+    'ascending-primes', 'ascii-table', 'billiards', 'binary-lambda-calculus', 
+    'brainfuck', 'calendar', 'card-number-validation', 'catalan-numbers',
     'catalans-constant', 'christmas-trees', 'collatz', 'connect-four',
     'continued-fractions', 'crossword', 'css-colors', 'css-colors-inverse',
     'css-grid', 'cubes', 'day-of-week', 'dfa-simulator', 'diamonds',
@@ -154,12 +154,6 @@ CREATE TABLE users (
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),             -- Can't refer yourself!
     CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
-);
-
-CREATE TABLE authors (
-    hole    hole NOT NULL,
-    user_id int  REFERENCES users(id) ON DELETE CASCADE,
-    PRIMARY KEY (hole, user_id)
 );
 
 CREATE TABLE cheevos (
@@ -406,7 +400,6 @@ GRANT SELECT ON golfers_with_avatars     TO "code-golf";
 GRANT SELECT ON stable_passing_solutions TO "code-golf";
 
 -- Tables.
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE cheevos         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";

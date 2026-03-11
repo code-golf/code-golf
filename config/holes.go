@@ -35,6 +35,9 @@ var (
 	HoleAliases   = map[string]string{}
 	HoleRedirects = map[string]string{}
 
+	// Authors
+	HolesByAuthor = map[string]Holes{}
+
 	// Latest stable hole.
 	LatestHole *Hole
 
@@ -51,6 +54,7 @@ type Hole struct {
 	Aliases, Redirects          []string       `json:"-"`
 	Answer                      string         `json:"-"`
 	AnswerFunc                  HoleAnswerFunc `json:"-"`
+	Authors                     []string       `json:"authors"`
 	CaseFold                    bool           `json:"-" toml:"case-fold"`
 	Category                    string         `json:"category"`
 	CategoryColor, CategoryIcon string         `json:"-"`
@@ -85,8 +89,6 @@ func initHoles() {
 	}
 
 	// Expand variants.
-	copyFields := []string{
-		"Category", "Data", "Links", "Preamble", "Synopsis", "Variants"}
 	for name, hole := range holes {
 		hole.Name = name
 
@@ -104,9 +106,12 @@ func initHoles() {
 				continue
 			}
 
-			// Copy any fields missing in the variant from the hole.
+			// Copy specific fields missing in the variant from the hole.
 			dst := reflect.ValueOf(variant).Elem()
-			for _, field := range copyFields {
+			for _, field := range []string{
+				"Authors", "Category", "Data", "Links", "Preamble",
+				"Synopsis", "Variants",
+			} {
 				if dst.FieldByName(field).IsZero() {
 					dst.FieldByName(field).Set(src.FieldByName(field))
 				}
@@ -198,6 +203,13 @@ func initHoles() {
 		slices.SortFunc(holes, func(a, b *Hole) int {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
+	}
+
+	// Populate HolesByAuthor after sorting so that each hole slice is sorted.
+	for _, hole := range AllHoleList {
+		for _, author := range hole.Authors {
+			HolesByAuthor[author] = append(HolesByAuthor[author], hole)
+		}
 	}
 
 	LatestHole = slices.MaxFunc(HoleList, func(a, b *Hole) int {

@@ -45,15 +45,17 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Lookup the hole's author(s).
-	if err := session.Database(r).Select(
-		&data.Authors,
-		`SELECT avatar_url, name
-		   FROM authors
-		   JOIN golfers_with_avatars ON id = user_id
-		  WHERE hole = $1`,
-		data.Hole.ID,
-	); err != nil {
-		panic(err)
+	if len(data.Hole.Authors) > 0 {
+		if err := session.Database(r).Select(
+			&data.Authors,
+			` SELECT avatar_url, name
+			    FROM golfers_with_avatars
+			   WHERE uuid = ANY($1)
+			ORDER BY name`,
+			data.Hole.Authors,
+		); err != nil {
+			panic(err)
+		}
 	}
 
 	if golfer := session.Golfer(r); golfer != nil {

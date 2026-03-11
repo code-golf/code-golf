@@ -5,7 +5,7 @@ use t;
 subtest 'Timeout' => {
     my $res = post-solution( :code('sleep 11') )<runs>[0];
 
-    is $res<stderr>, 'Killed for exceeding the 10s timeout.', 'Correct error';
+    is $res<stderr>, 'Failed for exceeding the 10s timeout.', 'Correct error';
 
     is floor( $res<time_ns> / 1e9 ), 10, 'Correct time';
 };
@@ -17,11 +17,13 @@ subtest 'Timeout with correct output' => {
         sleep 11;
     CODE
 
-    is $res<stderr>, 'Killed for exceeding the 10s timeout.', 'Correct error';
+    is $res<stderr>, 'Failed for exceeding the 10s timeout.', 'Correct error';
 
     is $res<stdout>, slurp('config/hole-answers/fizz-buzz.txt').trim, 'Correct output';
 
     nok $res<pass>, 'Solution fails';
+
+    ok $res<timeout>, 'Solution timed out';
 };
 
 done-testing;

@@ -47,14 +47,22 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	case "holes-authored":
 		desc = "Total holes authored."
 		sql = `WITH holes AS (
-			    SELECT user_id, COUNT(*) FROM authors GROUP BY user_id
+			    SELECT * FROM unnest($3::uuid[], $4::int[]) x(uuid, count)
 			) SELECT avatar_url, count, country_flag, name,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM holes
-			    JOIN golfers_with_avatars ON id = user_id
+			    JOIN golfers_with_avatars USING(uuid)
 			ORDER BY rank, name
 			   LIMIT $1 OFFSET $2`
+
+		uuids := make([]string, 0, len(config.HolesByAuthor))
+		counts := make([]int, 0, len(config.HolesByAuthor))
+		for uuid, holes := range config.HolesByAuthor {
+			uuids = append(uuids, uuid)
+			counts = append(counts, len(holes))
+		}
+		args = append(args, uuids, counts)
 	case "holes-of-the-week":
 		desc, _ = config.HoleOfTheWeek()
 		sql = `WITH holes AS (

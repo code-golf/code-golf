@@ -27,6 +27,8 @@ section > a, section > div {
     min-width: 3rem;
 }
 
+section > p { margin: .5rem .5rem 0 }
+
 .icons {
     align-content: start;
     display: grid;

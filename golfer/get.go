@@ -122,12 +122,6 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          (SELECT COUNT(DISTINCT hole)
 		             FROM stable_passing_solutions
 		            WHERE user_id = id)                 holes,
-		          ARRAY(
-		            SELECT hole
-		              FROM authors
-		             WHERE user_id = golfers_with_avatars.id
-		          ORDER BY hole
-		          )                                     holes_authored,
 		          id,
 		          (SELECT COUNT(DISTINCT lang)
 		             FROM stable_passing_solutions
@@ -139,7 +133,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          COALESCE(silver, 0)                   silver,
 		          sponsor,
 		          started,
-		          COALESCE(unicorn, 0)                  unicorn
+		          COALESCE(unicorn, 0)                  unicorn,
+		          uuid
 		     FROM golfers_with_avatars
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
@@ -151,6 +146,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 	} else if err != nil {
 		panic(err)
 	}
+
+	info.HolesAuthored = config.HolesByAuthor[info.UUID]
 
 	if err := db.Select(
 		&info.Referrals,
