@@ -2149,9 +2149,6 @@ preamble = '''
 '''
 
 [['Kolakoski Constant'.variants]]
-authors = [
-    '0163a524-feb6-7e9e-9bbf-b6bbf0fe0116', # GrayJoKing
-]
 name     = 'Kolakoski Sequence'
 category = 'Sequence'
 released = 2021-01-16
@@ -3589,9 +3586,6 @@ preamble = '''
 '''
 
 [['QR Decoder'.variants]]
-authors = [
-    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
-]
 experiment = 816
 name       = 'QR Encoder'
 synopsis   = 'Encode a Version-1 ASCII QR code.'

@@ -89,8 +89,6 @@ func initHoles() {
 	}
 
 	// Expand variants.
-	copyFields := []string{
-		"Category", "Data", "Links", "Preamble", "Synopsis", "Variants"}
 	for name, hole := range holes {
 		hole.Name = name
 
@@ -108,9 +106,12 @@ func initHoles() {
 				continue
 			}
 
-			// Copy any fields missing in the variant from the hole.
+			// Copy specific fields missing in the variant from the hole.
 			dst := reflect.ValueOf(variant).Elem()
-			for _, field := range copyFields {
+			for _, field := range []string{
+				"Authors", "Category", "Data", "Links", "Preamble",
+				"Synopsis", "Variants",
+			} {
 				if dst.FieldByName(field).IsZero() {
 					dst.FieldByName(field).Set(src.FieldByName(field))
 				}
