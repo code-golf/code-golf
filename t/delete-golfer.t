@@ -10,9 +10,6 @@ my $dbh = dbh;
 new-golfer :$dbh :id(1) :name<Alice>;
 new-golfer :$dbh :id(2) :name<Bob>;
 
-# Alice authored Fizz Buzz.
-$dbh.execute: "INSERT INTO authors VALUES ('fizz-buzz', 1)";
-
 # Alice referred Bob.
 $dbh.execute: "UPDATE users SET referrer_id = 1 WHERE name = 'Bob'";
 
@@ -28,9 +25,6 @@ $dbh.execute: "SELECT save_solution(
 ##########
 # Before #
 ##########
-
-is-deeply authors(), ({ hole => 'fizz-buzz', user_id => 1 },),
-    'authors before delete';
 
 is-deeply sessions(), ({ user_id => 1 }, { user_id => 2 }),
     'sessions before delete';
@@ -64,9 +58,6 @@ $dbh.execute: "DELETE FROM users WHERE name = 'Alice'";
 # After #
 #########
 
-is-deeply authors(), $(),
-    'authors after delete';
-
 is-deeply sessions(), ({ user_id => 2 },),
     'sessions after delete';
 
@@ -88,10 +79,6 @@ done-testing;
 #########
 # Utils #
 #########
-
-sub authors { $dbh.execute(q:to/SQL/).allrows :array-of-hash }
-    SELECT * FROM authors
-SQL
 
 sub sessions { $dbh.execute(q:to/SQL/).allrows :array-of-hash }
     SELECT user_id FROM sessions

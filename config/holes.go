@@ -35,6 +35,9 @@ var (
 	HoleAliases   = map[string]string{}
 	HoleRedirects = map[string]string{}
 
+	// Authors
+	HolesByAuthor = map[string]Holes{}
+
 	// Latest stable hole.
 	LatestHole *Hole
 
@@ -51,6 +54,7 @@ type Hole struct {
 	Aliases, Redirects          []string       `json:"-"`
 	Answer                      string         `json:"-"`
 	AnswerFunc                  HoleAnswerFunc `json:"-"`
+	Authors                     []string       `json:"authors"`
 	CaseFold                    bool           `json:"-" toml:"case-fold"`
 	Category                    string         `json:"category"`
 	CategoryColor, CategoryIcon string         `json:"-"`
@@ -198,6 +202,13 @@ func initHoles() {
 		slices.SortFunc(holes, func(a, b *Hole) int {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
+	}
+
+	// Populate HolesByAuthor after sorting so that each hole slice is sorted.
+	for _, hole := range AllHoleList {
+		for _, author := range hole.Authors {
+			HolesByAuthor[author] = append(HolesByAuthor[author], hole)
+		}
 	}
 
 	LatestHole = slices.MaxFunc(HoleList, func(a, b *Hole) int {

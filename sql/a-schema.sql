@@ -156,12 +156,6 @@ CREATE TABLE users (
     CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
 
-CREATE TABLE authors (
-    hole    hole NOT NULL,
-    user_id int  REFERENCES users(id) ON DELETE CASCADE,
-    PRIMARY KEY (hole, user_id)
-);
-
 CREATE TABLE cheevos (
     earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -406,7 +400,6 @@ GRANT SELECT ON golfers_with_avatars     TO "code-golf";
 GRANT SELECT ON stable_passing_solutions TO "code-golf";
 
 -- Tables.
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE cheevos         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
