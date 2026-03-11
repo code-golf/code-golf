@@ -14,7 +14,7 @@ $$ LANGUAGE plpgsql;
 CREATE FUNCTION earn_cheevos(hole hole, lang lang, user_id int) RETURNS cheevo[] AS $$
 #variable_conflict use_variable
 DECLARE
-    earned         cheevo[] := '{}'::cheevo[];
+    earned         cheevo[] := '{}';
     holes          int;
     holes_for_lang hole[];
     langs_for_hole lang[];
