@@ -73,6 +73,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/Golfer'
 
+  /golfers/{name}/badge/{metric}:
+    get:
+      operationId: getGolferBadge
+      servers:
+        - url: https://code.golf
+      parameters:
+        - name: name
+          description: Golfer name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: metric
+          description: Badge metric (optionally with .svg suffix)
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [holes, langs, cheevos, bytes, chars, gold, silver, bronze, diamond, unicorn]
+      tags: [golfers]
+      summary: Get a golfer progress badge (SVG)
+      responses:
+        '200':
+          description: SVG badge
+          content:
+            image/svg+xml:
+              schema:
+                type: string
+        '404':
+          description: Golfer or badge metric not found
+
   /holes:
     get:
       operationId: getHoles
