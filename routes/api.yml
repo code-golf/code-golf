@@ -10,6 +10,7 @@ servers:
 
 tags:
   - name: achievements
+  - name: golfers
   - name: holes
   - name: languages
   - name: misc
