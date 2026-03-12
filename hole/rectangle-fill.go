@@ -5,8 +5,10 @@ import (
 	"strings"
 )
 
-const rectSize = 10
-const rectSquare = rectSize * rectSize
+const (
+	rectSize = 10
+	rectSquare = rectSize * rectSize
+)
 
 var _ = answerFunc("rectangle-fill", func() []Answer {
 	answers := make([]Answer, 3)
