@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	rectSize = 10
+	rectSize   = 10
 	rectSquare = rectSize * rectSize
 )
 
