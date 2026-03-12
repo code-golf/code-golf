@@ -32,6 +32,7 @@ func Router(db *sqlx.DB) http.Handler {
 	r.Get("/feeds/{feed:(?:atom|json|rss)}", feedGET)
 	r.Get("/golfers/{name}/avatar", golferAvatarGET)
 	r.Get(`/golfers/{name}/avatar/{size:\d+}`, golferAvatarGET)
+	r.Get("/golfers/{name}/badge/{metric}", golferBadgeGET)
 	r.Get("/healthz", healthzGET)
 	r.Post("/log-out", logOutPOST)
 	r.Get("/random", randomGET)
