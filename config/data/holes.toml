@@ -3665,6 +3665,77 @@ preamble = '''
 <p>Print the first <b>250</b> terms of the sequence one per line.
 '''
 
+['Rectangle Fill']
+authors = [
+    '0171fa59-629b-738f-8bb5-3c52b6722d5d', # AlephSquirrel
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
+experiment = 2579
+category = 'Transform'
+synopsis = 'Fill in rectangles with numbers.'
+preamble = '''
+<p>
+    Fill in rectangles in a grid consisting primarily of zeros. The top left
+    or right corner and the bottom left or right corner of each rectangle are
+    marked with a corresponding pair of digits from 1 through 9. If rectangles
+    overlap, the rectangle with the higher number takes precedence.
+
+<p>
+    For example, consider the following grid with only eight starting corners:
+
+<pre>
+0000400000
+0100000000
+0000000000
+0000000000
+0000000100
+0000000000
+0020000000
+0300000000
+0000000030
+0002004000
+</pre>
+
+<p>
+    Below are four separate grids showing the locations of the individual
+    rectangles.
+
+<pre>
+Rectangle <b>1</b>:    Rectangle <b>2</b>:    Rectangle <b>3</b>:    Rectangle <b>4</b>:
+
+ 0000400000      0000400000      0000400000      0000<b>444</b>000
+ 0<b>1111111</b>00      0100000000      0100000000      0100<b>444</b>000
+ 0<b>1111111</b>00      0000000000      0000000000      0000<b>444</b>000
+ 0<b>1111111</b>00      0000000000      0000000000      0000<b>444</b>000
+ 0<b>1111111</b>00      0000000100      0000000100      0000<b>444</b>100
+ 0000000000      0000000000      0000000000      0000<b>444</b>000
+ 0020000000      00<b>22</b>000000      0020000000      0020<b>444</b>000
+ 0300000000      03<b>22</b>000000      0<b>33333333</b>0      0300<b>444</b>000
+ 0000000030      00<b>22</b>000030      0<b>33333333</b>0      0000<b>444</b>030
+ 0002004000      00<b>22</b>004000      0002004000      0002<b>444</b>000
+</pre>
+
+<p>
+    When the simplified grid above is filled in, it looks like this:
+
+<pre>
+0000444000
+0111444100
+0111444100
+0111444100
+0111444100
+0000444000
+0022444000
+0333444330
+0333444330
+0022444000
+</pre>
+
+<p>
+    Given a ten-by-ten grid with eighteen starting corners, print the grid
+    with all nine rectangles filled in.
+'''
+
 ['Repeating Decimals']
 authors = [
     '016b3d55-8805-7c95-a943-8c821e35479f', # Lydxn
