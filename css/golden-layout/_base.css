@@ -146,20 +146,20 @@
 
 .lm_controls .lm_maximise {
     background: var(--color);
-    -webkit-mask: url(_maximise.svg) center / 12px 12px no-repeat;
-    mask: url(_maximise.svg) center / 12px 12px no-repeat;
+    -webkit-mask: url(maximise.svg) center / 12px 12px no-repeat;
+    mask: url(maximise.svg) center / 12px 12px no-repeat;
 }
 
 .lm_controls .lm_close,
 .lm_header .lm_tab .lm_close_tab {
     background: var(--color);
-    -webkit-mask: url(_close.svg) center / 12px 12px no-repeat;
-    mask: url(_close.svg) center / 12px 12px no-repeat;
+    -webkit-mask: url(close.svg) center / 12px 12px no-repeat;
+    mask: url(close.svg) center / 12px 12px no-repeat;
 }
 .lm_maximised .lm_controls .lm_maximise {
     background: var(--color);
-    -webkit-mask: url(_minimise.svg) center / 12px 12px no-repeat;
-    mask: url(_minimise.svg) center / 12px 12px no-repeat;
+    -webkit-mask: url(minimise.svg) center / 12px 12px no-repeat;
+    mask: url(minimise.svg) center / 12px 12px no-repeat;
 }
 
 .lm_transition_indicator {
