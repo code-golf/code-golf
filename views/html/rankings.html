@@ -3,7 +3,7 @@
 
 {{ $medals := eq .Name "rankings/medals" }}
 
-{{ if and (or (eq .Name "rankings/holes") $medals) .Data.Hole }}
+{{ if and (or (eq .Name "rankings/holes") (eq .Name "rankings/langs") $medals) .Data.Hole }}
     <nav>
         <a class="btn orange"
             href="/{{ .Name }}{{ if $medals }}/{{ .Data.Type }}{{ end }}/{{ .Data.PrevHole.ID }}/{{ .Data.LangID }}/{{ .Data.Scoring }}"

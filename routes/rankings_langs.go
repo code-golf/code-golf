@@ -12,8 +12,8 @@ import (
 // GET /rankings/langs/{hole}/{lang}/{scoring}
 func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
+		Hole, PrevHole, NextHole *config.Hole
 		HoleID, LangID, Scoring string
-		Hole                    *config.Hole
 		Langs                   []*config.Lang
 		Rows                    []struct {
 			golfer.GolferLink
@@ -35,6 +35,11 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
+	}
+
+
+	if data.Hole = config.HoleByID[data.HoleID]; data.Hole != nil {
+		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
 	if data.HoleID != "all" {
