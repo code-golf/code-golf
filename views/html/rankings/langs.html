@@ -4,57 +4,7 @@
 <main id=two-pane>
     {{ template "nav" . }}
 
-{{ if ne .Data.HoleID "all" }}
-    <table class="nowrap-second sticky">
-        <thead>
-            <tr>
-                <th>#
-                <th>Language
-                <th class="right wide">Points
-                <th class="right wide">{{ title .Data.Scoring }}
-                <th>Golfer
-                <th class="right wide">Submitted
-        <tbody>
-        {{ range .Data.Rows }}
-            <tr>
-                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
-                <td>
-                    <a href="/rankings/langs/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
-                    {{ svg .Lang.ID }}
-                        <span>{{ .Lang.Name }}</span>
-                    </a>
-                <td class="right wide">{{ comma .Points }}
-                <td class="right wide">{{ comma .Strokes }}
-                <td>
-                    <a href="/golfers/{{ .Name }}">
-                        <img src="{{ .AvatarURL }}">
-                        <span>{{ .Name }}</span>
-                    </a>
-                <td class="right wide">{{ .Submitted.Format "Jan 2, 2006" }}
-        {{ end }}
-    </table>
-{{ else if ne .Data.LangID "all" }}
-    <table class="nowrap-second sticky">
-        <thead>
-            <tr>
-                <th>#
-                <th>Hole
-                <th class=right>Medal
-        <tbody>
-        {{ range $i, $r := .Data.Rows }}
-            <tr>
-                <td>{{ inc $i }}<sup>{{ $i | inc | ord }}</sup>
-                <td>
-                    <a href="/rankings/holes/{{ .Hole.ID }}/all/{{ $.Data.Scoring }}">
-                        <span>{{ .Hole.Name }}</span>
-                    </a>
-                <td class=right>
-                    {{ if eq .Rank 1 }}🥇{{ end }}
-                    {{ if eq .Rank 2 }}🥈{{ end }}
-                    {{ if eq .Rank 3 }}🥉{{ end }}
-        {{ end }}
-    </table>
-{{ else }}
+{{ if and (eq .Data.HoleID "all") (eq .Data.LangID "all") }}
     <table class="nowrap-second sticky">
         <thead>
             <tr>
@@ -68,7 +18,7 @@
             <tr>
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
-                    <a href="/rankings/langs/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
+                    <a href="/rankings/holes/all/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
                         {{ svg .Lang.ID }}
                         <span>{{ .Lang.Name }}</span>
                     </a>
@@ -77,6 +27,48 @@
                 <td class=right>{{ with .Bronzes }}{{ . }}🥉{{ end }}
                 <td class="right wide">{{ comma .Points  }}
                 <td class="right wide">{{ comma .Strokes }}
+        {{ end }}
+    </table>
+{{ else }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+            {{ if eq .Data.HoleID "all" }}
+                <th>Hole
+            {{ end }}
+            {{ if eq .Data.LangID "all" }}
+                <th>Language
+            {{ end }}
+                <th class="right wide">Points
+                <th class="right wide">{{ title .Data.Scoring }}
+                <th>Golfer
+                <th class="right wide">Submitted
+        <tbody>
+        {{ range .Data.Rows }}
+            <tr>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+            {{ if eq $.Data.HoleID "all" }}
+                <td>
+                    <a href="/rankings/holes/{{ .Hole.ID }}/all/{{ $.Data.Scoring }}">
+                        <span>{{ .Hole.Name }}</span>
+                    </a>
+            {{ end }}
+            {{ if eq $.Data.LangID "all" }}
+                <td>
+                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
+                        {{ svg .Lang.ID }}
+                        <span>{{ .Lang.Name }}</span>
+                    </a>
+            {{ end }}
+                <td class="right wide">{{ comma .Points }}
+                <td class="right wide">{{ comma .Strokes }}
+                <td>
+                    <a href="/golfers/{{ .Name }}">
+                        <img src="{{ .AvatarURL }}">
+                        <span>{{ .Name }}</span>
+                    </a>
+                <td class="right wide">{{ time (.Submitted.In $.Location)}}
         {{ end }}
     </table>
 {{ end }}

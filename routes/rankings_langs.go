@@ -40,58 +40,71 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 	if data.HoleID != "all" {
 		data.Hole = config.HoleByID[data.HoleID]
 
-		var langFilter string
-		var args []any
-		if data.LangID != "all" {
-			langFilter = "AND lang = $3"
-			args = []any{data.HoleID, data.Scoring, data.LangID}
-		} else {
-			args = []any{data.HoleID, data.Scoring}
-		}
-
+		// Get best scores per language for this specific hole
 		if err := session.Database(r).Select(
 			&data.Rows,
-			`WITH best AS (
-			    SELECT lang, points, strokes, user_id, submitted,
+			`WITH best_per_lang AS (
+			    SELECT hole, lang, points, strokes, user_id, submitted,
 			           ROW_NUMBER() OVER (PARTITION BY lang
-			                                  ORDER BY strokes, submitted) AS rn
+			                                  ORDER BY strokes, submitted)
 			      FROM rankings
-			     WHERE hole = $1 AND scoring = $2 `+langFilter+`
-			) SELECT avatar_url,
-			         country_flag,
-			         lang,
-			         name,
-			         points,
-			         RANK() OVER (ORDER BY strokes) AS rank,
-			         strokes,
-			         submitted
-			    FROM best
-			    JOIN golfers_with_avatars ON user_id = id
-			   WHERE rn = 1
+			     WHERE hole = $1 AND scoring = $2 AND NOT experimental
+			), ranked_langs AS (
+			    SELECT avatar_url,
+			           country_flag,
+			           hole,
+			           lang,
+			           name,
+			           points,
+			           RANK() OVER (ORDER BY strokes) AS rank,
+			           strokes,
+			           submitted
+			      FROM best_per_lang
+			      JOIN golfers_with_avatars ON user_id = id
+			     WHERE row_number = 1
+			)
+			SELECT *
+			  FROM ranked_langs
+			 WHERE $3 IN ('all', lang::text)
 			ORDER BY rank, lang`,
-			args...,
+			data.HoleID, data.Scoring, data.LangID,
 		); err != nil {
 			panic(err)
 		}
 	} else if data.LangID != "all" {
+		// Get best scores per hole for this specific language
 		if err := session.Database(r).Select(
 			&data.Rows,
-			`WITH ranks AS (
-			    SELECT hole, lang,
-			           RANK() OVER (PARTITION BY hole
-			                            ORDER BY points DESC, strokes)
+			`WITH best_per_lang AS (
+			    SELECT hole, lang, points, strokes, user_id, submitted,
+			           ROW_NUMBER() OVER (PARTITION BY hole, lang
+			                                  ORDER BY strokes, submitted)
 			      FROM rankings
 			     WHERE scoring = $1 AND NOT experimental
-			) SELECT DISTINCT hole, rank
-			    FROM ranks
-			   WHERE lang = $2 AND rank < 4
-			ORDER BY hole, rank`,
-			data.Scoring,
-			data.LangID,
+			), ranked_langs AS (
+			    SELECT avatar_url,
+			           country_flag,
+			           hole,
+			           lang,
+			           name,
+			           points,
+			           RANK() OVER (PARTITION BY hole ORDER BY strokes) AS rank,
+			           strokes,
+			           submitted
+			      FROM best_per_lang
+			      JOIN golfers_with_avatars ON user_id = id
+			     WHERE row_number = 1
+			)
+			SELECT *
+			  FROM ranked_langs
+			 WHERE lang = $2
+			ORDER BY hole`,
+			data.Scoring, data.LangID,
 		); err != nil {
 			panic(err)
 		}
 	} else {
+		// Overall default medals view (All Holes & All Langs)
 		if err := session.Database(r).Select(
 			&data.Rows,
 			`WITH ranks AS (
@@ -122,15 +135,14 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var description string
-	if data.HoleID != "all" {
+	if data.HoleID != "all" && data.LangID != "all" {
+		description = "Best " + data.Scoring + " score in " + data.Hole.Name + " in " + config.LangByID[data.LangID].Name + "."
+	} else if data.HoleID != "all" {
 		description = "Best " + data.Scoring + " scores per language in " + data.Hole.Name + "."
+	} else if data.LangID != "all" {
+		description = "Best " + data.Scoring + " scores per hole in " + config.LangByID[data.LangID].Name + "."
 	} else {
-		if lang, ok := config.LangByID[data.LangID]; ok {
-			description = lang.Name + " in "
-		} else {
-			description = "All languages in "
-		}
-		description += data.Scoring + "."
+		description = "All languages in " + data.Scoring + "."
 	}
 
 	render(w, r, "rankings/langs", data, "Rankings: Languages", description)
