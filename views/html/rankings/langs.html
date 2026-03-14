@@ -65,7 +65,13 @@
             {{ end }}
                 <td class="right wide">{{ comma .Points }}
                 <td class="right wide">{{ comma .Strokes }}
-                <td>{{ template "golfer-link" . }}
+                <td class="right wide" style="display: flex; justify-content: space-between;">
+                    {{ template "golfer-link" . }}
+                {{ if gt .Ties 0 }}
+                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}" title="View all tied scores">
+                        &nbsp;+{{ .Ties }}
+                    </a>
+                {{ end }}
                 <td class="right wide">{{ time (.Submitted.In $.Location)}}
         {{ end }}
     </table>

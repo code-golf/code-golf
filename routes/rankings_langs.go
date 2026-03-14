@@ -22,6 +22,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			Golds, Silvers, Bronzes int
 			Points, Rank, Strokes   int
 			Submitted               time.Time
+			Ties                    int
 		}
 	}{
 		HoleID:  param(r, "hole"),
@@ -67,10 +68,16 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           submitted
 			      FROM best_per_lang
 			)
-			SELECT *
-			  FROM ranked_langs
-			 WHERE $3 IN ('all', lang::text)
-			ORDER BY rank, submitted, lang`,
+			SELECT r.*, COALESCE(m.golds - 1, 0) AS ties
+			  FROM ranked_langs r
+			 LEFT JOIN (
+			    SELECT lang, COUNT(*) AS golds
+			      FROM medals
+			     WHERE hole = $1 AND scoring = $2 AND medal = 'gold'
+			  GROUP BY lang
+			 ) m ON r.lang = m.lang
+			 WHERE $3 IN ('all', r.lang::text)
+			ORDER BY r.rank, r.submitted, r.lang`,
 			data.HoleID, data.Scoring, data.LangID,
 		); err != nil {
 			panic(err)
@@ -99,10 +106,16 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           submitted
 			      FROM best_per_lang
 			)
-			SELECT *
-			  FROM ranked_langs
-			 WHERE lang = $2
-			ORDER BY hole`,
+			SELECT r.*, COALESCE(m.golds - 1, 0) AS ties
+			  FROM ranked_langs r
+			 LEFT JOIN (
+			    SELECT hole, COUNT(*) AS golds
+			      FROM medals
+			     WHERE lang = $2 AND scoring = $1 AND medal = 'gold'
+			  GROUP BY hole
+			 ) m ON r.hole = m.hole
+			 WHERE r.lang = $2
+			ORDER BY r.hole`,
 			data.Scoring, data.LangID,
 		); err != nil {
 			panic(err)
