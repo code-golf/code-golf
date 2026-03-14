@@ -48,11 +48,13 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 		if err := session.Database(r).Select(
 			&data.Rows,
 			`WITH best_per_lang AS (
-			    SELECT hole, lang, points, strokes, user_id, submitted,
-			           ROW_NUMBER() OVER (PARTITION BY lang
-			                                  ORDER BY strokes, submitted)
-			      FROM rankings
-			     WHERE hole = $1 AND scoring = $2 AND NOT experimental
+			    SELECT DISTINCT ON (r.lang)
+			           r.hole, r.lang, r.points, r.strokes, r.user_id, r.submitted,
+			           g.avatar_url, g.country_flag, g.name
+			      FROM rankings r
+			      JOIN golfers_with_avatars g ON r.user_id = g.id
+			     WHERE r.hole = $1 AND r.scoring = $2 AND NOT r.experimental
+			  ORDER BY r.lang, r.strokes, r.submitted
 			), ranked_langs AS (
 			    SELECT avatar_url,
 			           country_flag,
@@ -64,13 +66,11 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           strokes,
 			           submitted
 			      FROM best_per_lang
-			      JOIN golfers_with_avatars ON user_id = id
-			     WHERE row_number = 1
 			)
 			SELECT *
 			  FROM ranked_langs
 			 WHERE $3 IN ('all', lang::text)
-			ORDER BY rank, lang`,
+			ORDER BY rank, submitted, lang`,
 			data.HoleID, data.Scoring, data.LangID,
 		); err != nil {
 			panic(err)
@@ -80,11 +80,13 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 		if err := session.Database(r).Select(
 			&data.Rows,
 			`WITH best_per_lang AS (
-			    SELECT hole, lang, points, strokes, user_id, submitted,
-			           ROW_NUMBER() OVER (PARTITION BY hole, lang
-			                                  ORDER BY strokes, submitted)
-			      FROM rankings
-			     WHERE scoring = $1 AND NOT experimental
+			    SELECT DISTINCT ON (r.hole, r.lang)
+			           r.hole, r.lang, r.points, r.strokes, r.user_id, r.submitted,
+			           g.avatar_url, g.country_flag, g.name
+			      FROM rankings r
+			      JOIN golfers_with_avatars g ON r.user_id = g.id
+			     WHERE r.scoring = $1 AND NOT r.experimental
+			  ORDER BY r.hole, r.lang, r.strokes, r.submitted
 			), ranked_langs AS (
 			    SELECT avatar_url,
 			           country_flag,
@@ -96,8 +98,6 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           strokes,
 			           submitted
 			      FROM best_per_lang
-			      JOIN golfers_with_avatars ON user_id = id
-			     WHERE row_number = 1
 			)
 			SELECT *
 			  FROM ranked_langs
