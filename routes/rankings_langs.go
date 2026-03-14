@@ -2,35 +2,78 @@ package routes
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
 )
 
-// GET /rankings/langs/{scoring}
+// GET /rankings/langs/{hole}/{lang}/{scoring}
 func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		LangID, Scoring string
-		Langs           []*config.Lang
-		Rows            []struct {
+		HoleID, LangID, Scoring string
+		Hole                    *config.Hole
+		Langs                   []*config.Lang
+		Rows                    []struct {
+			golfer.GolferLink
 			Hole                    *config.Hole
 			Lang                    *config.Lang
 			Golds, Silvers, Bronzes int
 			Points, Rank, Strokes   int
+			Submitted               time.Time
 		}
 	}{
+		HoleID:  param(r, "hole"),
 		LangID:  param(r, "lang"),
 		Langs:   config.LangList,
 		Scoring: param(r, "scoring"),
 	}
 
-	if data.LangID != "all" && config.LangByID[data.LangID] == nil ||
+	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
+		data.LangID != "all" && config.LangByID[data.LangID] == nil ||
 		data.Scoring != "chars" && data.Scoring != "bytes" {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
-	if data.LangID != "all" {
+	if data.HoleID != "all" {
+		data.Hole = config.HoleByID[data.HoleID]
+
+		var langFilter string
+		var args []any
+		if data.LangID != "all" {
+			langFilter = "AND lang = $3"
+			args = []any{data.HoleID, data.Scoring, data.LangID}
+		} else {
+			args = []any{data.HoleID, data.Scoring}
+		}
+
+		if err := session.Database(r).Select(
+			&data.Rows,
+			`WITH best AS (
+			    SELECT lang, points, strokes, user_id, submitted,
+			           ROW_NUMBER() OVER (PARTITION BY lang
+			                                  ORDER BY strokes, submitted) AS rn
+			      FROM rankings
+			     WHERE hole = $1 AND scoring = $2 `+langFilter+`
+			) SELECT avatar_url,
+			         country_flag,
+			         lang,
+			         name,
+			         points,
+			         RANK() OVER (ORDER BY strokes) AS rank,
+			         strokes,
+			         submitted
+			    FROM best
+			    JOIN golfers_with_avatars ON user_id = id
+			   WHERE rn = 1
+			ORDER BY rank, lang`,
+			args...,
+		); err != nil {
+			panic(err)
+		}
+	} else if data.LangID != "all" {
 		if err := session.Database(r).Select(
 			&data.Rows,
 			`WITH ranks AS (
@@ -79,12 +122,16 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var description string
-	if lang, ok := config.LangByID[data.LangID]; ok {
-		description = lang.Name + " in "
+	if data.HoleID != "all" {
+		description = "Best " + data.Scoring + " scores per language in " + data.Hole.Name + "."
 	} else {
-		description = "All languages in "
+		if lang, ok := config.LangByID[data.LangID]; ok {
+			description = lang.Name + " in "
+		} else {
+			description = "All languages in "
+		}
+		description += data.Scoring + "."
 	}
-	description += data.Scoring + "."
 
 	render(w, r, "rankings/langs", data, "Rankings: Languages", description)
 }

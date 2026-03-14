@@ -4,7 +4,36 @@
 <main id=two-pane>
     {{ template "nav" . }}
 
-{{ if ne .Data.LangID "all" }}
+{{ if ne .Data.HoleID "all" }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Language
+                <th class="right wide">Points
+                <th class="right wide">{{ title .Data.Scoring }}
+                <th>Golfer
+                <th class="right wide">Submitted
+        <tbody>
+        {{ range .Data.Rows }}
+            <tr>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    <a href="/rankings/langs/{{ $.Data.HoleID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
+                    {{ svg .Lang.ID }}
+                        <span>{{ .Lang.Name }}</span>
+                    </a>
+                <td class="right wide">{{ comma .Points }}
+                <td class="right wide">{{ comma .Strokes }}
+                <td>
+                    <a href="/golfers/{{ .Name }}">
+                        <img src="{{ .AvatarURL }}">
+                        <span>{{ .Name }}</span>
+                    </a>
+                <td class="right wide">{{ .Submitted.Format "Jan 2, 2006" }}
+        {{ end }}
+    </table>
+{{ else if ne .Data.LangID "all" }}
     <table class="nowrap-second sticky">
         <thead>
             <tr>
