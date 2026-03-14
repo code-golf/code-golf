@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.102-alpine3.23-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0.201-alpine3.23-amd64 AS builder
 
 WORKDIR /powershell
 
-COPY powershell.cs powershell.csproj ./
+COPY powershell.* .
 
 RUN dotnet publish -c Release -o /out
 

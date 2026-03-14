@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache clang cmake make patch
 
-ENV LDFLAGS='-static' VER=4.3.3
+ENV LDFLAGS='-static' VER=4.4.0
 
 WORKDIR /arkscript
 

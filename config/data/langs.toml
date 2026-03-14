@@ -43,7 +43,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.55 MiB'
-version  = 'Algol 68 Genie 3.10.13'
+version  = 'Algol 68 Genie 3.10.14'
 website  = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example  = '''
 # Printing #
@@ -82,8 +82,8 @@ example    = '''
 args       = [ '/usr/bin/arkscript', '-' ]
 env        = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 experiment = 1656
-size       = '2.83 MiB'
-version    = '4.3.3'
+size       = '2.85 MiB'
+version    = '4.4.0'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
@@ -368,8 +368,8 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '111 MiB'
-version = 'C# 14.0 on .NET 10.0.2'
+size    = '112 MiB'
+version = 'C# 14.0 on .NET 10.0.5'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -418,7 +418,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '78.9 MiB'
-version = '0.11.4'
+version = '0.11.5'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -695,7 +695,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.2'
+version = 'F# 10.0 on .NET 10.0.5'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.0 MiB'
-version = 'V8 14.6.202.11'
+version = 'V8 14.6.650202'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.55 MiB'
-version    = '0.711'
+size       = '5.54 MiB'
+version    = '0.712'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1407,7 +1407,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.3'
+version = '8.5.4'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1458,7 +1458,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '137 MiB'
-version    = 'PowerShell 7.5.4 on .NET 10.0.2'
+version    = 'PowerShell 7.5.5 on .NET 10.0.5'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1537,8 +1537,8 @@ foreach string arg in (ARGV)
 [R]
 args       = [ '/usr/bin/R', '-' ]
 args-quine = [ '/usr/bin/R', '-e', "source('stdin')" ]
-size       = '31.0 MiB'
-version    = '4.5.2'
+size       = '30.9 MiB'
+version    = '4.5.3'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
@@ -1633,7 +1633,7 @@ end
 '''
 
 [Rockstar]
-args      = [ '/usr/bin/rockstarwrapper', '-' ]
+args      = [ '/usr/bin/rockstar', '-' ]
 redirects = [ 'rockstar-2' ]
 size      = '3.92 MiB'
 version   = '2.0.31'
@@ -1804,10 +1804,10 @@ foreach (arg in vargv)
 '''
 
 [Stax]
-args       = [ '/usr/bin/staxwrapper', '-' ]
+args       = [ '/usr/bin/stax', '-' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 439
-size       = '79.5 MiB'
+size       = '79.6 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
