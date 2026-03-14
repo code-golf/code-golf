@@ -43,7 +43,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.55 MiB'
-version  = 'Algol 68 Genie 3.10.13'
+version  = 'Algol 68 Genie 3.10.14'
 website  = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example  = '''
 # Printing #
