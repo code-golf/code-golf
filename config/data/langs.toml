@@ -368,8 +368,8 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '111 MiB'
-version = 'C# 14.0 on .NET 10.0.2'
+size    = '112 MiB'
+version = 'C# 14.0 on .NET 10.0.5'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -695,7 +695,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.2'
+version = 'F# 10.0 on .NET 10.0.5'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1458,7 +1458,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '137 MiB'
-version    = 'PowerShell 7.5.5 on .NET 10.0.2'
+version    = 'PowerShell 7.5.5 on .NET 10.0.5'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1633,7 +1633,7 @@ end
 '''
 
 [Rockstar]
-args      = [ '/usr/bin/rockstarwrapper', '-' ]
+args      = [ '/usr/bin/rockstar', '-' ]
 redirects = [ 'rockstar-2' ]
 size      = '3.92 MiB'
 version   = '2.0.31'
@@ -1804,10 +1804,10 @@ foreach (arg in vargv)
 '''
 
 [Stax]
-args       = [ '/usr/bin/staxwrapper', '-' ]
+args       = [ '/usr/bin/stax', '-' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 439
-size       = '79.5 MiB'
+size       = '79.6 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
