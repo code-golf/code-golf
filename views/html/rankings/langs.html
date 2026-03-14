@@ -45,8 +45,10 @@
                 <th>Golfer
                 <th class="right wide">Submitted
         <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
         {{ range .Data.Rows }}
-            <tr>
+            <tr {{ if eq $name .Name }} class=me {{ end }}>
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
             {{ if eq $.Data.HoleID "all" }}
                 <td>
@@ -63,11 +65,7 @@
             {{ end }}
                 <td class="right wide">{{ comma .Points }}
                 <td class="right wide">{{ comma .Strokes }}
-                <td>
-                    <a href="/golfers/{{ .Name }}">
-                        <img src="{{ .AvatarURL }}">
-                        <span>{{ .Name }}</span>
-                    </a>
+                <td>{{ template "golfer-link" . }}
                 <td class="right wide">{{ time (.Submitted.In $.Location)}}
         {{ end }}
     </table>
