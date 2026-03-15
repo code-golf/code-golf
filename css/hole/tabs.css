@@ -107,7 +107,8 @@ section header {
 
 #golden-container {
     grid-row: 5 / 6;
-    width: 100%; 
+    width: 100%;
+    min-height: 40rem;
     position: relative;
     /* Prevent overflow from maximized panels */
     overflow: hidden;
