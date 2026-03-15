@@ -271,7 +271,6 @@ function parseSubstitutions() {
         .map(match => (
             {pattern: new RegExp(match[1], [...new Set(match[3])].join('')), replacement: JSON.parse(`"${match[2]}"`)}
         ));
-    $<HTMLButtonElement>('#convert-notes-btn').disabled = substitutions.length < 1;
 }
 
 async function convertNotesAndRun(): Promise<boolean> {
@@ -296,7 +295,7 @@ layout.registerComponentFactoryFunction('holeLangNotes', async container => {
     const header = (<header>
         <div>
             <input id="notes-substitutions" placeholder="Perl-like s/// expressions" size="50"></input>
-            <button class="btn blue" id="convert-notes-btn" disabled>Convert & Run</button>
+            <button class="btn blue" id="convert-notes-btn">Convert & Run</button>
         </div>
         <button class="btn blue" id="upsert-notes-btn" disabled>Save</button>
     </header>) as HTMLElement;
