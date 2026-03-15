@@ -97,10 +97,6 @@ func fillRect(rect [rectSize][rectSize]byte) string {
 			}
 		}
 
-		if br == 0 {
-			continue
-		}
-
 		for j := tr; j <= br; j++ {
 			for k := tc; k <= bc; k++ {
 				if digit > rect[j][k] {
