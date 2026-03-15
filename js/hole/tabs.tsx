@@ -239,7 +239,7 @@ layout.registerComponentFactoryFunction('code', async container => {
     // Wire submit to clicking a button and a keyboard shortcut.
     const closuredSubmit = () => submit(editor, updateReadonlyPanels);
     $('#runBtn').onclick = closuredSubmit;
-    $('#editor').onkeydown = ctrlEnter(closuredSubmit);
+    window.onkeydown = ctrlEnter(closuredSubmit);
 
     const deleteBtn = $('#deleteBtn');
     if (deleteBtn) {
