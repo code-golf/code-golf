@@ -76,8 +76,6 @@ paths:
   /golfers/{name}/badge/{metric}:
     get:
       operationId: getGolferBadge
-      servers:
-        - url: https://code.golf
       parameters:
         - name: name
           description: Golfer name
