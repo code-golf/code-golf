@@ -63,36 +63,36 @@ var badgeMetrics = map[string]badgeMetric{
 			return pretty.Comma(info.CharsPoints) + " pts"
 		},
 	},
-	"gold": {
-		Label: "gold",
+	"gold-medals": {
+		Label: "gold medals",
 		Color: "#dfb317",
 		Value: func(info *golfer.GolferInfo) string {
 			return pretty.Comma(info.Gold)
 		},
 	},
-	"silver": {
-		Label: "silver",
+	"silver-medals": {
+		Label: "silver medals",
 		Color: "#9f9f9f",
 		Value: func(info *golfer.GolferInfo) string {
 			return pretty.Comma(info.Silver)
 		},
 	},
-	"bronze": {
-		Label: "bronze",
+	"bronze-medals": {
+		Label: "bronze medals",
 		Color: "#b08d57",
 		Value: func(info *golfer.GolferInfo) string {
 			return pretty.Comma(info.Bronze)
 		},
 	},
-	"diamond": {
-		Label: "diamond",
+	"diamonds": {
+		Label: "diamonds",
 		Color: "#4fc3f7",
 		Value: func(info *golfer.GolferInfo) string {
 			return pretty.Comma(info.Diamond)
 		},
 	},
-	"unicorn": {
-		Label: "unicorn",
+	"unicorns": {
+		Label: "unicorns",
 		Color: "#c678dd",
 		Value: func(info *golfer.GolferInfo) string {
 			return pretty.Comma(info.Unicorn)
@@ -100,11 +100,22 @@ var badgeMetrics = map[string]badgeMetric{
 	},
 }
 
+var badgeMetricAliases = map[string]string{
+	"gold":    "gold-medals",
+	"silver":  "silver-medals",
+	"bronze":  "bronze-medals",
+	"diamond": "diamonds",
+	"unicorn": "unicorns",
+}
+
 // GET /golfers/{name}/badge/{metric}
 func golferBadgeGET(w http.ResponseWriter, r *http.Request) {
 	metric := strings.ToLower(param(r, "metric"))
-	if before, ok :=strings.CutSuffix(metric, ".svg"); ok  {
+	if before, ok := strings.CutSuffix(metric, ".svg"); ok {
 		metric = before
+	}
+	if alias, ok := badgeMetricAliases[metric]; ok {
+		metric = alias
 	}
 
 	metricDef, ok := badgeMetrics[metric]

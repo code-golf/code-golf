@@ -89,7 +89,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [holes, langs, cheevos, bytes, chars, gold, silver, bronze, diamond, unicorn]
+            enum: [holes, langs, cheevos, bytes, chars, gold-medals, silver-medals, bronze-medals, diamonds, unicorns]
       tags: [golfers]
       summary: Get a golfer progress badge (SVG)
       responses:
