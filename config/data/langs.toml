@@ -452,8 +452,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/bb', '/proc/self/fd/0' ]
-size    = '68.8 MiB'
-version = 'Babashka 1.12.216'
+size    = '68.4 MiB'
+version = 'Babashka 1.12.217'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -801,8 +801,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '70.3 MiB'
-version = '1.14.0'
+size    = '70.8 MiB'
+version = '1.15.0'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -1215,8 +1215,8 @@ example    = '''
 
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '137 MiB'
-version = '2.3.10'
+size    = '139 MiB'
+version = '2.3.20'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1478,8 +1478,8 @@ ForEach ($arg in $args) {
 [Prolog]
 args    = [ '/usr/bin/prolog', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '57.4 MiB'
-version = 'SWI-Prolog 10.0.1'
+size    = '57.5 MiB'
+version = 'SWI-Prolog 10.0.2'
 website = 'https://www.swi-prolog.org'
 example = '''
 % Printing
@@ -1656,7 +1656,7 @@ end
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '38.6 MiB'
-version = '4.0.1'
+version = '4.0.2'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
