@@ -802,7 +802,7 @@ end
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '70.8 MiB'
-version = '1.15.0'
+version = '1.15.1'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -1426,7 +1426,7 @@ for ($i = 1; $i < $argc; $i++)
 args       = [ '/usr/bin/picat', '-' ]
 experiment = 1871
 size       = '11.7 MiB'
-version    = '3.9'
+version    = '3.9#7'
 website    = 'https://picat-lang.org'
 example    = '''
 main =>
