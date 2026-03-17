@@ -50,7 +50,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			&data.Rows,
 			`WITH best_per_lang AS (
 			    SELECT DISTINCT ON (r.lang)
-			           r.hole, r.lang, r.strokes, r.user_id, r.submitted,
+			           r.hole, r.lang, r.strokes, r.points, r.user_id, r.submitted,
 			           g.avatar_url, g.country_flag, g.name
 			      FROM rankings r
 			      JOIN golfers_with_avatars g ON r.user_id = g.id
@@ -62,7 +62,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           hole,
 			           lang,
 			           name,
-			           CAST(ROUND(MIN(strokes) OVER () * 1000.0 / strokes) AS int) AS points,
+			           CASE WHEN $3 = 'all' THEN CAST(ROUND(MIN(strokes) OVER () * 1000.0 / strokes) AS int) ELSE points END AS points,
 			           RANK() OVER (ORDER BY strokes) AS rank,
 			           strokes,
 			           submitted
