@@ -100,23 +100,9 @@ var badgeMetrics = map[string]badgeMetric{
 	},
 }
 
-var badgeMetricAliases = map[string]string{
-	"gold":    "gold-medals",
-	"silver":  "silver-medals",
-	"bronze":  "bronze-medals",
-	"diamond": "diamonds",
-	"unicorn": "unicorns",
-}
-
-// GET /golfers/{name}/badge/{metric}
-func golferBadgeGET(w http.ResponseWriter, r *http.Request) {
-	metric := strings.ToLower(param(r, "metric"))
-	if before, ok := strings.CutSuffix(metric, ".svg"); ok {
-		metric = before
-	}
-	if alias, ok := badgeMetricAliases[metric]; ok {
-		metric = alias
-	}
+// GET /api/golfers/{name}/badges/{metric}
+func apiGolferBadgeGET(w http.ResponseWriter, r *http.Request) {
+	metric, _ := strings.CutSuffix(param(r, "metric"), ".svg")
 
 	metricDef, ok := badgeMetrics[metric]
 	if !ok {

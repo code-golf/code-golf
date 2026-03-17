@@ -99,7 +99,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/cheevos", apiCheevosGET)
 			r.Get("/cheevos/{cheevo}", apiCheevoGET)
 			r.Get("/golfers/{golfer}", apiGolferGET)
-			r.Get("/golfers/{name}/badge/{metric}", golferBadgeGET)
+			r.Get("/golfers/{name}/badges/{metric}", apiGolferBadgeGET)
 			r.Get("/holes", apiHolesGET)
 			r.Get("/langs", apiLangsGET)
 			r.Get("/panic", apiPanicGET)
