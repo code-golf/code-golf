@@ -88,7 +88,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			&data.Rows,
 			`WITH best_per_lang AS (
 			    SELECT DISTINCT ON (r.hole, r.lang)
-			           r.hole, r.lang, r.strokes, r.user_id, r.submitted,
+			           r.hole, r.lang, r.strokes, r.points, r.user_id, r.submitted,
 			           g.avatar_url, g.country_flag, g.name
 			      FROM rankings r
 			      JOIN golfers_with_avatars g ON r.user_id = g.id
@@ -100,7 +100,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           hole,
 			           lang,
 			           name,
-			           CAST(ROUND(MIN(strokes) OVER (PARTITION BY hole) * 1000.0 / strokes) AS int) AS points,
+			           points,
 			           RANK() OVER (PARTITION BY hole ORDER BY strokes) AS rank,
 			           strokes,
 			           submitted
@@ -124,27 +124,42 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 		// Overall default medals view (All Holes & All Langs)
 		if err := session.Database(r).Select(
 			&data.Rows,
-			`WITH ranks AS (
-			    SELECT hole, lang, points, strokes,
-			           RANK()       OVER (PARTITION BY hole
-			                                  ORDER BY points DESC, strokes),
-			           ROW_NUMBER() OVER (PARTITION BY hole, lang
-			                                  ORDER BY points DESC, strokes)
+			`WITH hole_stats AS (
+			    SELECT hole, lang, MIN(strokes) AS strokes
 			      FROM rankings
 			     WHERE scoring = $1 AND NOT experimental
-			), medals AS (
-			    SELECT DISTINCT hole, lang, rank FROM ranks WHERE rank < 4
-			) SELECT lang,
-			         SUM(points)  points,
-			         SUM(strokes) strokes,
-			         RANK() OVER(ORDER BY SUM(points) DESC, SUM(strokes) DESC),
-			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 1) golds,
-			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 2) silvers,
-			         (SELECT COUNT(*) FROM medals WHERE lang = ranks.lang AND rank = 3) bronzes
-			    FROM ranks
-			   WHERE row_number = 1
-			GROUP BY lang
-			ORDER BY rank, lang`,
+			     GROUP BY hole, lang
+			), ratio_scores AS (
+			    SELECT lang, strokes,
+			           CAST(ROUND(MIN(strokes) OVER (PARTITION BY hole) * 1000.0 / strokes) AS int) AS points,
+					   RANK() OVER (PARTITION BY hole ORDER BY strokes ASC) AS score_rank
+			      FROM hole_stats
+			), lang_scores AS (
+			    SELECT lang,
+			           SUM(points)  AS points,
+			           SUM(strokes) AS strokes,
+			           RANK() OVER(ORDER BY SUM(points) DESC, SUM(strokes) DESC) AS rank
+			      FROM ratio_scores
+			     GROUP BY lang
+			), lang_medals AS (
+			    SELECT lang,
+					   COUNT(*) FILTER (WHERE score_rank = 1) AS golds,
+					   COUNT(*) FILTER (WHERE score_rank = 2) AS silvers,
+					   COUNT(*) FILTER (WHERE score_rank = 3) AS bronzes
+				  FROM ratio_scores
+				 WHERE score_rank <= 3
+			     GROUP BY lang
+			)
+			SELECT s.lang,
+			       s.points,
+			       s.strokes,
+			       s.rank,
+			       COALESCE(m.golds, 0)   AS golds,
+			       COALESCE(m.silvers, 0) AS silvers,
+			       COALESCE(m.bronzes, 0) AS bronzes
+			  FROM lang_scores s
+			  LEFT JOIN lang_medals m ON s.lang = m.lang
+			 ORDER BY s.rank, s.lang`,
 			data.Scoring,
 		); err != nil {
 			panic(err)
@@ -155,11 +170,11 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 	if data.HoleID != "all" && data.LangID != "all" {
 		description = "Best " + data.Scoring + " score in " + data.Hole.Name + " in " + config.LangByID[data.LangID].Name + "."
 	} else if data.HoleID != "all" {
-		description = "Best " + data.Scoring + " scores per language in " + data.Hole.Name + "."
+		description = "Best " + data.Scoring + " scores per language in " + data.Hole.Name + ". Points are the ratio to the overall minimum " + data.Scoring + "."
 	} else if data.LangID != "all" {
 		description = "Best " + data.Scoring + " scores per hole in " + config.LangByID[data.LangID].Name + "."
 	} else {
-		description = "All languages in " + data.Scoring + "."
+		description = "All languages in " + data.Scoring + ". Points per hole are the ratio to the overall minimum " + data.Scoring + "."
 	}
 
 	render(w, r, "rankings/langs", data, "Rankings: Languages", description)
