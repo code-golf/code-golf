@@ -94,7 +94,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	// 128 KiB, >= because arguments needs a null termination.
 	if len(in.Code) >= 128*1024 {
-		if golfer != nil {
+		if golfer != nil && in.Hole != "tutorial" {
 			golfer.Earn(db, "tl-dr")
 		}
 
@@ -119,7 +119,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		Runs:         runs,
 	}
 
-	if golfer != nil && slices.ContainsFunc(
+	if golfer != nil && in.Hole != "tutorial" && slices.ContainsFunc(
 		out.Runs, func(r hole.Run) bool { return r.Timeout },
 	) {
 		if c := golfer.Earn(db, "slowcoach"); c != nil {
@@ -232,13 +232,15 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 		// Cheevos.
 		if experimental {
-			if c := golfer.Earn(db, "black-box-testing"); c != nil {
-				out.Cheevos = append(out.Cheevos, *c)
-			}
-
-			if experimentalHole && experimentalLang {
-				if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
+			if in.Hole != "tutorial" {
+				if c := golfer.Earn(db, "black-box-testing"); c != nil {
 					out.Cheevos = append(out.Cheevos, *c)
+				}
+
+				if experimentalHole && experimentalLang {
+					if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
 				}
 			}
 		} else {
