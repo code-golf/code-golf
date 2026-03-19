@@ -83,7 +83,7 @@ args       = [ '/usr/bin/arkscript', '-' ]
 env        = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 experiment = 1656
 size       = '2.85 MiB'
-version    = '4.4.0'
+version    = '4.4.1'
 website    = 'https://arkscript-lang.dev'
 example    = '''
 (import std.List)
@@ -1052,7 +1052,7 @@ example    = '''
 args       = [ '/usr/bin/iogii', '-' ]
 experiment = 1770
 size       = '8.78 MiB'
-version    = '1.1.2'
+version    = '1.1.3'
 website    = 'https://golfscript.com/iogii/'
 example    = '''
 # Printing
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.0 MiB'
-version = 'V8 14.6.650202'
+version = 'V8 14.6.202.22'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1457,8 +1457,8 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '137 MiB'
-version    = 'PowerShell 7.5.5 on .NET 10.0.5'
+size       = '140 MiB'
+version    = 'PowerShell 7.6.0 on .NET 10.0.5'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -2002,7 +2002,7 @@ w
 args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
 size       = '78.2 MiB'
-version    = '3.10.3'
+version    = '3.11.0'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing

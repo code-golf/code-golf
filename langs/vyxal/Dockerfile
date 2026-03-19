@@ -1,8 +1,8 @@
 FROM codegolf/lang-java AS builder
 
-ENV VER=3.10.3
+ENV VER=3.11
 
-ADD --chmod=755 https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.jar vyxal.jar
+ADD --chmod=755 https://github.com/Vyxal/Vyxal/releases/download/v$VER/vyxal-$VER.0.jar vyxal.jar
 
 ENTRYPOINT ["/opt/java/bin/java", "-jar", "vyxal.jar"]
 

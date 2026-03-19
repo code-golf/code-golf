@@ -2,7 +2,7 @@ FROM codegolf/lang-ruby
 
 FROM alpine:3.23 AS builder
 
-ENV GHCVER=9.8.2 VER=1.1.2
+ENV GHCVER=9.8.2 VER=1.1.3
 
 RUN apk add --no-cache ghc=$GHCVER-r2 gmp-static musl-dev
 
