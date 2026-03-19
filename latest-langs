@@ -9,7 +9,28 @@ unit sub MAIN(Bool :$all, *@langs);
 
 sub get {
     my $ua = HTTP::Tiny.new :throw-exceptions;
-    return $ua.get("https://$^url")<content>.decode;
+
+    state $gnurl;
+
+    if $^url.ends-with(any <awk bash cobol forth sed>) {
+        return $ua.get($gnurl.subst(/\/ <-[/]>+ \/ $/, $url.match(/ (\/ (<-[/]>+) $) /)) ~ "?C=M;O=D")<content>.decode
+            if $gnurl;
+
+        repeat until $gnurl {
+            my $link = $ua.get("https://$url");
+
+            return $ua.get(($gnurl = $link<url>) ~ "?C=M;O=D")<content>.decode
+                if $link<content>.decode.contains("Last modified");
+
+            CATCH {
+                default {
+                    return $ua.get(($gnurl = $ua.get("https://" ~ $url.match(/mirror/).replace-with(""))<url>) ~ "?C=M;O=D")<content>.decode
+                }
+            }
+        }
+    }
+
+    return $ua.get("https://$url")<content>.decode;
 }
 
 constant %paths = (
@@ -20,8 +41,8 @@ constant %paths = (
     'ArkScript'    => 'github.com/ArkScript-lang/Ark/releases/latest',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',
     'Assembly'     => 'registry.npmjs.org/@defasm/core/latest',
-    'AWK'          => 'ftp.gnu.org/gnu/gawk/?C=M;O=D',
-    'Bash'         => 'ftp.gnu.org/gnu/bash/?C=M;O=D',
+    'AWK'          => 'ftpmirror.gnu.org/gnu/gawk',
+    'Bash'         => 'ftpmirror.gnu.org/gnu/bash',
     'BASIC'        => 'github.com/freebasic/fbc/releases/latest',
     'Befunge'      => 'github.com/VorpalBlade/cfunge',
     'Berry'        => 'github.com/berry-lang/berry',
@@ -33,7 +54,7 @@ constant %paths = (
     'Civet'        => 'registry.npmjs.org/@danielx/civet/latest',
     'CJam'         => 'sourceforge.net/projects/cjam/files',
     'Clojure'      => 'github.com/babashka/babashka/releases/latest',
-    'COBOL'        => 'en.wikipedia.org/wiki/GnuCOBOL',
+    'COBOL'        => 'ftpmirror.gnu.org/gnu/gnucobol',
     'Coconut'      => 'pypi.org/pypi/coconut/json',
     'CoffeeScript' => 'registry.npmjs.org/coffeescript/latest',
     'Common Lisp'  => 'en.wikipedia.org/wiki/CLISP',
@@ -46,7 +67,7 @@ constant %paths = (
     'F#'           => 'en.wikipedia.org/wiki/F_Sharp_(programming_language)',
     'Factor'       => 'github.com/factor/factor/releases/latest',
     'Fennel'       => 'fennel-lang.org/downloads/?C=M;O=D',
-    'Forth'        => 'ftp.gnu.org/gnu/gforth/?C=M;O=D',
+    'Forth'        => 'ftpmirror.gnu.org/gnu/gforth',
     'Fortran'      => 'en.wikipedia.org/wiki/GNU_Compiler_Collection',
     'Gleam'        => 'github.com/gleam-lang/gleam/releases/latest',
     'Go'           => 'endoflife.date/api/go.json',
@@ -95,7 +116,7 @@ constant %paths = (
     'Rust'         => 'github.com/rust-lang/rust/releases/latest',
     'Scala'        => 'github.com/scala/scala/releases/latest',
     'Scheme'       => 'github.com/cisco/ChezScheme/releases/latest',
-    'sed'          => 'ftp.gnu.org/gnu/sed/?C=M;O=D',
+    'sed'          => 'ftpmirror.gnu.org/gnu/sed',
     'SQL'          => 'sqlite.org/index.html',
     'Squirrel'     => 'github.com/albertodemichelis/squirrel/releases/latest',
     'Stax'         => 'github.com/tomtheisen/stax/releases/latest',
@@ -114,12 +135,25 @@ constant %paths = (
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
 
+sub progress($cur) {
+    constant $len = 72;
+
+    my $tot = @langs.unique || %langs;
+    my $bar = $cur * $len div $tot;
+
+    return sprintf "%s%6.1f%% ", "#" x $bar ~ " " x ($len - $bar), $cur * 100 / $tot;
+}
+
 # Dotted decimal, hyphenated date, or Git SHA.
 my regex ver { \d+ ( <[+.-]> \d+ )+ | <xdigit> ** 7..* }
 
-for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
+my $buffer = "\r\e[K";
+
+for %langs{ @langs.unique || * }:p.sort(*.key.fc).kv -> $i, (:key($name), :value(%lang)) {
     # Catch exceptions and carry on to the next lang.
-    CATCH { default { note "$name: $_" } }
+    CATCH { default { $buffer ~= sprintf "$name: $_\n" } }
+
+    print "\r\e[K" ~ progress($i + 1);
 
     my $old = %lang<version> ~~ / <ver> /;
     my $new = do with %paths{$name} {
@@ -133,7 +167,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'dyalog.com'        / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
         when / 'endoflife'         / { $res.&from-json[0]<latest>.match(/<(<ver>)>/).subst(/\+.*/) }
         when / 'fennel-lang'       / { $res ~~ / 'fennel-' <(<ver>)> / }
-        when / 'ftp.gnu.org'       / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
+        when / 'ftpmirror.gnu.org' / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
         when / 'gentoo.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'git.sr.ht'         / { $res ~~ / 'refs/' <(<ver>)> / }
         when / 'githubusercontent' / { $res ~~ / <(<ver>)> / }
@@ -173,6 +207,8 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
     my $match = $old eq $new || $old.starts-with("$new.") || "$old.0" eq $new;
     my $code  = $new eq '?' ?? 33 !! $match ?? 32 !! 31;
 
-    printf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new
+    $buffer ~= sprintf "%12s \e[%dm%11s → %s\e[0m\n", $name, $code, $old, $new
         if $all || @langs.elems || !$match;
 }
+
+print $buffer;
