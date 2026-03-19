@@ -4,28 +4,7 @@
 <main id=two-pane>
     {{ template "nav" . }}
 
-{{ if ne .Data.LangID "all" }}
-    <table class="nowrap-second sticky">
-        <thead>
-            <tr>
-                <th>#
-                <th>Hole
-                <th class=right>Medal
-        <tbody>
-        {{ range $i, $r := .Data.Rows }}
-            <tr>
-                <td>{{ inc $i }}<sup>{{ $i | inc | ord }}</sup>
-                <td>
-                    <a href="/rankings/holes/{{ .Hole.ID }}/all/{{ $.Data.Scoring }}">
-                        <span>{{ .Hole.Name }}</span>
-                    </a>
-                <td class=right>
-                    {{ if eq .Rank 1 }}🥇{{ end }}
-                    {{ if eq .Rank 2 }}🥈{{ end }}
-                    {{ if eq .Rank 3 }}🥉{{ end }}
-        {{ end }}
-    </table>
-{{ else }}
+{{ if and (eq .Data.HoleID "all") (eq .Data.LangID "all") }}
     <table class="nowrap-second sticky">
         <thead>
             <tr>
@@ -39,7 +18,7 @@
             <tr>
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
-                    <a href="/rankings/langs/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
+                    <a href="/rankings/langs/all/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
                         {{ svg .Lang.ID }}
                         <span>{{ .Lang.Name }}</span>
                     </a>
@@ -48,6 +27,52 @@
                 <td class=right>{{ with .Bronzes }}{{ . }}🥉{{ end }}
                 <td class="right wide">{{ comma .Points  }}
                 <td class="right wide">{{ comma .Strokes }}
+        {{ end }}
+    </table>
+{{ else }}
+    <table class="nowrap-second sticky">
+        <thead>
+            <tr>
+                <th>#
+            {{ if eq .Data.HoleID "all" }}
+                <th>Hole
+            {{ end }}
+            {{ if eq .Data.LangID "all" }}
+                <th>Language
+            {{ end }}
+                <th class="right wide">Points
+                <th class="right wide">{{ title .Data.Scoring }}
+                <th>Golfer
+                <th class="right wide">Submitted
+        <tbody>
+        {{ $name := "" }}
+        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
+        {{ range .Data.Rows }}
+            <tr {{ if eq $name .Name }} class=me {{ end }}>
+                <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
+            {{ if eq $.Data.HoleID "all" }}
+                <td>
+                    <a href="/rankings/holes/{{ .Hole.ID }}/all/{{ $.Data.Scoring }}">
+                        <span>{{ .Hole.Name }}</span>
+                    </a>
+            {{ end }}
+            {{ if eq $.Data.LangID "all" }}
+                <td>
+                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}">
+                        {{ svg .Lang.ID }}
+                        <span>{{ .Lang.Name }}</span>
+                    </a>
+            {{ end }}
+                <td class="right wide">{{ comma .Points }}
+                <td class="right wide">{{ comma .Strokes }}
+                <td class="right wide" style="display: flex; justify-content: space-between;">
+                    {{ template "golfer-link" . }}
+                {{ if gt .Ties 0 }}
+                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}" title="View all tied scores">
+                        &nbsp;+{{ .Ties }}
+                    </a>
+                {{ end }}
+                <td class="right wide">{{ time (.Submitted.In $.Location)}}
         {{ end }}
     </table>
 {{ end }}
