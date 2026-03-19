@@ -79,13 +79,13 @@ example    = '''
 '''
 
 [ArkScript]
-args       = [ '/usr/bin/arkscript', '-' ]
-env        = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
-experiment = 1656
-size       = '2.85 MiB'
-version    = '4.4.1'
-website    = 'https://arkscript-lang.dev'
-example    = '''
+args     = [ '/usr/bin/arkscript', '-' ]
+env      = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
+released = 2026-03-19
+size     = '2.85 MiB'
+version  = '4.4.1'
+website  = 'https://arkscript-lang.dev'
+example  = '''
 (import std.List)
 (import std.Sys)
 
