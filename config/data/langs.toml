@@ -1635,7 +1635,7 @@ end
 [Rockstar]
 args      = [ '/usr/bin/rockstar', '-' ]
 redirects = [ 'rockstar-2' ]
-size      = '3.92 MiB'
+size      = '3.91 MiB'
 version   = '2.0.31'
 website   = 'https://codewithrockstar.com'
 example   = '''
