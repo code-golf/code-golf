@@ -219,6 +219,12 @@ export function setCode(code: string, editor: EditorView | null) {
     });
 }
 
+// Set/clear the hide-lang-picker cookie on language picker toggling.
+export function toggleHideLangPickerCookie() {
+    $('#lang-picker').ontoggle = (e: Event) => document.cookie =
+        'hide-lang-picker=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
+}
+
 function updateLangPicker() {
     const selectNodes: Node[] = [];
     const langSelect = <select><option value="">Other</option></select>;
@@ -250,6 +256,8 @@ function updateLangPicker() {
         }
         selectNodes.push(langSelect);
     }
+
+    $('#active').innerText = currentLang.name;
 
     // Hybrid language selector: make it easy to see your existing solutions and their lengths.
     const picker = $('#picker');
@@ -303,7 +311,9 @@ export async function refreshScores(editor: any) {
      || (lsBytes && dbChars && lsBytes != dbChars && solution == 1)) {
         $('#solutionPicker').replaceChildren(...scorings.map((scoring, iNumber) => {
             const i = iNumber as 0 | 1;
-            const a = <a>Fewest {scoring}</a>;
+            const a = <a><svg><use href={
+                `#${scoring.toLowerCase()}`
+            }/></svg>Fewest {scoring}</a>;
 
             const code = getSolutionCode(lang, i);
             if (code) a.append(' ', <sup>{comma(getScoring(code, i))}</sup>);

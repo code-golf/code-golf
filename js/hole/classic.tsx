@@ -10,6 +10,7 @@ import {
     ctrlEnter,
     getLastSubmittedCode,
     Scorings,
+    toggleHideLangPickerCookie,
 } from '../_hole-common';
 import UnprintableElement from '../_unprintable';
 
@@ -49,6 +50,8 @@ init(false, setSolution, setCodeForLangAndSolution, updateReadonlyPanels, () => 
 // Set/clear the hide-details cookie on details toggling.
 $('#details').ontoggle = (e: Event) => document.cookie =
     'hide-details=;SameSite=Lax;Secure' + ((e.target as HTMLDetailsElement).open ? ';Max-Age=0' : '');
+
+toggleHideLangPickerCookie();
 
 $('#restoreLink').onclick = e => {
     setCode(getCurrentSolutionCode(), editor);
