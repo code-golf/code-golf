@@ -3668,6 +3668,7 @@ preamble = '''
 ['Rectangle Fill']
 authors = [
     '0171fa59-629b-738f-8bb5-3c52b6722d5d', # AlephSquirrel
+	'0162b590-6073-7390-8598-bbd32eecf20a', # lynn
     '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
 ]
 experiment = 2579
