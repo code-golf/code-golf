@@ -221,10 +221,6 @@ func initHoles() {
 	for _, hole := range ExpHoleList {
 		if hole.Released != emptyLocalDate {
 			NextHoles = append(NextHoles, hole)
-
-			if NextHoles[0].Released != hole.Released {
-				panic("All of NextHoles must have the same release date")
-			}
 		}
 	}
 }
