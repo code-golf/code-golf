@@ -602,6 +602,12 @@ emoji       = '❗'
 description = 'Solve your <a href=//en.wikipedia.org/wiki/Factorial>one hundred and twentieth</a> hole.'
 target      = 120
 
+[['Total Holes']]
+name        = '8-Bit Wonder'
+emoji       = '👾'
+description = 'Solve your one hundred and twenty-eighth hole.'
+target      = 128
+
 # TODO
 # [['Total Holes']]
 # name        = 'That’s Gross!'

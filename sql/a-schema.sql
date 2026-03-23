@@ -1,14 +1,14 @@
 CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
-    '0xdead', 'aged-like-fine-wine', 'alchemist', 'alphabet-soup',
-    'archivist', 'assembly-required', 'bakers-dozen', 'big-brother',
-    'biohazard', 'bird-is-the-word', 'black-box-testing', 'blackjack',
-    'bullseye', 'busy-beaver', 'caffeinated', 'catch-of-the-week',
-    'centenarian', 'cobowl', 'count-to-ten', 'cunning-linguist',
-    'dammit-janet', 'different-strokes', 'disappearing-act', 'dont-panic',
-    'double-slit-experiment', 'down-to-the-metal',
-    'early-bird-catches-the-worm', 'eight-days-a-week',
+    '0xdead', '8-bit-wonder', 'aged-like-fine-wine', 'alchemist',
+    'alphabet-soup', 'archivist', 'assembly-required', 'bakers-dozen',
+    'big-brother', 'biohazard', 'bird-is-the-word', 'black-box-testing',
+    'blackjack', 'bullseye', 'busy-beaver', 'caffeinated',
+    'catch-of-the-week', 'centenarian', 'cobowl', 'count-to-ten',
+    'cunning-linguist', 'dammit-janet', 'different-strokes',
+    'disappearing-act', 'dont-panic', 'double-slit-experiment',
+    'down-to-the-metal', 'early-bird-catches-the-worm', 'eight-days-a-week',
     'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
     'five', 'flag-those-mines', 'fore', 'forty-winks', 'full-stack-dev',
     'go-forth', 'going-postal', 'gone-in-60-holes',

@@ -347,6 +347,7 @@ BEGIN
     IF holes >= 107 THEN earned := earn(earned, 'busy-beaver',                user_id); END IF;
     IF holes >= 111 THEN earned := earn(earned, 'disappearing-act',           user_id); END IF;
     IF holes >= 120 THEN earned := earn(earned, 'five',                       user_id); END IF;
+    IF holes >= 128 THEN earned := earn(earned, '8-bit-wonder',               user_id); END IF;
 
     RETURN earned;
 END;

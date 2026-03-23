@@ -21,6 +21,7 @@ constant %holes = <
     107 {busy-beaver}
     111 {disappearing-act}
     120 {five}
+    128 {8-bit-wonder}
 >;
 
 constant %langs = <

@@ -64,6 +64,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f445.svg'            `# Tongue`                       \
     '*/1f44b.svg'            `# Waving Hand`                  \
     '*/1f44d.svg'            `# Thumbs Up`                    \
+    '*/1f47e.svg'            `# Alien Monster`                \
     '*/1f47f.svg'            `# Angry Face with Horns`        \
     '*/1f48d.svg'            `# Ring`                         \
     '*/1f48e.svg'            `# Gem Stone`                    \
