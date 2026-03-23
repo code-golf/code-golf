@@ -43,7 +43,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.55 MiB'
-version  = 'Algol 68 Genie 3.10.14'
+version  = 'Algol 68 Genie 3.11.0'
 website  = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example  = '''
 # Printing #
@@ -280,7 +280,7 @@ v Accessing arguments
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '1.00 MiB'
-version = '0d26d13'
+version = '45b7e65'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -802,7 +802,7 @@ end
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '70.8 MiB'
-version = '1.15.1'
+version = '1.15.2'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.54 MiB'
-version    = '0.712'
+size       = '5.55 MiB'
+version    = '0.713'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
