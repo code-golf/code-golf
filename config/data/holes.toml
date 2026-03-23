@@ -1781,6 +1781,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gray_code' },
 ]
+released = 2026-04-01
 synopsis = 'Decode Gray code into denary numbers.'
 preamble = '''
 <p>
@@ -1813,6 +1814,7 @@ authors = [
 ]
 name       = 'Gray Code Encoder'
 experiment = 1157
+released = 2026-04-01
 synopsis = 'Encode denary numbers into Gray code.'
 
 ['Happy Numbers']
