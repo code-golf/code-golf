@@ -1,15 +1,16 @@
 package routes
 
 import (
+	"bytes"
 	"html/template"
 	"maps"
 	"slices"
-	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
+	"github.com/code-golf/code-golf/views"
 )
 
 type banner struct {
@@ -18,24 +19,25 @@ type banner struct {
 }
 
 func banners(golfer *golfer.Golfer) (banners []banner) {
-	// Upcoming hole.
-	if hole := config.NextHole; hole != nil {
-		t := hole.Released.AsTime(time.UTC)
+	// Upcoming holes.
+	if holes := config.NextHoles; len(holes) != 0 {
+		t := holes[0].Released.AsTime(time.UTC)
 		if golfer != nil {
 			t = t.In(golfer.Location())
 		}
 
-		in := "in approximately " + pretty.Time(t)
-		if strings.Contains(string(in), "ago") {
-			in = "momentarily"
+		var html bytes.Buffer
+		if err := views.Render(&html, "banners/upcoming-holes", struct {
+			Holes []*config.Hole
+			Time  time.Time
+		}{holes, t}); err != nil {
+			panic(err)
 		}
 
 		banners = append(banners, banner{
-			HideKey: "upcoming-hole-" + hole.ID,
+			Body:    template.HTML(html.String()),
+			HideKey: "upcoming-hole-" + holes[0].ID,
 			Type:    "info",
-			Body: "The <a href=/" + template.HTML(hole.ID) + ">" +
-				template.HTML(hole.Name) + "</a> hole will go live " + in +
-				". Why not try and solve it ahead of time?",
 		})
 	}
 

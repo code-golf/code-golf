@@ -41,8 +41,8 @@ var (
 	// Latest stable hole.
 	LatestHole *Hole
 
-	// Next experimental hole to become stable.
-	NextHole *Hole
+	// Next experimental holes to become stable.
+	NextHoles []*Hole
 )
 
 type Link struct {
@@ -216,12 +216,15 @@ func initHoles() {
 		return strings.Compare(a.Released.String(), b.Released.String())
 	})
 
-	// There should only be up to one exp hole with a valid release date.
+	// Populate NextHoles.
 	var emptyLocalDate toml.LocalDate
 	for _, hole := range ExpHoleList {
 		if hole.Released != emptyLocalDate {
-			NextHole = hole
-			break
+			NextHoles = append(NextHoles, hole)
+
+			if NextHoles[0].Released != hole.Released {
+				panic("All of NextHoles must have the same release date")
+			}
 		}
 	}
 }

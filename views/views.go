@@ -4,6 +4,7 @@ import (
 	"embed"
 	"encoding/xml"
 	"html/template"
+	"io"
 	"io/fs"
 	"net/http"
 	"net/url"
@@ -22,6 +23,7 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"atoi":      func(s string) int { i, _ := strconv.Atoi(s); return i },
 	"bytes":     pretty.Bytes,
 	"comma":     pretty.Comma,
+	"contains":  strings.Contains,
 	"dec":       func(i int) int { return i - 1 },
 	"duration":  pretty.Duration,
 	"hasPrefix": strings.HasPrefix,
@@ -125,6 +127,6 @@ func init() {
 	}
 }
 
-func Render(w http.ResponseWriter, name string, data any) error {
+func Render(w io.Writer, name string, data any) error {
 	return tmpl.ExecuteTemplate(w, name, data)
 }
