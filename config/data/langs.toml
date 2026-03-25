@@ -390,7 +390,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '115 MiB'
-version = 'Clang 22.1.1'
+version = 'Clang 22.1.2'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.0 MiB'
-version = 'V8 14.6.202.22'
+version = 'V8 14.6.202.26'
 website = 'https://v8.dev'
 example = '''
 // Printing
