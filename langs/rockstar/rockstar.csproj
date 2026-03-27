@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <ProjectReference Include="../Rockstar.Engine/rockstar.engine.csproj"/>
+	</ItemGroup>
+	<PropertyGroup>
+        <AssemblyName>rockstar</AssemblyName>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <InvariantGlobalization>true</InvariantGlobalization>
+		<Nullable>enable</Nullable>
+		<OutputType>Exe</OutputType>
+        <PublishAot>true</PublishAot>
+		<TargetFramework>net10.0</TargetFramework>
+	</PropertyGroup>
+</Project>
