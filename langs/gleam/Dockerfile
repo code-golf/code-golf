@@ -1,4 +1,4 @@
-FROM rust:1.94.0-slim-trixie AS builder
+FROM rust:1.94.1-slim-trixie AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \

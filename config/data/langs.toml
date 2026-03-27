@@ -1676,7 +1676,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '403 MiB'
-version = '1.94.0'
+version = '1.94.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1823,8 +1823,8 @@ Lm
 
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
-size    = '561 MiB'
-version = '6.2.4'
+size    = '576 MiB'
+version = '6.3'
 website = 'https://swift.org'
 example = '''
 // Printing
