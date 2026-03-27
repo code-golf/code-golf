@@ -198,7 +198,7 @@ main {
 .full-height .info,
 .full-height #page-header,
 .full-height footer,
-.full-height #picker,
+.full-height #lang-picker,
 .full-height #make-tall,
 #make-short {
     display: none;
