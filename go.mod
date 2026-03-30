@@ -12,7 +12,7 @@ require (
 	github.com/go-git/go-git/v5 v5.17.1
 	github.com/gorilla/feeds v1.2.0
 	github.com/jmoiron/sqlx v1.4.0
-	github.com/lib/pq v1.12.0
+	github.com/lib/pq v1.12.1
 	github.com/mileusna/useragent v1.3.5
 	github.com/oddg/hungarian-algorithm v0.0.0-20170809162819-9567cbc363de
 	github.com/pelletier/go-toml/v2 v2.3.0
