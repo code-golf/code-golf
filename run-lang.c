@@ -47,7 +47,6 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (umount2("/", MNT_DETACH) < 0)
         ERR_AND_EXIT("umount2");
 
-    // Not every lang has /proc.
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount proc");
 
