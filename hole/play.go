@@ -18,10 +18,11 @@ import (
 	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 )
 
 // Limit how many runs can run at once.
-var runSemaphore = make(chan struct{}, 8)
+var runSemaphore = semaphore.NewWeighted(8)
 
 var timeout = 5 * time.Second
 
@@ -88,14 +89,22 @@ func Play(
 
 	runs := make([]Run, len(answers))
 
+	// HACK: Kotlin times out if ran concurrently, prevent this with weight 5.
+	weight := int64(1)
+	if lang.ID == "kotlin" {
+		weight = 5
+	}
+
 	// Run all the runs in parallel to reduce the wall clock time.
 	var g errgroup.Group
 	for i, answer := range answers {
 		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
 
 		g.Go(func() error {
-			runSemaphore <- struct{}{}
-			defer func() { <-runSemaphore }()
+			if err := runSemaphore.Acquire(ctx, weight); err != nil {
+				return err
+			}
+			defer runSemaphore.Release(weight)
 
 			return play(ctx, hole, lang, code, &runs[i])
 		})
