@@ -25,6 +25,8 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"32718f4", "2026-04-01 00:00:35", "gray-code-decoder", true},
+		{"32718f4", "2026-04-01 00:00:35", "gray-code-encoder", true},
 		{"37a2277", "2026-03-19 23:10:51", "arkscript", false},
 		{"56155a6", "2026-03-01 00:03:47", "continued-fractions", true},
 		{"97670ea", "2026-02-21 17:44:10", "algol-68", false},
