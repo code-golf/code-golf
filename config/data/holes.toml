@@ -1776,7 +1776,6 @@ authors = [
     '0183d0b1-5f5b-72b0-aa58-14f09247d60f', # jakobkordez
 ]
 category = 'Computing'
-experiment = 779
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gray_code' },
@@ -1812,8 +1811,7 @@ preamble = '''
 authors = [
     '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
 ]
-name       = 'Gray Code Encoder'
-experiment = 1157
+name     = 'Gray Code Encoder'
 released = 2026-04-01
 synopsis = 'Encode denary numbers into Gray code.'
 
