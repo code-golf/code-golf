@@ -14,7 +14,7 @@ const (
 
 type connectFourGrid [rows][cols]int
 
-func dropDisc(grid *connectFourGrid, col, player int) bool {
+func (grid *connectFourGrid) dropDisc(col, player int) bool {
 	for i := rows - 1; i >= 0; i-- {
 		if grid[i][col] == 0 {
 			grid[i][col] = player
@@ -26,7 +26,7 @@ func dropDisc(grid *connectFourGrid, col, player int) bool {
 	return false
 }
 
-func checkDirection(grid *connectFourGrid, row, col, dr, dc, player int) bool {
+func (grid *connectFourGrid) checkDirection(row, col, dr, dc, player int) bool {
 	count := 0
 
 	for i := range 4 {
@@ -40,14 +40,14 @@ func checkDirection(grid *connectFourGrid, row, col, dr, dc, player int) bool {
 	return count == 4
 }
 
-func checkWinner(grid *connectFourGrid, player int) int {
+func (grid *connectFourGrid) checkWinner(player int) int {
 	for row := range rows {
 		for col := range cols {
 			if grid[row][col] == player {
 				for _, pts := range [][]int{
 					{1, 0}, {0, 1}, {1, 1}, {1, -1},
 				} {
-					if checkDirection(grid, row, col, pts[0], pts[1], player) {
+					if grid.checkDirection(row, col, pts[0], pts[1], player) {
 						return player
 					}
 				}
@@ -64,10 +64,10 @@ func emulPlay() ([]int, string) {
 	var moves []int
 
 	for {
-		if col := rand.IntN(cols); dropDisc(grid, col, player) {
+		if col := rand.IntN(cols); grid.dropDisc(col, player) {
 			moves = append(moves, col)
 
-			if winner := checkWinner(grid, player); winner != 0 {
+			if winner := grid.checkWinner(player); winner != 0 {
 				return moves, []string{"Red", "Yellow"}[player-1]
 			}
 
