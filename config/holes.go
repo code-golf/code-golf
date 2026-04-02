@@ -10,6 +10,7 @@ import (
 	"slices"
 	"strings"
 	templateTxt "text/template"
+	"time"
 
 	"github.com/code-golf/code-golf/ordered"
 	"github.com/pelletier/go-toml/v2"
@@ -39,7 +40,7 @@ var (
 	HolesByAuthor = map[string]Holes{}
 
 	// Latest stable hole.
-	LatestHole *Hole
+	LatestHoles []*Hole
 
 	// Next experimental holes to become stable.
 	NextHoles []*Hole
@@ -205,16 +206,23 @@ func initHoles() {
 		})
 	}
 
-	// Populate HolesByAuthor after sorting so that each hole slice is sorted.
+	// Populate after sorting so that each hole slice is sorted.
+	var latestReleased time.Time
 	for _, hole := range AllHoleList {
+		// Populate HolesByAuthor.
 		for _, author := range hole.Authors {
 			HolesByAuthor[author] = append(HolesByAuthor[author], hole)
 		}
-	}
 
-	LatestHole = slices.MaxFunc(HoleList, func(a, b *Hole) int {
-		return strings.Compare(a.Released.String(), b.Released.String())
-	})
+		// Populate LatestHoles.
+		released := hole.Released.AsTime(time.UTC)
+		if released.After(latestReleased) {
+			LatestHoles = []*Hole{hole}
+			latestReleased = released
+		} else if latestReleased.Equal(released) {
+			LatestHoles = append(LatestHoles, hole)
+		}
+	}
 
 	// Populate NextHoles.
 	var emptyLocalDate toml.LocalDate

@@ -58,7 +58,7 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		          EXISTS(SELECT *
 		                   FROM solutions
 		                  WHERE user_id = u.id
-		                    AND hole = $2)                  solved_latest_hole,
+		                    AND hole = ANY($2))             solved_latest_hole,
 		          EXISTS(SELECT *
 		                   FROM solutions
 		                  WHERE user_id = u.id
@@ -70,7 +70,7 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		LEFT JOIN points chars    ON u.id = chars.user_id AND chars.scoring = 'chars'
 		LEFT JOIN weekly_solves w ON u.id = w.user_id AND w.week = this_week()`,
 		sessionID,
-		config.LatestHole,
+		config.LatestHoles,
 		config.LatestLang,
 		userAgent,
 	); errors.Is(err, sql.ErrNoRows) {

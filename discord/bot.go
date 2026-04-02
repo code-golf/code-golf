@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -22,7 +23,7 @@ const minElapsedTimeToShowDate = 30 * 24 * time.Hour
 
 var (
 	bot                 *discordgo.Session
-	freshHole           = config.LatestHole
+	freshHoles          = config.LatestHoles
 	freshLang           = config.LatestLang
 	lastAnnouncementMap = make(map[string]*RecAnnouncement)
 	mux                 sync.Mutex
@@ -75,7 +76,7 @@ func init() {
 
 		// Set the topic of the fresh-grapes channel.
 		var freshNames []string
-		if freshHole != nil {
+		for _, freshHole := range freshHoles {
 			freshNames = append(freshNames, freshHole.Name)
 		}
 		if freshLang != nil {
@@ -98,7 +99,7 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 	if hole.Experiment != 0 || lang.Experiment != 0 {
 		return chanWildID
 	}
-	if freshHole == hole || freshLang == lang {
+	if slices.Contains(freshHoles, hole) || freshLang == lang {
 		return chanFreshID
 	}
 	return chanSourID

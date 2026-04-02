@@ -149,13 +149,19 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 		}
 	}
 
-	// Latest hole (if unsolved).
-	if hole := config.LatestHole; !golfer.SolvedLatestHole {
+	// Latest hole(s) (if unsolved).
+	if !golfer.SolvedLatestHole {
+		var html bytes.Buffer
+		if err := views.Render(
+			&html, "banners/latest-holes", config.LatestHoles,
+		); err != nil {
+			panic(err)
+		}
+
 		banners = append(banners, banner{
-			HideKey: "latest-hole-" + hole.ID,
+			Body:    template.HTML(html.String()),
+			HideKey: "latest-hole-" + config.LatestHoles[0].ID,
 			Type:    "info",
-			Body: template.HTML(`The <a href="/` + hole.ID + `">` +
-				hole.Name + "</a> hole is now live! Why not try and solve it?"),
 		})
 	}
 

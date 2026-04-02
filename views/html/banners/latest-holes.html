@@ -1,0 +1,11 @@
+{{ $plural := gt (len .) 1 }}
+
+The
+
+{{ range $i, $hole := . }}
+    {{ if $i }} and {{ end }}
+    <a href="/{{ $hole.ID }}">{{ $hole.Name }}</a>
+{{ end }}
+
+{{ if $plural }}holes are{{ else }}hole is{{ end }}
+now live! Why not try and solve {{ if $plural }}them{{ else }}it{{ end }}?
