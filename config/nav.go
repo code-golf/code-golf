@@ -68,10 +68,11 @@ func initNav() {
 		},
 
 		"rankings/langs": {
-			Path: "/rankings/langs/{lang}/{scoring}",
+			Path: "/rankings/langs/{hole}/{lang}/{scoring}",
 			Groups: []*LinkGroup{
 				group("Scoring", "scoring", "Bytes", "Chars"),
 				groupLangs(false),
+				groupHoles(false),
 			},
 		},
 
