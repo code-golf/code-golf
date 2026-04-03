@@ -41,6 +41,7 @@ import { golfScript }                               from 'codemirror-lang-golfsc
 import { groovy }                                   from '@codemirror/legacy-modes/mode/groovy';
 import { haskell }                                  from '@codemirror/legacy-modes/mode/haskell';
 import { haxe }                                     from '@codemirror/legacy-modes/mode/haxe';
+import { iogii }                                    from 'codemirror-lang-iogii';
 import { j }                                        from 'codemirror-lang-j';
 import { janet }                                    from 'codemirror-lang-janet';
 import { java }                                     from '@codemirror/lang-java';
@@ -181,7 +182,7 @@ export const extensions : { [key: string]: any } = {
     // TODO hexagony
     // TODO hush
     // TODO hy
-    // TODO iogii
+    'iogii':         iogii(),
     'j':             j(),
     'janet':         janet(),
     'java':          java(),
