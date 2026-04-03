@@ -30,7 +30,7 @@
         {{ end }}
     </table>
 {{ else }}
-    <table class="nowrap-second sticky">
+    <table class="nowrap-second-third sticky">
         <thead>
             <tr>
                 <th>#
@@ -40,9 +40,10 @@
             {{ if eq .Data.LangID "all" }}
                 <th>Language
             {{ end }}
+                <th>Golfer
+                <th class="ties wide">
                 <th class="right wide">Points
                 <th class="right wide">{{ title .Data.Scoring }}
-                <th>Golfer
                 <th class="right wide">Submitted
         <tbody>
         {{ $name := "" }}
@@ -63,15 +64,15 @@
                         <span>{{ .Lang.Name }}</span>
                     </a>
             {{ end }}
-                <td class="right wide">{{ comma .Points }}
-                <td class="right wide">{{ comma .Strokes }}
-                <td class="right wide" style="display: flex; justify-content: space-between;">
-                    {{ template "golfer-link" . }}
-                {{ if gt .Ties 0 }}
+                <td>{{ template "golfer-link" . }}
+                <td class="right ties wide">
+                {{ if .Ties }}
                     <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ $.Data.Scoring }}" title="View all tied scores">
-                        &nbsp;+{{ .Ties }}
+                        +{{ .Ties }}
                     </a>
                 {{ end }}
+                <td class="right wide">{{ comma .Points }}
+                <td class="right wide">{{ comma .Strokes }}
                 <td class="right wide">{{ time (.Submitted.In $.Location)}}
         {{ end }}
     </table>
