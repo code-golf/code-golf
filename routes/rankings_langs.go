@@ -19,6 +19,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			golfer.GolferLink
 			Hole                    *config.Hole
 			Lang                    *config.Lang
+			Me                      bool
 			Golds, Silvers, Bronzes int
 			Points, Rank, Strokes   int
 			Submitted               time.Time
@@ -68,17 +69,18 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           submitted
 			      FROM best_per_lang
 			)
-			SELECT r.*, m.golds - 1 ties
+			SELECT r.*, m.golds - 1 ties, m.me
 			  FROM ranked_langs r
 			  JOIN (
-			    SELECT lang, COUNT(*) AS golds
+			    SELECT lang, COUNT(*) AS golds,
+			           COALESCE(bool_or(user_id = $4), false) me
 			      FROM medals
 			     WHERE hole = $1 AND scoring = $2 AND medal = 'gold'
 			  GROUP BY lang
 			 ) m ON r.lang = m.lang
 			 WHERE $3 IN ('all', r.lang::text)
 			ORDER BY r.rank, r.submitted, r.lang`,
-			data.HoleID, data.Scoring, data.LangID,
+			data.HoleID, data.Scoring, data.LangID, session.Golfer(r),
 		); err != nil {
 			panic(err)
 		}
@@ -106,17 +108,18 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           submitted
 			      FROM best_per_lang
 			)
-			SELECT r.*, m.golds - 1 ties
+			SELECT r.*, m.golds - 1 ties, m.me
 			  FROM ranked_langs r
 			  JOIN (
-			    SELECT hole, COUNT(*) AS golds
+			    SELECT hole, COUNT(*) AS golds,
+			           COALESCE(bool_or(user_id = $3), false) me
 			      FROM medals
 			     WHERE lang = $2 AND scoring = $1 AND medal = 'gold'
 			  GROUP BY hole
 			 ) m ON r.hole = m.hole
 			 WHERE r.lang = $2
 			ORDER BY r.hole`,
-			data.Scoring, data.LangID,
+			data.Scoring, data.LangID, session.Golfer(r),
 		); err != nil {
 			panic(err)
 		}

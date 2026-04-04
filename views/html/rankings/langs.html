@@ -46,10 +46,8 @@
                 <th class="right wide">{{ title .Data.Scoring }}
                 <th class="right wide">Submitted
         <tbody>
-        {{ $name := "" }}
-        {{ with .Golfer }}{{ $name = .Name }}{{ end }}
         {{ range .Data.Rows }}
-            <tr {{ if eq $name .Name }} class=me {{ end }}>
+            <tr {{ if .Me }} class=me {{ end }}>
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
             {{ if eq $.Data.HoleID "all" }}
                 <td>
