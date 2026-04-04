@@ -68,9 +68,9 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           submitted
 			      FROM best_per_lang
 			)
-			SELECT r.*, COALESCE(m.golds - 1, 0) AS ties
+			SELECT r.*, m.golds - 1 ties
 			  FROM ranked_langs r
-			 LEFT JOIN (
+			  JOIN (
 			    SELECT lang, COUNT(*) AS golds
 			      FROM medals
 			     WHERE hole = $1 AND scoring = $2 AND medal = 'gold'
@@ -106,9 +106,9 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			           submitted
 			      FROM best_per_lang
 			)
-			SELECT r.*, COALESCE(m.golds - 1, 0) AS ties
+			SELECT r.*, m.golds - 1 ties
 			  FROM ranked_langs r
-			 LEFT JOIN (
+			  JOIN (
 			    SELECT hole, COUNT(*) AS golds
 			      FROM medals
 			     WHERE lang = $2 AND scoring = $1 AND medal = 'gold'
