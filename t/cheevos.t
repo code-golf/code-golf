@@ -57,12 +57,12 @@ is $dbh.execute('SELECT user_id FROM weekly_solves').allrows.flat, [],
 
 # Check experimental holes don't earn anything.
 for $dbh.execute('SELECT id FROM holes WHERE experiment != 0').allrows.flat {
-    is save-solution(:hole($_) :lang<c>), '{}', "$_/c earns {}";
+    is save-solution(:hole($_) :lang<c>), '{}', "$_/c earns \{}";
 }
 
 # Check experimental langs don't earn anything.
 for $dbh.execute('SELECT id FROM langs WHERE experiment != 0').allrows.flat {
-    is save-solution(:hole<arrows> :lang($_)), '{}', "arrows/$_ earns {}";
+    is save-solution(:hole<arrows> :lang($_)), '{}', "arrows/$_ earns \{}";
 }
 
 for $dbh.execute('SELECT id FROM holes WHERE experiment = 0').allrows.flat {
