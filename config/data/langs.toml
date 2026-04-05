@@ -613,7 +613,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '119 MiB'
-version = '3.11.1'
+version = '3.11.4'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.0 MiB'
-version = 'V8 14.6.202.26'
+version = 'V8 14.6.202.31'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.55 MiB'
-version    = '0.714'
+size       = '5.42 MiB'
+version    = '0.715'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1340,7 +1340,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '299 MiB'
-version    = '2026-03'
+version    = '2026-04'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1905,8 +1905,8 @@ example    = '''
 [Umka]
 args       = [ '/usr/bin/umka', '-' ]
 experiment = 1921
-size       = '1.16 MiB'
-version    = '1.5.5'
+size       = '998 KiB'
+version    = '1.5.6'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
 import "std.um"
