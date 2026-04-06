@@ -37,20 +37,20 @@ COPY --from=0 /usr/bin/basename                            \
               /usr/bin/erlc                                \
               /usr/bin/escript                             /usr/bin/
 COPY --parents                                             \
-     --from=0 /usr/lib/erlang/./erts-*/bin/beam.smp        \
-              /usr/lib/erlang/./erts-*/bin/erl_child_setup \
-              /usr/lib/erlang/./erts-*/bin/erlexec         \
-              /usr/lib/erlang/./erts-*/bin/inet_gethost    \
-              /usr/lib/erlang/./bin/no_dot_erlang.boot     \
-              /usr/lib/erlang/./bin/start.boot             \
-              /usr/lib/erlang/./lib/compiler-*/ebin        \
-              /usr/lib/erlang/./lib/kernel-*/ebin          \
-              /usr/lib/erlang/./lib/kernel-*/include       \
-              /usr/lib/erlang/./lib/parsetools-*/ebin      \
-              /usr/lib/erlang/./lib/parsetools-*/include   \
-              /usr/lib/erlang/./lib/stdlib-*/ebin          \
-              /usr/lib/erlang/./lib/tools-*/ebin           /usr/lib/erlang/
-COPY --from=0 /usr/lib/locale                              /usr/lib/locale
+     --from=0 /usr/lib/./erlang/erts-*/bin/beam.smp        \
+              /usr/lib/./erlang/erts-*/bin/erl_child_setup \
+              /usr/lib/./erlang/erts-*/bin/erlexec         \
+              /usr/lib/./erlang/erts-*/bin/inet_gethost    \
+              /usr/lib/./erlang/bin/no_dot_erlang.boot     \
+              /usr/lib/./erlang/bin/start.boot             \
+              /usr/lib/./erlang/lib/compiler-*/ebin        \
+              /usr/lib/./erlang/lib/kernel-*/ebin          \
+              /usr/lib/./erlang/lib/kernel-*/include       \
+              /usr/lib/./erlang/lib/parsetools-*/ebin      \
+              /usr/lib/./erlang/lib/parsetools-*/include   \
+              /usr/lib/./erlang/lib/stdlib-*/ebin          \
+              /usr/lib/./erlang/lib/tools-*/ebin           \
+              /usr/lib/./locale                            /usr/lib/
 
 ENTRYPOINT ["erlang"]
 

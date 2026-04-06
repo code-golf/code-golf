@@ -1,7 +1,7 @@
 [05AB1E]
 args       = [ '/usr/bin/05ab1e', '-' ]
 experiment = 233
-size       = '28.2 MiB'
+size       = '37.4 MiB'
 version    = 'c31668b'
 website    = 'https://github.com/Adriandmen/05AB1E'
 example    = '''
@@ -343,7 +343,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 
 [C]
 args    = [ '/usr/bin/c', '-run', '-' ]
-size    = '1.74 MiB'
+size    = '1.07 MiB'
 version = 'TCC 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
@@ -470,7 +470,7 @@ example = '''
 
 [COBOL]
 args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.25 MiB'
+size    = '3.58 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''

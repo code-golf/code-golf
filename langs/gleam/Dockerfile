@@ -29,15 +29,13 @@ FROM codegolf/lang-erlang
 
 COPY --from=0 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/
 COPY --from=0 /usr/bin/gleam                      /usr/bin/
-COPY --chown=nobody                               \
-     --from=0 /usr/local/gleam.toml               \
-              /usr/local/manifest.toml            /usr/local/
-COPY --chown=nobody                               \
-     --from=0 /usr/local/cargo/bin/gleam          /usr/local/bin/
-COPY --chown=nobody                               \
-     --from=0 /usr/local/build/packages           /usr/local/build/packages
-COPY --chown=nobody                               \
-     --from=0 /usr/local/src                      /usr/local/src
+COPY --parents                                    \
+     --chown=nobody                               \
+     --from=0 /usr/local/./gleam.toml             \
+              /usr/local/./manifest.toml          \
+              /usr/local/./build/packages         \
+              /usr/local/./src                    \
+              /usr/local/cargo/./bin/gleam        /usr/local/
 
 ENTRYPOINT ["gleam"]
 
