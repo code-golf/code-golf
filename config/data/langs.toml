@@ -120,9 +120,9 @@ loop arg [a] [
 '''
 
 [Assembly]
-args     = [ '/usr/bin/defasm', '--size-out=3', '-w', '-r' ]
+args     = [ '/usr/node_modules/@defasm/cli/cli.js', '--size-out=3', '-w', '-r' ]
 assembly = true
-size     = '116 MiB'
+size     = '74.0 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
 example  = '''
