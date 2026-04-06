@@ -544,7 +544,7 @@ for arg in process.argv[2..]
 '''
 
 ['Common Lisp']
-args      = [ '/usr/bin/common-lisp', '-' ]
+args      = [ '/usr/bin/clisp', '-' ]
 redirects = [ 'lisp' ]
 size      = '31.0 MiB'
 version   = 'GNU CLISP 2.49.92'
