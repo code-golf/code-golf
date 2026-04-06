@@ -1,4 +1,4 @@
-@import "../../node_modules/golden-layout/dist/css/goldenlayout-base.css";
+@import "../../../node_modules/golden-layout/dist/css/goldenlayout-base.css";
 
 .lm_content {
     overflow: auto;

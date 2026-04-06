@@ -10,16 +10,10 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Build assets.
-COPY node_modules ./node_modules
-COPY fonts        ./fonts
-COPY css          ./css
-COPY js           ./js
-COPY svg          ./svg
+COPY --parents assets node_modules package*.json ./
 
-COPY esbuild package-lock.json package.json ./
-
-RUN ./esbuild \
- && find dist \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' \) \
+RUN assets/build && find assets/out \
+ \( -name '*.css' -or  -name '*.js' -or -name '*.map' -or -name '*.svg' \) \
   | xargs -i -n1 -P`nproc` sh -c 'brotli {} && zopfli {}'
 
 # Build lang hasher.
@@ -136,7 +130,6 @@ COPY --from=0 /go/hash-langs /
 RUN ["/hash-langs"]
 
 COPY --from=0 /go/code-golf                      /
-COPY --from=0 /go/dist                           /dist/
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY          /public                            /public/
 COPY --from=0 /usr/bin/run-lang                  /usr/bin/

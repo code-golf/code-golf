@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/code-golf/code-golf/assets"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
@@ -50,13 +51,13 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	}{
 		Banners:       banners(theGolfer),
 		Cheevos:       config.CheevoTree,
-		CSS:           []cssLink{{config.Assets["css/common/base.css"], ""}},
+		CSS:           []cssLink{{assets.Paths["css/common/base.css"], ""}},
 		Data:          data[0],
 		Description:   "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
 		Golfer:        theGolfer,
 		GolferInfo:    session.GolferInfo(r),
 		Holes:         make(map[string][]string),
-		JS:            []string{config.Assets["js/base.tsx"]},
+		JS:            []string{assets.Paths["js/base.tsx"]},
 		Langs:         make(map[string][]string),
 		Name:          name,
 		Nonce:         rand.Text(),
@@ -107,12 +108,12 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			args.Settings = settings
 		}
 
-		if url, ok := config.Assets["css/"+subName+".css"]; ok {
+		if url, ok := assets.Paths["css/"+subName+".css"]; ok {
 			args.CSS = append(args.CSS, cssLink{Path: url})
 		}
 
 		for _, ext := range []string{"ts", "tsx"} {
-			if url, ok := config.Assets["js/"+subName+"."+ext]; ok {
+			if url, ok := assets.Paths["js/"+subName+"."+ext]; ok {
 				args.JS = append(args.JS, url)
 			}
 		}
@@ -124,11 +125,11 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	if theme == "auto" {
 		args.CSS = append(
 			args.CSS,
-			cssLink{config.Assets["css/common/light.css"], ""},
-			cssLink{config.Assets["css/common/dark.css"], "(prefers-color-scheme:dark)"},
+			cssLink{assets.Paths["css/common/light.css"], ""},
+			cssLink{assets.Paths["css/common/dark.css"], "(prefers-color-scheme:dark)"},
 		)
 	} else {
-		args.CSS = append(args.CSS, cssLink{config.Assets["css/common/"+theme+".css"], ""})
+		args.CSS = append(args.CSS, cssLink{assets.Paths["css/common/"+theme+".css"], ""})
 	}
 
 	header := w.Header()

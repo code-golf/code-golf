@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/code-golf/code-golf/assets"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/pretty"
@@ -88,7 +89,9 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 			Use     Use        `xml:"use"`
 		}
 
-		path := config.Assets["svg/"+name+".svg"]
+		// Chrome no longer requires the fragment ID but other browsers do.
+		// https://cr-status.appspot.com/feature/5128141573718016
+		path := assets.Paths["svg/"+name+".svg"]
 		svg := SVG{Use: Use{Href: path + "#a"}}
 
 		for i := 0; i < len(attrs); i += 2 {

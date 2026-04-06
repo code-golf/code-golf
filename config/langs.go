@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/code-golf/code-golf/assets"
 	"github.com/pelletier/go-toml/v2"
 )
 
@@ -76,7 +77,7 @@ func initLangs() {
 	for name, lang := range langs {
 		lang.Example = strings.TrimSuffix(lang.Example, "\n")
 		lang.ID = ID(name)
-		lang.LogoURL = Assets["svg/"+lang.ID+".svg"]
+		lang.LogoURL = assets.Paths["svg/"+lang.ID+".svg"]
 		lang.Name = name
 
 		// Digest & DigestTrunc (48-bit, 12 char trunc, like docker images).

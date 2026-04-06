@@ -53,7 +53,7 @@ e2e: export COMPOSE_FILE=docker/core.yml:docker/e2e.yml
 e2e: export COMPOSE_PROJECT_NAME=code-golf-e2e
 e2e:
 # TODO Pass arguments to run specific tests.
-	@./esbuild
+	@assets/build
 	@touch docker/.env
 	@docker compose rm -fsv &>/dev/null
 	@docker compose build --pull -q
@@ -66,8 +66,8 @@ fmt:
 
 font:
 	@docker build -t code-golf-font -f docker/font.Dockerfile docker
-	@id=`docker create code-golf-font`;                         \
-	    docker cp $$id:twemoji-colr/build/twemoji.woff2 fonts/; \
+	@id=`docker create code-golf-font`;                                \
+	    docker cp $$id:twemoji-colr/build/twemoji.woff2 assets/fonts/; \
 	    docker rm $$id
 
 mathjax-fonts:
@@ -78,7 +78,7 @@ lint:
 	@docker run --rm -v $(CURDIR):/app -w /app -e GOEXPERIMENT=jsonv2 \
 	    golangci/golangci-lint:v2.11.4 golangci-lint run
 
-	@node_modules/.bin/eslint js
+	@node_modules/.bin/eslint assets/js
 
 # Calls "make logs" at the end to make sure we didn't break the site.
 live:
@@ -109,7 +109,7 @@ logs:
 	@ssh root@code.golf docker logs --tail 5 -f code-golf
 
 svgo:
-	@node_modules/.bin/svgo --recursive --folder svg
+	@node_modules/.bin/svgo --recursive --folder assets/svg
 
 test:
 	@GOEXPERIMENT=jsonv2 go test ./...
