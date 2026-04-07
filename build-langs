@@ -38,9 +38,9 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     }
 
     run <docker buildx build>,
-         ( '--no-cache' if $no-cache ),
-         '--tag', $img,
-         "langs/$id";
+        ( '--no-cache' if $no-cache ),
+        '--tag', $img,
+        "langs/$id";
 
     # Size.
     my $proc = run :out,
