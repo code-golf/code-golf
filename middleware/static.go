@@ -3,27 +3,22 @@ package middleware
 import (
 	"io/fs"
 	"net/http"
-	"os"
 	"path"
 	"path/filepath"
 )
 
-var public = ls("public")
+var public = map[string]bool{}
 
-func ls(dir string) map[string]bool {
-	files := map[string]bool{}
-
-	if err := filepath.WalkDir(dir, func(file string, info fs.DirEntry, err error) error {
-		if info != nil && !info.IsDir() {
-			files[file] = true
+func init() {
+	if err := filepath.WalkDir("public", func(file string, info fs.DirEntry, err error) error {
+		if !info.IsDir() {
+			public[file] = true
 		}
 
 		return err
-	}); err != nil && !os.IsNotExist(err) {
+	}); err != nil {
 		panic(err)
 	}
-
-	return files
 }
 
 // Static serves static files from public.
