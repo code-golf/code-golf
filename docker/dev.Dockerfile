@@ -1,4 +1,4 @@
-FROM golang:1.26.1-alpine3.23
+FROM golang:1.26.2-alpine3.23
 
 ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 
@@ -28,9 +28,9 @@ COPY --from=codegolf/lang-raku         / /langs/raku/rootfs/
 COPY --from=codegolf/lang-ocaml        / /langs/ocaml/rootfs/
 COPY --from=codegolf/lang-stax         / /langs/stax/rootfs/
 COPY --from=codegolf/lang-civet        / /langs/civet/rootfs/
-COPY --from=codegolf/lang-coconut      / /langs/coconut/rootfs/
 COPY --from=codegolf/lang-coffeescript / /langs/coffeescript/rootfs/
 COPY --from=codegolf/lang-vyxal        / /langs/vyxal/rootfs/
+COPY --from=codegolf/lang-coconut      / /langs/coconut/rootfs/
 COPY --from=codegolf/lang-fortran      / /langs/fortran/rootfs/
 COPY --from=codegolf/lang-assembly     / /langs/assembly/rootfs/
 COPY --from=codegolf/lang-basic        / /langs/basic/rootfs/
@@ -43,8 +43,8 @@ COPY --from=codegolf/lang-elixir       / /langs/elixir/rootfs/
 COPY --from=codegolf/lang-java         / /langs/java/rootfs/
 COPY --from=codegolf/lang-erlang       / /langs/erlang/rootfs/
 COPY --from=codegolf/lang-javascript   / /langs/javascript/rootfs/
-COPY --from=codegolf/lang-hy           / /langs/hy/rootfs/
 COPY --from=codegolf/lang-v            / /langs/v/rootfs/
+COPY --from=codegolf/lang-hy           / /langs/hy/rootfs/
 COPY --from=codegolf/lang-haxe         / /langs/haxe/rootfs/
 COPY --from=codegolf/lang-golfscript   / /langs/golfscript/rootfs/
 COPY --from=codegolf/lang-ruby         / /langs/ruby/rootfs/

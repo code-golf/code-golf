@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache bash icu-data npm
 
-ENV VER=0.11.5
+ENV VER=0.11.6
 
 WORKDIR /civet
 
@@ -41,6 +41,7 @@ COPY --parents                                                                  
               /civet/./dist/main.js                                              \
               /civet/./dist/ts-diagnostic.js                                     \
               /civet/./dist/unplugin/unplugin.js                                 \
+              /civet/./node_modules/@jridgewell                                  \
               /civet/./node_modules/@typescript/vfs/package.json                 \
               /civet/./node_modules/@typescript/vfs/dist/index.js                \
               /civet/./node_modules/@typescript/vfs/dist/vfs.cjs.development.js  \
