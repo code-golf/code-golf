@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache autoconf bison gcc make musl-dev re2c
 
-ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.5.4
+ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.5.5
 
 WORKDIR /php
 

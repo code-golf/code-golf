@@ -801,8 +801,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '70.8 MiB'
-version = '1.15.2'
+size    = '70.9 MiB'
+version = '1.15.3'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -1157,7 +1157,7 @@ $ARGS.positional[]
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
 size    = '360 MiB'
-version = '1.12.5'
+version = '1.12.6'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1234,8 +1234,8 @@ for (arg in args)
 [Lily]
 args       = [ '/usr/bin/lily', '-s', '$code' ]
 experiment = 2577
-size       = '336 KiB'
-version    = '2.3'
+size       = '349 KiB'
+version    = '2.4'
 website    = 'https://lily-lang.org'
 example    = '''
 import sys
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.42 MiB'
-version    = '0.715'
+size       = '5.43 MiB'
+version    = '0.716'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1407,7 +1407,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.4'
+version = '8.5.5'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1761,8 +1761,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.30 MiB'
-version = 'SQLite 3.52.0'
+size    = '1.31 MiB'
+version = 'SQLite 3.53.0'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
