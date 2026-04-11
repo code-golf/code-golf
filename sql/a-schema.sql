@@ -183,6 +183,14 @@ CREATE TABLE follows (
     CHECK (follower_id != followee_id)  -- Can't follow yourself!
 );
 
+CREATE TABLE hides (
+    golfer_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    target_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hidden    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    PRIMARY KEY (golfer_id, target_id),
+    CHECK (golfer_id != target_id)  -- Can't hide yourself!
+);
+
 -- TODO This eventually needs to not hardcode github in order to allow log in
 --      with other providers, we'll probably have a "primary connection" col
 --      on users (which also needs to be renamed to golfers one day).
@@ -405,6 +413,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
 GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
+GRANT SELECT, INSERT,         DELETE ON TABLE hides           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE holes           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE langs           TO "code-golf";

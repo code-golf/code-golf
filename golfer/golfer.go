@@ -38,7 +38,7 @@ type Golfer struct {
 	Country                               *config.Country
 	Delete                                null.Time
 	FailingSolutions                      FailingSolutions
-	Following                             pq.Int64Array
+	Following, Hiding                     pq.Int64Array
 	Pronouns, TimeZone                    null.String
 	Settings                              Settings
 
@@ -135,6 +135,13 @@ func (g *Golfer) FollowLimit() int {
 // FIXME Ideally we'd scan into a []int not a []int64 but pq won't.
 func (g *Golfer) IsFollowing(userID int) bool {
 	_, ok := slices.BinarySearch(g.Following, int64(userID))
+	return ok
+}
+
+// IsHiding returns whether the golfer is following that golfer.
+// FIXME Ideally we'd scan into a []int not a []int64 but pq won't.
+func (g *Golfer) IsHiding(userID int) bool {
+	_, ok := slices.BinarySearch(g.Hiding, int64(userID))
 	return ok
 }
 

@@ -151,7 +151,7 @@ func Router(db *sqlx.DB) http.Handler {
 
 		r.With(middleware.GolferInfo).Route("/golfers/{name}", func(r chi.Router) {
 			r.Get("/", golferGET)
-			r.Post("/{action:(?:follow|unfollow)}", golferActionPOST)
+			r.Post("/{action:(?:follow|unfollow|hide|unhide)}", golferActionPOST)
 			r.Get("/cheevos", golferCheevosGET)
 			r.Get("/holes", redir("holes/rankings/lang/bytes"))
 			r.Get("/holes/{scoring:(?:bytes|chars)}", redir("rankings/lang/{scoring}"))

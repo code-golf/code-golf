@@ -82,6 +82,7 @@
     #profile { grid-template-columns: min-content 1fr }
 
     #profile > nav {
+        flex-wrap: wrap;
         grid-column: span 2;
         grid-row: 4;
 

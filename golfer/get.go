@@ -55,6 +55,10 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		              ORDER BY followee_id)                 following,
 		          (SELECT COUNT(*)
 		             FROM notes WHERE user_id = u.id) > 0   has_notes,
+		          ARRAY(SELECT target_id
+		                  FROM hides
+		                 WHERE golfer_id = u.id
+		              ORDER BY target_id)                   hiding,
 		          EXISTS(SELECT *
 		                   FROM solutions
 		                  WHERE user_id = u.id
