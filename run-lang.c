@@ -35,10 +35,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mount(NULL, "/", NULL, MS_PRIVATE|MS_REC, NULL) < 0)
         ERR_AND_EXIT("mount private");
 
-    if (mount("rootfs", "rootfs", "bind", MS_BIND|MS_REC, NULL) < 0)
-        ERR_AND_EXIT("mount bind");
+    // Create a r/o overlay mount of the lang's rootfs at /run_root. Using
+    // overlay instead of bind to ensure inodes aren't shared across runs.
+    if (mount(NULL, "/run_root", "overlay", 0, "lowerdir=rootfs:/run_root") < 0)
+        ERR_AND_EXIT("mount overlay");
 
-    if (syscall(SYS_pivot_root, "rootfs", "rootfs") < 0)
+    if (syscall(SYS_pivot_root, "/run_root", "/run_root") < 0)
         ERR_AND_EXIT("pivot_root");
 
     if (chdir("/") < 0)

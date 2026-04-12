@@ -2,6 +2,8 @@ FROM golang:1.26.2-alpine3.23
 
 ENV CGO_ENABLED=0 GOAMD64=v4 GOEXPERIMENT=jsonv2 GOPATH=
 
+RUN mkdir /run_root
+
 RUN apk add --no-cache brotli build-base linux-headers npm tzdata zopfli
 
 # Fetch modules.
@@ -132,6 +134,7 @@ RUN ["/hash-langs"]
 COPY --from=0 /go/code-golf                      /
 COPY --from=0 /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY          /public                            /public/
+COPY --from=0 /run_root                          /run_root
 COPY --from=0 /usr/bin/run-lang                  /usr/bin/
 COPY --from=0 /usr/share/zoneinfo                /usr/share/zoneinfo/
 

@@ -2,6 +2,8 @@ FROM golang:1.26.2-alpine3.23
 
 ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
 
+RUN mkdir /run_root
+
 # curl is used for the e2e healthcheck.
 RUN apk add --no-cache build-base curl git linux-headers tzdata \
  && GOBIN=/bin go install github.com/cespare/reflex@latest
