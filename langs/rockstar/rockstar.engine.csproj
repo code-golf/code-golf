@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+        <None Remove="rockstar.peg"/>
+        <PackageReference Include="Pegasus" Version="4.1.0"/>
+        <PegGrammar Include="rockstar.peg">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</PegGrammar>
+        <Watch Include="rockstar.peg"/>
+	</ItemGroup>
+	<PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+        <TargetFramework>net10.0</TargetFramework>
+	</PropertyGroup>
+</Project>
