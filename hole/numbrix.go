@@ -2,8 +2,13 @@ package hole
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
+
+func init() {
+	judge("numbrix", numbrixJudge)
+}
 
 // This implementation uses the constant variables defined in the Sudoku holes.
 
@@ -48,6 +53,74 @@ var _ = answerFunc("numbrix", func() []Answer {
 
 	return answers
 })
+
+func numbrixJudge(run Run) string {
+	parseGrid := func(s string) ([boardSize][boardSize]int, bool) {
+		var grid [boardSize][boardSize]int
+		row := 0
+		for _, line := range strings.Split(s, "\n") {
+			if !strings.ContainsRune(line, '┃') {
+				continue
+			}
+			line = strings.ReplaceAll(line, "┃", "│")
+			cells := strings.Split(line, "│")
+			if len(cells) < boardSize+2 {
+				return grid, false
+			}
+			for col := range boardSize {
+				cell := strings.TrimSpace(cells[col+1])
+				if cell == "" {
+					grid[row][col] = 0
+				} else {
+					n, err := strconv.Atoi(cell)
+					if err != nil {
+						return grid, false
+					}
+					grid[row][col] = n
+				}
+			}
+			row++
+		}
+		return grid, row == boardSize
+	}
+
+	userGrid, ok := parseGrid(run.Stdout)
+	if !ok {
+		return run.Answer
+	}
+	inputGrid, _ := parseGrid(run.Args[0])
+
+	// Validate: all 1–81 present, clues respected, consecutive numbers adjacent.
+	var pos [cellCount + 1][2]int
+	var seen [cellCount + 1]bool
+	for i := range boardSize {
+		for j := range boardSize {
+			v := userGrid[i][j]
+			if v < 1 || v > cellCount || seen[v] {
+				return run.Answer
+			}
+			seen[v] = true
+			pos[v] = [2]int{i, j}
+			if inputGrid[i][j] != 0 && inputGrid[i][j] != v {
+				return run.Answer
+			}
+		}
+	}
+	for n := 1; n < cellCount; n++ {
+		dr := pos[n][0] - pos[n+1][0]
+		dc := pos[n][1] - pos[n+1][1]
+		if dr < 0 {
+			dr = -dr
+		}
+		if dc < 0 {
+			dc = -dc
+		}
+		if dr+dc != 1 {
+			return run.Answer
+		}
+	}
+	return run.Stdout
+}
 
 func printNumbrix(puzzle [boardSize][boardSize]int) string {
 	var s strings.Builder
