@@ -43,7 +43,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.55 MiB'
-version  = 'Algol 68 Genie 3.11.0'
+version  = 'Algol 68 Genie 3.11.1'
 website  = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example  = '''
 # Printing #
@@ -82,8 +82,8 @@ example    = '''
 args     = [ '/usr/bin/arkscript', '-' ]
 env      = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 released = 2026-03-19
-size     = '2.85 MiB'
-version  = '4.4.1'
+size     = '3.08 MiB'
+version  = '4.5.0'
 website  = 'https://arkscript-lang.dev'
 example  = '''
 (import std.List)
@@ -802,7 +802,7 @@ end
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '70.9 MiB'
-version = '1.15.3'
+version = '1.15.4'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -2035,15 +2035,16 @@ for (a in Process.arguments) System.print(a)
 
 [Zig]
 args    = [ '/usr/bin/zig', '-' ]
-size    = '189 MiB'
-version = '0.15.2'
+size    = '191 MiB'
+version = '0.16.0'
 website = 'https://ziglang.org'
 example = '''
 const std = @import("std");
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
     var stdout_buffer: [1024]u8 = undefined;
-    var stdout_writer = std.fs.File.stdout().writer(&stdout_buffer);
+    var stdout_writer: std.Io.File.Writer
+        = .init(.stdout(), init.io, &stdout_buffer);
     const stdout = &stdout_writer.interface;
 
     // Printing
@@ -2054,7 +2055,8 @@ pub fn main() !void {
         try stdout.print("{}\n", .{i});
 
     // Accessing arguments
-    for (std.os.argv[1..]) |arg|
+    const args = try init.minimal.args.toSlice(init.arena.allocator());
+    for (args[1..]) |arg|
         try stdout.print("{s}\n", .{arg});
 
     try stdout.flush();

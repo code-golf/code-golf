@@ -1,20 +1,17 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache clang cmake make patch
+RUN apk add --no-cache clang cmake make
 
-ENV LDFLAGS='-static' VER=4.4.1
+ENV LDFLAGS='-static' VER=4.5.0
 
 WORKDIR /arkscript
 
 ADD https://github.com/ArkScript-lang/Ark.git#v$VER .
 
-COPY arkscript.patch .
-
-RUN patch -p0 < arkscript.patch
-
 RUN cmake -B build                  \
     -DARK_BUILD_EXE='ON'            \
     -DARK_ENABLE_SYSTEM='OFF'       \
+    -DARK_STATIC='ON'               \
     -DCMAKE_BUILD_TYPE='MinSizeRel' \
     -DCMAKE_C_COMPILER='clang'      \
     -DCMAKE_CXX_COMPILER='clang++'  \
@@ -24,8 +21,7 @@ RUN cmake -B build                  \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/arkscript /usr/bin/
-COPY --from=0 /usr/lib/Ark       /usr/lib/Ark
+COPY --from=0 --parents /usr/bin/arkscript /usr/lib/Ark /
 
 ENTRYPOINT ["arkscript"]
 
