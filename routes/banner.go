@@ -3,8 +3,6 @@ package routes
 import (
 	"bytes"
 	"html/template"
-	"maps"
-	"slices"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
@@ -61,13 +59,6 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 
 	// Failing solutions.
 	if failing := golfer.FailingSolutions; len(failing) > 0 {
-		banner := banner{
-			Type: "alert",
-			Body: "The following solutions of yours have been marked as " +
-				"failing and no longer contribute to scoring; " +
-				"please update them to pass:<ul>",
-		}
-
 		type GroupItem struct {
 			HoleID, LangID, KeyName, OtherName string
 		}
@@ -86,24 +77,16 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 		if len(byLang) < len(byHole) {
 			groups = byLang
 		}
-		keys := slices.Collect(maps.Keys(groups))
-		slices.Sort(keys)
 
-		for _, key := range keys {
-			solutionGroup := groups[key]
-			for index, solution := range solutionGroup {
-				if index > 0 {
-					banner.Body += template.HTML(", ")
-				} else {
-					banner.Body += template.HTML("<li>" + solution.KeyName + ": ")
-				}
-				banner.Body += template.HTML(`<a href="/` + solution.HoleID + "#" + solution.LangID + `">` + solution.OtherName + "</a>")
-			}
+		var html bytes.Buffer
+		if err := views.Render(&html, "banners/failing-solutions", groups); err != nil {
+			panic(err)
 		}
 
-		banner.Body += "</ul>"
-
-		banners = append(banners, banner)
+		banners = append(banners, banner{
+			Body: template.HTML(html.String()),
+			Type: "alert",
+		})
 	}
 
 	// Our date-specific cheevos are set around the year 2000.
