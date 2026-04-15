@@ -85,6 +85,11 @@ name        = 'Patches Welcome'
 emoji       = '💾'
 description = 'Contribute a merged PR to <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.'
 
+[[GitHub]]
+name        = 'The Pen Is Mightier'
+emoji       = '🖋️'
+description = 'Author a hole that becomes live.'
+
 # Hole/Lang Specific
 
 [['Hole/Lang Specific']]

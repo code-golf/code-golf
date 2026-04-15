@@ -92,6 +92,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f526.svg'            `# Flashlight`                   \
     '*/1f529.svg'            `# Nut and Bolt`                 \
     '*/1f549.svg'            `# Om`                           \
+    '*/1f58b.svg'            `# Fountain Pen`                 \
     '*/1f596.svg'            `# Vulcan Salute`                \
     '*/1f5a5.svg'            `# Desktop Computer`             \
     '*/1f5d1.svg'            `# Wastebasket`                  \

@@ -26,10 +26,11 @@ CREATE TYPE cheevo AS ENUM (
     'prime-time', 'real-programmers', 'right-on', 'ring-toss', 'rm-rf',
     'rtfm', 'rule-34', 's-box-360', 'simon-sed', 'sinosphere', 'slowcoach',
     'smörgåsbord', 'solve-quine', 'sounds-quite-nice', 'takeout',
-    'texnical-know-how', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'turn-over-a-new-leaf', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
-    'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
-    'when-in-rome', 'x-factor', 'x86', 'zoodiac-signs'
+    'texnical-know-how', 'the-pen-is-mightier', 'the-watering-hole',
+    'tim-toady', 'tl-dr', 'turn-over-a-new-leaf', 'twelvetide',
+    'twenty-kiloleagues', 'typesetter', 'under-pressure', 'up-to-eleven',
+    'vampire-byte', 'watt-are-you-doing', 'when-in-rome', 'x-factor', 'x86',
+    'zoodiac-signs'
 );
 
 CREATE TYPE connection AS ENUM (
