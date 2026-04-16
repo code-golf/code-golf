@@ -42,8 +42,8 @@ x is a no-op.
 ['ALGOL 68']
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
-size     = '1.55 MiB'
-version  = 'Algol 68 Genie 3.11.1'
+size     = '1.56 MiB'
+version  = 'Algol 68 Genie 3.11.3'
 website  = 'https://jmvdveer.home.xs4all.nl/en.algol-68-genie.html'
 example  = '''
 # Printing #
@@ -369,7 +369,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '112 MiB'
-version = 'C# 14.0 on .NET 10.0.5'
+version = 'C# 14.0 on .NET 10.0.6'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -695,7 +695,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.2'
+version = 'F# 10.0 on .NET 10.0.6'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.0 MiB'
-version = 'V8 14.7.173.16'
+version = 'V8 14.7.173.19'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1458,7 +1458,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '140 MiB'
-version    = 'PowerShell 7.6.0 on .NET 10.0.5'
+version    = 'PowerShell 7.6.0 on .NET 10.0.6'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
