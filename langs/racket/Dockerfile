@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc linux-headers make musl-dev
 
-ENV VER=9.0
+ENV VER=9.1
 
 RUN curl -#L https://github.com/racket/racket/archive/refs/tags/v$VER.tar.gz \
   | tar xz --strip-components 1

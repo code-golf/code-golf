@@ -23,7 +23,14 @@ var _ = answerFunc("isbn", func() []Answer {
 		var digits [9]int
 
 		for j := range digits {
-			digits[j] = rand.IntN(10)
+			switch perm {
+			case 98:
+				digits[j] = 0
+			case 99:
+				digits[j] = 9
+			default:
+				digits[j] = rand.IntN(10)
+			}
 		}
 
 		// Guarantee at least 5 arguments end with 'X'

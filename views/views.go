@@ -4,14 +4,15 @@ import (
 	"embed"
 	"encoding/xml"
 	"html/template"
+	"io"
 	"io/fs"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 
+	"github.com/code-golf/code-golf/assets"
 	"github.com/code-golf/code-golf/config"
-	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/pretty"
 )
@@ -23,14 +24,16 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"atoi":      func(s string) int { i, _ := strconv.Atoi(s); return i },
 	"bytes":     pretty.Bytes,
 	"comma":     pretty.Comma,
+	"contains":  strings.Contains,
 	"dec":       func(i int) int { return i - 1 },
 	"duration":  pretty.Duration,
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
 	"html":      func(html string) template.HTML { return template.HTML(html) },
+	"id":        config.ID,
 	"inc":       func(i int) int { return i + 1 },
 	"ord":       pretty.Ordinal,
-	"page":      func(i int) int { return i/pager.PerPage + 1 },
+	"page":      pager.Page,
 	"title":     pretty.Title,
 	"time":      pretty.Time,
 
@@ -61,23 +64,17 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 		return u, nil
 	},
 
+	"map": func(kv ...any) map[any]any {
+		m := make(map[any]any, len(kv)/2)
+		for i := 0; i < len(kv); i += 2 {
+			m[kv[i]] = kv[i+1]
+		}
+		return m
+	},
+
 	"param": func(r *http.Request, key string) string {
 		value, _ := url.QueryUnescape(r.PathValue(key))
 		return value
-	},
-
-	"setting": func(golfer *golfer.Golfer, page, id string) any {
-		if golfer != nil {
-			return golfer.Settings[page][id]
-		}
-
-		for _, setting := range config.Settings[page] {
-			if setting.ID == id {
-				return setting.Default
-			}
-		}
-
-		return nil
 	},
 
 	"svg": func(name string, attrs ...string) (template.HTML, error) {
@@ -92,7 +89,9 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 			Use     Use        `xml:"use"`
 		}
 
-		path := config.Assets["svg/"+name+".svg"]
+		// Chrome no longer requires the fragment ID but other browsers do.
+		// https://cr-status.appspot.com/feature/5128141573718016
+		path := assets.Paths["svg/"+name+".svg"]
 		svg := SVG{Use: Use{Href: path + "#a"}}
 
 		for i := 0; i < len(attrs); i += 2 {
@@ -131,6 +130,6 @@ func init() {
 	}
 }
 
-func Render(w http.ResponseWriter, name string, data any) error {
+func Render(w io.Writer, name string, data any) error {
 	return tmpl.ExecuteTemplate(w, name, data)
 }

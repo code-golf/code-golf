@@ -1,43 +1,41 @@
 package routes
 
 import (
+	"bytes"
 	"html/template"
-	"maps"
-	"slices"
-	"strings"
 	"time"
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
+	"github.com/code-golf/code-golf/views"
 )
-
-var nextHole = config.ExpHoleByID["tower-of-hanoi"]
 
 type banner struct {
 	Body          template.HTML
 	HideKey, Type string
 }
 
-func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
-	// Upcoming hole.
-	if hole := nextHole; hole != nil {
-		t := hole.Released.AsTime(time.UTC)
+func banners(golfer *golfer.Golfer) (banners []banner) {
+	// Upcoming holes.
+	if holes := config.NextHoles; len(holes) != 0 {
+		t := holes[0].Released.AsTime(time.UTC)
 		if golfer != nil {
 			t = t.In(golfer.Location())
 		}
 
-		in := "in approximately " + pretty.Time(t)
-		if strings.Contains(string(in), "ago") {
-			in = "momentarily"
+		var html bytes.Buffer
+		if err := views.Render(&html, "banners/upcoming-holes", struct {
+			Holes []*config.Hole
+			Time  time.Time
+		}{holes, t}); err != nil {
+			panic(err)
 		}
 
 		banners = append(banners, banner{
-			HideKey: "upcoming-hole-" + hole.ID,
+			Body:    template.HTML(html.String()),
+			HideKey: "upcoming-hole-" + holes[0].ID,
 			Type:    "info",
-			Body: "The <a href=/" + template.HTML(hole.ID) + ">" +
-				template.HTML(hole.Name) + "</a> hole will go live " + in +
-				". Why not try and solve it ahead of time?",
 		})
 	}
 
@@ -61,13 +59,6 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 
 	// Failing solutions.
 	if failing := golfer.FailingSolutions; len(failing) > 0 {
-		banner := banner{
-			Type: "alert",
-			Body: "The following solutions of yours have been marked as " +
-				"failing and no longer contribute to scoring; " +
-				"please update them to pass:<ul>",
-		}
-
 		type GroupItem struct {
 			HoleID, LangID, KeyName, OtherName string
 		}
@@ -86,32 +77,24 @@ func banners(golfer *golfer.Golfer, now time.Time) (banners []banner) {
 		if len(byLang) < len(byHole) {
 			groups = byLang
 		}
-		keys := slices.Collect(maps.Keys(groups))
-		slices.Sort(keys)
 
-		for _, key := range keys {
-			solutionGroup := groups[key]
-			for index, solution := range solutionGroup {
-				if index > 0 {
-					banner.Body += template.HTML(", ")
-				} else {
-					banner.Body += template.HTML("<li>" + solution.KeyName + ": ")
-				}
-				banner.Body += template.HTML(`<a href="/` + solution.HoleID + "#" + solution.LangID + `">` + solution.OtherName + "</a>")
-			}
+		var html bytes.Buffer
+		if err := views.Render(&html, "banners/failing-solutions", groups); err != nil {
+			panic(err)
 		}
 
-		banner.Body += "</ul>"
-
-		banners = append(banners, banner)
+		banners = append(banners, banner{
+			Body: template.HTML(html.String()),
+			Type: "alert",
+		})
 	}
 
 	// Our date-specific cheevos are set around the year 2000.
+	now := time.Now().UTC()
 	delta := now.Year() - 2000
 
 	location := golfer.Location()
 
-Cheevo:
 	for _, cheevo := range config.CheevoTree["Date Specific"] {
 		if golfer.Earned(cheevo.ID) {
 			continue
@@ -144,28 +127,43 @@ Cheevo:
 					Type:    "info",
 				})
 
-				break Cheevo
+				break
 			}
 		}
 	}
 
-	// Latest hole (if unsolved).
-	if hole := config.LatestHole; !golfer.SolvedLatestHole {
+	// Latest hole(s) (if unsolved).
+	if !golfer.SolvedLatestHole {
+		var html bytes.Buffer
+		if err := views.Render(
+			&html, "banners/latest-holes", config.LatestHoles,
+		); err != nil {
+			panic(err)
+		}
+
 		banners = append(banners, banner{
-			HideKey: "latest-hole-" + hole.ID,
+			Body:    template.HTML(html.String()),
+			HideKey: "latest-hole-" + config.LatestHoles[0].ID,
 			Type:    "info",
-			Body: template.HTML(`The <a href="/` + hole.ID + `">` +
-				hole.Name + "</a> hole is now live! Why not try and solve it?"),
 		})
 	}
 
-	// Latest lang (if unsolved).
-	if lang := config.LatestLang; !golfer.SolvedLatestLang {
+	// Latest lang (if unsolved and still fresh).
+	if lang := config.LatestLang; !golfer.SolvedLatestLang && lang.Fresh() {
 		banners = append(banners, banner{
 			HideKey: "latest-lang-" + lang.ID,
 			Type:    "info",
 			Body: template.HTML(lang.Name +
 				" is now live! Why not try and solve a hole in it?"),
+		})
+	}
+
+	// Hole of the Week.
+	if html, week := config.HoleOfTheWeek(); html != "" && !golfer.SolvedHoleOfTheWeek {
+		banners = append(banners, banner{
+			HideKey: "hole-of-the-week-" + week.Format(time.DateOnly),
+			Type:    "info",
+			Body:    html,
 		})
 	}
 

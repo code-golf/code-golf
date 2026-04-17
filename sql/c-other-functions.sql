@@ -224,7 +224,8 @@ BEGIN
 
         -- The new solution is the same length. Keep old submitted, this stops
         -- a user moving down the leaderboard by matching their personal best.
-        -- We keep the lowest runtime iff the lang digest hasn't changed.
+        -- We keep the lowest runtime iff the lang digest and the solution
+        -- haven't changed.
         ELSIF strokes = old_strokes THEN
             UPDATE solutions
                SET bytes       = bytes,
@@ -233,6 +234,7 @@ BEGIN
                    lang_digest = lang_digest,
                    tested      = DEFAULT,
                    time_ms     = CASE WHEN lang_digest = solutions.lang_digest
+                                       AND        code = solutions.code
                                       THEN LEAST(time_ms, solutions.time_ms)
                                       ELSE time_ms
                                       END
@@ -274,12 +276,11 @@ BEGIN
     END IF;
 
     -- Only earn cheevos if the hole and lang aren't experimental.
-    SELECT experiment = 0 INTO found FROM holes WHERE id = hole;
-    IF found THEN
-        SELECT experiment = 0 INTO found FROM langs WHERE id = lang;
-        IF found THEN
-            ret.earned := earn_cheevos(hole, lang, user_id);
-        END IF;
+    IF (SELECT experiment = 0 FROM holes WHERE id = hole) AND
+       (SELECT experiment = 0 FROM langs WHERE id = lang) THEN
+        ret.earned := earn_cheevos(hole, lang, user_id);
+    ELSE
+        ret.earned := '{}';
     END IF;
 
     RETURN ret;

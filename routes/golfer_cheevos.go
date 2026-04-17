@@ -1,8 +1,11 @@
 package routes
 
 import (
+	"database/sql"
+	"errors"
 	"net/http"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -157,6 +160,81 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		data[cheevo.ID] = progress
 	}
 
+	// Holes of the Week streaks.
+	{
+		var weeks []time.Time
+		if err := db.Select(
+			&weeks,
+			` SELECT week
+			    FROM weekly_solves
+			   WHERE user_id = $1 AND week >= this_week() - 7 * 7
+			ORDER BY week DESC`,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		var currentStreak int
+		for i, week := range weeks {
+			// To be current the streak must be up to this week or last.
+			if i == 0 {
+				thisWeek := config.ThisWeek()
+
+				if !(week.Equal(thisWeek) || week.Equal(thisWeek.AddDate(0, 0, -7))) {
+					break
+				}
+
+				// To continue the streak must be a week after the previous.
+			} else if !week.Equal(weeks[i-1].AddDate(0, 0, -7)) {
+				break
+			}
+
+			currentStreak++
+		}
+
+		for _, cheevo := range config.CheevoTree["Holes of the Week"] {
+			progress := data[cheevo.ID]
+			progress.Progress = currentStreak
+			data[cheevo.ID] = progress
+		}
+	}
+
+	if progress := data["count-to-ten"]; progress.Earned == nil {
+		var completedSteps pq.Int32Array
+		var hole *config.Hole
+		if err := db.QueryRow(
+			` SELECT hole, array_agg(DISTINCT LENGTH(langs.name))
+			    FROM stable_passing_solutions
+			    JOIN holes ON hole = holes.id
+			    JOIN langs ON lang = langs.id
+			   WHERE category = 'Sequence'
+			     AND LENGTH(langs.name) <= 10
+			     AND user_id = $1
+			GROUP BY hole
+			ORDER BY COUNT(DISTINCT LENGTH(langs.name)) DESC, hole
+			   LIMIT 1`,
+			golfer.ID,
+		).Scan(&hole, &completedSteps); err != nil && !errors.Is(err, sql.ErrNoRows) {
+			panic(err)
+		}
+
+		for i := 1; i <= 10; i++ {
+			step := Step{
+				Name:     strconv.Itoa(i),
+				Complete: slices.Contains(completedSteps, int32(i)),
+			}
+
+			if hole != nil {
+				step.Path = "/" + hole.ID
+			}
+
+			progress.Steps = append(progress.Steps, step)
+		}
+
+		progress.Progress = len(completedSteps)
+		data["count-to-ten"] = progress
+	}
+
 	if progress := data["never-eat-shredded-wheat"]; progress.Earned == nil {
 		var completedLangs []*config.Lang
 		if err := db.Select(
@@ -233,30 +311,25 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if progress := data["smörgåsbord"]; progress.Earned == nil {
-		var completedSteps []string
 		if err := db.Select(
-			&completedSteps,
-			`WITH distinct_holes AS (
-			    SELECT DISTINCT hole
-			      FROM stable_passing_solutions
-			     WHERE user_id = $2
-			) SELECT DISTINCT $1::hstore->hole::text FROM distinct_holes`,
-			config.HoleCategoryHstore,
+			&progress.Steps,
+			`  SELECT category name, bool_or(s.hole IS NOT NULL) complete
+			     FROM holes
+			LEFT JOIN stable_passing_solutions s
+			       ON s.hole = id AND s.user_id = $1
+			 GROUP BY category
+			 ORDER BY category`,
 			golfer.ID,
 		); err != nil {
 			panic(err)
 		}
 
-		for _, category := range []string{
-			"Art", "Computing", "Gaming", "Mathematics", "Sequence", "Transform",
-		} {
-			progress.Steps = append(progress.Steps, Step{
-				Name:     category,
-				Complete: slices.Contains(completedSteps, category),
-			})
+		for _, step := range progress.Steps {
+			if step.Complete {
+				progress.Progress++
+			}
 		}
 
-		progress.Progress = len(completedSteps)
 		data["smörgåsbord"] = progress
 	}
 

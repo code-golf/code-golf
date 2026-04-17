@@ -94,7 +94,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 	// 128 KiB, >= because arguments needs a null termination.
 	if len(in.Code) >= 128*1024 {
-		if golfer != nil {
+		if golfer != nil && in.Hole != "tutorial" {
 			golfer.Earn(db, "tl-dr")
 		}
 
@@ -119,7 +119,7 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 		Runs:         runs,
 	}
 
-	if golfer != nil && slices.ContainsFunc(
+	if golfer != nil && in.Hole != "tutorial" && slices.ContainsFunc(
 		out.Runs, func(r hole.Run) bool { return r.Timeout },
 	) {
 		if c := golfer.Earn(db, "slowcoach"); c != nil {
@@ -232,13 +232,15 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 
 		// Cheevos.
 		if experimental {
-			if c := golfer.Earn(db, "black-box-testing"); c != nil {
-				out.Cheevos = append(out.Cheevos, *c)
-			}
-
-			if experimentalHole && experimentalLang {
-				if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
+			if in.Hole != "tutorial" {
+				if c := golfer.Earn(db, "black-box-testing"); c != nil {
 					out.Cheevos = append(out.Cheevos, *c)
+				}
+
+				if experimentalHole && experimentalLang {
+					if c := golfer.Earn(db, "double-slit-experiment"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
 				}
 			}
 		} else {
@@ -264,9 +266,15 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 						out.Cheevos = append(out.Cheevos, *c)
 					}
 				}
+			case "calendar":
+				if day == 1 {
+					if c := golfer.Earn(db, "turn-over-a-new-leaf"); c != nil {
+						out.Cheevos = append(out.Cheevos, *c)
+					}
+				}
 			case "prime-numbers", "prime-numbers-long":
 				switch month {
-				case 2, 3, 4, 5, 11:
+				case 2, 3, 5, 7, 11:
 					switch day {
 					case 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31:
 						if c := golfer.Earn(db, "prime-time"); c != nil {
@@ -312,37 +320,9 @@ func solutionPOST(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 
-			if in.Lang == "viml" && golfer.Settings["hole"]["editor-keymap"] == "vim" {
+			if in.Lang == "viml" && session.Settings(r)["hole"]["editor-keymap"] == "vim" {
 				if c := golfer.Earn(db, "real-programmers"); c != nil {
 					out.Cheevos = append(out.Cheevos, *c)
-				}
-			}
-
-			if !golfer.Earned("smörgåsbord") {
-				var earn bool
-				if err := db.Get(
-					&earn,
-					`WITH distinct_holes AS (
-				    SELECT DISTINCT hole
-				      FROM solutions
-				     WHERE NOT failing AND user_id = $1
-				) SELECT (
-				    SELECT COUNT(DISTINCT $2::hstore->hole::text)
-				      FROM distinct_holes
-				) = (
-				    SELECT COUNT(DISTINCT cat)
-				      FROM unnest(avals($2)) cat
-				)`,
-					golfer.ID,
-					config.HoleCategoryHstore,
-				); err != nil {
-					panic(err)
-				}
-
-				if earn {
-					if c := golfer.Earn(db, "smörgåsbord"); c != nil {
-						out.Cheevos = append(out.Cheevos, *c)
-					}
 				}
 			}
 		}

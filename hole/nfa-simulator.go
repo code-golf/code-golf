@@ -97,7 +97,7 @@ func solveNFA(test string) string {
 			}
 
 			slices.Sort(resultStateNames)
-			output.WriteString(fmt.Sprintf("{%s}", strings.Join(resultStateNames, ",")))
+			fmt.Fprintf(&output, "{%s}", strings.Join(resultStateNames, ","))
 		}
 
 		if accept {

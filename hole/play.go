@@ -18,10 +18,11 @@ import (
 	"github.com/buildkite/terminal-to-html/v3"
 	"github.com/code-golf/code-golf/config"
 	"golang.org/x/sync/errgroup"
+	"golang.org/x/sync/semaphore"
 )
 
 // Limit how many runs can run at once.
-var runSemaphore = make(chan struct{}, 8)
+var runSemaphore = semaphore.NewWeighted(8)
 
 var timeout = 5 * time.Second
 
@@ -88,14 +89,22 @@ func Play(
 
 	runs := make([]Run, len(answers))
 
+	// HACK: Kotlin times out if ran concurrently, prevent this with weight 5.
+	weight := int64(1)
+	if lang.ID == "kotlin" {
+		weight = 5
+	}
+
 	// Run all the runs in parallel to reduce the wall clock time.
 	var g errgroup.Group
 	for i, answer := range answers {
 		runs[i] = Run{Args: answer.Args, Answer: answer.Answer}
 
 		g.Go(func() error {
-			runSemaphore <- struct{}{}
-			defer func() { <-runSemaphore }()
+			if err := runSemaphore.Acquire(ctx, weight); err != nil {
+				return err
+			}
+			defer runSemaphore.Release(weight)
 
 			return play(ctx, hole, lang, code, &runs[i])
 		})
@@ -227,7 +236,10 @@ func runCode(
 
 	var stderr, stdout bytes.Buffer
 
-	ctx, cancel := context.WithTimeout(ctx, timeout)
+	// Give solutions an extra 500ms to see if they're close to passing.
+	start := time.Now()
+	ctx, cancel := context.WithDeadline(ctx,
+		start.Add(timeout+500*time.Millisecond))
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "/usr/bin/run-lang")
@@ -270,37 +282,35 @@ func runCode(
 
 	// Run arguments.
 	switch lang.ID {
-	case "awk", "brainfuck", "fish":
-		// Hole args passed through stdin for these langs separated by a null byte
-		args := ""
-		for _, arg := range run.Args {
-			args += arg + "\x00"
-		}
-		cmd.Stdin = strings.NewReader(args)
-	case "sed":
+	// Hole args passed through stdin for these langs separated by a null byte
+	case "awk", "brainfuck", "fish", "sed":
+		args := strings.Join(run.Args, "\x00")
+
 		// For sed we always need to append a null byte, even if no args exist
-		args := strings.Join(run.Args, "\x00") + "\x00"
+		if args != "" || lang.ID == "sed" {
+			args += "\x00"
+		}
+
 		cmd.Stdin = strings.NewReader(args)
 	default:
 		cmd.Args = append(cmd.Args, run.Args...)
 	}
 
 	err := cmd.Run()
-
-	deadline, _ := ctx.Deadline()
-	run.Time = timeout - time.Until(deadline)
+	run.Time = time.Since(start)
 
 	if err != nil {
 		if err, ok := err.(*exec.ExitError); ok {
 			run.ExitCode = err.ExitCode()
 		}
 
-		if errors.Is(ctx.Err(), context.DeadlineExceeded) {
-			run.Timeout = true
-			fmt.Fprint(&stderr, "Killed for exceeding the ", timeout, " timeout.")
-		} else {
-			stderr.WriteString(err.Error())
+		if !errors.Is(ctx.Err(), context.DeadlineExceeded) {
+			stderr.WriteString(err.Error() + "\n")
 		}
+	}
+
+	if run.Timeout = run.Time > timeout; run.Timeout {
+		fmt.Fprint(&stderr, "Failed for exceeding the ", timeout, " timeout.\n")
 	}
 
 	// Actual byte count is printed by the assembler.

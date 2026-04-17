@@ -12,6 +12,7 @@ WORKDIR /unix
 RUN ./configure      \
     --disable-load   \
     --disable-shared \
+    --enable-64bit   \
     --prefix=/usr    \
  && make install     \
  && strip /usr/bin/tcl*

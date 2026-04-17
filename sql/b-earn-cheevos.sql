@@ -14,7 +14,7 @@ $$ LANGUAGE plpgsql;
 CREATE FUNCTION earn_cheevos(hole hole, lang lang, user_id int) RETURNS cheevo[] AS $$
 #variable_conflict use_variable
 DECLARE
-    earned         cheevo[] := '{}'::cheevo[];
+    earned         cheevo[] := '{}';
     holes          int;
     holes_for_lang hole[];
     langs_for_hole lang[];
@@ -57,7 +57,8 @@ BEGIN
 
     -- 📚 Archivist
     SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
-     WHERE unnest IN ('basic', 'cobol', 'common-lisp', 'forth', 'fortran');
+     WHERE unnest IN
+           ('algol-68', 'basic', 'cobol', 'common-lisp', 'forth', 'fortran');
     IF hole = 'isbn' AND found THEN
         earned := earn(earned, 'archivist', user_id); END IF;
 
@@ -80,6 +81,12 @@ BEGIN
     -- 🎳 COBOWL
     IF hole = 'ten-pin-bowling' AND lang = 'cobol' THEN
         earned := earn(earned, 'cobowl', user_id); END IF;
+
+    -- 🔟 Count to Ten
+    IF (SELECT category FROM holes WHERE id = hole) = 'Sequence' AND
+        (SELECT array_agg(LENGTH(name)) FROM langs WHERE id = ANY(langs_for_hole))
+            @> '{1,2,3,4,5,6,7,8,9,10}' THEN
+                earned := earn(earned, 'count-to-ten', user_id); END IF;
 
     -- 👄 Dammit, Janet!
     IF hole = 'rock-paper-scissors-spock-lizard' AND lang = 'janet' THEN
@@ -110,6 +117,10 @@ BEGIN
      WHERE unnest IN ('f-sharp', 'factor', 'forth', 'fortran');
     IF hole = 'minesweeper' AND found THEN
         earned := earn(earned, 'flag-those-mines', user_id); END IF;
+
+    -- 🦄 Full Stack Dev
+    IF hole = 'css-colors' AND langs_for_hole @> '{javascript,php,sql}' THEN
+        earned := earn(earned, 'full-stack-dev', user_id); END IF;
 
     -- 🏞️ Go Forth!
     IF langs_for_hole @> '{go,forth}' THEN
@@ -238,17 +249,57 @@ BEGIN
     IF hole = 'zodiac-signs' AND found THEN
         earned := earn(earned, 'zoodiac-signs', user_id); END IF;
 
+    -----------------------
+    -- Holes of the Week --
+    -----------------------
+
+    IF (SELECT w.hole = hole FROM weekly_holes w WHERE week = this_week())
+    THEN
+        IF (SELECT lang = ANY(w.langs) FROM weekly_holes w WHERE week = this_week())
+        THEN
+            INSERT INTO weekly_solves (user_id) VALUES (user_id)
+                ON CONFLICT DO NOTHING;
+
+            -- 🎣 Catch of the Week.
+            earned := earn(earned, 'catch-of-the-week', user_id);
+
+            -- 🏰 Hold the Fort(night)
+            IF 2 = (SELECT COUNT(*) FROM weekly_solves w
+                WHERE w.user_id = user_id AND week >= this_week() - 7) THEN
+                earned := earn(earned, 'hold-the-fortnight', user_id);
+            END IF;
+
+            -- 🌝 Once in a Blue Moon
+            IF 4 = (SELECT COUNT(*) FROM weekly_solves w
+                WHERE w.user_id = user_id AND week >= this_week() - 3 * 7) THEN
+                earned := earn(earned, 'once-in-a-blue-moon', user_id);
+            END IF;
+
+            -- 🪲 Eight Days a Week
+            IF 8 = (SELECT COUNT(*) FROM weekly_solves w
+                WHERE w.user_id = user_id AND week >= this_week() - 7 * 7) THEN
+                earned := earn(earned, 'eight-days-a-week', user_id);
+            END IF;
+
+            -- 🪱 Early Bird Catches the Worm
+            IF date_part('dow', TIMEZONE('UTC', NOW())) = 1 THEN
+                earned := earn(earned, 'early-bird-catches-the-worm', user_id);
+            END IF;
+        ELSE
+            -- 📜 Out of Spec
+            earned := earn(earned, 'out-of-spec', user_id);
+        END IF;
+    END IF;
+
     -------------------
     -- Miscellaneous --
     -------------------
 
     -- 🌈 Different Strokes
-    IF (SELECT COUNT(DISTINCT solutions.code) > 1 FROM solutions
-         WHERE solutions.user_id = user_id
-           AND solutions.hole    = hole
-           AND solutions.lang    = lang) THEN
-        earned := earn(earned, 'different-strokes', user_id);
-    END IF;
+    IF (SELECT COUNT(DISTINCT s.code) > 1
+          FROM stable_passing_solutions s
+         WHERE s.hole = hole AND s.lang = lang AND s.user_id = user_id) THEN
+        earned := earn(earned, 'different-strokes', user_id); END IF;
 
     -- 🔣 Polyglot
     IF array_length(langs_for_hole, 1) >= 12 THEN
@@ -265,6 +316,12 @@ BEGIN
     -- 🍱 Omniglutton
     IF array_length(langs_for_hole, 1) >= 48 THEN
         earned := earn(earned, 'omniglutton', user_id); END IF;
+
+    -- 🥪 Smörgåsbord
+    IF (SELECT array_agg(DISTINCT category) = enum_range(null::hole_category)
+          FROM stable_passing_solutions s
+          JOIN holes ON s.hole = id AND s.user_id = user_id) THEN
+        earned := earn(earned, 'smörgåsbord', user_id); END IF;
 
     -----------------
     -- Progression --
@@ -290,6 +347,7 @@ BEGIN
     IF holes >= 107 THEN earned := earn(earned, 'busy-beaver',                user_id); END IF;
     IF holes >= 111 THEN earned := earn(earned, 'disappearing-act',           user_id); END IF;
     IF holes >= 120 THEN earned := earn(earned, 'five',                       user_id); END IF;
+    IF holes >= 128 THEN earned := earn(earned, '8-bit-wonder',               user_id); END IF;
 
     RETURN earned;
 END;

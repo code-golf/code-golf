@@ -1,0 +1,62 @@
+{{ template "header"      . }}
+{{ template "hole-header" . }}
+
+{{ $showWhitespace := index .SettingValues "hole" "show-whitespace" }}
+<main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
+    <details id=details {{ if not .Data.HideDetails }}open{{ end }}>
+        <summary>Details</summary>
+        {{ template "hole-details" . }}
+    </details>
+    <nav class=tabs id=picker></nav>
+    <nav class=tabs id=solutionPicker></nav>
+    <div id=editor-and-rankings>
+        <div id=editor>
+            <header>
+                <div id=strokes>0 bytes, 0 chars</div>
+                <a class=hide href id=restoreLink>Restore solution</a>
+            </header>
+        </div>
+        <div id=rankings class=wide>
+            <header>
+                <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
+                <a href id=allLink>All</a>
+            </header>
+            <div id=scores-wrapper>
+                <table class=nowrap-second id=scores><tr><td></table>
+            </div>
+            <nav class=tabs id=rankingsView>
+                <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
+                    {{ svg "trophy-fill" }} Top
+                </a>
+                <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
+                    {{ svg "person-fill" }} Me
+                </a>
+                <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
+                    {{ svg "people-fill" }} Following
+                </a>
+            </nav>
+        </div>
+    </div>
+    {{ template "hole-info" . }}
+    <div id=run>
+    {{ if .Golfer }}
+        <button class="btn hide red" id=deleteBtn>
+            {{ svg "trash" }} Delete
+        </button>
+    {{ end }}
+        <span>ctrl + enter</span> or
+        <button class="btn blue" id=runBtn>{{ svg "play" }} Run</button>
+    </div>
+    <div class=hide id=status>
+        <h2></h2>
+        <nav id=thirdParty></nav>
+        <aside id=err><h3>Errors</h3><div></div></aside>
+        <aside id=arg><h3>Arguments</h3><div></div></aside>
+        <aside id=exp><h3>Expected</h3><div></div></aside>
+        <aside id=out><h3>Output</h3><div></div></aside>
+        <aside id=diff><h3>Diff</h3><div id=diff-content></div></aside>
+    </div>
+</main>
+
+{{ template "hole-footer" . }}
+{{ template "footer"        }}

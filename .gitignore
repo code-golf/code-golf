@@ -1,6 +1,4 @@
 /.vagrant/
-/config/data/assets.json
-/dist/
 /docker/.env
 /localhost.pem
 /localhost-key.pem

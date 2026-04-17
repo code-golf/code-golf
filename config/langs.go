@@ -8,7 +8,9 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"time"
 
+	"github.com/code-golf/code-golf/assets"
 	"github.com/pelletier/go-toml/v2"
 )
 
@@ -49,6 +51,11 @@ type Lang struct {
 	Website              string         `json:"website"`
 }
 
+// Fresh lang is one that was released in the last 1,000 hours (~42 days).
+func (l Lang) Fresh() bool {
+	return time.Since(l.Released.AsTime(time.UTC)) <= 1000*time.Hour
+}
+
 func initLangs() {
 	// Digests.
 	var digests map[string]string
@@ -70,7 +77,7 @@ func initLangs() {
 	for name, lang := range langs {
 		lang.Example = strings.TrimSuffix(lang.Example, "\n")
 		lang.ID = ID(name)
-		lang.LogoURL = Assets["svg/"+lang.ID+".svg"]
+		lang.LogoURL = assets.Paths["svg/"+lang.ID+".svg"]
 		lang.Name = name
 
 		// Digest & DigestTrunc (48-bit, 12 char trunc, like docker images).

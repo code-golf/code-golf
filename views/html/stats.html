@@ -8,7 +8,8 @@
 {{ if eq .Title "Statistics" }}
     <div id=overview>
         <a href=stats/cheevos>
-            <h2>Achievements</h2>
+            <h2 class=wide>Achievements</h2>
+            <h2 class=thin>Cheevos</h2>
             <span>
                 {{ .Data.Cheevos }}
                 <small>({{ comma .Data.CheevosEarned }} earned)</small>
@@ -38,6 +39,14 @@
             </span>
         </a>
 
+        <a href=stats/sessions>
+            <h2>Sessions<sup>†</sup></h2>
+            <span>
+                {{ comma .Data.Sessions }}
+                <small>({{ comma .Data.ActiveGolfers }} golfers)</small>
+            </span>
+        </a>
+
         <div>
             <h2>Solutions</h2>
             <span>
@@ -45,6 +54,8 @@
                 <small>({{ bytes .Data.Bytes }})</small>
             </span>
         </div>
+
+        <p><sup>†</sup> Active in the last 30 days.
     </div>
 {{ else if eq .Title "Statistics: Achievements" }}
     <table class="nowrap-second sticky">
@@ -56,7 +67,7 @@
                 <th class=right>Percent
         <tbody>
         {{ range .Data }}
-            <tr>
+            <tr {{ if .Me }} class=me {{ end }}>
                 <td>{{ .Rank }}<sup>{{ ord .Rank }}</sup>
                 <td>
                     <a href="/rankings/cheevos/{{ .Cheevo.ID }}"
@@ -116,6 +127,30 @@
                     <td class=right>{{ comma .Count }}
                     <td class=right>{{ .PerDay }}
                     <td class=right>{{ comma .Sum }}
+            {{ end }}
+        </table>
+    </div>
+{{ else if eq .Title "Statistics: Sessions" }}
+    <div>
+        <table class="nowrap-second sticky">
+            <thead>
+                <tr>
+                    <th>#
+                    <th>Browser
+                    <th class=right>Sessions
+                    <th class=right>Percent
+            <tbody>
+            {{ range $i, $d := .Data }}
+                {{ $rank := inc $i }}
+                <tr>
+                    <td>{{ $rank }}<sup>{{ ord $rank }}</sup>
+                    <td>
+                        <div>
+                            {{ svg (print "browsers/" (id .Name)) }}
+                            <span>{{ .Name }}</span>
+                        </div>
+                    <td class=right>{{ comma .Count }}
+                    <td class=right>{{ .Percent }}%
             {{ end }}
         </table>
     </div>

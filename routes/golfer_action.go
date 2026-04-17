@@ -36,6 +36,8 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 			render(w, r, "golfer/follow-limit", limit, target.Name)
 			return
 		}
+
+		golfer.Earn(tx, "no-man-is-an-island")
 	}
 
 	var sql string
@@ -44,6 +46,10 @@ func golferActionPOST(w http.ResponseWriter, r *http.Request) {
 		sql = "INSERT INTO follows VALUES ($1, $2) ON CONFLICT DO NOTHING"
 	case "unfollow":
 		sql = "DELETE FROM follows WHERE follower_id = $1 AND followee_id = $2"
+	case "hide":
+		sql = "INSERT INTO hides VALUES ($1, $2) ON CONFLICT DO NOTHING"
+	case "unhide":
+		sql = "DELETE FROM hides WHERE golfer_id = $1 AND target_id = $2"
 	}
 
 	tx.MustExec(sql, golfer.ID, target.ID)

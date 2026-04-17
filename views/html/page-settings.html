@@ -1,0 +1,30 @@
+{{ $name := .Name }}
+{{ if hasPrefix $name "hole/" }}{{ $name = "hole" }}{{ end }}
+
+<!-- FIXME Stop misusing settings on code-search -->
+{{ if and .Golfer .Settings (ne $name "golfer/code-search") }}
+
+<button class="btn blue" command=show-modal commandfor=settings-dialog>
+    {{ svg "gear-fill" }}
+    Page Settings
+</button>
+<dialog closedby=any id=settings-dialog>
+    <form action=/golfer/settings/save method=post>
+        <h2>Page Settings</h2>
+
+        <input name=page type=hidden value="{{ $name }}">
+        <input name=path type=hidden value="{{ .Path }}">
+
+        {{ template "settings" . }}
+
+        <menu>
+            <!-- Enter submits the first button, we flip the order in CSS -->
+            <button class="btn green">Save</button>
+            <button class="btn" formaction=/golfer/settings/reset>
+                Restore Defaults
+            </button>
+            <button class="btn red" formmethod=dialog>Cancel</button>
+        </menu>
+    </form>
+</dialog>
+{{ end }}

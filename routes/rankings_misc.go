@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"html/template"
 	"net/http"
 	"time"
 
@@ -12,7 +13,8 @@ import (
 
 // GET /rankings/misc/{type}
 func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
-	var desc, sql string
+	var desc template.HTML
+	var sql string
 
 	data := struct {
 		Pager *pager.Pager
@@ -31,25 +33,6 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	args := []any{pager.PerPage, data.Pager.Offset}
 
 	switch t := param(r, "type"); t {
-	case "diamond-deltas":
-		desc = "Deltas between diamonds and silvers."
-		sql = `WITH diamonds AS (
-			    SELECT *
-			      FROM rankings
-			     WHERE rank = 1 AND tie_count = 1 AND NOT experimental
-			), silvers AS (
-			    SELECT DISTINCT hole, lang, scoring, strokes
-			      FROM rankings
-			     WHERE rank = 2 AND NOT experimental
-			) SELECT avatar_url, country_flag, hole, lang, name, scoring,
-			         silvers.strokes - diamonds.strokes count,
-			         RANK() OVER(ORDER BY silvers.strokes - diamonds.strokes DESC),
-			         COUNT(*) OVER () total
-			    FROM diamonds
-			    JOIN silvers USING (hole, lang, scoring)
-			    JOIN golfers_with_avatars ON id = user_id
-			ORDER BY rank, scoring
-			   LIMIT $1 OFFSET $2`
 	case "followers":
 		desc = "Total followers."
 		sql = `WITH followers AS (
@@ -64,42 +47,34 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 	case "holes-authored":
 		desc = "Total holes authored."
 		sql = `WITH holes AS (
-			    SELECT user_id, COUNT(*) FROM authors GROUP BY user_id
+			    SELECT * FROM unnest($3::uuid[], $4::int[]) x(uuid, count)
 			) SELECT avatar_url, count, country_flag, name,
 			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
 			    FROM holes
-			    JOIN golfers_with_avatars ON id = user_id
+			    JOIN golfers_with_avatars USING(uuid)
 			ORDER BY rank, name
 			   LIMIT $1 OFFSET $2`
-	case "most-tied-golds":
-		args = append(args, session.Golfer(r))
-		desc = "Most tied gold medals"
-		sql = `SELECT hole, lang, scoring, COUNT(*),
-			          RANK() OVER(ORDER BY COUNT(*) DESC),
-			          COUNT(*) FILTER (WHERE user_id = $3) > 0 me,
-			          COUNT(*) OVER () total
-			     FROM medals
-			    WHERE medal = 'gold'
-			 GROUP BY hole, lang, scoring
-			 ORDER BY rank, hole, lang, scoring
-			    LIMIT $1 OFFSET $2`
-	case "oldest-diamonds", "oldest-unicorns":
-		if t == "oldest-diamonds" {
-			args = append(args, "diamond")
-			desc = "💎 Oldest diamonds (uncontested gold medals)."
-		} else {
-			args = append(args, "unicorn")
-			desc = "🦄 Oldest unicorns (uncontested solves)."
-		}
 
-		sql = `SELECT avatar_url, country_flag, hole, lang, name, scoring, submitted,
-			         RANK() OVER(ORDER BY submitted),
+		uuids := make([]string, 0, len(config.HolesByAuthor))
+		counts := make([]int, 0, len(config.HolesByAuthor))
+		for uuid, holes := range config.HolesByAuthor {
+			uuids = append(uuids, uuid)
+			counts = append(counts, len(holes))
+		}
+		args = append(args, uuids, counts)
+	case "holes-of-the-week":
+		desc, _ = config.HoleOfTheWeek()
+		sql = `WITH holes AS (
+			    SELECT user_id, COUNT(*), MAX(completed) submitted
+			      FROM weekly_solves
+			  GROUP BY user_id
+			) SELECT avatar_url, count, country_flag, name, submitted,
+			         RANK() OVER(ORDER BY count DESC, submitted),
 			         COUNT(*) OVER () total
-			    FROM medals
+			    FROM holes
 			    JOIN golfers_with_avatars ON id = user_id
-			   WHERE medal = $3
-			ORDER BY rank, hole, lang, scoring, name
+			ORDER BY rank, name
 			   LIMIT $1 OFFSET $2`
 	case "referrals":
 		desc = "Total referrals."

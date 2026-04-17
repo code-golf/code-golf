@@ -4,12 +4,15 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ git pkgconf procps python3
 
-ENV PATH=/depot_tools:$PATH VER=14.3.127.16
+ENV PATH=/javascript:$PATH VER=14.7.173.19
 
-RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools \
- && fetch v8
+WORKDIR /javascript
 
-WORKDIR /v8
+ADD --keep-git-dir https://chromium.googlesource.com/chromium/tools/depot_tools.git .
+
+RUN fetch --force v8
+
+WORKDIR /javascript/v8
 
 RUN git checkout $VER \
  && gclient sync -D
@@ -33,7 +36,7 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /v8/out/icudtl.dat                    /usr/bin/
-COPY --from=0 /v8/out/d8                            /usr/bin/javascript
+COPY --from=0 /javascript/v8/out/icudtl.dat         /usr/bin/
+COPY --from=0 /javascript/v8/out/d8                 /usr/bin/javascript
 
 ENTRYPOINT ["javascript"]

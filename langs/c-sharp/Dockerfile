@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.101-alpine3.23-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0.202-alpine3.23-amd64 AS builder
 
 WORKDIR /c-sharp
 
-COPY c-sharp.cs c-sharp.csproj ./
+COPY c-sharp.* .
 
 RUN dotnet publish -c Release -o /out
 
