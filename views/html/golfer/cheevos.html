@@ -1,7 +1,7 @@
 {{ template "header" . }}
 {{ template "golfer" . }}
 
-{{ $show := setting .Golfer .Name "show-cheevos" }}
+{{ $show := index .SettingValues .Name "show-cheevos" }}
 
 <main>
 {{ if .Golfer }}
@@ -85,5 +85,4 @@
 {{ end }}
 </main>
 
-{{ template "settings-dialog" . }}
 {{ template "footer" }}

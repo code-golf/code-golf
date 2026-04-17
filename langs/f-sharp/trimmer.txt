@@ -1,6 +1,5 @@
 createdump
 libcoreclrtraceptprovider.so
-libdbgshim.so
 libmscordaccore.so
 libmscordbi.so
 System.Collections.Specialized.dll

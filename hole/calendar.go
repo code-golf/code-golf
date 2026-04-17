@@ -7,33 +7,24 @@ import (
 	"time"
 )
 
-func generate(s string) string {
-	var calendar strings.Builder
+func calendar(month, year int) string {
+	first := time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC)
+	days := first.AddDate(0, 1, -1).Day()
+	offset := (int(first.Weekday()) + 6) % 7
 
-	fields := strings.Fields(s)
-	month, year := parseInt(fields[0]), parseInt(fields[1])
+	var cal strings.Builder
+	cal.WriteString("Mo Tu We Th Fr Sa Su\n")
+	cal.WriteString(strings.Repeat("   ", offset))
 
-	calendar.WriteString("Mo Tu We Th Fr Sa Su\n")
+	for day := 1; day <= days; day++ {
+		fmt.Fprintf(&cal, "%2d ", day)
 
-	first, total := int((time.Date(year, time.Month(month), 1, 0, 0, 0, 0, time.UTC).Weekday()-1+7)%7), time.Date(year, time.Month(month)+1, 0, 0, 0, 0, 0, time.UTC).Day()
-
-	for range first {
-		calendar.WriteString("   ")
-	}
-
-	for i := 1; i <= total; i++ {
-		calendar.WriteString(fmt.Sprintf("%2d ", i))
-
-		if (first+i)%7 == 0 {
-			calendar.WriteByte('\n')
+		if (day+offset)%7 == 0 || day == days {
+			cal.WriteByte('\n')
 		}
 	}
 
-	if (first+total)%7 != 0 {
-		calendar.WriteByte('\n')
-	}
-
-	return calendar.String()
+	return cal.String()
 }
 
 func isLeap(year int) bool {
@@ -41,11 +32,9 @@ func isLeap(year int) bool {
 }
 
 var _ = answerFunc("calendar", func() []Answer {
-	tests := make([]test, 0, 50)
+	tests := make([]test, 50)
 
-	for i := 0; i < 50; {
-		var argument strings.Builder
-
+	for i := 0; i < len(tests); {
 		month, year := rand.IntN(12), randInt(1800, 2400)
 
 		if i < 12 {
@@ -70,14 +59,14 @@ var _ = answerFunc("calendar", func() []Answer {
 			year = 1800 + 100*(i-18)
 		}
 
+		month++
+
+		tests[i] = test{
+			fmt.Sprintf("%.2d %d", month, year),
+			calendar(month, year),
+		}
+
 		i++
-
-		argument.WriteString(fmt.Sprintf("%.2d %d", month+1, year))
-
-		tests = append(tests, test{
-			argument.String(),
-			generate(argument.String()),
-		})
 	}
 
 	return outputTests(shuffle(tests))

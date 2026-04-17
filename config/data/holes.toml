@@ -56,6 +56,10 @@ A Partridge in a Pear Tree.
 '''
 
 ['24 Game']
+authors = [
+    '016ff2b0-f058-7472-aa59-edf972f2663d', # inventshah
+    '01923841-7fc8-7cce-b6b9-50df9ea1756e', # 4atj
+]
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code',     url = '//rosettacode.org/wiki/24_game' },
@@ -137,6 +141,9 @@ released = 2022-11-19
 synopsis = 'Print all the abundant numbers from 1 to 1,000.'
 
 ['Apéry’s Constant']
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 experiment = 1525
 category   = 'Mathematics'
 links = [
@@ -146,6 +153,18 @@ links = [
 synopsis = 'Print the first 1,000 digits of ζ(3).'
 preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of ζ(3).
+'''
+
+['Alphabetic Numbers']
+authors = [
+    '0170d0ef-7070-71d7-8a5f-9f851be1f8b0', # emgordon154
+    '018c6260-7ddb-74d3-9665-234d0dfbd16f', # duckyluuk
+]
+category = 'Sequence'
+synopsis = 'Print all numbers from 0 to 1,000 in alphabetic order.'
+experiment = 2618
+preamble = '''
+<p>Print all numbers from <b>0</b> (<code>zero</code>) to <b>1,000</b> (<code>one thousand</code>) inclusive, in alphabetic order of their <a href="spelling-numbers">English written names</a>, each on their own line.</p>
 '''
 
 ['Arabic to Roman']
@@ -203,6 +222,9 @@ links = [
 ]
 
 ['Arithmetic Numbers']
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A003601', url = '//oeis.org/A003601' },
@@ -292,6 +314,10 @@ preamble = '''
 '''
 
 ['Ascending Primes']
+authors = [
+    '016c7834-1bf4-7dcb-9783-b7801a24949c', # kg583
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A052015', url = '//oeis.org/A052015' },
@@ -305,6 +331,9 @@ preamble = '''
 '''
 
 ['ASCII Table']
+authors = [
+    '0174d279-add8-7e85-b21f-11a8577a776c', # sisyphus-ppcg
+]
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Show_ASCII_table' },
@@ -318,6 +347,11 @@ preamble = '''
 '''
 
 [Billiards]
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+    '01798fc0-23ec-736c-9580-e2ebd63f8aea', # enbyte
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Art'
 released = 2024-12-01
 synopsis = 'Draw a path of a billiard ball.'
@@ -339,6 +373,9 @@ preamble = '''
 redirects = ["billiard"]
 
 ['Binary Lambda Calculus']
+authors = [
+    '0183d965-3116-7d88-9a37-f9afcad007e8', # CatsAreFluffy
+]
 category = 'Computing'
 experiment = 1567
 links = [
@@ -421,7 +458,10 @@ preamble = '''
 '''
 
 [Calendar]
-experiment = 908
+authors = [
+    '0180b081-8fbd-7381-99ff-9e61f9f72ac4', # Steffan153
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Calendar' },
@@ -448,6 +488,9 @@ Mo Tu We Th Fr Sa Su
 '''
 
 ['Card Number Validation']
+authors = [
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Luhn_test_of_credit_card_numbers' },
@@ -474,6 +517,9 @@ preamble = '''
 '''
 
 ['Catalan Numbers']
+authors = [
+    '018138c7-c575-7c1c-9494-a6ab948e5e98', # alemelis
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A000108', url = '//oeis.org/A000108' },
@@ -497,6 +543,9 @@ preamble = '''
 '''
 
 ['Catalan’s Constant']
+authors = [
+    '018138c7-c575-7c1c-9494-a6ab948e5e98', # alemelis
+]
 category = 'Mathematics'
 links = [
     { name = 'OEIS A006752', url = '//oeis.org/A006752' },
@@ -553,6 +602,9 @@ preamble = '''
 '''
 
 [Collatz]
+authors = [
+    '016b3d55-8805-7c95-a943-8c821e35479f', # Lydxn
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A006577', url = '//oeis.org/A006577' },
@@ -583,6 +635,10 @@ preamble = '''
 '''
 
 ['Connect Four']
+authors = [
+    '01787f8c-ac53-7ea2-b9cd-2c20010ecdd5', # MeWhenI
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 experiment = 1022
 category = 'Gaming'
 links = [
@@ -612,20 +668,27 @@ preamble = '''
 '''
 
 ['Continued Fractions']
+authors = [
+    '018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
 category = 'Mathematics'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Continued_fraction' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Simple_continued_fraction' },
 ]
-experiment = 2503
+released = 2026-03-01
 synopsis = 'Convert fractions to continued fractions.'
 preamble = '''
 <p>
     For each fraction argument <code>a/b</code>, print its continued fraction
-    expansion.
+    expansion in the form <code>[a0; a1, a2, ..., an]</code>.
 '''
 
 [Crossword]
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+    '0187086d-3a80-71f3-bc07-7dd516143c3d', # Kacarott
+]
 category = 'Computing'
 experiment = 1308
 links = [
@@ -793,12 +856,18 @@ preamble = '''
 '''
 
 [['CSS Colors'.variants]]
+authors = [
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 name             = 'CSS Colors (Inverse)'
 experiment       = 1353
 output-delimiter = "\n"
 synopsis         = 'Convert color hex values to their CSS keywords.'
 
 ['CSS Grid']
+authors = [
+    '0184377e-d3ad-7a27-82e7-2288d53758cd', # mousetail
+]
 category = 'Art'
 experiment = 1214
 links = [
@@ -912,6 +981,9 @@ preamble = '''
 '''
 
 ['Day of Week']
+authors = [
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Transform'
 released = 2023-04-16
 links = [
@@ -926,6 +998,10 @@ preamble = '''
 '''
 
 ['DFA Simulator']
+authors = [
+    '0176b716-b1a7-7e8b-a518-6ca24519dc1a', # stefangimmillaro
+    '01891277-021c-76d4-b12e-f7967a6fad61', # msbranicky
+]
 category = 'Computing'
 released = 2023-11-01
 links = [
@@ -1082,6 +1158,9 @@ preamble = '''
 '''
 
 ['Ellipse Perimeters']
+authors = [
+    '018138c7-c575-7c1c-9494-a6ab948e5e98', # alemelis
+]
 category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Ellipse' },
@@ -1206,6 +1285,10 @@ links    = [
 ]
 
 ['Factorial Factorisation']
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Factorial' },
@@ -1215,14 +1298,17 @@ synopsis = 'Print the factorisation of 1000!.'
 preamble = '''
 <p>Print the factorisation of 1000!,
 
-<p>
-    <code>
-        2^994*3^498*5^249*7^164*11^98*13^81*17^61*19^54*23^44*...*983*991*997
-    </code>.
+<pre>
+2^994*3^498*5^249*7^164*11^98*13^81*17^61*19^54*23^44*...*983*991*997
+</pre>
 '''
 redirects = ["factorial-factorisation-ascii"]
 
 ['Farey Sequence']
+authors = [
+    '016c7834-1bf4-7dcb-9783-b7801a24949c', # kg583
+    '01760975-4d72-7e7a-aac8-60214f38b8df', # m-tkach
+]
 category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Farey_sequence' },
@@ -1293,10 +1379,16 @@ preamble = '''
 '''
 
 [['Fizz Buzz'.variants]]
+authors = [
+    '0175e0b9-1fce-7626-83d2-9a411bafb6ee', # Kagre
+]
 name     = 'Foo Fizz Buzz Bar'
 released = 2021-11-21
 
 [Flags]
+authors = [
+    '017db249-3684-79e1-b9e3-17dea7fefc96', # 5cw
+]
 category = 'Transform'
 experiment = 1580
 links = [
@@ -1482,6 +1574,9 @@ preamble = '''
 '''
 
 ['Floyd-Steinberg Dithering']
+authors = [
+    '0171fa59-629b-738f-8bb5-3c52b6722d5d', # AlephSquirrel
+]
 category = 'Art'
 experiment = 1138
 links = [
@@ -1542,6 +1637,10 @@ preamble = '''
 '''
 
 ['Forsyth–Edwards Notation']
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Forsyth–Edwards_Notation' },
@@ -1588,6 +1687,9 @@ preamble = '''
 '''
 
 [Fractions]
+authors = [
+    '01787f8c-ac53-7ea2-b9cd-2c20010ecdd5', # MeWhenI
+]
 category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Fraction#Simplifying_(reducing)_fractions' },
@@ -1599,6 +1701,9 @@ preamble = '''
 '''
 
 ['Game of Life']
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+]
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = "//rosettacode.org/wiki/Conway's_Game_of_Life" },
@@ -1626,6 +1731,10 @@ preamble = '''
 '''
 
 ['Gijswijt’s Sequence']
+authors = [
+    '016c7834-1bf4-7dcb-9783-b7801a24949c', # kg583
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A090822', url = '//oeis.org/A090822' },
@@ -1663,12 +1772,15 @@ preamble = '''
 '''
 
 ['Gray Code Decoder']
+authors = [
+    '0183d0b1-5f5b-72b0-aa58-14f09247d60f', # jakobkordez
+]
 category = 'Computing'
-experiment = 779
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Gray_code' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Gray_code' },
 ]
+released = 2026-04-01
 synopsis = 'Decode Gray code into denary numbers.'
 preamble = '''
 <p>
@@ -1696,8 +1808,11 @@ preamble = '''
 '''
 
 [['Gray Code Decoder'.variants]]
-name       = 'Gray Code Encoder'
-experiment = 1157
+authors = [
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
+name     = 'Gray Code Encoder'
+released = 2026-04-01
 synopsis = 'Encode denary numbers into Gray code.'
 
 ['Happy Numbers']
@@ -1739,6 +1854,9 @@ released = 2021-09-19
 synopsis = 'Print all the happy numbers from 1 to 1,000.'
 
 ['Hexagonal Spiral']
+authors = [
+    '01787f8c-ac53-7ea2-b9cd-2c20010ecdd5', # MeWhenI
+]
 experiment = 1223
 category = 'Art'
 synopsis = 'Draw a cool hexagonal spiral.'
@@ -1753,6 +1871,9 @@ preamble = '''
 '''
 
 [Hexdump]
+authors = [
+    '017b3268-38b3-73d0-adfc-ab9ccf2ba429', # jared-hughes
+]
 category = 'Transform'
 released = 2022-05-01
 synopsis = 'Convert strings to their hexdump equivalents.'
@@ -1783,6 +1904,10 @@ preamble = '''
 '''
 
 ['Highly Composite Numbers']
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+    '0192063b-fda8-7ce7-8f3b-958c0df8d941', # JesseNoEyes
+]
 experiment = 1449
 category   = 'Sequence'
 links = [
@@ -1806,6 +1931,10 @@ preamble = '''
 '''
 
 ['Hilbert Curve']
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+    '0187086d-3a80-71f3-bc07-7dd516143c3d', # Kacarott
+]
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Hilbert_curve' },
@@ -1823,6 +1952,9 @@ preamble = '''
 '''
 
 [Intersection]
+authors = [
+    '018138c7-c575-7c1c-9494-a6ab948e5e98', # alemelis
+]
 category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Intersection' },
@@ -1850,6 +1982,10 @@ preamble = '''
 '''
 
 ['Inventory Sequence']
+authors = [
+    '01728acf-fa28-7ee2-8847-49b315d7855e', # Irratix
+    '0183d0b1-5f5b-72b0-aa58-14f09247d60f', # jakobkordez
+]
 category = 'Sequence'
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/the-inventory-sequence' },
@@ -1886,6 +2022,9 @@ preamble = '''
 '''
 
 [ISBN]
+authors = [
+    '016cbaa2-2823-7fcd-b8ea-a5217eee2a57', # KrausRaus
+]
 category = 'Transform'
 links = [
     { name  = 'Wikipedia', url = '//en.wikipedia.org/wiki/International_Standard_Book_Number#ISBN-10_check_digit_calculation' },
@@ -1904,6 +2043,9 @@ preamble = '''
 '''
 
 ['Jacobi Symbol']
+authors = [
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Mathematics'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Jacobi_symbol' },
@@ -1933,6 +2075,10 @@ preamble = '''
 '''
 
 ['Kaprekar Numbers']
+authors = [
+    '017df98f-1fb8-7c8f-857d-346c69de7be4', # gitbedd
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A006886', url = '//oeis.org/A006886' },
@@ -1959,6 +2105,9 @@ preamble = '''
 '''
 
 ['Kolakoski Constant']
+authors = [
+    '0163a524-feb6-7e9e-9bbf-b6bbf0fe0116', # GrayJoKing
+]
 category = 'Mathematics'
 links = [
     { name = 'OEIS A118270', url = '//oeis.org/A118270' },
@@ -2011,6 +2160,9 @@ links = [
 ]
 
 ['Leap Years']
+authors = [
+    '0163a524-feb6-7e9e-9bbf-b6bbf0fe0116', # GrayJoKing
+]
 category = 'Sequence'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Leap_year' },
@@ -2083,6 +2235,9 @@ preamble = '''
 '''
 
 ['ln 2']
+authors = [
+    '016c131f-70de-7ea1-9633-b14a93a91bf3', # SirBogman
+]
 category = 'Mathematics'
 links = [
     { name = 'OEIS A002162', url = '//oeis.org/A002162' },
@@ -2095,6 +2250,9 @@ preamble = '''
 '''
 
 ['Look and Say']
+authors = [
+    '0163a524-feb6-7e9e-9bbf-b6bbf0fe0116', # GrayJoKing
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A005150', url = '//oeis.org/A005150' },
@@ -2114,6 +2272,9 @@ preamble = '''
 '''
 
 ['Lucky Numbers']
+authors = [
+    '017d12a9-0c7b-7bbb-9166-7f22015444e2', # akshatj27
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A000959', url = '//oeis.org/A000959' },
@@ -2151,6 +2312,9 @@ Delete every 7th term and advance:
 '''
 
 ['Lucky Tickets']
+authors = [
+    '016c131f-70de-7ea1-9633-b14a93a91bf3', # SirBogman
+]
 category = 'Mathematics'
 links = [
     { name = 'OEIS A174061', url = '//oeis.org/A174061' },
@@ -2173,6 +2337,9 @@ preamble = '''
 '''
 
 [Mahjong]
+authors = [
+    '018252b9-d40a-7f68-8adb-bbf3071e94af', # commandz0
+]
 category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Japanese_mahjong' },
@@ -2232,6 +2399,9 @@ preamble = '''
 '''
 
 [Mandelbrot]
+authors = [
+    '018138c7-c575-7c1c-9494-a6ab948e5e98', # alemelis
+]
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Mandelbrot_set' },
@@ -2255,6 +2425,9 @@ preamble = '''
 '''
 
 [Maze]
+authors = [
+    '018138c7-c575-7c1c-9494-a6ab948e5e98', # alemelis
+]
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Maze_solving' },
@@ -2279,6 +2452,10 @@ preamble = '''
 '''
 
 ['Medal Tally']
+authors = [
+    '016b3d55-8805-7c95-a943-8c821e35479f', # Lydxn
+    '0174d279-add8-7e85-b21f-11a8577a776c', # sisyphus-ppcg
+]
 category = 'Transform'
 released = 2023-06-01
 synopsis = 'Tally code golf medals.'
@@ -2295,6 +2472,10 @@ preamble = '''
 '''
 
 [Minesweeper]
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+    '018a4e91-40ec-7bb3-bbe2-76e938761727', # snoozingnewt
+]
 category = 'Gaming'
 released = 2025-11-01
 links = [
@@ -2434,10 +2615,14 @@ released = 2018-02-18
 synopsis = 'Encode alphanumeric strings into International Morse Code.'
 
 ['Multitap Input']
+authors = [
+    '018252b9-d40a-7f68-8adb-bbf3071e94af', # commandz0
+    '018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
 category = 'Transform'
-experiment = 1952
+released = 2026-02-01
 links = [
-    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Multi-tap' },
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Multi-tap' },
 ]
 data = '''
 {
@@ -2480,10 +2665,15 @@ preamble = '''
     print the equivalent text. No run of one digit will be longer than the number
     of letters on that key. Pauses may occur between any two letters, not
     just those on the same key.
-
 '''
 
 ['Musical Chords']
+authors = [
+    '01625f75-3e1f-7a1e-b770-35ed60dde097', # GolfingSuccess
+    '01728acf-fa28-7ee2-8847-49b315d7855e', # Irratix
+    '0172d2ae-76e7-7df5-b9e4-778a9f7f5b40', # NewDefectus
+    '01787f8c-ac53-7ea2-b9cd-2c20010ecdd5', # MeWhenI
+]
 category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Triad_(music)' },
@@ -2634,6 +2824,9 @@ preamble = '''
 '''
 
 ['N Queens']
+authors = [
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/N-queens_problem' },
@@ -2659,6 +2852,10 @@ preamble = '''
 redirects = ["eight-queens"]
 
 ['NFA Simulator']
+authors = [
+    '0176b716-b1a7-7e8b-a518-6ca24519dc1a', # stefangimmillaro
+    '01891277-021c-76d4-b12e-f7967a6fad61', # msbranicky
+]
 category = 'Computing'
 experiment = 1036
 links = [
@@ -2762,7 +2959,7 @@ acbcab
     processing the entirety of <b>each</b> input string, followed by a space,
     followed by either <code>Accept</code> (if the NFA can reach any accept
     state by processing the string, or, in other words, if the final set of
-    valid states contains an accept state) or <code>Accept</code> (otherwise).
+    valid states contains an accept state) or <code>Reject</code> (otherwise).
     In this case, we may end at either <code>0</code> or <code>3</code> and
     one of them is an accept state (<code>3</code>), so we print
     <code>{0,3} Accept</code>.
@@ -2818,6 +3015,10 @@ preamble = '''
 '''
 
 [Numbrix]
+authors = [
+    '016ff2b0-f058-7472-aa59-edf972f2663d', # inventshah
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 category = 'Gaming'
 experiment = 1151
 links = [
@@ -2901,6 +3102,9 @@ preamble = '''
 '''
 
 ['Odd Polyomino Tiling']
+authors = [
+    '016438bf-4150-78f8-98e0-63faa1441bc7', # retrohun
+]
 category = 'Art'
 experiment = 815
 links = [
@@ -2933,6 +3137,10 @@ preamble = '''
 '''
 
 ['p-adic Expansion']
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+    '0177431f-324b-7eeb-a54d-7d22ed254024', # thatbirdguythatuknownot
+]
 category = 'Mathematics'
 experiment = 882
 links = [
@@ -2988,6 +3196,10 @@ preamble = '''
 '''
 
 [PalindromemordnilaP]
+authors = [
+    '01687a11-9abe-7a47-9268-e7eda4c61738', # JayXon
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Transform'
 released = 2024-09-01
 synopsis = 'Append minimum number of characters to make the input a palindrome.'
@@ -3019,6 +3231,10 @@ preamble = '''
 '''
 
 ['Partition Numbers']
+authors = [
+    '016b3d55-8805-7c95-a943-8c821e35479f', # Lydxn
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A000041', url = '//oeis.org/A000041' },
@@ -3061,6 +3277,9 @@ preamble = '''
 '''
 
 [['Pascal’s Triangle'.variants]]
+authors = [
+    '01787f8c-ac53-7ea2-b9cd-2c20010ecdd5', # MeWhenI
+]
 name = 'Trinomial Triangle'
 links = [
     { name = 'OEIS A027907', url = '//oeis.org/A027907' },
@@ -3180,6 +3399,9 @@ preamble = '''
 '''
 
 ['Polygon Triangulations']
+authors = [
+    '0171fa59-629b-738f-8bb5-3c52b6722d5d', # AlephSquirrel
+]
 category       = 'Computing'
 multiset-item-delimiter = "\n"
 synopsis       = 'Print all triangulations of polygons with 3-8 sides.'
@@ -3197,6 +3419,10 @@ preamble = '''
 '''
 
 [Polyominoes]
+authors = [
+    '01785388-3d07-7ead-a272-f40cf80167f7', # canissimia
+    '018c6260-7ddb-74d3-9665-234d0dfbd16f', # duckyluuk
+]
 category       = 'Computing'
 multiset-item-delimiter = "\n\n"
 released       = 2024-08-01
@@ -3237,6 +3463,10 @@ released = 2021-12-05
 synopsis = 'Print all the prime numbers from 1 to 10,000.'
 
 ['Proximity Grid']
+authors = [
+    '0176b716-b1a7-7e8b-a518-6ca24519dc1a', # stefangimmillaro
+    '01787f8c-ac53-7ea2-b9cd-2c20010ecdd5', # MeWhenI
+]
 category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Taxicab_geometry' },
@@ -3259,6 +3489,9 @@ preamble = '''
 '''
 
 ['QR Decoder']
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+]
 category = 'Transform'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
@@ -3267,9 +3500,14 @@ released = 2021-09-17
 synopsis = 'Decode a Version-1 ASCII QR code.'
 preamble = '''
 <p class=qr-span>
+{{ if eq .Name "QR Decoder" }}
     Decode a Version-1 QR code given in this ASCII-art format, where all the
     <span>v</span> and <span>^</span> are filled with "#" and spaces, encoding
     a message.
+{{ else }}
+    Encode ASCII string to a Version-1 QR code of this ASCII-art format, where
+    all the <span>v</span> and <span>^</span> must be filled with "#" and spaces.
+{{ end }}
 
 <pre class=qr-span>
     #######  <span>vv^^</span> #######
@@ -3297,7 +3535,11 @@ preamble = '''
 
 <p class=qr-span>
     The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be
+{{ if eq .Name "QR Decoder" }}
     read from right to left. The bits in a strip are stored in a zig-zag
+{{ else }}
+    written from right to left. The bits in a strip are written in a zig-zag
+{{ end }}
     order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags
     downwards. The bit on the right always precedes the one on its left.
 
@@ -3310,6 +3552,7 @@ preamble = '''
     <span>^^</span> 10    <span>vv</span> ..
 </pre>
 
+{{ if eq .Name "QR Decoder" }}
 <p>
     To decode a bit off of a strip, read the value from the QR code bitmap
     ("#" = 1, space = 0) and invert it if <b>(x+y)%2 = 0</b>, where
@@ -3325,59 +3568,7 @@ preamble = '''
 </pre>
 
 <p>Print the 17 bytes of ASCII stored in the QR code.
-'''
-
-['QR Encoder']
-category = 'Transform'
-experiment = 816
-links = [
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/QR_code#Encoding' },
-]
-synopsis = 'Encode a Version-1 ASCII QR code.'
-preamble = '''
-<p class=qr-span>
-    Encode ASCII string to a Version-1 QR code of this ASCII-art format, where
-    all the <span>v</span> and <span>^</span> must be filled with "#" and spaces.
-
-<pre class=qr-span>
-    #######  <span>vv^^</span> #######
-    #     #  <span>vv^^</span> #     #
-    # ### # #<span>vv^^</span> # ### #
-    # ### #  <span>vv^^</span> # ### #
-    # ### #  <span>vv^^</span> # ### #
-    #     #  <span>vv^^</span> #     #
-    ####### # # # #######
-            #<span>vv^^</span>
-    ### #####<span>vv^^</span>##   #
-    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
-    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
-    <span>vv^^vv</span> <span>^^vv^^vv^^vv^^</span>
-    <span>vv^^vv</span>#<span>^^vv^^vv^^vv^^</span>
-            #<span>vv^^vv^^vv^^</span>
-    ####### #<span>vv^^vv^^vv^^</span>
-    #     # #<span>vv^^vv^^vv^^</span>
-    # ### # #<span>vv^^vv^^vv^^</span>
-    # ### #  <span>vv^^vv^^vv^^</span>
-    # ### # #<span>vv^^vv^^vv^^</span>
-    #     # #<span>vv^^vv^^vv^^</span>
-    ####### #<span>vv^^vv^^vv^^</span>
-</pre>
-
-<p class=qr-span>
-    The 10 vertical "strips" of <span>^^</span> or <span>vv</span> must be
-    written from right to left. The bits in a strip are written in a zig-zag
-    order: <span>^^</span> zig-zags upwards, and <span>vv</span> zig-zags
-    downwards. The bit on the right always precedes the one on its left.
-
-<pre class=qr-span>
-    <span>^^</span> ..    <span>vv</span> 10
-    <span>^^</span> 98    <span>vv</span> 32
-    <span>^^</span> 76    <span>vv</span> 54
-    <span>^^</span> 54    <span>vv</span> 76
-    <span>^^</span> 32    <span>vv</span> 98
-    <span>^^</span> 10    <span>vv</span> ..
-</pre>
-
+{{ else }}
 <p>The strips are filled with data from a bitstream:
 
 <pre>
@@ -3391,9 +3582,18 @@ preamble = '''
     <b>(x, y)</b> of the current position in the bitmap with the origin
     <b>(0, 0)</b> at the top-left corner, invert the bit if <b>(x+y)%2 = 0</b>,
     and write the value to this position ("#" = 1, space = 0).
+{{ end }}
 '''
 
+[['QR Decoder'.variants]]
+experiment = 816
+name       = 'QR Encoder'
+synopsis   = 'Encode a Version-1 ASCII QR code.'
+
 ['Quadratic Formula']
+authors = [
+    '017db249-3684-79e1-b9e3-17dea7fefc96', # 5cw
+]
 category = 'Mathematics'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Quadratic_formula' },
@@ -3443,6 +3643,9 @@ preamble = '''
 '''
 
 ['Recamán']
+authors = [
+    '018138c7-c575-7c1c-9494-a6ab948e5e98', # alemelis
+]
 category = 'Sequence'
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/slightly-spooky-recaman-sequence' },
@@ -3462,7 +3665,83 @@ preamble = '''
 <p>Print the first <b>250</b> terms of the sequence one per line.
 '''
 
+['Rectangle Fill']
+authors = [
+    '0171fa59-629b-738f-8bb5-3c52b6722d5d', # AlephSquirrel
+	'0162b590-6073-7390-8598-bbd32eecf20a', # lynn
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
+experiment = 2579
+category = 'Transform'
+synopsis = 'Fill in rectangles with numbers.'
+preamble = '''
+<p>
+    Fill in rectangles in a grid consisting primarily of zeros. The top left
+    or right corner and the bottom left or right corner of each rectangle are
+    marked with a corresponding pair of digits from 1 through 9. If rectangles
+    overlap, the rectangle with the higher number takes precedence.
+
+<p>
+    For example, consider the following grid with only eight starting corners:
+
+<pre>
+0000400000
+0100000000
+0000000000
+0000000000
+0000000100
+0000000000
+0020000000
+0300000000
+0000000030
+0002004000
+</pre>
+
+<p>
+    Below are four separate grids showing the locations of the individual
+    rectangles.
+
+<pre>
+Rectangle <b>1</b>:    Rectangle <b>2</b>:    Rectangle <b>3</b>:    Rectangle <b>4</b>:
+
+ 0000400000      0000400000      0000400000      0000<b>444</b>000
+ 0<b>1111111</b>00      0100000000      0100000000      0100<b>444</b>000
+ 0<b>1111111</b>00      0000000000      0000000000      0000<b>444</b>000
+ 0<b>1111111</b>00      0000000000      0000000000      0000<b>444</b>000
+ 0<b>1111111</b>00      0000000100      0000000100      0000<b>444</b>100
+ 0000000000      0000000000      0000000000      0000<b>444</b>000
+ 0020000000      00<b>22</b>000000      0020000000      0020<b>444</b>000
+ 0300000000      03<b>22</b>000000      0<b>33333333</b>0      0300<b>444</b>000
+ 0000000030      00<b>22</b>000030      0<b>33333333</b>0      0000<b>444</b>030
+ 0002004000      00<b>22</b>004000      0002004000      0002<b>444</b>000
+</pre>
+
+<p>
+    When the simplified grid above is filled in, it looks like this:
+
+<pre>
+0000444000
+0111444100
+0111444100
+0111444100
+0111444100
+0000444000
+0022444000
+0333444330
+0333444330
+0022444000
+</pre>
+
+<p>
+    Given a ten-by-ten grid with eighteen starting corners, print the grid
+    with all nine rectangles filled in.
+'''
+
 ['Repeating Decimals']
+authors = [
+    '016b3d55-8805-7c95-a943-8c821e35479f', # Lydxn
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+]
 category = 'Mathematics'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Integer_long_division' },
@@ -3478,6 +3757,9 @@ preamble = '''
 '''
 
 ['Reverse Polish Notation']
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+]
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Parsing/RPN_calculator_algorithm' },
@@ -3505,6 +3787,9 @@ preamble = '''
 '''
 
 [Reversi]
+authors = [
+    '0184377e-d3ad-7a27-82e7-2288d53758cd', # mousetail
+]
 category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Reversi' },
@@ -3556,6 +3841,9 @@ preamble = '''
 '''
 
 ['Rijndael S-box']
+authors = [
+    '0185a31a-4228-7993-8b02-d31238dd27be', # juliusgeo
+]
 case-fold = true
 category = 'Mathematics'
 links = [
@@ -3625,6 +3913,10 @@ preamble = '''
 '''
 
 [ROT13]
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+    '01870454-ccd9-71b4-86be-0a5461a4582a', # leap0x7b
+]
 category = 'Transform'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Rot-13' },
@@ -3666,6 +3958,9 @@ NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm
 '''
 
 ['Rule 110']
+authors = [
+    '016438bf-4150-78f8-98e0-63faa1441bc7', # retrohun
+]
 category = 'Computing'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Rule_110' },
@@ -3726,6 +4021,10 @@ preamble = '''
 '''
 
 ['Scrambled Sort']
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+    '018d3370-8f3f-7723-ba1e-6b099171a7db', # Jacob385
+]
 category  = 'Transform'
 redirects = ['scrambled-alphabetization']
 released  = 2025-06-01
@@ -3738,6 +4037,9 @@ preamble  = '''
 '''
 
 ['Semiprime Numbers']
+authors = [
+    '01811c7c-69f5-7cd1-83c8-5ab8e35a70e7', # inverseLorentz
+]
 experiment = 1154
 category = 'Sequence'
 links = [
@@ -3756,6 +4058,10 @@ preamble = '''
 '''
 
 [Set]
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Set,_the_card_game' },
@@ -3819,6 +4125,9 @@ preamble = '''
 '''
 
 ['SI Units']
+authors = [
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Transform'
 data = '''{
   "units": {
@@ -4073,6 +4382,10 @@ preamble = '''
 '''
 
 ['Smooth Numbers']
+authors = [
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+    '018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
 experiment = 2144
 category = 'Mathematics'
 links = [
@@ -4101,6 +4414,10 @@ preamble = '''
 '''
 
 [Snake]
+authors = [
+    '016836a5-3eaa-7700-9b51-d6c9685d25ba', # Bubbler-4
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 experiment = 1039
 category = 'Gaming'
 links = [
@@ -4167,6 +4484,9 @@ preamble = '''
 '''
 
 ['Sphenic Numbers']
+authors = [
+    '01811c7c-69f5-7cd1-83c8-5ab8e35a70e7', # inverseLorentz
+]
 experiment = 1154
 category = 'Sequence'
 links = [
@@ -4185,6 +4505,10 @@ preamble = '''
 '''
 
 ['Star Wars GPT']
+authors = [
+    '0176b716-b1a7-7e8b-a518-6ca24519dc1a', # stefangimmillaro
+    '01891277-021c-76d4-b12e-f7967a6fad61', # msbranicky
+]
 category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
@@ -4209,6 +4533,9 @@ preamble = '''
 '''
 
 ['Star Wars Opening Crawl']
+authors = [
+    '01784f2a-f699-71d6-be30-f01c59de9d79', # m-ender
+]
 category = 'Transform'
 links = [
     { name = 'Wookieepedia', url = '//starwars.fandom.com/wiki/Opening_crawl' },
@@ -4340,6 +4667,10 @@ redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
 
 ['Taxicab Numbers']
+authors = [
+    '0171fa59-629b-738f-8bb5-3c52b6722d5d', # AlephSquirrel
+    '018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
 experiment = 914
 category = 'Sequence'
 links = [
@@ -4437,6 +4768,10 @@ preamble = '''
 '''
 
 [Tic-tac-toe]
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+    '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
+]
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Tic-tac-toe' },
@@ -4456,6 +4791,9 @@ preamble = '''
 '''
 
 ['Time Distance']
+authors = [
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Transform'
 released = 2022-04-10
 synopsis = 'Convert a quantity of seconds to a human-friendly string.'
@@ -4502,6 +4840,10 @@ preamble = '''
 '''
 
 ['Topological Sort']
+authors = [
+    '01625f75-3e1f-7a1e-b770-35ed60dde097', # GolfingSuccess
+    '0169c933-de53-743a-ad40-b130fe419def', # orthoplex
+]
 category = 'Computing'
 released = 2025-08-01
 synopsis = 'Perform topological sort.'
@@ -4519,6 +4861,10 @@ preamble = '''
 '''
 
 ['Tower of Hanoi']
+authors = [
+    '01845d8e-fcb1-7418-8558-51b34bab802d', # pardouin
+    '019618a3-d206-795e-a4c2-2a4824f83d84', # SwordF-Official
+]
 category = 'Art'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Towers_of_Hanoi' },
@@ -4543,6 +4889,9 @@ preamble = '''
 '''
 
 ['Transpose Sentence']
+authors = [
+    '0186c25a-6f09-7e70-9ee7-65f605c38849', # rifatx
+]
 category = 'Transform'
 released = 2024-07-25
 synopsis = 'Print the transposed representation of a sentence.'
@@ -4578,6 +4927,9 @@ boy
 '''
 
 [Turtle]
+authors = [
+    '0178b7c9-b196-7af2-80fc-722c9493cbb6', # scpchicken
+]
 category = 'Art'
 experiment = 622
 synopsis = 'Move the Unicode turtle according to directions.'
@@ -4624,10 +4976,10 @@ preamble = '''
 experiment = 1404
 category  = 'Art'
 redirects = ["placeholder"]
-synopsis  = 'Golf the code.golf sample code.'
+synopsis  = 'Golf the code.golf example code.'
 preamble  = '''
 <p>
-    Output the same output as the sample code would produce.
+    Output the same output as the example code would produce.
     The string <b>"Hello, World!"</b>, the integers <b>0</b> to <b>9</b>,
     and any number of <b>arguments</b>. Everything on an individual line.
 '''
@@ -4710,6 +5062,9 @@ preamble = '''
 '''
 
 ['Van Eck Sequence']
+authors = [
+    '01728acf-fa28-7ee2-8847-49b315d7855e', # Irratix
+]
 category = 'Sequence'
 links = [
     { name = 'Numberphile',  url = '//www.numberphile.com/videos/van-eck-sequence' },
@@ -4743,6 +5098,10 @@ preamble = '''
 '''
 
 ['Zeckendorf Representation']
+authors = [
+    '0160f33e-43b7-7cc7-bc88-50115465ef80', # RDShah
+    '016ff2b0-f058-7472-aa59-edf972f2663d', # inventshah
+]
 category = 'Mathematics'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Zeckendorf_number_representation' },
@@ -4765,6 +5124,12 @@ preamble = '''
 '''
 
 ['Zodiac Signs']
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+    '01767730-06d8-7cff-a7f2-6f804656be97', # anter69
+    '01787f8c-ac53-7ea2-b9cd-2c20010ecdd5', # MeWhenI
+    '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
+]
 category = 'Transform'
 links = [
     { name = 'Zodiac Sign Wikipedia',    url = '//en.wikipedia.org/wiki/Zodiac_sign' },
@@ -4835,6 +5200,9 @@ preamble = '''
 '''
 
 ['γ']
+authors = [
+    '016f6f73-e771-7a8d-82d2-3d4aa30dac05', # btnlq
+]
 category = 'Mathematics'
 links = [
     { name = 'OEIS A001620', url = '//oeis.org/A001620' },
@@ -4850,6 +5218,9 @@ preamble = '''
 aliases = ['gamma']
 
 ['λ']
+authors = [
+    '016303b7-832f-72dd-b5a7-5751a29405c8', # edre
+]
 category = 'Mathematics'
 links = [
     { name = 'OEIS A014715', url = '//oeis.org/A014715' },

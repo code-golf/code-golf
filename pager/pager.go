@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-const PerPage = 75
+const PerPage = 80
 
 type Pager struct {
 	lastPage, First, Last, Offset, Page, Total int
@@ -54,6 +54,9 @@ func (p *Pager) Calculate() bool {
 
 	return false
 }
+
+// Page returns which page a given row will appear on.
+func Page(row int) int { return (row-1)/PerPage + 1 }
 
 func changePage(u *url.URL, page int) *url.URL {
 	q := u.Query()

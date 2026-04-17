@@ -1,15 +1,15 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.101-alpine3.23-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0.202-alpine3.23-amd64 AS builder
 
 WORKDIR /f-sharp
 
-COPY f-sharp.fs f-sharp.fsproj ./
+COPY f-sharp.* .
 
 RUN dotnet publish -c Release -o /out
 
 # Trim additional things to improve F# compiler startup performance.
 WORKDIR /trimmer
 
-COPY trimmer.cs trimmer.csproj trimmer.txt ./
+COPY trimmer.* .
 
 RUN dotnet run
 

@@ -12,7 +12,9 @@ const (
 	rows int = 6
 )
 
-func dropDisc(grid [][]int, col, player int) bool {
+type connectFourGrid [rows][cols]int
+
+func (grid *connectFourGrid) dropDisc(col, player int) bool {
 	for i := rows - 1; i >= 0; i-- {
 		if grid[i][col] == 0 {
 			grid[i][col] = player
@@ -24,7 +26,7 @@ func dropDisc(grid [][]int, col, player int) bool {
 	return false
 }
 
-func checkDirection(grid [][]int, row, col, dr, dc, player int) bool {
+func (grid *connectFourGrid) checkDirection(row, col, dr, dc, player int) bool {
 	count := 0
 
 	for i := range 4 {
@@ -38,14 +40,14 @@ func checkDirection(grid [][]int, row, col, dr, dc, player int) bool {
 	return count == 4
 }
 
-func checkWinner(grid [][]int, player int) int {
+func (grid *connectFourGrid) checkWinner(player int) int {
 	for row := range rows {
 		for col := range cols {
 			if grid[row][col] == player {
 				for _, pts := range [][]int{
 					{1, 0}, {0, 1}, {1, 1}, {1, -1},
 				} {
-					if checkDirection(grid, row, col, pts[0], pts[1], player) {
+					if grid.checkDirection(row, col, pts[0], pts[1], player) {
 						return player
 					}
 				}
@@ -57,24 +59,20 @@ func checkWinner(grid [][]int, player int) int {
 }
 
 func emulPlay() ([]int, string) {
-	grid, player := make([][]int, rows), 1
-
-	for i := range grid {
-		grid[i] = make([]int, cols)
-	}
+	grid, player := new(connectFourGrid), 1
 
 	var moves []int
 
 	for {
-		if col := rand.IntN(cols); dropDisc(grid, col, player) {
+		if col := rand.IntN(cols); grid.dropDisc(col, player) {
 			moves = append(moves, col)
 
-			if winner := checkWinner(grid, player); winner != 0 {
+			if winner := grid.checkWinner(player); winner != 0 {
 				return moves, []string{"Red", "Yellow"}[player-1]
 			}
 
 			// If there are no empty cells on the top row, return "Draw".
-			if !slices.Contains(grid[0], 0) {
+			if !slices.Contains(grid[0][:], 0) {
 				return moves, "Draw"
 			}
 

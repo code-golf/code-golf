@@ -8,7 +8,7 @@ import (
 	"github.com/shurcooL/graphql"
 )
 
-func stars(db *sqlx.DB) (limits []rateLimit) {
+func stars(db *sqlx.DB) (limits []rateLimit, err error) {
 	stargazers := map[int]time.Time{}
 
 	var query struct {
@@ -28,7 +28,7 @@ func stars(db *sqlx.DB) (limits []rateLimit) {
 
 	for {
 		if err := client.Query(context.Background(), &query, variables); err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		limits = append(limits, query.RateLimit)

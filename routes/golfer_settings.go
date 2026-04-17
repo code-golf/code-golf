@@ -46,6 +46,11 @@ func golferSettingsGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", data, "Settings: General")
 }
 
+// GET /golfer/settings/banners
+func golferSettingsBannersGET(w http.ResponseWriter, r *http.Request) {
+	render(w, r, "golfer/settings", nil, "Settings: Banners")
+}
+
 // GET /golfer/settings/export-data
 func golferSettingsExportDataGET(w http.ResponseWriter, r *http.Request) {
 	render(w, r, "golfer/settings", nil, "Settings: Export Data")
@@ -63,6 +68,10 @@ func golferSettingsSavePOST(w http.ResponseWriter, r *http.Request) {
 
 	// If the posted value is valid, update the golfer's settings map.
 	for _, setting := range config.Settings[page] {
+		if _, ok := golfer.Settings[page]; !ok {
+			golfer.Settings[page] = map[string]any{}
+		}
+
 		golfer.Settings[page][setting.ID] =
 			setting.FromFormValue(r.FormValue(setting.ID))
 	}

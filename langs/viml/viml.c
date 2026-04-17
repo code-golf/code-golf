@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
     if (fputs("]\n", fp))
         ERR_AND_EXIT("fputs");
 
-    char stderr_buf[4096], stdout_buf[4096];
+    char stdout_buf[4096];
     ssize_t nbytes;
 
     while ((nbytes = read(STDIN_FILENO, stdout_buf, sizeof(stdout_buf))))
@@ -74,28 +74,15 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    if (!(fp = popen("/usr/bin/vim --clean --not-a-term --noplugin -eZ -V1 +0 -S code.vim output 2>&1", "r")))
-        ERR_AND_EXIT("popen");
+    system("/usr/bin/vim --clean --not-a-term --noplugin -eZ -V1 +0 -S code.vim output >&2");
 
-    while (fgets(stdout_buf, sizeof(stdout_buf), fp)) {
-        strncat(stderr_buf, stdout_buf, sizeof(stderr_buf) - strlen(stderr_buf) - sizeof(char));
-        nbytes += strlen(stdout_buf);
-    }
+    if (!(fp = fopen("output", "r")))
+        ERR_AND_EXIT("fopen");
 
-    int status;
+    while ((nbytes = fread(stdout_buf, sizeof(char), sizeof(stdout_buf), fp)))
+        if (fwrite(stdout_buf, sizeof(char), nbytes, stdout) != (size_t) nbytes)
+            ERR_AND_EXIT("fwrite");
 
-    if (!(status = pclose(fp))) {
-        if (!(fp = fopen("output", "r")))
-            ERR_AND_EXIT("fopen");
-
-        while ((nbytes = fread(stdout_buf, sizeof(char), sizeof(stdout_buf), fp)))
-            if (fwrite(stdout_buf, sizeof(char), nbytes, stdout) != (size_t) nbytes)
-                ERR_AND_EXIT("fwrite");
-
-        if (fclose(fp))
-            ERR_AND_EXIT("fclose");
-    } else
-        if (nbytes)
-            if (fputs(stderr_buf, stderr))
-                ERR_AND_EXIT("fputs");
+    if (fclose(fp))
+        ERR_AND_EXIT("fclose");
 }

@@ -9,10 +9,13 @@ import (
 	"github.com/code-golf/code-golf/session"
 )
 
-var cheevoBannerRegex = regexp.MustCompile(`^cheevo-(?:before|until)-\d{4}-\d{2}-\d{2}-`)
+var (
+	cheevoBannerRegex  = regexp.MustCompile(`^cheevo-(?:before|until)-\d{4}-\d{2}-\d{2}-`)
+	holeOfTheWeekRegex = regexp.MustCompile(`^hole-of-the-week-\d{4}-\d{2}-\d{2}$`)
+)
 
-// POST /golfer/hide-banner
-func golferHideBannerPOST(w http.ResponseWriter, r *http.Request) {
+// POST /golfer/{action:hide|restore}-banner
+func golferHideRestoreBannerPOST(w http.ResponseWriter, r *http.Request) {
 	banner := r.FormValue("banner")
 	valid := false
 
@@ -25,15 +28,25 @@ func golferHideBannerPOST(w http.ResponseWriter, r *http.Request) {
 		_, valid = config.ExpHoleByID[holeID]
 	} else if prefix := cheevoBannerRegex.FindString(banner); prefix != "" {
 		_, valid = config.CheevoByID[banner[len(prefix):]]
+	} else {
+		valid = holeOfTheWeekRegex.MatchString(banner)
 	}
 
 	if valid {
 		golfer := session.Golfer(r)
 
-		if _, ok := golfer.Settings["hide-banner"]; !ok {
-			golfer.Settings["hide-banner"] = map[string]any{}
+		const key = "hide-banner"
+		if param(r, "action") == "hide" {
+			if _, ok := golfer.Settings[key]; !ok {
+				golfer.Settings[key] = map[string]any{}
+			}
+			golfer.Settings[key][banner] = true
+		} else {
+			delete(golfer.Settings[key], banner)
+			if len(golfer.Settings[key]) == 0 {
+				delete(golfer.Settings, key)
+			}
 		}
-		golfer.Settings["hide-banner"][banner] = true
 
 		golfer.SaveSettings(session.Database(r))
 	}

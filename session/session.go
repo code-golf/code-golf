@@ -14,6 +14,7 @@ type Session struct {
 	Database   *sqlx.DB
 	Golfer     *golfer.Golfer
 	GolferInfo *golfer.GolferInfo
+	Settings   map[string]map[string]any
 }
 
 func Create(r *http.Request) *http.Request {
@@ -37,4 +38,9 @@ func Golfer(r *http.Request) *golfer.Golfer {
 // GolferInfo gets the GolferInfo object from the request context.
 func GolferInfo(r *http.Request) *golfer.GolferInfo {
 	return Get(r).GolferInfo
+}
+
+// Settings gets the page settings map from the request context.
+func Settings(r *http.Request) map[string]map[string]any {
+	return Get(r).Settings
 }

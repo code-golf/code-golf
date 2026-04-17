@@ -20,6 +20,7 @@
 #define __NR_open_tree_attr 467
 #define __NR_file_getattr   468
 #define __NR_file_setattr   469
+#define __NR_listns         470
 
 #define NOBODY 65534
 
@@ -34,10 +35,12 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mount(NULL, "/", NULL, MS_PRIVATE|MS_REC, NULL) < 0)
         ERR_AND_EXIT("mount private");
 
-    if (mount("rootfs", "rootfs", "bind", MS_BIND|MS_REC, NULL) < 0)
-        ERR_AND_EXIT("mount bind");
+    // Create a r/o overlay mount of the lang's rootfs at /run_root. Using
+    // overlay instead of bind to ensure inodes aren't shared across runs.
+    if (mount(NULL, "/run_root", "overlay", 0, "lowerdir=rootfs:/run_root") < 0)
+        ERR_AND_EXIT("mount overlay");
 
-    if (syscall(SYS_pivot_root, "rootfs", "rootfs") < 0)
+    if (syscall(SYS_pivot_root, "/run_root", "/run_root") < 0)
         ERR_AND_EXIT("pivot_root");
 
     if (chdir("/") < 0)
@@ -46,7 +49,6 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (umount2("/", MNT_DETACH) < 0)
         ERR_AND_EXIT("umount2");
 
-    // Not every lang has /proc.
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount proc");
 
@@ -374,7 +376,8 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(setuid),    // 105
 
         // Namespaces
-        // ALLOW(setns), // 308
+        // ALLOW(setns),  // 308
+        // ALLOW(listns), // 470
 
         // Resource Limits
         ALLOW(getrlimit), // 97

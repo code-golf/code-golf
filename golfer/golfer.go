@@ -38,12 +38,12 @@ type Golfer struct {
 	Country                               *config.Country
 	Delete                                null.Time
 	FailingSolutions                      FailingSolutions
-	Following                             pq.Int64Array
+	Following, Hiding                     pq.Int64Array
 	Pronouns, TimeZone                    null.String
 	Settings                              Settings
 
 	// Has the golfer solved the latest hole/lang? Includes failing solutions.
-	SolvedLatestHole, SolvedLatestLang bool
+	SolvedHoleOfTheWeek, SolvedLatestHole, SolvedLatestLang bool
 }
 
 // GolferInfo is populated when looking at a /golfers/xxx route.
@@ -66,6 +66,8 @@ type GolferInfo struct {
 
 	// Start date
 	Started time.Time
+
+	UUID string
 }
 
 type FailingSolutions []struct{ Hole, Lang string }
@@ -136,6 +138,13 @@ func (g *Golfer) IsFollowing(userID int) bool {
 	return ok
 }
 
+// IsHiding returns whether the golfer is following that golfer.
+// FIXME Ideally we'd scan into a []int not a []int64 but pq won't.
+func (g *Golfer) IsHiding(userID int) bool {
+	_, ok := slices.BinarySearch(g.Hiding, int64(userID))
+	return ok
+}
+
 func (g *Golfer) Location() (loc *time.Location) {
 	if loc, _ = time.LoadLocation(g.TimeZone.V); loc == nil {
 		loc = time.UTC
@@ -163,12 +172,7 @@ func (g *Golfer) SaveSettings(db *sqlx.DB) {
 
 func (g Golfer) SponsorOrAdmin() bool { return g.Sponsor || g.Admin }
 
-func (g *Golfer) Value() (driver.Value, error) {
-	if g == nil {
-		return nil, nil
-	}
-	return int64(g.ID), nil
-}
+func (g Golfer) Value() (driver.Value, error) { return int64(g.ID), nil }
 
 func (s *Settings) Scan(v any) error { return json.Unmarshal(v.([]byte), &s) }
 

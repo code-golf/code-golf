@@ -1,0 +1,66 @@
+{{ template "header"      . }}
+{{ template "hole-header" . }}
+
+{{ $showWhitespace := index .SettingValues "hole" "show-whitespace" }}
+<main id="hole-{{ .Data.Hole.ID }}" {{ if $showWhitespace }} class=show-whitespace {{ end }}>
+    <nav class=tabs id=picker></nav>
+    {{ template "hole-info" . }}
+    <div id="picker-status-row">
+        <nav class="tabs hide" id=solutionPicker></nav>
+        <div id=panel-btns>
+            <div id=pool></div>
+            <div class=hide id=status>
+                <h2></h2>
+                <nav id=thirdParty></nav>
+            </div>
+            <div id=layout-btns>
+                <span id=revert-layout class=btn> {{ svg "default-layout" }} Default Layout</span>
+                <span id=make-wide class=btn> {{ svg "arrow-with-stroke-left-right" }} Wide</span>
+                <span id=make-narrow class=btn> {{ svg "arrow-with-stroke-right-left" }} Narrow</span>
+                <span id=make-tall class="btn rotate-icon"> {{ svg "arrow-with-stroke-left-right" }} Tall</span>
+                <span id=make-short class="btn rotate-icon"> {{ svg "arrow-with-stroke-right-left" }} Short</span>
+                <span id=add-row class=btn> {{ svg "downwards-arrow-to-bar" }} Add row</span>
+            </div>
+        </div>
+    </div>
+    <div id=editor></div>
+    <div id=golden-container></div>
+</main>
+
+<template id=template-details>{{ template "hole-details" . }}</template>
+
+<template id=template-scoreboard>
+    <div id=scores-wrapper>
+        <header>
+            <nav class=tabs id=scoringTabs><a>Bytes</a><a href>Chars</a></nav>
+            <a href id=allLink>All</a>
+        </header>
+        <table class="nowrap-second" id=scores><tr><td></table>
+    </div>
+    <nav class=tabs id=rankingsView>
+        <a {{ if ne .Data.RankingsView "top" }} href {{ end }}>
+            {{ svg "trophy-fill" }} Top
+        </a>
+        <a {{ if ne .Data.RankingsView "me" }} href {{ end }}>
+            {{ svg "person-fill" }} Me
+        </a>
+        <a {{ if ne .Data.RankingsView "following" }} href {{ end }}>
+            {{ svg "people-fill" }} Following
+        </a>
+    </nav>
+</template>
+
+<template id=template-run>
+    <div id=run>
+    {{ if .Golfer }}
+        <button class="btn hide red" id=deleteBtn>
+            {{ svg "trash" }} Delete
+        </button>
+    {{ end }}
+        <span>ctrl + enter</span> or
+        <button class="btn blue" id=runBtn>{{ svg "play" }} Run</button>
+    </div>
+</template>
+
+{{ template "hole-footer" . }}
+{{ template "footer"        }}

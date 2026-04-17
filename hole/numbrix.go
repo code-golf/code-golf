@@ -69,7 +69,7 @@ func printNumbrix(puzzle [boardSize][boardSize]int) string {
 			if number == 0 {
 				s.WriteString("    ")
 			} else {
-				s.WriteString(fmt.Sprintf(" %2d ", number))
+				fmt.Fprintf(&s, " %2d ", number)
 			}
 		}
 
