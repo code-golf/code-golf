@@ -1,32 +1,36 @@
 CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
-    '0xdead', 'aged-like-fine-wine', 'alchemist', 'alphabet-soup',
-    'archivist', 'assembly-required', 'bakers-dozen', 'big-brother',
-    'biohazard', 'bird-is-the-word', 'black-box-testing', 'blackjack',
-    'bullseye', 'busy-beaver', 'caffeinated', 'centenarian', 'cobowl',
-    'count-to-ten', 'cunning-linguist', 'dammit-janet', 'different-strokes',
+    '0xdead', '8-bit-wonder', 'aged-like-fine-wine', 'alchemist',
+    'alphabet-soup', 'archivist', 'assembly-required', 'bakers-dozen',
+    'big-brother', 'biohazard', 'bird-is-the-word', 'black-box-testing',
+    'blackjack', 'bullseye', 'busy-beaver', 'caffeinated',
+    'catch-of-the-week', 'centenarian', 'cobowl', 'count-to-ten',
+    'cunning-linguist', 'dammit-janet', 'different-strokes',
     'disappearing-act', 'dont-panic', 'double-slit-experiment',
-    'down-to-the-metal', 'elephpant-in-the-room', 'emergency-room',
-    'evil-scheme', 'fish-n-chips', 'five', 'flag-those-mines', 'fore',
-    'forty-winks', 'full-stack-dev', 'go-forth', 'going-postal',
-    'gone-in-60-holes', 'happy-birthday-code-golf', 'happy-go-lucky',
-    'hello-world', 'hextreme-agony', 'horse-of-a-different-color',
+    'down-to-the-metal', 'early-bird-catches-the-worm', 'eight-days-a-week',
+    'elephpant-in-the-room', 'emergency-room', 'evil-scheme', 'fish-n-chips',
+    'five', 'flag-those-mines', 'fore', 'forty-winks', 'full-stack-dev',
+    'go-forth', 'going-postal', 'gone-in-60-holes',
+    'happy-birthday-code-golf', 'happy-go-lucky', 'hello-world',
+    'hextreme-agony', 'hold-the-fortnight', 'horse-of-a-different-color',
     'how-about-second-pi', 'hugs-and-kisses', 'inception', 'independence-day',
     'interview-ready', 'into-space', 'its-over-9000', 'jeweler',
     'just-kidding', 'like-comment-subscribe', 'marathon-runner',
     'mary-had-a-little-lambda', 'may-the-4ᵗʰ-be-with-you',
     'my-god-its-full-of-stars', 'neunundneunzig-luftballons',
-    'never-eat-shredded-wheat', 'off-the-grid', 'omniglot', 'omniglutton',
-    'ouroboros', 'overflowing', 'pangramglot', 'patches-welcome',
+    'never-eat-shredded-wheat', 'no-man-is-an-island', 'off-the-grid',
+    'omniglot', 'omniglutton', 'once-in-a-blue-moon', 'ouroboros',
+    'out-of-spec', 'overflowing', 'pangramglot', 'patches-welcome',
     'phileas-fogg', 'pi-day', 'piña-colada', 'polyglot', 'polyglutton',
     'prime-time', 'real-programmers', 'right-on', 'ring-toss', 'rm-rf',
     'rtfm', 'rule-34', 's-box-360', 'simon-sed', 'sinosphere', 'slowcoach',
     'smörgåsbord', 'solve-quine', 'sounds-quite-nice', 'takeout',
-    'texnical-know-how', 'the-watering-hole', 'tim-toady', 'tl-dr',
-    'turn-over-a-new-leaf', 'twelvetide', 'twenty-kiloleagues', 'typesetter',
-    'under-pressure', 'up-to-eleven', 'vampire-byte', 'watt-are-you-doing',
-    'when-in-rome', 'x-factor', 'x86', 'zoodiac-signs'
+    'texnical-know-how', 'the-pen-is-mightier', 'the-watering-hole',
+    'tim-toady', 'tl-dr', 'turn-over-a-new-leaf', 'twelvetide',
+    'twenty-kiloleagues', 'typesetter', 'under-pressure', 'up-to-eleven',
+    'vampire-byte', 'watt-are-you-doing', 'when-in-rome', 'x-factor', 'x86',
+    'zoodiac-signs'
 );
 
 CREATE TYPE connection AS ENUM (
@@ -35,10 +39,10 @@ CREATE TYPE connection AS ENUM (
 
 CREATE TYPE hole AS ENUM (
     '12-days-of-christmas', '24-game', '99-bottles-of-beer',
-    'abundant-numbers', 'abundant-numbers-long', 'apérys-constant',
-    'arabic-to-roman', 'arithmetic-numbers', 'arrows', 'ascending-primes',
-    'ascii-table', 'billiards', 'binary-lambda-calculus', 'brainfuck',
-    'calendar', 'card-number-validation', 'catalan-numbers',
+    'abundant-numbers', 'abundant-numbers-long', 'alphabetic-numbers', 
+    'apérys-constant', 'arabic-to-roman', 'arithmetic-numbers', 'arrows', 
+    'ascending-primes', 'ascii-table', 'billiards', 'binary-lambda-calculus', 
+    'brainfuck', 'calendar', 'card-number-validation', 'catalan-numbers',
     'catalans-constant', 'christmas-trees', 'collatz', 'connect-four',
     'continued-fractions', 'crossword', 'css-colors', 'css-colors-inverse',
     'css-grid', 'cubes', 'day-of-week', 'dfa-simulator', 'diamonds',
@@ -63,10 +67,10 @@ CREATE TYPE hole AS ENUM (
     'pernicious-numbers', 'pernicious-numbers-long', 'poker',
     'polygon-triangulations', 'polyominoes', 'prime-numbers',
     'prime-numbers-long', 'proximity-grid', 'qr-decoder', 'qr-encoder',
-    'quadratic-formula', 'quine', 'recamán', 'repeating-decimals',
-    'reverse-polish-notation', 'reversi', 'rijndael-s-box',
-    'rock-paper-scissors-spock-lizard', 'roman-to-arabic', 'rot13',
-    'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set',
+    'quadratic-formula', 'quine', 'recamán', 'rectangle-fill',
+    'repeating-decimals', 'reverse-polish-notation', 'reversi',
+    'rijndael-s-box', 'rock-paper-scissors-spock-lizard', 'roman-to-arabic',
+    'rot13', 'rule-110', 'scrambled-sort', 'semiprime-numbers', 'set',
     'seven-segment', 'si-units', 'sierpiński-triangle', 'smith-numbers',
     'smooth-numbers', 'snake', 'spelling-numbers', 'sphenic-numbers',
     'star-wars-gpt', 'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
@@ -93,11 +97,11 @@ CREATE TYPE lang AS ENUM (
     'f-sharp', 'factor', 'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go',
     'golfscript', 'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony',
     'hush', 'hy', 'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia',
-    'k', 'knight', 'kotlin', 'lua', 'luau', 'nim', 'ocaml', 'odin', 'pascal',
-    'perl', 'php', 'picat', 'powershell', 'prolog', 'python', 'qore', 'r',
-    'racket', 'raku', 'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala',
-    'scheme', 'sed', 'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua',
-    'umka', 'v', 'vala', 'viml', 'vyxal', 'wren', 'zig'
+    'k', 'knight', 'kotlin', 'lily', 'lua', 'luau', 'nim', 'ocaml', 'odin',
+    'pascal', 'perl', 'php', 'picat', 'powershell', 'prolog', 'python',
+    'qore', 'r', 'racket', 'raku', 'rebol', 'rexx', 'rockstar', 'ruby',
+    'rust', 'scala', 'scheme', 'sed', 'sql', 'squirrel', 'stax', 'swift',
+    'tcl', 'tex', 'uiua', 'umka', 'v', 'vala', 'viml', 'vyxal', 'wren', 'zig'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -153,12 +157,6 @@ CREATE TABLE users (
     CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.
 );
 
-CREATE TABLE authors (
-    hole    hole NOT NULL,
-    user_id int  REFERENCES users(id) ON DELETE CASCADE,
-    PRIMARY KEY (hole, user_id)
-);
-
 CREATE TABLE cheevos (
     earned  timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     user_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -184,6 +182,14 @@ CREATE TABLE follows (
     followed    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     PRIMARY KEY (follower_id, followee_id),
     CHECK (follower_id != followee_id)  -- Can't follow yourself!
+);
+
+CREATE TABLE hides (
+    golfer_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    target_id int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hidden    timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    PRIMARY KEY (golfer_id, target_id),
+    CHECK (golfer_id != target_id)  -- Can't hide yourself!
 );
 
 -- TODO This eventually needs to not hardcode github in order to allow log in
@@ -258,6 +264,23 @@ CREATE TABLE solutions_log (
     hole      hole      NOT NULL,
     lang      lang      NOT NULL,
     scoring   scoring   NOT NULL
+);
+
+CREATE FUNCTION this_week() RETURNS date AS $$
+    SELECT date_trunc('week', TIMEZONE('UTC', NOW()))::date
+$$ LANGUAGE SQL;
+
+CREATE TABLE weekly_holes (
+    week  date   NOT NULL PRIMARY KEY,
+    hole  hole   NOT NULL,
+    langs lang[] NOT NULL
+);
+
+CREATE TABLE weekly_solves (
+    week      date      NOT NULL REFERENCES weekly_holes(week) DEFAULT this_week(),
+    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    completed timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    PRIMARY KEY (week, user_id)
 );
 
 CREATE UNLOGGED TABLE wiki (
@@ -386,12 +409,12 @@ GRANT SELECT ON golfers_with_avatars     TO "code-golf";
 GRANT SELECT ON stable_passing_solutions TO "code-golf";
 
 -- Tables.
-GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE authors         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE cheevos         TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE connections     TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_records TO "code-golf";
 GRANT SELECT, INSERT, UPDATE         ON TABLE discord_state   TO "code-golf";
 GRANT SELECT, INSERT,         DELETE ON TABLE follows         TO "code-golf";
+GRANT SELECT, INSERT,         DELETE ON TABLE hides           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE holes           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE langs           TO "code-golf";
@@ -400,4 +423,6 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users           TO "code-golf";
+GRANT SELECT, INSERT                 ON TABLE weekly_holes    TO "code-golf";
+GRANT SELECT, INSERT                 ON TABLE weekly_solves   TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE wiki            TO "code-golf";

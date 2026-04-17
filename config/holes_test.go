@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/pelletier/go-toml/v2"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,17 +24,12 @@ func TestHoleSynopses(t *testing.T) {
 	}
 }
 
-func TestHoleReleasedExperimental(t *testing.T) {
-	var holes []string
-	var emptyLocalDate toml.LocalDate
-	for _, hole := range ExpHoleList {
-		if hole.Released != emptyLocalDate {
-			holes = append(holes, hole.Name)
+func TestNextHolesReleased(t *testing.T) {
+	for i := 1; i < len(NextHoles); i++ {
+		if NextHoles[0].Released != NextHoles[i].Released {
+			t.Error("All of NextHoles must have the same released date")
 		}
 	}
-
-	assert.Truef(t, len(holes) == 0 || len(holes) == 1,
-		"Up to one exp hole should have a released date, got = %v", holes)
 }
 
 func TestHoleReleasedStable(t *testing.T) {

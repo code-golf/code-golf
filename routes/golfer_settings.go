@@ -68,6 +68,10 @@ func golferSettingsSavePOST(w http.ResponseWriter, r *http.Request) {
 
 	// If the posted value is valid, update the golfer's settings map.
 	for _, setting := range config.Settings[page] {
+		if _, ok := golfer.Settings[page]; !ok {
+			golfer.Settings[page] = map[string]any{}
+		}
+
 		golfer.Settings[page][setting.ID] =
 			setting.FromFormValue(r.FormValue(setting.ID))
 	}

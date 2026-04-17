@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache dash gcc git make musl-dev ncurses-dev
 
-ENV VER=9.1.1230
+ENV VER=9.2.0010
 
 RUN git clone --branch v$VER --depth 1 https://github.com/vim/vim
 
@@ -15,11 +15,11 @@ RUN ./configure            \
  && make -j`nproc` install
 
 # Remove the docs.
-RUN rm -r /usr/share/vim/vim91/doc
+RUN rm -r /usr/share/vim/vim92/doc
 
 # Quiet warnings about missing ftdetect.
-RUN mkdir /usr/share/vim/vim91/ftdetect \
- && touch /usr/share/vim/vim91/ftdetect/vim.vim
+RUN mkdir /usr/share/vim/vim92/ftdetect \
+ && touch /usr/share/vim/vim92/ftdetect/vim.vim
 
 COPY viml.c /
 
@@ -33,7 +33,7 @@ COPY --from=0 /usr/bin/vim              \
               /usr/bin/viml             /usr/bin/
 COPY --from=0 /usr/lib/libncurses.so    \
               /usr/lib/libncursesw.so.6 /usr/lib/
-COPY --from=0 /usr/share/vim/vim91      /usr/share/vim/vim91
+COPY --from=0 /usr/share/vim/vim92      /usr/share/vim/vim92
 
 ENTRYPOINT ["viml"]
 

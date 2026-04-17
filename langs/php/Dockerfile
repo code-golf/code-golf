@@ -1,13 +1,15 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache autoconf bison gcc make musl-dev re2c
 
-ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.5.1
+ENV CFLAGS='-O2 -flto' LDFLAGS='-O2 -flto -all-static' VER=8.5.5
 
-RUN curl -#L https://php.net/distributions/php-$VER.tar.xz \
-  | tar xJ --strip-components 1
+WORKDIR /php
 
-RUN LDFLAGS= ./configure       \
+ADD https://github.com/php/php-src.git#php-$VER .
+
+RUN ./buildconf --force        \
+ && LDFLAGS= ./configure       \
     --disable-all              \
     --disable-gcc-global-regs  \
     --disable-ipv6             \
@@ -16,12 +18,13 @@ RUN LDFLAGS= ./configure       \
  && make -j`nproc` install-cli \
  && strip /usr/bin/php
 
-RUN echo display_errors=stderr > /usr/lib/php.ini
-
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/php     /usr/bin/
-COPY --from=0 /usr/lib/php.ini /usr/lib/
+COPY --from=0 /usr/bin/php /usr/bin/
+
+COPY <<EOF /usr/lib/php.ini
+display_errors=stderr
+EOF
 
 ENTRYPOINT ["php"]
 

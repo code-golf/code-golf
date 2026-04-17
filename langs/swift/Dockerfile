@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes binutils curl libatomic1 libc6-dev libedit2 libncurses6 libsqlite3-0 libz3-4
 
-ENV VER=6.2.3
+ENV VER=6.3
 
 RUN curl -#L https://download.swift.org/swift-$VER-release/debian12/swift-$VER-RELEASE/swift-$VER-RELEASE-debian12.tar.gz \
   | tar xz --strip-components 1
@@ -31,7 +31,7 @@ COPY --from=0 /usr/include                              /usr/include
 COPY --from=0 /usr/lib/x86_64-linux-gnu/libsqlite3.so.0 \
               /usr/lib/x86_64-linux-gnu/libstdc++.so.6  \
               /usr/lib/x86_64-linux-gnu/libuuid.so.1    /usr/lib/
-COPY --from=0 /usr/lib/clang/17/include                 /usr/lib/clang/17/include
+COPY --from=0 /usr/lib/clang/21/include                 /usr/lib/clang/21/include
 COPY --from=0 /usr/lib/swift                            /usr/lib/swift
 
 ENTRYPOINT ["swift"]

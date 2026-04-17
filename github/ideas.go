@@ -7,7 +7,7 @@ import (
 	"github.com/shurcooL/graphql"
 )
 
-func ideas(db *sqlx.DB) (limits []rateLimit) {
+func ideas(db *sqlx.DB) (limits []rateLimit, err error) {
 	type thumbs struct{ TotalCount int }
 
 	var query struct {
@@ -39,7 +39,7 @@ func ideas(db *sqlx.DB) (limits []rateLimit) {
 
 	for {
 		if err := client.Query(context.Background(), &query, variables); err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		limits = append(limits, query.RateLimit)
@@ -72,9 +72,5 @@ func ideas(db *sqlx.DB) (limits []rateLimit) {
 		variables["cursor"] = &query.Repository.Issues.PageInfo.EndCursor
 	}
 
-	if err := tx.Commit(); err != nil {
-		panic(err)
-	}
-
-	return
+	return limits, tx.Commit()
 }

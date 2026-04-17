@@ -17,8 +17,8 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		`WITH golfer AS (
 		    UPDATE sessions
 		       SET browser = $4, last_used = DEFAULT
-			 WHERE id = uuid_or_null($1)
-		    RETURNING user_id
+		     WHERE id = uuid_or_null($1)
+		 RETURNING user_id
 		), failing AS (
 		    SELECT hole, lang
 		      FROM solutions
@@ -39,6 +39,7 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		          COALESCE(r.name, '')                      referrer,
 		          u.settings                                settings,
 		          u.show_country                            show_country,
+		          w.week IS NOT NULL                        solved_hole_of_the_week,
 		          u.sponsor                                 sponsor,
 		          u.theme                                   theme,
 		          u.time_zone                               time_zone,
@@ -54,21 +55,26 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		              ORDER BY followee_id)                 following,
 		          (SELECT COUNT(*)
 		             FROM notes WHERE user_id = u.id) > 0   has_notes,
+		          ARRAY(SELECT target_id
+		                  FROM hides
+		                 WHERE golfer_id = u.id
+		              ORDER BY target_id)                   hiding,
 		          EXISTS(SELECT *
 		                   FROM solutions
 		                  WHERE user_id = u.id
-		                    AND hole = $2)                  solved_latest_hole,
+		                    AND hole = ANY($2))             solved_latest_hole,
 		          EXISTS(SELECT *
 		                   FROM solutions
 		                  WHERE user_id = u.id
 		                    AND lang = $3)                  solved_latest_lang
 		     FROM golfers_with_avatars u
-		     JOIN golfer g     ON u.id = g.user_id
-		LEFT JOIN users  r     ON r.id = u.referrer_id
-		LEFT JOIN points bytes ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
-		LEFT JOIN points chars ON u.id = chars.user_id AND chars.scoring = 'chars'`,
+		     JOIN golfer g        ON u.id = g.user_id
+		LEFT JOIN users  r        ON r.id = u.referrer_id
+		LEFT JOIN points bytes    ON u.id = bytes.user_id AND bytes.scoring = 'bytes'
+		LEFT JOIN points chars    ON u.id = chars.user_id AND chars.scoring = 'chars'
+		LEFT JOIN weekly_solves w ON u.id = w.user_id AND w.week = this_week()`,
 		sessionID,
-		config.LatestHole,
+		config.LatestHoles,
 		config.LatestLang,
 		userAgent,
 	); errors.Is(err, sql.ErrNoRows) {
@@ -77,17 +83,10 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		panic(err)
 	}
 
-	// Populate missing settings with default values.
-	for page, settings := range config.Settings {
-		if _, ok := golfer.Settings[page]; !ok {
-			golfer.Settings[page] = map[string]any{}
-		}
-
-		for _, setting := range settings {
-			if _, ok := golfer.Settings[page][setting.ID]; !ok {
-				golfer.Settings[page][setting.ID] = setting.Default
-			}
-		}
+	// Migrate legacy config key.
+	if _, ok := golfer.Settings["hole"]["multi-window-layout"]; ok {
+		golfer.Settings["hole"]["layout"] = "tabs"
+		delete(golfer.Settings["hole"], "multi-window-layout")
 	}
 
 	return &golfer
@@ -127,12 +126,6 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          (SELECT COUNT(DISTINCT hole)
 		             FROM stable_passing_solutions
 		            WHERE user_id = id)                 holes,
-		          ARRAY(
-		            SELECT hole
-		              FROM authors
-		             WHERE user_id = golfers_with_avatars.id
-		          ORDER BY hole
-		          )                                     holes_authored,
 		          id,
 		          (SELECT COUNT(DISTINCT lang)
 		             FROM stable_passing_solutions
@@ -144,7 +137,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          COALESCE(silver, 0)                   silver,
 		          sponsor,
 		          started,
-		          COALESCE(unicorn, 0)                  unicorn
+		          COALESCE(unicorn, 0)                  unicorn,
+		          uuid
 		     FROM golfers_with_avatars
 		LEFT JOIN medals       ON id = medals.user_id
 		LEFT JOIN points bytes ON id = bytes.user_id AND bytes.scoring = 'bytes'
@@ -156,6 +150,8 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 	} else if err != nil {
 		panic(err)
 	}
+
+	info.HolesAuthored = config.HolesByAuthor[info.UUID]
 
 	if err := db.Select(
 		&info.Referrals,

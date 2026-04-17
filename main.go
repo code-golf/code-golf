@@ -217,6 +217,47 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 			return err
 		}
 	}
+
+	// FIXME This isn't the ideal way to run this. It needs to run early in
+	// order for people to see the banner but it also needs to run at least
+	// once a fortnight to update next week's hole of the week.
+	if err := config.PopulateHolesOfTheWeek(tx); err != nil {
+		return err
+	}
+
+	// Award hole authorship cheevo.
+	authors := map[string]time.Time{}
+	for _, hole := range config.HoleList {
+		t := hole.Released.AsTime(time.UTC)
+		for _, author := range hole.Authors {
+			if old, ok := authors[author]; !ok || t.Before(old) {
+				authors[author] = t
+			}
+		}
+	}
+
+	if _, err := tx.Exec(
+		"DELETE FROM cheevos WHERE cheevo = 'the-pen-is-mightier'",
+	); err != nil {
+		return err
+	}
+
+	insertCheevo, err := tx.Prepare(
+		`INSERT INTO cheevos (cheevo, earned, user_id)
+		      SELECT 'the-pen-is-mightier', $1, id
+		        FROM users
+		       WHERE uuid = $2`,
+	)
+	if err != nil {
+		return err
+	}
+
+	for uuid, earned := range authors {
+		if _, err := insertCheevo.Exec(earned, uuid); err != nil {
+			return err
+		}
+	}
+
 	if err := tx.Commit(); err != nil {
 		return err
 	}

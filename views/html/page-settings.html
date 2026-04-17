@@ -1,5 +1,5 @@
 {{ $name := .Name }}
-{{ if eq $name "hole-tabs" }}{{ $name = "hole" }}{{ end }}
+{{ if hasPrefix $name "hole/" }}{{ $name = "hole" }}{{ end }}
 
 <!-- FIXME Stop misusing settings on code-search -->
 {{ if and .Golfer .Settings (ne $name "golfer/code-search") }}
@@ -8,7 +8,7 @@
     {{ svg "gear-fill" }}
     Page Settings
 </button>
-<dialog id=settings-dialog>
+<dialog closedby=any id=settings-dialog>
     <form action=/golfer/settings/save method=post>
         <h2>Page Settings</h2>
 

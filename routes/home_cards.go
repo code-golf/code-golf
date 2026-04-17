@@ -59,28 +59,29 @@ func getHomeCards(r *http.Request) (cards []Card) {
 
 	var query string
 	var bind []any
+	var settings = session.Settings(r)["home"]
 
-	if lang := golfer.Settings["home"]["points-for"]; lang == "all" {
+	if lang := settings["points-for"]; lang == "all" {
 		query = `WITH points AS (
 			   SELECT DISTINCT ON (hole) hole, lang, points
 			     FROM rankings
 			    WHERE scoring = $1 AND user_id = $2
 			 ORDER BY hole, points DESC, lang
-			)  SELECT id hole, lang, COALESCE(points, 0) points
+			)  SELECT id hole, lang, COALESCE(points, -1) points
 			     FROM holes
 			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
-		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID}
+		bind = []any{settings["scoring"], golfer.ID}
 	} else {
 		query = `WITH points AS (
 			   SELECT hole, lang, points_for_lang
 			     FROM rankings
 			    WHERE scoring = $1 AND user_id = $2 AND lang = $3
-			)  SELECT id hole, lang, COALESCE(points_for_lang, 0) points
+			)  SELECT id hole, lang, COALESCE(points_for_lang, -1) points
 			     FROM holes
 			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
-		bind = []any{golfer.Settings["home"]["scoring"], golfer.ID, lang}
+		bind = []any{settings["scoring"], golfer.ID, lang}
 	}
 
 	if err := session.Database(r).Select(&cards, query, bind...); err != nil {
@@ -92,8 +93,8 @@ func getHomeCards(r *http.Request) (cards []Card) {
 			strings.ToLower(b.Hole.Name))
 	}
 
-	switch golfer.Settings["home"]["order-by"] {
-	case "alphabetical-asc": // name desc.
+	switch settings["order-by"] {
+	case "alphabetical-asc": // name asc.
 		slices.SortFunc(cards, cmpHoleNameLowercase)
 	case "alphabetical-desc": // name desc.
 		slices.SortFunc(cards, func(a, b Card) int {

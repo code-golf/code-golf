@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/code-golf/code-golf/assets"
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
@@ -46,24 +47,25 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		Nav                                *config.Navigaton
 		Request                            *http.Request
 		Settings                           []*config.Setting
+		SettingValues                      map[string]map[string]any
 	}{
-		Banners:     banners(theGolfer),
-		Cheevos:     config.CheevoTree,
-		CSS:         []cssLink{{config.Assets["css/common/base.css"], ""}},
-		Data:        data[0],
-		Description: "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
-		Golfer:      theGolfer,
-		GolferInfo:  session.GolferInfo(r),
-		Holes:       make(map[string][]string),
-		JS:          []string{config.Assets["js/base.tsx"]},
-		Langs:       make(map[string][]string),
-		Name:        name,
-		Nonce:       rand.Text(),
-		Path:        r.URL.Path,
-		Request:     r,
-		Settings:    config.Settings[strings.TrimSuffix(name, "-tabs")],
-		Theme:       theme,
-		Title:       "Code Golf",
+		Banners:       banners(theGolfer),
+		Cheevos:       config.CheevoTree,
+		CSS:           []cssLink{{assets.Paths["css/common/base.css"], ""}},
+		Data:          data[0],
+		Description:   "Code Golf is a game designed to let you show off your code-fu by solving problems in the least number of characters.",
+		Golfer:        theGolfer,
+		GolferInfo:    session.GolferInfo(r),
+		Holes:         make(map[string][]string),
+		JS:            []string{assets.Paths["js/base.tsx"]},
+		Langs:         make(map[string][]string),
+		Name:          name,
+		Nonce:         rand.Text(),
+		Path:          r.URL.Path,
+		Request:       r,
+		SettingValues: session.Settings(r),
+		Theme:         theme,
+		Title:         "Code Golf",
 	}
 
 	// Mapping lang & hole IDs to a list of known names (the first is the primary one)
@@ -92,7 +94,7 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 		args.Location = time.UTC
 	}
 
-	// Get route specific CSS, JS, and navigation by splitting the name.
+	// Get route specific CSS, JS, nav, and settings by splitting the name.
 	// e.g. foo/bar/baz → foo, foo/bar, foo/bar/baz.
 	subName := ""
 	for part := range strings.SplitSeq(name, "/") {
@@ -102,12 +104,16 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 			args.Nav = nav
 		}
 
-		if url, ok := config.Assets["css/"+subName+".css"]; ok {
+		if settings, ok := config.Settings[subName]; ok {
+			args.Settings = settings
+		}
+
+		if url, ok := assets.Paths["css/"+subName+".css"]; ok {
 			args.CSS = append(args.CSS, cssLink{Path: url})
 		}
 
 		for _, ext := range []string{"ts", "tsx"} {
-			if url, ok := config.Assets["js/"+subName+"."+ext]; ok {
+			if url, ok := assets.Paths["js/"+subName+"."+ext]; ok {
 				args.JS = append(args.JS, url)
 			}
 		}
@@ -119,11 +125,11 @@ func render(w http.ResponseWriter, r *http.Request, name string, data ...any) {
 	if theme == "auto" {
 		args.CSS = append(
 			args.CSS,
-			cssLink{config.Assets["css/common/light.css"], ""},
-			cssLink{config.Assets["css/common/dark.css"], "(prefers-color-scheme:dark)"},
+			cssLink{assets.Paths["css/common/light.css"], ""},
+			cssLink{assets.Paths["css/common/dark.css"], "(prefers-color-scheme:dark)"},
 		)
 	} else {
-		args.CSS = append(args.CSS, cssLink{config.Assets["css/common/"+theme+".css"], ""})
+		args.CSS = append(args.CSS, cssLink{assets.Paths["css/common/"+theme+".css"], ""})
 	}
 
 	header := w.Header()

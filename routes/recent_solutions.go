@@ -48,6 +48,11 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 	}
 
+	hiding := []int64{}
+	if golfer := session.Golfer(r); golfer != nil {
+		hiding = golfer.Hiding
+	}
+
 	if err := session.Database(r).Select(
 		&data.Rows,
 		` SELECT avatar_url, experimental, golfers, hole, lang, name,
@@ -57,11 +62,13 @@ func recentSolutionsGET(w http.ResponseWriter, r *http.Request) {
 		   WHERE (hole = $1 OR $1 IS NULL)
 		     AND (lang = $2 OR $2 IS NULL)
 		     AND scoring = $3
+		     AND NOT (user_id = ANY($5))
 		ORDER BY submitted DESC LIMIT $4`,
 		null.New(data.HoleID, data.HoleID != "all"),
 		null.New(data.LangID, data.LangID != "all"),
 		data.Scoring,
 		pager.PerPage,
+		hiding,
 	); err != nil {
 		panic(err)
 	}

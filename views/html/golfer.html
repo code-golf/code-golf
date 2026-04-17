@@ -16,14 +16,25 @@
             <form action=/log-out method=post>
                 <button class="btn red">{{ svg "sign-out-alt-light" }} Log Out</button>
             </form>
-        {{ else if $.Golfer.IsFollowing .ID }}
-            <form action="/golfers/{{ .Name }}/unfollow" method=post>
-                <button class="btn red">{{ svg "person-dash" }} Unfollow Golfer</button>
-            </form>
         {{ else }}
-            <form action="/golfers/{{ .Name }}/follow" method=post>
-                <button class="btn blue">{{ svg "person-plus" }} Follow Golfer</button>
-            </form>
+            {{if $.Golfer.IsFollowing .ID }}
+                <form action="/golfers/{{ .Name }}/unfollow" method=post>
+                    <button class="btn red">{{ svg "person-dash" }} Unfollow Golfer</button>
+                </form>
+            {{ else }}
+                <form action="/golfers/{{ .Name }}/follow" method=post>
+                    <button class="btn blue">{{ svg "person-plus" }} Follow Golfer</button>
+                </form>
+            {{ end }}
+            {{ if $.Golfer.IsHiding .ID }}
+                <form action="/golfers/{{ .Name }}/unhide" method=post>
+                    <button class="btn blue">{{ svg "eye" }} Unhide Golfer</button>
+                </form>
+            {{ else }}
+                <form action="/golfers/{{ .Name }}/hide" method=post>
+                    <button class="btn red">{{ svg "eye-slash" }} Hide Golfer</button>
+                </form>
+            {{ end }}
         {{ end }}
         {{ template "page-settings" $ }}
     {{ end }}
@@ -128,7 +139,7 @@
     </nav>
 
     {{ with .HolesAuthored }}
-        <dialog id=holes-authored-dialog>
+        <dialog closedby=any id=holes-authored-dialog>
             <div>
                 <h1>{{ amount (len .) "Hole" }} Authored</h1>
                 <ul>
@@ -146,7 +157,7 @@
     {{ end }}
 
     {{ with .Referrals }}
-        <dialog id=referrals-dialog>
+        <dialog closedby=any id=referrals-dialog>
             <div>
                 <h1>{{ amount (len .) "Referral" }}</h1>
                 <ul>

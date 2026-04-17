@@ -1,0 +1,232 @@
+@import "../golden-layout/_base.css";
+
+/* Body background --light-grey to allow code box etc contrast as --background */
+body {
+    background: var(--light-grey);
+}
+
+#details-content { padding: .375rem }
+
+.cm-editor { height: 100% }
+
+.readonly-output {
+    flex: 1;
+    font-family: emoji, mahjong, 'Source Code Pro', monospace;
+    font-variant-ligatures: none;
+    line-height: 1;
+    padding: .375rem;
+}
+
+.readonly-output:empty::after {
+    content: "(Empty)";
+}
+
+.rotate-icon svg { rotate: 90deg }
+
+section {
+    /* undo display: grid */
+    display: block;
+}
+
+section header {
+    /* a little more space than default hole.css */
+    align-items: center;
+    display: flex;
+    height: 2.2rem;
+    justify-content: space-between;
+    padding: 0 .5rem;
+}
+
+#editor-section header, #holeLangNotesEditor-section header {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+/* default hole.css selects divs inside these, but tab layout removed the divs */
+#err, #exp, #out { white-space: pre }
+
+#arg {
+    align-content: flex-start;
+    align-items: flex-start;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .375rem;
+}
+
+#editor-section, #holeLangNotesEditor-section {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* change (e.g. light theme) black-on-white back to white-on-black */
+#diff th {
+    color: var(--color);
+    background: var(--background);
+    font-size: 1rem;
+}
+
+#editor, #holeLangNotesEditor {
+    border: none;
+    /* Button = 1rem (contents) + 2*0.5 rem (padding) + 2px (border) + 4px (margin) */
+    height: calc(100% - (2rem + 7px));
+}
+
+#rankingsView { border: none }
+
+#scoreboard-section {
+    /* Grid needed in case the rows total height is shorter than the area */
+    display: grid;
+    grid-template-rows: 1fr max-content;
+}
+
+#scores-wrapper header {
+    position: sticky;
+    top: 0;
+    background: var(--background);
+    z-index: 5;
+}
+
+#scores {
+    border: none;
+    width: 100%;
+    height: unset;
+}
+
+/* Remove left and right borders from base.css */
+#scores tbody td {
+    border-left: 0;
+    border-right: 0;
+}
+
+#status {
+    padding: 0;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    grid-column: 3;
+}
+
+#golden-container {
+    grid-row: 5 / 6;
+    width: 100%;
+    min-height: 40rem;
+    position: relative;
+    /* Prevent overflow from maximized panels */
+    overflow: hidden;
+}
+
+#golden-container > .lm_root {
+    /* Don't contribute to #golden-container's sizing to allow auto resizing */
+    position: absolute;
+}
+
+main {
+    grid-template-rows: repeat(4, max-content) 1fr max-content;
+    /* Remove gap so it could be margin instead: avoids excessive gap */
+    gap: 0;
+}
+
+#info-container,
+#picker-status-row > *:not(:empty),
+#golden-container {
+    margin-top: 0.5rem;
+}
+
+#picker-status-row {
+    grid-row: 4 / 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#picker-status-row > *:not(:last-child) {
+    margin-right: 1rem;
+}
+
+#status {
+    flex-grow: 1;
+    flex-basis: 20rem;
+}
+
+#pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+}
+
+#pool span::before { content: "+" }
+
+#layout-btns span { background: var(--background) }
+
+.mobile #golden-container { height: 150vh }
+
+.mobile.has_lm_maximised #golden-container {
+    /* Making this position fixed and occupying the whole viewport does not
+    causes many issues with the mobile iOS URL bar bug described at
+    https://allthingssmitty.com/2020/05/11/css-fix-for-100vh-in-mobile-webkit  */
+    height: 90vh;
+}
+
+#layout-btns {
+    grid-row: 6;
+    justify-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.375rem;
+}
+
+#panel-btns {
+    display: flex;
+    gap: 0.375rem;
+    justify-content: space-between;
+    width: 100%;
+}
+
+@media only screen and (max-width: 1280px) {
+    #make-narrow, #make-wide, #make-tall, #make-short { display: none }
+}
+@media only screen and (min-width: 768px) {
+    #add-row { display: none }
+}
+
+#make-narrow { display: none; }
+.full-width #make-narrow { display: flex; }
+.full-width #make-wide { display: none; }
+.full-width body { max-width: unset; }
+
+.full-height .alert,
+.full-height .info,
+.full-height #page-header,
+.full-height footer,
+.full-height #picker,
+.full-height #make-tall,
+#make-short {
+    display: none;
+}
+.full-height #make-short { display: flex }
+
+#langWiki {
+    padding: .75rem;
+}
+
+article>*:not(:first-child), article details>* {
+    margin-top: 1rem;
+}
+
+#convert-notes-btn {
+    display: inline-block;
+    margin-left: .5rem;
+}
+
+.pass.lastSubmittedCode .lm_content:has(#editor) {
+    border-color: var(--green);
+}
+.fail.lastSubmittedCode .lm_content:has(#editor) {
+    border-color: var(--red);
+}
+.pass.lastSubmittedCode .lm_header .lm_tab[title='Code'] {
+    border-color: var(--green);
+}
+.fail.lastSubmittedCode .lm_header .lm_tab[title='Code'] {
+    border-color: var(--red);
+}

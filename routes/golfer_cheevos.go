@@ -160,6 +160,45 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		data[cheevo.ID] = progress
 	}
 
+	// Holes of the Week streaks.
+	{
+		var weeks []time.Time
+		if err := db.Select(
+			&weeks,
+			` SELECT week
+			    FROM weekly_solves
+			   WHERE user_id = $1 AND week >= this_week() - 7 * 7
+			ORDER BY week DESC`,
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		var currentStreak int
+		for i, week := range weeks {
+			// To be current the streak must be up to this week or last.
+			if i == 0 {
+				thisWeek := config.ThisWeek()
+
+				if !(week.Equal(thisWeek) || week.Equal(thisWeek.AddDate(0, 0, -7))) {
+					break
+				}
+
+				// To continue the streak must be a week after the previous.
+			} else if !week.Equal(weeks[i-1].AddDate(0, 0, -7)) {
+				break
+			}
+
+			currentStreak++
+		}
+
+		for _, cheevo := range config.CheevoTree["Holes of the Week"] {
+			progress := data[cheevo.ID]
+			progress.Progress = currentStreak
+			data[cheevo.ID] = progress
+		}
+	}
+
 	if progress := data["count-to-ten"]; progress.Earned == nil {
 		var completedSteps pq.Int32Array
 		var hole *config.Hole

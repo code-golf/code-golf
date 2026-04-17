@@ -25,6 +25,12 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"32718f4", "2026-04-01 00:00:35", "gray-code-decoder", true},
+		{"32718f4", "2026-04-01 00:00:35", "gray-code-encoder", true},
+		{"37a2277", "2026-03-19 23:10:51", "arkscript", false},
+		{"56155a6", "2026-03-01 00:03:47", "continued-fractions", true},
+		{"97670ea", "2026-02-21 17:44:10", "algol-68", false},
+		{"71f1bf6", "2026-02-01 00:00:03", "multitap-input", true},
 		{"fe8fa9d", "2026-01-01 00:01:23", "calendar", true},
 		{"0c4288c", "2025-12-01 00:29:08", "tower-of-hanoi", true},
 		{"7468e46", "2025-11-27 06:16:49", "erlang", false},
@@ -212,8 +218,7 @@ func init() {
 	} {
 		var name, link string
 		if i.hole {
-			hole := config.HoleByID[i.id]
-			name = hole.Name
+			name = config.HoleByID[i.id].Name
 			link = "https://code.golf/" + i.id
 		} else {
 			name = config.LangByID[i.id].Name

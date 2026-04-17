@@ -85,6 +85,11 @@ name        = 'Patches Welcome'
 emoji       = '💾'
 description = 'Contribute a merged PR to <a href=//github.com/code-golf/code-golf>the Code Golf repository</a>.'
 
+[[GitHub]]
+name        = 'The Pen Is Mightier'
+emoji       = '🖋️'
+description = 'Author a hole that becomes live.'
+
 # Hole/Lang Specific
 
 [['Hole/Lang Specific']]
@@ -110,7 +115,7 @@ name        = 'Archivist'
 emoji       = '📚'
 description = 'Solve <a href=/isbn>ISBN</a> in any three languages that predate ISBN.'
 holes       = ['isbn']
-langs       = ['basic', 'cobol', 'common-lisp', 'forth', 'fortran']
+langs       = ['algol-68', 'basic', 'cobol', 'common-lisp', 'forth', 'fortran']
 target      = 3
 
 [['Hole/Lang Specific']]
@@ -353,6 +358,41 @@ holes       = ['zodiac-signs']
 langs       = ['awk', 'basic', 'civet', 'factor', 'ocaml', 'perl', 'prolog', 'python', 'raku', 'swift', 'wren']
 target      = 3
 
+# Holes of the Week
+
+[['Holes of the Week']]
+name        = 'Catch of the Week'
+emoji       = '🎣'
+description = 'Solve your first Hole of the Week.'
+
+[['Holes of the Week']]
+name        = 'Hold the Fort(night)'
+emoji       = '🏰'
+description = 'Solve two Holes of the Week in a row.'
+target      = 2
+
+[['Holes of the Week']]
+name        = 'Once in a Blue Moon'
+emoji       = '🌝'
+description = 'Solve four Holes of the Week in a row.'
+target      = 4
+
+[['Holes of the Week']]
+name        = 'Eight Days a Week'
+emoji       = '🪲'
+description = 'Solve eight Holes of the Week in a row.'
+target      = 8
+
+[['Holes of the Week']]
+name        = 'Early Bird Catches the Worm'
+emoji       = '🪱'
+description = 'Solve any Hole of the Week within the first day.'
+
+[['Holes of the Week']]
+name        = 'Out of Spec'
+emoji       = '📜'
+description = 'Solve any Hole of the Week using a language that wasn’t selected.'
+
 # Miscellaneous
 
 [[Miscellaneous]]
@@ -380,6 +420,11 @@ description = 'Solve any hole using different bytes and chars solutions.'
 name        = 'Double-slit Experiment'
 emoji       = '🔦'
 description = 'Solve an <a href=/ideas>experimental hole</a> in an experimental language.'
+
+[[Miscellaneous]]
+name        = 'No Man Is an Island'
+emoji       = '🏝️'
+description = 'Follow another golfer.'
 
 [[Miscellaneous]]
 name        = 'Polyglot'
@@ -561,6 +606,12 @@ name        = 'Five!'
 emoji       = '❗'
 description = 'Solve your <a href=//en.wikipedia.org/wiki/Factorial>one hundred and twentieth</a> hole.'
 target      = 120
+
+[['Total Holes']]
+name        = '8-Bit Wonder'
+emoji       = '👾'
+description = 'Solve your one hundred and twenty-eighth hole.'
+target      = 128
 
 # TODO
 # [['Total Holes']]

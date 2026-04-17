@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache bash clang git make
 
-ENV VER=0.10.0
+ENV VER=0.11.0
 
 RUN git clone --branch v$VER --progress https://github.com/dzaima/CBQN
 
