@@ -417,8 +417,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '79.4 MiB'
-version = '0.11.6'
+size    = '79.5 MiB'
+version = '0.11.7'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -568,7 +568,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '298 MiB'
-version = '1.19.1'
+version = '1.20.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -613,7 +613,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '119 MiB'
-version = '3.11.4'
+version = '3.11.5'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -801,7 +801,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '70.9 MiB'
+size    = '70.8 MiB'
 version = '1.15.4'
 website = 'https://gleam.run'
 example = '''
@@ -1011,7 +1011,7 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.20 MiB'
+size       = '2.21 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1675,8 +1675,8 @@ end
 
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
-size    = '403 MiB'
-version = '1.94.1'
+size    = '414 MiB'
+version = '1.95.0'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1824,7 +1824,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '576 MiB'
-version = '6.3'
+version = '6.3.1'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -1888,7 +1888,7 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '29.4 MiB'
+size       = '30.7 MiB'
 version    = '0.18.1'
 website    = 'https://www.uiua.org'
 example    = '''
