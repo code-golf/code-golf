@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache bash icu-data npm
 
-ENV VER=0.11.6
+ENV VER=0.11.7
 
 WORKDIR /civet
 

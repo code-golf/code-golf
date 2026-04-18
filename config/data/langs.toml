@@ -417,8 +417,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '79.4 MiB'
-version = '0.11.6'
+size    = '79.5 MiB'
+version = '0.11.7'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -568,7 +568,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '298 MiB'
-version = '1.19.1'
+version = '1.20.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -613,7 +613,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '119 MiB'
-version = '3.11.4'
+version = '3.11.5'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1824,7 +1824,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '576 MiB'
-version = '6.3'
+version = '6.3.1'
 website = 'https://swift.org'
 example = '''
 // Printing
