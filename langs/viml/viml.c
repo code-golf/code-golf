@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    system("/usr/bin/vim --clean --not-a-term --noplugin -eZ -V1 +0 -S code.vim output >&2");
+    system("/usr/bin/vim --clean --not-a-term --noplugin -eZ -V1 -S code.vim output >&2");
 
     if (!(fp = fopen("output", "r")))
         ERR_AND_EXIT("fopen");
