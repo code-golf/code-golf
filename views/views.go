@@ -12,7 +12,6 @@ import (
 	"strings"
 
 	"github.com/code-golf/code-golf/assets"
-	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/pretty"
 )
@@ -30,7 +29,6 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 	"hasPrefix": strings.HasPrefix,
 	"hasSuffix": strings.HasSuffix,
 	"html":      func(html string) template.HTML { return template.HTML(html) },
-	"id":        config.ID,
 	"inc":       func(i int) int { return i + 1 },
 	"ord":       pretty.Ordinal,
 	"page":      pager.Page,

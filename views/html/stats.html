@@ -146,7 +146,7 @@
                     <td>{{ $rank }}<sup>{{ ord $rank }}</sup>
                     <td>
                         <div>
-                            {{ svg (print "browsers/" (id .Name)) }}
+                            {{ svg (print "browsers/" .ID) }}
                             <span>{{ .Name }}</span>
                         </div>
                     <td class=right>{{ comma .Count }}

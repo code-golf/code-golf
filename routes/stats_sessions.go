@@ -7,6 +7,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
 )
 
@@ -34,14 +35,14 @@ func statsSessionsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	type browser struct {
-		Count         int
-		Name, Percent string
+		Count             int
+		ID, Name, Percent string
 	}
 
 	data := make([]browser, 0, len(counts))
 	for name, count := range counts {
 		data = append(data, browser{
-			count, name,
+			count, config.ID(name), name,
 			fmt.Sprintf("%.2f", float32(count)/float32(len(userAgents))*100),
 		})
 	}
