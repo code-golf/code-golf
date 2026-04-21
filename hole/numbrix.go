@@ -2,8 +2,13 @@ package hole
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
+
+func init() {
+	judge("numbrix", numbrixJudge)
+}
 
 // This implementation uses the constant variables defined in the Sudoku holes.
 
@@ -48,6 +53,179 @@ var _ = answerFunc("numbrix", func() []Answer {
 
 	return answers
 })
+
+func numbrixJudge(run Run) string {
+	parseGrid := func(s string) ([boardSize][boardSize]int, bool) {
+		var grid [boardSize][boardSize]int
+		row := 0
+		for _, line := range strings.Split(s, "\n") {
+			if !strings.ContainsRune(line, '┃') {
+				continue
+			}
+			line = strings.ReplaceAll(line, "┃", "│")
+			cells := strings.Split(line, "│")
+			if len(cells) < boardSize+2 {
+				return grid, false
+			}
+			for col := range boardSize {
+				cell := strings.TrimSpace(cells[col+1])
+				if cell == "" {
+					grid[row][col] = 0
+				} else {
+					n, err := strconv.Atoi(cell)
+					if err != nil {
+						return grid, false
+					}
+					grid[row][col] = n
+				}
+			}
+			row++
+		}
+		return grid, row == boardSize
+	}
+
+	userGrid, ok := parseGrid(run.Stdout)
+	if !ok {
+		return run.Answer
+	}
+	inputGrid, _ := parseGrid(run.Args[0])
+
+	// Validate: all 1–81 present, clues respected, consecutive numbers adjacent.
+	valid := true
+	var pos [cellCount + 1][2]int
+	var seen [cellCount + 1]bool
+validate:
+	for i := range boardSize {
+		for j := range boardSize {
+			v := userGrid[i][j]
+			if v < 1 || v > cellCount || seen[v] {
+				valid = false
+				break validate
+			}
+			seen[v] = true
+			pos[v] = [2]int{i, j}
+			if inputGrid[i][j] != 0 && inputGrid[i][j] != v {
+				valid = false
+				break validate
+			}
+		}
+	}
+	if valid {
+		for n := 1; n < cellCount; n++ {
+			dr := pos[n][0] - pos[n+1][0]
+			dc := pos[n][1] - pos[n+1][1]
+			if dr < 0 {
+				dr = -dr
+			}
+			if dc < 0 {
+				dc = -dc
+			}
+			if dr+dc != 1 {
+				valid = false
+				break
+			}
+		}
+	}
+	if valid {
+		return run.Stdout
+	}
+
+	// Try to find a valid solution close to the user's output, so the diff
+	// highlights the user's actual mistakes rather than comparing against
+	// an unrelated solution.
+	if match, ok := closestNumbrixMatch(inputGrid, userGrid); ok {
+		return printNumbrix(match)
+	}
+
+	return run.Answer
+}
+
+// closestNumbrixMatch tries to build a valid Numbrix solution that overlaps
+// with userGrid by preferring the user's chosen positions for each number
+// (without violating the clues in input). Returns the first valid solution
+// found, or false if none exists.
+func closestNumbrixMatch(input, userGrid [boardSize][boardSize]int) ([boardSize][boardSize]int, bool) {
+	// Preferred position per number: clues always win over user's guess.
+	var preferred [cellCount + 1][2]int
+	var hasPref [cellCount + 1]bool
+	for i := range boardSize {
+		for j := range boardSize {
+			if v := input[i][j]; v > 0 {
+				preferred[v] = [2]int{i, j}
+				hasPref[v] = true
+			}
+		}
+	}
+	for i := range boardSize {
+		for j := range boardSize {
+			v := userGrid[i][j]
+			if v >= 1 && v <= cellCount && !hasPref[v] && input[i][j] == 0 {
+				preferred[v] = [2]int{i, j}
+				hasPref[v] = true
+			}
+		}
+	}
+
+	// Bound the search so a pathological input can't stall the judge.
+	const maxNodes = 200_000
+	nodes := 0
+
+	var result [boardSize][boardSize]int
+	var dfs func(r, c, n int) bool
+	dfs = func(r, c, n int) bool {
+		nodes++
+		if nodes > maxNodes {
+			return false
+		}
+		if r < 0 || r >= boardSize || c < 0 || c >= boardSize {
+			return false
+		}
+		if result[r][c] != 0 {
+			return false
+		}
+		if input[r][c] != 0 && input[r][c] != n {
+			return false
+		}
+
+		result[r][c] = n
+		if n == cellCount {
+			return true
+		}
+
+		dirs := [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+		if hasPref[n+1] {
+			tr, tc := preferred[n+1][0], preferred[n+1][1]
+			for i, d := range dirs {
+				if r+d[0] == tr && c+d[1] == tc {
+					dirs[0], dirs[i] = dirs[i], dirs[0]
+					break
+				}
+			}
+		}
+		for _, d := range dirs {
+			if dfs(r+d[0], c+d[1], n+1) {
+				return true
+			}
+		}
+		result[r][c] = 0
+		return false
+	}
+
+	if hasPref[1] && dfs(preferred[1][0], preferred[1][1], 1) {
+		return result, true
+	}
+	for i := range boardSize {
+		for j := range boardSize {
+			if hasPref[1] && i == preferred[1][0] && j == preferred[1][1] {
+				continue
+			}
+			if dfs(i, j, 1) {
+				return result, true
+			}
+		}
+	}
+	return result, false
+}
 
 func printNumbrix(puzzle [boardSize][boardSize]int) string {
 	var s strings.Builder
