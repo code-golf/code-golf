@@ -3,7 +3,7 @@ FROM alpine:3.23 AS builder
 RUN apk add --no-cache clang curl make
 
 # Also rebuild GolfScript, iogii.
-ENV VER=4.0.2
+ENV VER=4.0.3
 
 WORKDIR /ruby
 
@@ -45,9 +45,9 @@ RUN cd /usr/lib/ruby/4.0.0 && rm -rf \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1 /lib/
-COPY --from=0 /usr/bin/ruby       /usr/bin/
-COPY --from=0 /usr/lib/ruby       /usr/lib/ruby
+COPY --from=0 --parents /lib/ld-musl-*.so.1 \
+                        /usr/bin/ruby       \
+                        /usr/lib/ruby       /
 
 ENTRYPOINT ["ruby"]
 
