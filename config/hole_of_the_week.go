@@ -1,8 +1,8 @@
 package config
 
 import (
+	"bytes"
 	"cmp"
-	"fmt"
 	"html/template"
 	"math/rand/v2"
 	"slices"
@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/db"
-	"github.com/code-golf/code-golf/pretty"
+	"github.com/code-golf/code-golf/views"
 	"github.com/lib/pq"
 )
 
@@ -30,29 +30,20 @@ func HoleOfTheWeek() (template.HTML, time.Time) {
 		return "", thisWeek
 	}
 
-	weekNo := 1 + int((thisWeek.Unix()-firstWeek)/(7*86_400))
-	html := fmt.Sprintf(
-		`<a href="/%s">%s</a> is the %d<sup>%s</sup> Hole of the Week.
-			Solve it in either `,
-		hl.Hole.ID, hl.Hole.Name, weekNo, pretty.Ordinal(weekNo),
-	)
-
-	for i, lang := range hl.Langs {
-		if i > 0 {
-			html += ", "
-
-			if i == len(hl.Langs)-1 {
-				html += "or "
-			}
-		}
-
-		html += `<a href="/` + hl.Hole.ID + "#" + lang.ID + `">` + lang.Name + "</a>"
+	var b bytes.Buffer
+	if err := views.Render(&b, "hole-of-the-week", struct {
+		holeOfTheWeek
+		Deadline time.Time
+		Week     int
+	}{
+		holeOfTheWeek: hl,
+		Deadline:      thisWeek.AddDate(0, 0, 7),
+		Week:          1 + int((thisWeek.Unix()-firstWeek)/(7*86_400)),
+	}); err != nil {
+		panic(err)
 	}
 
-	html += " within the next " + string(pretty.Time(thisWeek.AddDate(0, 0, 7))) +
-		" to complete the challenge."
-
-	return template.HTML(html), thisWeek
+	return template.HTML(b.String()), thisWeek
 }
 
 func PopulateHolesOfTheWeek(db db.Queryable) error {

@@ -1,0 +1,12 @@
+<a href="/{{ .Hole.ID }}">{{ .Hole.Name }}</a>
+is the {{ .Week }}<sup>{{ ord .Week }}</sup> Hole of the Week.
+
+Solve it in either
+
+{{ range $i, $lang := .Langs -}}
+    {{- if gt $i 0 }}, {{ end -}}
+    {{- if eq $i (dec (len $.Langs)) }}or {{ end -}}
+    <a href="/{{ $.Hole.ID }}#{{ $lang.ID }}">{{ $lang.Name }}</a>
+{{- end }}
+
+within the next {{ time .Deadline }} to complete the challenge.
