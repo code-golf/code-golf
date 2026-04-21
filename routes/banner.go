@@ -163,7 +163,8 @@ func banners(golfer *golfer.Golfer) (banners []banner) {
 		banners = append(banners, banner{
 			HideKey: "hole-of-the-week-" + week.Format(time.DateOnly),
 			Type:    "info",
-			Body:    html,
+			Body: html + " You have " + pretty.Time(week.AddDate(0, 0, 7)) +
+				" left to complete the challenge.",
 		})
 	}
 

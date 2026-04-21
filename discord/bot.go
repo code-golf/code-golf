@@ -30,12 +30,14 @@ var (
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
+	chanHOTWID    = os.Getenv("DISCORD_CHAN_HOTW_ID")    // 📅・hole-of-the-week
 	chanFreshID   = os.Getenv("DISCORD_CHAN_FRESH_ID")   // 🍇・fresh-grapes
 	chanSourID    = os.Getenv("DISCORD_CHAN_SOUR_ID")    // 🍇・sour-grapes
 	chanWildID    = os.Getenv("DISCORD_CHAN_WILD_ID")    // 🍇・wild-grapes
 	guildID       = os.Getenv("DISCORD_GUILD_ID")        // Code Golf
 	roleContribID = os.Getenv("DISCORD_ROLE_CONTRIB_ID") // Contributor
 	roleSponsorID = os.Getenv("DISCORD_ROLE_SPONSOR_ID") // Sponsor
+
 )
 
 // Represents a new record announcement message
@@ -57,7 +59,7 @@ func init() {
 
 	// Ensure we have all our config.
 	switch "" {
-	case botToken, chanFreshID, chanSourID, chanWildID, guildID,
+	case botToken, chanHOTWID, chanFreshID, chanSourID, chanWildID, guildID,
 		roleContribID, roleSponsorID:
 		return
 	}
@@ -482,4 +484,17 @@ func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
 	); err != nil {
 		log.Println(err)
 	}
+}
+
+func UpdateHoleOfTheWeekTopic() error {
+	if bot == nil {
+		return nil
+	}
+
+	topic := config.HoleOfTheWeekText()
+
+	_, err := bot.ChannelEdit(
+		chanHOTWID, &discordgo.ChannelEdit{Topic: topic},
+	)
+	return err
 }

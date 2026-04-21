@@ -106,6 +106,11 @@ func main() {
 			if err := discord.AwardRoles(db); err != nil {
 				log.Println(err)
 			}
+
+			// FIXME This only needs to run once a week at midnight Monday.
+			if err := discord.UpdateHoleOfTheWeekTopic(); err != nil {
+				log.Println(err)
+			}
 		}
 	}()
 
