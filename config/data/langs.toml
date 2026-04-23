@@ -369,7 +369,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '112 MiB'
-version = 'C# 14.0 on .NET 10.0.6'
+version = 'C# 14.0 on .NET 10.0.7'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -695,7 +695,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.6'
+version = 'F# 10.0 on .NET 10.0.7'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.0 MiB'
-version = 'V8 14.7.173.19'
+version = 'V8 14.7.173.20'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1216,7 +1216,7 @@ example    = '''
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
 size    = '139 MiB'
-version = '2.3.20'
+version = '2.3.21'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1458,7 +1458,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '140 MiB'
-version    = 'PowerShell 7.6.0 on .NET 10.0.6'
+version    = 'PowerShell 7.6.1 on .NET 10.0.7'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1732,8 +1732,8 @@ example = '''
 
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
-size    = '245 KiB'
-version = 'GNU sed 4.9'
+size    = '249 KiB'
+version = 'GNU sed 4.10'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
 # Printing

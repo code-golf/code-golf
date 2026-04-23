@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.201-alpine3.23-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:10.0.203-alpine3.23-amd64 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
