@@ -11,6 +11,7 @@ import (
 	"github.com/code-golf/code-golf/discord"
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/routes"
+	"github.com/code-golf/code-golf/uuid"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
@@ -231,7 +232,7 @@ func populateHolesLangsTables(db *sqlx.DB) error {
 	}
 
 	// Award hole authorship cheevo.
-	authors := map[string]time.Time{}
+	authors := map[uuid.UUID]time.Time{}
 	for _, hole := range config.HoleList {
 		t := hole.Released.AsTime(time.UTC)
 		for _, author := range hole.Authors {

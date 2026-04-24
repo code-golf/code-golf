@@ -9,6 +9,7 @@ import (
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/null"
+	"github.com/code-golf/code-golf/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
 )
@@ -67,7 +68,7 @@ type GolferInfo struct {
 	// Start date
 	Started time.Time
 
-	UUID string
+	UUID uuid.UUID
 }
 
 type FailingSolutions []struct{ Hole, Lang string }

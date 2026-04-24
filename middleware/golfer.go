@@ -6,27 +6,30 @@ import (
 
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/session"
+	"github.com/code-golf/code-golf/uuid"
 )
 
 // Golfer adds the golfer to the context if logged in.
 func Golfer(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if cookie, _ := r.Cookie("__Host-session"); cookie != nil {
-			if golfer := golfer.Get(
-				session.Database(r), cookie.Value, r.UserAgent(),
-			); golfer != nil {
-				session.Get(r).Golfer = golfer
+		if cookie, err := r.Cookie("__Host-session"); err == nil {
+			if sessionID, err := uuid.Parse(cookie.Value); err == nil {
+				if golfer := golfer.Get(
+					session.Database(r), sessionID, r.UserAgent(),
+				); golfer != nil {
+					session.Get(r).Golfer = golfer
 
-				// Refresh the cookie.
-				http.SetCookie(w, &http.Cookie{
-					HttpOnly: true,
-					MaxAge:   int(30 * 24 * time.Hour / time.Second),
-					Name:     "__Host-session",
-					Path:     "/",
-					SameSite: http.SameSiteLaxMode,
-					Secure:   true,
-					Value:    cookie.Value,
-				})
+					// Refresh the cookie.
+					http.SetCookie(w, &http.Cookie{
+						HttpOnly: true,
+						MaxAge:   int(30 * 24 * time.Hour / time.Second),
+						Name:     "__Host-session",
+						Path:     "/",
+						SameSite: http.SameSiteLaxMode,
+						Secure:   true,
+						Value:    cookie.Value,
+					})
+				}
 			}
 		}
 

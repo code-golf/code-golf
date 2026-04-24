@@ -5,11 +5,12 @@ import (
 	"errors"
 
 	"github.com/code-golf/code-golf/config"
+	"github.com/code-golf/code-golf/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
 // Get a Golfer given a session ID, updates the session's last used time.
-func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
+func Get(db *sqlx.DB, sessionID uuid.UUID, userAgent string) *Golfer {
 	var golfer Golfer
 
 	if err := db.Get(
@@ -17,7 +18,7 @@ func Get(db *sqlx.DB, sessionID, userAgent string) *Golfer {
 		`WITH golfer AS (
 		    UPDATE sessions
 		       SET browser = $4, last_used = DEFAULT
-		     WHERE id = uuid_or_null($1)
+		     WHERE id = $1
 		 RETURNING user_id
 		), failing AS (
 		    SELECT hole, lang

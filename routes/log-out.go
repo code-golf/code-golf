@@ -4,13 +4,16 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/session"
+	"github.com/code-golf/code-golf/uuid"
 )
 
 // POST /log-out
 func logOutPOST(w http.ResponseWriter, r *http.Request) {
-	if cookie, _ := r.Cookie("__Host-session"); cookie != nil {
-		session.Database(r).MustExec(
-			"DELETE FROM sessions WHERE id = uuid_or_null($1)", cookie.Value)
+	if cookie, err := r.Cookie("__Host-session"); err == nil {
+		if sessionID, err := uuid.Parse(cookie.Value); err == nil {
+			session.Database(r).MustExec(
+				"DELETE FROM sessions WHERE id = $1", sessionID)
+		}
 	}
 
 	http.SetCookie(w, &http.Cookie{

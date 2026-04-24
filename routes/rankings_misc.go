@@ -9,6 +9,7 @@ import (
 	"github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pager"
 	"github.com/code-golf/code-golf/session"
+	"github.com/code-golf/code-golf/uuid"
 )
 
 // GET /rankings/misc/{type}
@@ -56,7 +57,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 			ORDER BY rank, name
 			   LIMIT $1 OFFSET $2`
 
-		uuids := make([]string, 0, len(config.HolesByAuthor))
+		uuids := make([]uuid.UUID, 0, len(config.HolesByAuthor))
 		counts := make([]int, 0, len(config.HolesByAuthor))
 		for uuid, holes := range config.HolesByAuthor {
 			uuids = append(uuids, uuid)

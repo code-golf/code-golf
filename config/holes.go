@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/ordered"
+	"github.com/code-golf/code-golf/uuid"
 	"github.com/pelletier/go-toml/v2"
 )
 
@@ -37,7 +38,7 @@ var (
 	HoleRedirects = map[string]string{}
 
 	// Authors
-	HolesByAuthor = map[string]Holes{}
+	HolesByAuthor = map[uuid.UUID]Holes{}
 
 	// Latest stable hole.
 	LatestHoles []*Hole
@@ -55,7 +56,7 @@ type Hole struct {
 	Aliases, Redirects          []string       `json:"-"`
 	Answer                      string         `json:"-"`
 	AnswerFunc                  HoleAnswerFunc `json:"-"`
-	Authors                     []string       `json:"authors"`
+	Authors                     []uuid.UUID    `json:"authors"`
 	CaseFold                    bool           `json:"-" toml:"case-fold"`
 	Category                    string         `json:"category"`
 	CategoryColor, CategoryIcon string         `json:"-"`
