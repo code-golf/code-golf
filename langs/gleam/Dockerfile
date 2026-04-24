@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV VER=1.15.4
+ENV VER=1.16.0
 
 WORKDIR /gleam
 
