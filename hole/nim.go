@@ -2,7 +2,6 @@ package hole
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 	"strings"
 )
@@ -32,21 +31,18 @@ var _ = answerFunc("nim", func() []Answer {
 		return bestPile, bestAmount, count
 	}
 
-	addTest := func(sortedPiles []int) bool {
-		shuffled := make([]int, len(sortedPiles))
-		copy(shuffled, sortedPiles)
-		rand.Shuffle(len(shuffled), func(i, j int) {
-			shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
-		})
+	addTest := func(piles []int) bool {
+		// unsort the piles [3 2 1] -> [3 1 2] etc.
+		shuffle(piles)
 
-		pileIdx, amount, count := findBestMove(shuffled)
+		pileIdx, amount, count := findBestMove(piles)
 		// check if there is only one best move
 		if count != 1 {
 			return false
 		}
 
-		parts := make([]string, len(shuffled))
-		for i, p := range shuffled {
+		parts := make([]string, len(piles))
+		for i, p := range piles {
 			parts[i] = strconv.Itoa(p)
 		}
 		input := strings.Join(parts, " ")
@@ -56,7 +52,7 @@ var _ = answerFunc("nim", func() []Answer {
 		return true
 	}
 
-    // sorted ordering to ensure no duplicates
+	// sorted ordering to ensure no duplicates
 	for a := 1; a <= 5; a++ {
 		addTest([]int{a})
 		for b := 1; b <= a; b++ {
