@@ -2992,6 +2992,49 @@ acbcab
     empty string in the input is denoted by <code>ε</code>.
 '''
 
+[Nim]
+authors = [
+    '018830c2-e48b-781a-ae6f-5c4a581c0e35', # CornerMercury
+]
+experiment = 2653
+category = 'Gaming'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Nim' },
+]
+synopsis = 'Print the best move for a given Nim position.'
+preamble = '''
+<p>
+    Given a list of Nim positions, print the best move for each one.
+<p>
+    Nim is a 2-player turn based game.
+    The game consists of several piles which each have some number of objects in them.
+    On your turn, you choose a pile and remove any amount from that pile (at least one).
+    The player who takes the last object wins (i.e. leaves the opponent with no available moves).
+<p>
+    Given two piles of size 2 and size 1:
+<pre>
+    2  1
+</pre>
+<p>
+    You have 3 possible moves:
+<div>
+    <table>
+        <thead>
+            <tr><th>Move<th>Result
+        <tbody>
+            <tr><td>take one from the left pile<td>1  1
+            <tr><td>take two from the left pile<td>1
+            <tr><td>take one from the right pile<td>2
+    </table>
+</div>
+<p>
+    Here the best move is to take one from the left pile.
+<p>
+    All inputs have exactly one best move and each pile has at most 5 objects.
+<p>
+    Output is of the form "x y", where x is the index of the pile to take from and y is the amount to take, with each output move on their own line.
+'''
+
 ['Niven Numbers']
 category = 'Sequence'
 released = 2018-05-03
