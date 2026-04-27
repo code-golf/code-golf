@@ -1972,6 +1972,45 @@ preamble = '''
     Print five iterations of the Hilbert curve.
 '''
 
+['Huffman Encoder']
+authors = [
+    '0178b7c9-b196-7af2-80fc-722c9493cbb6', # scpchicken
+]
+category = 'Computing'
+experiment = 2656
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Huffman_coding' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Huffman_coding' },
+]
+synopsis = 'Apply the Huffman encoding.'
+preamble = '''
+**Description**
+<p>
+    Huffman encoding is a way to assign binary codes to symbols that reduces the overall number of bits used to encode a typical string of those symbols.
+
+<p>
+    Given an alphanumeric string, apply Huffman encoding and output the resulting binary string.
+
+<ul>
+    <li>If two nodes have equal frequency, prefer earlier created nodes on the left (zero) side.</li>
+</ul>
+
+
+<b>Example:</b>
+
+<code>baabddddde</code> => <code>111101011100000110</code>
+
+<b>Explanation:</b>
+
+Sorted frequencies: <code>(e: 1, b: 2, a: 2, d: 5)</code>
+
+Huffman tree: <code>(d: 5, (a: 2, (e: 1, b: 2)))</code>
+
+Huffman code: <code>(d: 0, a: 10, e: 110, b: 111)</code>
+
+Apply code to each symbol: <code>111 10 10 111 0 0 0 0 0 110</code>
+'''
+
 [Intersection]
 authors = [
     '018138c7-c575-7c1c-9494-a6ab948e5e98', # alemelis
