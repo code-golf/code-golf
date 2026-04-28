@@ -1984,7 +1984,6 @@ links = [
 ]
 synopsis = 'Apply the Huffman encoding.'
 preamble = '''
-**Description**
 <p>
     Huffman encoding is a way to assign binary codes to symbols that reduces the overall number of bits used to encode a typical string of those symbols.
 
