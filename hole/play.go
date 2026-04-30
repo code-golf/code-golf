@@ -292,20 +292,6 @@ func runCode(
 		}
 
 		cmd.Stdin = strings.NewReader(args)
-	// Holes with arguments containing characters that must be escaped so that
-	// they are recognized by the system shell for the following language(s).
-	case "odin":
-		args, esc := run.Args, strings.ReplaceAll
-		switch hole.ID {
-		case "emojify", "hexdump", "pangram-grep", "rot13":
-			args = nil
-			for _, arg := range run.Args {
-				args = append(args,
-					esc(esc(esc(esc(arg, "\\", "\\\\"), "`", "\\`"), "$", "\\$"), `"`, `\"`),
-				)
-			}
-		}
-		cmd.Args = append(cmd.Args, args...)
 	default:
 		cmd.Args = append(cmd.Args, run.Args...)
 	}
