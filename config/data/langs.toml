@@ -63,8 +63,8 @@ OD
 [Amber]
 args       = [ '/usr/bin/amber', '-', '--' ]
 experiment = 1356
-size       = '8.94 MiB'
-version    = '0.5.1'
+size       = '9.45 MiB'
+version    = '0.6.0'
 website    = 'https://amber-lang.com'
 example    = '''
 main(args) {

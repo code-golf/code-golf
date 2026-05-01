@@ -1,8 +1,8 @@
-FROM rust:1.92.0-alpine3.23 AS builder
+FROM rust:1.95.0-alpine3.23 AS builder
 
 RUN apk add --no-cache bash
 
-ENV VER=0.5.1
+ENV VER=0.6.0
 
 WORKDIR /amber
 
