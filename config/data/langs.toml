@@ -69,16 +69,16 @@ website    = 'https://amber-lang.com'
 example    = '''
 main(args) {
     // Printing
-    echo "Hello, World!"
+    echo("Hello, World!")
 
     // Looping
     for i in 0..=9 {
-        echo i
+        echo(i)
     }
 
     // Accessing arguments
     for i in 1..len(args) {
-        echo args[i]
+        echo(args[i])
     }
 }
 '''
