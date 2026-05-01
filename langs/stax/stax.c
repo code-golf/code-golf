@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* stax = "/usr/bin/stax", *code = "code.stax", *input = "argv.txt";
+const char* stax = "/usr/local/bin/stax", *code = "code.stax", *input = "argv.txt";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version"))

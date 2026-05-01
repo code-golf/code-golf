@@ -51,7 +51,7 @@ func Logger(next http.Handler) http.Handler {
 				statusColours[ww.Status()/100],
 				ww.Status(),
 				r.Method,
-				r.URL.Path,
+				r.RequestURI,
 				time.Since(start).Round(time.Millisecond),
 				golfer,
 				r.UserAgent(),

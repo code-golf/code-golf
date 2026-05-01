@@ -1,0 +1,14 @@
+The following solutions of yours have been marked as failing and no longer
+contribute to scoring; please update them to pass:
+
+<ul>
+{{ range . }}
+    <li>
+    {{ range $i, $solution := . -}}
+        {{ if $i }},{{ else }}{{ $solution.KeyName }}:{{ end }}
+        <a href="/{{ $solution.HoleID }}#{{ $solution.LangID }}">
+            {{- $solution.OtherName -}}
+        </a>
+    {{- end }}
+{{ end }}
+</ul>

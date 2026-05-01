@@ -3,7 +3,7 @@ FROM alpine:3.23 AS builder
 RUN apk add --no-cache clang curl llvm-dev make
 
 # Also bump Coconut, Hy.
-ENV VER=3.14.2
+ENV VER=3.14.4
 
 RUN curl -#L https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz \
   | tar xJ --strip-components 1
@@ -13,7 +13,9 @@ RUN CC='clang' ./configure     \
     --prefix=/usr              \
     --with-lto=thin            \
     --with-tail-call-interp    \
+    --without-doc-strings      \
     --without-ensurepip        \
+    --without-remote-debug     \
     --without-static-libpython \
  && make -j`nproc` install     \
  && strip /usr/bin/python3.14  \

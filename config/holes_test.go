@@ -23,3 +23,20 @@ func TestHoleSynopses(t *testing.T) {
 		})
 	}
 }
+
+func TestNextHolesReleased(t *testing.T) {
+	for i := 1; i < len(NextHoles); i++ {
+		if NextHoles[0].Released != NextHoles[i].Released {
+			t.Error("All of NextHoles must have the same released date")
+		}
+	}
+}
+
+func TestHoleReleasedStable(t *testing.T) {
+	for _, hole := range HoleList {
+		t.Run(hole.Name, func(t *testing.T) {
+			assert.NotEmpty(t, hole.Released,
+				"Stable holes must have a released date")
+		})
+	}
+}

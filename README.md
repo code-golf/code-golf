@@ -48,7 +48,9 @@ $ make dev
 $ go run utils/update_sql_from_api.go
 ```
 
-6. Navigate to https://localhost
+6. Optionally, you can login locally by visiting https://localhost/callback?username=foo with a custom username. Using your code.golf username can show data fetched in step 5.
+
+7. Navigate to https://localhost
 
 ## Hacking
 
@@ -147,7 +149,7 @@ URL slugs are consistently abbreviated (e.g. cheevos, langs, stats) but page
 titles aren't (e.g. Achievements, Languages, Statistics).
 
 Paginated URLs use a trailing number but only on pages after the first (e.g.
-/rankings/medals/all, /rankings/medals/all/2, etc.).
+/rankings/medals/overall/all/all/all, /rankings/medals/overall/all/all/all/2, etc.).
 
 ## arm64/aarch64 Architecture (Ex: Apple Silicon)
 
@@ -156,7 +158,7 @@ You can attempt to use QEMU emulation which is supported by Docker Desktop, but 
 The default when you `make dev` is that the docker images will be built with arm64 architecture.
 
 You may be able to use some languages without building them locally.
-Here is a list of some of the languages that are able to run the sample code, without rebuilding individual docker containers:
+Here is a list of some of the languages that are able to run the example code, without rebuilding individual docker containers:
 * AWK
 * Bash
 * Berry

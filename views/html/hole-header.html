@@ -5,9 +5,9 @@
         {{ if eq .Data.Hole.ID "tutorial" }}
             {{ svg "info-circle" }}
             <p>
-                <b>Tutorial</b> is a rather unique hole. It's designed to be very
-                simple and a good introduction for new golfers. It won't
-                contribute to scoring.
+                <b>Tutorial</b> is a rather unique hole. It's designed to be
+                very simple and a good introduction for new golfers. It
+                contributes neither to scoring nor earning achievements.
         {{ else }}
             {{ svg "flask" }}
             <p>
@@ -34,13 +34,13 @@
 
 <header id=page-header>
 {{ with .Data.Authors }}
-    <dialog id=authors-dialog>
+    <dialog closedby=any id=authors-dialog>
         <div>
             <h1>{{ $.Data.Hole.Name }} Authors</h1>
             <ul>{{ range . }}<li>{{ template "golfer-link" . }}{{ end }}</ul>
         </div>
     </dialog>
-    <button data-dialog=authors-dialog id=authors-btn>
+    <button command=show-modal commandfor=authors-dialog id=authors-btn>
     {{ range . }}
         <img src="{{ avatar .AvatarURL 72 }}">
     {{ end }}
@@ -58,14 +58,9 @@
         </a>
     {{ with .Data.NextHole }}
         <a class="btn orange" href="{{ .ID }}" title="{{ .Name }}">
-            {{ svg "chevron-double-right-light" }} Next
+            Next {{ svg "chevron-double-right-light" }}
         </a>
     {{ end }}
-    {{ if .Golfer }}
-        <button class="btn blue" data-dialog=settings-dialog title=Settings>
-            {{ svg "gear-fill" }}
-            Page Settings
-        </button>
-    {{ end }}
+    {{ template "page-settings" . }}
     </nav>
 </header>

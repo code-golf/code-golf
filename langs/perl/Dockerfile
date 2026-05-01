@@ -2,9 +2,9 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache curl gcc make musl-dev
 
-ENV VER=5.42.0
+ENV VER=5.42.2
 
-RUN curl -#L https://cpan.metacpan.org/authors/id/B/BO/BOOK/perl-$VER.tar.gz \
+RUN curl -#L https://cpan.metacpan.org/authors/id/S/SH/SHAY/perl-$VER.tar.gz \
   | tar xz --strip-components 1
 
 RUN ./Configure                       \

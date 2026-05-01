@@ -54,7 +54,6 @@ int main(int argc, char *argv[]) {
 
     int res;
     bvm *vm = be_vm_new();
-    be_module_path_set(vm, "/usr/local/lib/berry/packages");
     push_args(vm, argc - 1, argv + 1);
 
     // Slurp stdin.

@@ -1,0 +1,16 @@
+{{ $in := print "in approximately " ( time .Time ) }}
+{{ if contains $in "ago" }}{{ $in = "momentarily" }}{{ end }}
+
+{{ $plural := gt (len .Holes) 1 }}
+
+The
+
+{{ range $i, $hole := .Holes }}
+    {{ if $i }} and {{ end }}
+    <a href="/{{ $hole.ID }}">{{ $hole.Name }}</a>
+{{ end }}
+
+hole{{ if $plural }}s{{ end }} will go live {{ html $in }}.
+
+Why not try and solve {{ if $plural }} them {{ else }} it {{ end }}
+ahead of time?

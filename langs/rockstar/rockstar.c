@@ -5,7 +5,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* rockstar = "/usr/bin/rockstar", *code = "code.rock";
+const char* rockstar = "/usr/local/bin/rockstar", *code = "code.rock";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {

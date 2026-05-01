@@ -2,7 +2,7 @@
 
 use TOML::Thumb;
 
-unit sub MAIN(Bool :$no-cache, Bool :$no-push, *@langs);
+unit sub MAIN(Bool :$no-cache, Bool :$no-pull, Bool :$no-push, *@langs);
 
 chdir $*PROGRAM.dirname;
 
@@ -16,7 +16,7 @@ if my $unknown = @langs ∖ %langs {
 # Build (and maybe push) lang-base.
 run <docker buildx build>,
     '--file',   'docker/lang-base.Dockerfile',
-    '--pull',
+    ( '--pull' unless $no-pull ),
     ( '--push' unless $no-push ),
     '--tag',    'codegolf/lang-base',
     '.';
@@ -30,13 +30,17 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
 
     if !$no-cache {
         # Tag the builder stage so "docker system prune" won't remove it.
-        run «docker buildx build -t "{$img}-builder" --pull --target builder "langs/$id"»;
+        run <docker buildx build>,
+            ( '--pull' unless $no-pull ),
+            '--tag', "{$img}-builder",
+            '--target', 'builder',
+            "langs/$id";
     }
 
     run <docker buildx build>,
-         ( '--no-cache' if $no-cache ),
-         '--tag', $img,
-         "langs/$id";
+        ( '--no-cache' if $no-cache ),
+        '--tag', $img,
+        "langs/$id";
 
     # Size.
     my $proc = run :out,
@@ -54,7 +58,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
 
     # Version.
     if $id ~~ any <
-        05ab1e apl arturo assembly befunge berry brainfuck cjam erlang fish
+        05ab1e apl assembly befunge berry brainfuck cjam erlang fish
         golfscript hexagony k knight luau stax umka
     > {
         "langs/$id/Dockerfile".IO.slurp ~~ / ' VER=' (\S+) | ' VERSION=' (\S+) /;
@@ -69,7 +73,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
     else {
         # Some langs output their version number over stderr so merge out/err.
         my $proc = run «docker run -i --rm --tmpfs '/tmp:exec' $img»,
-            :in, :out, :merge(so $id eq 'forth' | 'scheme');
+            :in, :out, :merge(so $id ~~ any < forth lily scheme >);
 
         $proc.in.say: 'puts [info patchlevel]' if $id eq 'tcl';
         $proc.in.close;
@@ -77,8 +81,8 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
         my $ver = $proc.out.slurp(:close).chomp.trans: "\n" => ' ';
 
         given $name {
-            # Dotted decimal or hyphenated date.
-            my $digits = $ver ~~ / \d+ ( <[.-]> \d+ )+ /;
+            # Dotted decimal or hyphenated date. Must be at least two parts.
+            my $digits = $ver ~~ / \d+ (<[.-]>) \d+ [ $0 \d+ ]* /;
 
             when 'ALGOL 68'    { $ver = "Algol 68 Genie $digits" }
             when 'AWK'
@@ -103,6 +107,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
             }
             when 'JavaScript'  { $ver = "V8 $digits" }
             when 'Pascal'      { $ver = "FPC $digits" }
+            when 'Picat'       { $ver = $ver ~~ / ( <[\d . #]>+ ) / }
             when 'Prolog'      { $ver = "SWI-Prolog $digits" }
             when 'Raku'        {
                 $ver ~~ m:g/ v (\S+) '.' /;

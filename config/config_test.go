@@ -15,7 +15,6 @@ func TestID(t *testing.T) {
 		{"My God, It’s Full of Stars", "my-god-its-full-of-stars"},
 		{"Off-the-grid", "off-the-grid"},
 		{"Piña Colada", "piña-colada"},
-		{"Zoodiac Signs", "zoodiac-signs"},
 		{"rm -rf", "rm-rf"},
 		{"tl;dr", "tl-dr"},
 		{"λ", "λ"},

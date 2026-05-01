@@ -4,9 +4,9 @@ services:
       - 80:80
       - 443:443
   assets:
-    image: node:25.2.1-alpine3.23
+    image: node:25.4-alpine3.23
     command:
-      - ./esbuild
+      - assets/build
       - --watch=forever
     stop_signal: SIGKILL
     user: 1000:1000

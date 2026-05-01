@@ -1,4 +1,4 @@
-ARG VER=10.0.0
+ARG VER=10.0.2
 
 FROM swipl:$VER AS builder
 

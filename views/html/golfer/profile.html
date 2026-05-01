@@ -77,6 +77,11 @@
         </section>
     {{ end }}
 
+    <section>
+        <h2>Golfer ID</h2>
+        <p><code>{{ .GolferInfo.UUID }}</code>
+    </section>
+
     <section id=category-overview>
         <h2>Category Overview</h2>
         <canvas></canvas>
@@ -151,5 +156,4 @@
     {{ .Data.CategoryOverview }}
 </script>
 
-{{ template "settings-dialog" . }}
 {{ template "footer" }}

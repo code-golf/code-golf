@@ -65,11 +65,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 	noNewFailures := r.FormValue("no-new-failures") == "on"
 	workers, _ := strconv.Atoi(r.FormValue("workers"))
 	for range workers {
-		wg.Add(1)
-
-		go func() {
-			defer wg.Done()
-
+		wg.Go(func() {
 			for s := range solutions {
 				// Run each solution up to three times.
 				for range 3 {
@@ -150,7 +146,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 				w.(http.Flusher).Flush()
 				mux.Unlock()
 			}
-		}()
+		})
 	}
 
 	wg.Wait()

@@ -201,7 +201,7 @@ func apiSolutionsLogGET(w http.ResponseWriter, r *http.Request) {
 
 	var rows []struct {
 		Bytes     int       `json:"bytes"`
-		Chars     int       `json:"chars"`
+		Chars     *int      `json:"chars"`
 		Golfer    string    `json:"golfer"`
 		Hole      string    `json:"hole"`
 		Lang      string    `json:"lang"`

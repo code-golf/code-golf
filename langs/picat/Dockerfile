@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ make
 
-ENV VER=39
+ENV VER=397
 
 RUN curl -# https://picat-lang.org/download/picat${VER}_src.tar.gz | tar xz
 

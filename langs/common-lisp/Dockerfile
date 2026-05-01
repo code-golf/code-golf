@@ -1,8 +1,6 @@
-ARG VER=2.49.92
-
 FROM alpine:3.22 AS builder
 
-ARG VER
+ENV VER=2.49.92
 
 RUN apk add --no-cache curl gcc make musl-dev
 
@@ -19,12 +17,10 @@ RUN FORCE_UNSAFE_CONFIGURE=1       \
 
 FROM codegolf/lang-base
 
-ARG VER
+COPY --from=0 --parents /lib/ld-musl-*.so.1 \
+                        /usr/bin/clisp      \
+                        /usr/lib/clisp-*    /
 
-COPY --from=0 /lib/ld-musl-*.so.1 /lib/
-COPY --from=0 /usr/bin/clisp      /usr/bin/common-lisp
-COPY --from=0 /usr/lib/clisp-$VER /usr/lib/clisp-$VER
-
-ENTRYPOINT ["common-lisp"]
+ENTRYPOINT ["clisp"]
 
 CMD ["--version"]

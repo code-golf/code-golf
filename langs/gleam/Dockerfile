@@ -1,10 +1,10 @@
-FROM rust:1.92.0-slim-trixie AS builder
+FROM rust:1.95.0-slim-trixie AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV VER=1.13.0
+ENV VER=1.16.0
 
 WORKDIR /gleam
 
@@ -19,23 +19,26 @@ RUN gleam new --name main . \
  && gleam add argv          \
  && gleam remove gleeunit
 
-COPY gleam.c /
+RUN strip cargo/bin/gleam
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleam -s /gleam.c
+COPY gleam.c .
+
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/gleam -s gleam.c
 
 FROM codegolf/lang-erlang
 
 COPY --from=0 /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib/
 COPY --from=0 /usr/bin/gleam                      /usr/bin/
-COPY --chown=nobody                               \
-     --from=0 /usr/local/gleam.toml               \
-              /usr/local/manifest.toml            /usr/local/
-COPY --chown=nobody                               \
-     --from=0 /usr/local/cargo/bin/gleam          /usr/local/bin/
-COPY --chown=nobody                               \
-     --from=0 /usr/local/build/packages           /usr/local/build/packages
-COPY --chown=nobody                               \
-     --from=0 /usr/local/src                      /usr/local/src
+COPY --from=0 --chmod=755 --parents               \
+              /usr/local/./gleam.toml             \
+              /usr/local/./manifest.toml          \
+              /usr/local/./build/packages         \
+              /usr/local/./src                    \
+              /usr/local/cargo/./bin/gleam        /usr/local/
+
+WORKDIR /usr/local
+
+RUN gleam build
 
 ENTRYPOINT ["gleam"]
 

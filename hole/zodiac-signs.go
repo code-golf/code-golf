@@ -77,7 +77,7 @@ var _ = answerFunc("zodiac-signs", func() []Answer {
 
 	for _, sunSign := range sunSigns {
 		tests = append(tests, sunSign.edgeDate(rand.IntN(hours)))
-		for hour := 0; hour < hours; hour++ {
+		for hour := range hours {
 			tests = append(tests, sunSign.randomDate(hour))
 		}
 	}

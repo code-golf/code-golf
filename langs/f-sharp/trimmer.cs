@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 var _removeSet = new HashSet<string>();
 var _removeCount = 0;
@@ -23,47 +24,44 @@ foreach (var filename in lines)
 
 var jsonPath = "/out/f-sharp.deps.json";
 var text = File.ReadAllText(jsonPath);
-var data = JObject.Parse(text);
+var data = JsonNode.Parse(text);
 Walk(data);
-File.WriteAllText(jsonPath, data.ToString());
+File.WriteAllText(jsonPath, data.ToJsonString(new JsonSerializerOptions { WriteIndented = true }));
 Console.WriteLine($"Based on {listPath}, deleted {_removeSet.Count} files and removed {_removeCount} entries in {jsonPath}.");
 
-void Walk(JToken token)
+void Walk(JsonNode node)
 {
-	switch (token)
+	switch (node)
 	{
-		case JObject obj:
+		case JsonObject obj:
 			WalkObject(obj);
 			break;
-		case JArray array:
-			foreach (var child in array.Children())
+		case JsonArray array:
+			foreach (var child in array)
 			{
 				Walk(child);
 			}
 			break;
-		case JProperty property:
-			Walk(property.Value);
-			break;
 	}
 }
 
-void WalkObject(JObject obj)
+void WalkObject(JsonObject obj)
 {
-	var toRemove = new List<JProperty>();
-	foreach (var property in obj.Properties())
+	var toRemove = new List<string>();
+	foreach (var property in obj)
 	{
-		if (_removeSet.Contains(property.Name))
+		if (_removeSet.Contains(property.Key))
 		{
-			toRemove.Add(property);
+			toRemove.Add(property.Key);
 			_removeCount++;
 			continue;
 		}
 
-		Walk(property);
+		Walk(property.Value);
 	}
 
-	foreach (var property in toRemove)
+	foreach (var key in toRemove)
 	{
-		property.Remove();
+		obj.Remove(key);
 	}
 }

@@ -2,8 +2,7 @@
 /.github/
 /.vagrant/
 /Makefile
-/config/data/assets.json
-/dist/
+/assets/out/
 /docker/
 /langs/
 /sql/

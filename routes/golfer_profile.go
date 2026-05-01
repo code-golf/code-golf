@@ -25,11 +25,8 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 	golferInfo := session.GolferInfo(r)
 
 	location := time.UTC
-	followedGolfersInFeed := true
 	if golfer := session.Golfer(r); golfer != nil {
 		location = golfer.Location()
-		followedGolfersInFeed =
-			golfer.Settings["golfer/profile"]["followed-golfers-in-feed"].(bool)
 	}
 
 	data := struct {
@@ -91,8 +88,8 @@ func golferGET(w http.ResponseWriter, r *http.Request) {
 		  GROUP BY user_id, hole, lang
 		) SELECT cheevo, date, avatar_url, name, hole, lang
 		    FROM data JOIN golfers_with_avatars ON id = user_id
-		ORDER BY date DESC, name LIMIT $4`,
-		followedGolfersInFeed,
+		ORDER BY date DESC, name, cheevo LIMIT $4`,
+		session.Settings(r)["golfer/profile"]["followed-golfers-in-feed"],
 		golferInfo.ID,
 		golferInfo.FollowLimit(),
 		limit,
@@ -146,13 +143,13 @@ rows:
 		      FROM rankings
 		     WHERE user_id = $1 AND NOT experimental
 		  ORDER BY hole, scoring, points DESC
-		) SELECT $2::hstore->hole::text category,
+		) SELECT category,
 		         ROUND(AVG((points)))   points,
 		         scoring                scoring
 		    FROM max_points_per_hole
+		    JOIN holes ON id = hole
 		GROUP BY scoring, category`,
 		golferInfo.ID,
-		config.HoleCategoryHstore,
 	); err != nil {
 		panic(err)
 	}

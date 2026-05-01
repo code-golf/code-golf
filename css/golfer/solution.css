@@ -1,6 +1,0 @@
-@import "./_golfer.css";
-
-main > h1 {
-    display: flex;
-    justify-content: space-between;
-}

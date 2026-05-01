@@ -3,7 +3,6 @@ package config
 import (
 	"bytes"
 	"cmp"
-	"database/sql"
 	"embed"
 	"encoding/json"
 	"html/template"
@@ -11,9 +10,10 @@ import (
 	"slices"
 	"strings"
 	templateTxt "text/template"
+	"time"
 
 	"github.com/code-golf/code-golf/ordered"
-	"github.com/lib/pq/hstore"
+	"github.com/code-golf/code-golf/uuid"
 	"github.com/pelletier/go-toml/v2"
 )
 
@@ -33,15 +33,18 @@ var (
 	AllHoleByID = map[string]*Hole{}
 	AllHoleList []*Hole
 
-	// A map of hole ID to category for passing to SQL queries.
-	HoleCategoryHstore = hstore.Hstore{Map: map[string]sql.NullString{}}
-
 	// Aliases & Redirects
 	HoleAliases   = map[string]string{}
 	HoleRedirects = map[string]string{}
 
+	// Authors
+	HolesByAuthor = map[uuid.UUID]Holes{}
+
 	// Latest stable hole.
-	LatestHole *Hole
+	LatestHoles []*Hole
+
+	// Next experimental holes to become stable.
+	NextHoles []*Hole
 )
 
 type Link struct {
@@ -53,6 +56,7 @@ type Hole struct {
 	Aliases, Redirects          []string       `json:"-"`
 	Answer                      string         `json:"-"`
 	AnswerFunc                  HoleAnswerFunc `json:"-"`
+	Authors                     []uuid.UUID    `json:"authors"`
 	CaseFold                    bool           `json:"-" toml:"case-fold"`
 	Category                    string         `json:"category"`
 	CategoryColor, CategoryIcon string         `json:"-"`
@@ -87,8 +91,6 @@ func initHoles() {
 	}
 
 	// Expand variants.
-	copyFields := []string{
-		"Category", "Data", "Links", "Preamble", "Released", "Synopsis", "Variants"}
 	for name, hole := range holes {
 		hole.Name = name
 
@@ -106,9 +108,12 @@ func initHoles() {
 				continue
 			}
 
-			// Copy any fields missing in the variant from the hole.
+			// Copy specific fields missing in the variant from the hole.
 			dst := reflect.ValueOf(variant).Elem()
-			for _, field := range copyFields {
+			for _, field := range []string{
+				"Authors", "Category", "Data", "Links", "Preamble",
+				"Synopsis", "Variants",
+			} {
 				if dst.FieldByName(field).IsZero() {
 					dst.FieldByName(field).Set(src.FieldByName(field))
 				}
@@ -189,23 +194,45 @@ func initHoles() {
 		if hole.Experiment == 0 {
 			HoleByID[hole.ID] = hole
 			HoleList = append(HoleList, hole)
-
-			HoleCategoryHstore.Map[hole.ID] =
-				sql.NullString{String: hole.Category, Valid: true}
 		} else {
 			ExpHoleByID[hole.ID] = hole
 			ExpHoleList = append(ExpHoleList, hole)
 		}
 	}
 
+	// Case-insensitive sort each slice.
 	for _, holes := range [][]*Hole{HoleList, ExpHoleList, AllHoleList} {
-		// Case-insensitive sort.
 		slices.SortFunc(holes, func(a, b *Hole) int {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
 	}
 
-	LatestHole = slices.MaxFunc(HoleList, func(a, b *Hole) int {
-		return strings.Compare(a.Released.String(), b.Released.String())
-	})
+	// Populate various slices after sorting so that each slice is sorted.
+
+	// Populate HolesByAuthor from the all hole list.
+	for _, hole := range AllHoleList {
+		for _, author := range hole.Authors {
+			HolesByAuthor[author] = append(HolesByAuthor[author], hole)
+		}
+	}
+
+	// Populate LatestHoles from only the stable hole list.
+	var latestReleased time.Time
+	for _, hole := range HoleList {
+		released := hole.Released.AsTime(time.UTC)
+		if released.After(latestReleased) {
+			LatestHoles = []*Hole{hole}
+			latestReleased = released
+		} else if latestReleased.Equal(released) {
+			LatestHoles = append(LatestHoles, hole)
+		}
+	}
+
+	// Populate NextHoles from only the experimental hole list.
+	var emptyLocalDate toml.LocalDate
+	for _, hole := range ExpHoleList {
+		if hole.Released != emptyLocalDate {
+			NextHoles = append(NextHoles, hole)
+		}
+	}
 }

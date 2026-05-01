@@ -123,7 +123,8 @@ func callbackGET(w http.ResponseWriter, r *http.Request) {
 
 	// Create a session, write cookie value.
 	if err := tx.QueryRow(
-		"INSERT INTO sessions (user_id) VALUES ($1) RETURNING id", user.ID,
+		"INSERT INTO sessions (browser, user_id) VALUES ($1, $2) RETURNING id",
+		r.UserAgent(), user.ID,
 	).Scan(&cookie.Value); err != nil {
 		panic(err)
 	}

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -22,19 +23,21 @@ const minElapsedTimeToShowDate = 30 * 24 * time.Hour
 
 var (
 	bot                 *discordgo.Session
-	freshHole           = config.LatestHole
+	freshHoles          = config.LatestHoles
 	freshLang           = config.LatestLang
 	lastAnnouncementMap = make(map[string]*RecAnnouncement)
 	mux                 sync.Mutex
 
 	// All the config keys!
 	botToken      = os.Getenv("DISCORD_BOT_TOKEN")       // Caddie
+	chanHOTWID    = os.Getenv("DISCORD_CHAN_HOTW_ID")    // 📅・hole-of-the-week
 	chanFreshID   = os.Getenv("DISCORD_CHAN_FRESH_ID")   // 🍇・fresh-grapes
 	chanSourID    = os.Getenv("DISCORD_CHAN_SOUR_ID")    // 🍇・sour-grapes
 	chanWildID    = os.Getenv("DISCORD_CHAN_WILD_ID")    // 🍇・wild-grapes
 	guildID       = os.Getenv("DISCORD_GUILD_ID")        // Code Golf
 	roleContribID = os.Getenv("DISCORD_ROLE_CONTRIB_ID") // Contributor
 	roleSponsorID = os.Getenv("DISCORD_ROLE_SPONSOR_ID") // Sponsor
+
 )
 
 // Represents a new record announcement message
@@ -50,13 +53,13 @@ type RecAnnouncement struct {
 
 func init() {
 	// Is the latest lang still that fresh?
-	if time.Since(freshLang.Released.AsTime(time.UTC)) > 1000*time.Hour {
+	if !freshLang.Fresh() {
 		freshLang = nil
 	}
 
 	// Ensure we have all our config.
 	switch "" {
-	case botToken, chanFreshID, chanSourID, chanWildID, guildID,
+	case botToken, chanHOTWID, chanFreshID, chanSourID, chanWildID, guildID,
 		roleContribID, roleSponsorID:
 		return
 	}
@@ -75,7 +78,7 @@ func init() {
 
 		// Set the topic of the fresh-grapes channel.
 		var freshNames []string
-		if freshHole != nil {
+		for _, freshHole := range freshHoles {
 			freshNames = append(freshNames, freshHole.Name)
 		}
 		if freshLang != nil {
@@ -98,7 +101,7 @@ func channel(hole *config.Hole, lang *config.Lang) string {
 	if hole.Experiment != 0 || lang.Experiment != 0 {
 		return chanWildID
 	}
-	if freshHole == hole || freshLang == lang {
+	if slices.Contains(freshHoles, hole) || freshLang == lang {
 		return chanFreshID
 	}
 	return chanSourID
@@ -481,4 +484,17 @@ func saveLastAnnouncement(announce *RecAnnouncement, db *sqlx.DB) {
 	); err != nil {
 		log.Println(err)
 	}
+}
+
+func UpdateHoleOfTheWeekTopic() error {
+	if bot == nil {
+		return nil
+	}
+
+	topic := config.HoleOfTheWeekText()
+
+	_, err := bot.ChannelEdit(
+		chanHOTWID, &discordgo.ChannelEdit{Topic: topic},
+	)
+	return err
 }

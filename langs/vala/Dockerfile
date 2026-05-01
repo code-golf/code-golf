@@ -6,7 +6,7 @@ ARG VER
 
 RUN apk add --no-cache bison curl flex g++ gobject-introspection-dev make
 
-RUN curl -#L https://download.gnome.org/sources/vala/$VER/vala-$VER.18.tar.xz \
+RUN curl -#L https://download.gnome.org/sources/vala/$VER/vala-$VER.19.tar.xz \
   | tar xJ --strip-components 1
 
 RUN ./configure                      \

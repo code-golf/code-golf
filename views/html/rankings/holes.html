@@ -8,20 +8,11 @@
 
     <table class="nowrap-second sticky">
         <thead>
-            {{ with .Data }}
-                {{ if .Distribution }}
-                <script id=chart-data type="application/json">{
-                    "golfer": {{ .Strokes }},
-                    "golfers": [
-                    {{- range $i, $d := .Distribution -}}
-                        {{- if ne $i 0 }},{{ end -}}
-                        { "strokes": {{ .Strokes }}, "frequency": {{ .Frequency }} }
-                    {{- end -}}
-                ]}</script>
-                <tr>
-                    <th colspan=6><div id=chart-container><canvas></canvas></div>
-                {{ end }}
-            {{ end }}
+        {{ with .Data.Distribution }}
+            <script id=chart-data type=application/json>{{ . }}</script>
+            <tr>
+                <th colspan=6><div id=chart-container><canvas></canvas></div>
+        {{ end }}
             <tr>
                 <th>#
                 <th>Golfer

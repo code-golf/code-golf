@@ -58,24 +58,20 @@ func Wiki(db *sqlx.DB) error {
 		slug := config.ID(name)
 		section := ""
 
-		if lang := config.AllLangByID[slug]; lang != nil {
-			slug = "langs/" + slug
-			section = "Languages"
-			name = lang.Name
-		} else if slug == "constraint-specifications" {
-			name = "Constraint Specifications"
-		} else if slug == "hole-specific-tips" {
-			name = "Hole Specific Tips"
-		} else if slug == "home" {
+		switch name {
+		case "Home":
 			slug = ""
-		} else if slug == "other-sites" {
-			name = "Other Sites"
-		} else if slug == "spigot-algorithms" {
-			name = "Spigot Algorithms"
-		} else if slug == "tutorial" {
-			name = "Tutorial"
-		} else {
-			continue
+		case "Constraint-Specifications", "Hole-Specific-Tips", "Other-Sites",
+			"Spigot-Algorithms", "Tutorial":
+			name = strings.ReplaceAll(name, "-", " ")
+		default:
+			if lang, ok := config.AllLangByID[slug]; ok {
+				name = lang.Name
+				slug = "langs/" + slug
+				section = "Languages"
+			} else {
+				continue
+			}
 		}
 
 		f, err := fs.Open(file.Name())

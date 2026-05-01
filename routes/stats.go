@@ -13,8 +13,8 @@ import (
 // GET /stats
 func statsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
-		Bytes, Cheevos, CheevosEarned, Countries, Golfers,
-		Holes, HolesExp, Langs, LangsExp, Solutions int
+		ActiveGolfers, Bytes, Cheevos, CheevosEarned, Countries, Golfers,
+		Holes, HolesExp, Langs, LangsExp, Sessions, Solutions int
 	}{
 		Cheevos:  len(config.CheevoList),
 		Holes:    len(config.AllHoleList),
@@ -24,6 +24,12 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	db := session.Database(r)
+
+	if err := db.QueryRow(
+		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM sessions",
+	).Scan(&data.Sessions, &data.ActiveGolfers); err != nil {
+		panic(err)
+	}
 
 	if err := db.QueryRow(
 		"SELECT COUNT(*), COUNT(DISTINCT user_id) FROM cheevos",
@@ -50,21 +56,23 @@ func statsGET(w http.ResponseWriter, r *http.Request) {
 
 // GET /stats/{page:cheevos}
 func statsCheevosGET(w http.ResponseWriter, r *http.Request) {
-	type row struct {
+	var data []struct {
 		Cheevo        *config.Cheevo
 		Golfers, Rank int
+		Me            bool
 		Percent       string
 	}
 
-	var data []row
 	if err := session.Database(r).Select(
 		&data,
 		` SELECT RANK() OVER (ORDER BY COUNT(*) DESC)             rank,
 		         cheevo                                           cheevo,
 		         COUNT(*)                                         golfers,
-		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent
+		         ROUND(COUNT(*) / SUM(COUNT(*)) OVER () * 100, 2) percent,
+		         COUNT(*) FILTER (WHERE user_id = $1) > 0         me
 		    FROM cheevos
 		GROUP BY cheevo`,
+		session.Golfer(r),
 	); err != nil {
 		panic(err)
 	}

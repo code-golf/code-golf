@@ -27,7 +27,7 @@ fragment thumb on ReactionConnection {
 }
 */
 
-func votes(db *sqlx.DB) (limits []rateLimit) {
+func votes(db *sqlx.DB) (limits []rateLimit, err error) {
 	voters := map[int]time.Time{}
 
 	type Thumbs struct {
@@ -54,7 +54,7 @@ func votes(db *sqlx.DB) (limits []rateLimit) {
 
 	for {
 		if err := client.Query(context.Background(), &query, variables); err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		limits = append(limits, query.RateLimit)

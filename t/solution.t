@@ -61,15 +61,15 @@ subtest 'Shorter chars solution' => {
 };
 
 subtest 'Assembly solution' => {
-constant $code = Q:c:to/ASM/;
-    mov $1,              %eax
-    mov $1,              %edi
-    mov $text,           %rsi
-    mov $textEnd - text, %edx
-    syscall
+    constant $code = Q:c:to/ASM/;
+        mov $1,              %eax
+        mov $1,              %edi
+        mov $text,           %rsi
+        mov $textEnd - text, %edx
+        syscall
 
-    text: .string "{ $answer.lines.join: ｢\n｣ }"; textEnd:
-    ASM
+        text: .string "{ $answer.lines.join: ｢\n｣ }"; textEnd:
+        ASM
 
     ok post-solution( :$session :$code :lang<assembly> )<runs>[0]<pass>, 'Passes';
 
@@ -80,9 +80,8 @@ constant $code = Q:c:to/ASM/;
     ), 'Inserts only bytes';
 };
 
-sub db {
-    $dbh.execute(
-        'SELECT code, lang, scoring FROM solutions').allrows :array-of-hash;
-}
+sub db { return $dbh.execute(q:to/SQL/).allrows :array-of-hash }
+    SELECT code, lang, scoring FROM solutions
+    SQL
 
 done-testing;
