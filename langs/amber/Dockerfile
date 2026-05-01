@@ -1,13 +1,12 @@
 FROM rust:1.92.0-alpine3.23 AS builder
 
-RUN apk add --no-cache bash curl
+RUN apk add --no-cache bash
 
 ENV VER=0.5.1
 
 WORKDIR /amber
 
-RUN curl -#L https://github.com/amber-lang/amber/archive/refs/tags/$VER-alpha.tar.gz \
-  | tar xz --strip-components 1
+ADD https://github.com/amber-lang/amber.git#$VER-alpha .
 
 RUN cargo install \
     --path .      \
