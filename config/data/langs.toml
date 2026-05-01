@@ -61,9 +61,9 @@ OD
 '''
 
 [Amber]
-args       = [ '/usr/bin/amber', '-', '--' ]
+args       = [ '/usr/bin/amber', '--target', 'bash', '-', '--' ]
 experiment = 1356
-size       = '9.45 MiB'
+size       = '6.23 MiB'
 version    = '0.6.0'
 website    = 'https://amber-lang.com'
 example    = '''

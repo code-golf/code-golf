@@ -14,12 +14,9 @@ RUN cargo install \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /bin/bash /bin/sed        /bin/
+COPY --from=0 /bin/bash                 /bin/
 COPY --from=0 /lib/ld-musl-*.so.1       /lib/
-COPY --from=0 /usr/bin/amber            \
-              /usr/bin/bc               \
-              /usr/bin/env              \
-              /usr/bin/seq              /usr/bin/
+COPY --from=0 /usr/bin/amber            /usr/bin/
 COPY --from=0 /usr/lib/libncursesw.so.6 \
               /usr/lib/libreadline.so.8 /usr/lib/
 
