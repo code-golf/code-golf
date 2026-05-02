@@ -2,15 +2,16 @@ FROM rust:1.95.0-alpine3.23 AS builder
 
 RUN apk add --no-cache bash
 
-ENV VER=0.6.0
+ENV CRT='x86_64-unknown-linux-musl' VER=0.6.0
 
 WORKDIR /amber
 
 ADD https://github.com/amber-lang/amber.git#$VER-alpha .
 
-RUN cargo install \
-    --path .      \
-    --root /usr/local
+RUN cargo install     \
+    --path .          \
+    --root /usr/local \
+    --target $CRT
 
 COPY amber.c .
 
