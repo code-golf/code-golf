@@ -16,6 +16,7 @@ constant %paths = (
     '05AB1E'       => 'github.com/Adriandmen/05AB1E',
     '><>'          => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'     => 'algol68genie.nl/en/algol-68-genie/',
+    'Amber'        => 'github.com/amber-lang/amber/releases/latest',
     'APL'          => 'dyalog.com/download-zone.htm?p=download',
     'ArkScript'    => 'github.com/ArkScript-lang/Ark/releases/latest',
     'Arturo'       => 'github.com/arturo-lang/arturo/releases/latest',

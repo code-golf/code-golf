@@ -90,9 +90,9 @@ CREATE TYPE hole_category AS ENUM (
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE lang AS ENUM (
-    '05ab1e', 'algol-68', 'apl', 'arkscript', 'arturo', 'assembly', 'awk',
-    'bash', 'basic', 'befunge', 'berry', 'bqn', 'brainfuck', 'c', 'c-sharp',
-    'civet', 'cjam', 'clojure', 'cobol', 'coconut', 'coffeescript',
+    '05ab1e', 'algol-68', 'amber', 'apl', 'arkscript', 'arturo', 'assembly',
+    'awk', 'bash', 'basic', 'befunge', 'berry', 'bqn', 'brainfuck', 'c',
+    'c-sharp', 'civet', 'cjam', 'clojure', 'cobol', 'coconut', 'coffeescript',
     'common-lisp', 'cpp', 'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang',
     'f-sharp', 'factor', 'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go',
     'golfscript', 'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony',
