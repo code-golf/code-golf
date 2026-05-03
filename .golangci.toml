@@ -21,6 +21,8 @@ enable = [
     'unused',
 ]
 
+exclusions.paths = ['node_modules/']
+
 # Revive - https://github.com/mgechev/revive/blob/HEAD/RULES_DESCRIPTIONS.md
 settings.revive.rules = [
     { name = 'increment-decrement' },
