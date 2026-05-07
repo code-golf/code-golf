@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ git pkgconf procps python3
 
-ENV PATH=/javascript:$PATH VER=14.7.173.22
+ENV PATH=/javascript:$PATH VER=14.8.178.14
 
 WORKDIR /javascript
 
@@ -18,6 +18,7 @@ RUN git checkout $VER \
  && gclient sync -D
 
 RUN gn gen out --args='                 \
+    icu_use_data_file=false             \
     is_debug=false                      \
     symbol_level=0                      \
     use_thin_lto=true                   \
@@ -36,7 +37,6 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6       \
               /lib/x86_64-linux-gnu/libm.so.6       \
               /lib/x86_64-linux-gnu/libpthread.so.0 /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2           /lib64/
-COPY --from=0 /javascript/v8/out/icudtl.dat         /usr/bin/
 COPY --from=0 /javascript/v8/out/d8                 /usr/bin/javascript
 
 ENTRYPOINT ["javascript"]
