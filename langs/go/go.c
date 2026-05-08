@@ -11,7 +11,7 @@
 void copy_file(const char* src_file, const char* dst_file);
 void copy_folder(const char* src_dir, const char* dst_dir);
 
-const char* go = "/usr/local/bin/go", *code = "code.go";
+const char* go = "/usr/local/go/bin/go", *code = "code.go";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {

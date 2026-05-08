@@ -1,4 +1,4 @@
-ARG VER=1.26.2
+ARG VER=1.26.3
 
 FROM golang:$VER-alpine3.23 AS builder
 
@@ -13,14 +13,14 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/gowrapper -s -static /go.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /cache                                     /cache
-COPY --from=0 /lib/ld-musl-*.so.1                        /lib/
-COPY --from=0 /usr/bin/gowrapper                         /usr/bin/
-COPY --from=0 /usr/local/go/bin/go                       /usr/local/bin/
-COPY --from=0 /usr/local/go/pkg/tool/linux_amd64/asm     \
-              /usr/local/go/pkg/tool/linux_amd64/compile \
-              /usr/local/go/pkg/tool/linux_amd64/link    /usr/local/pkg/tool/linux_amd64/
-COPY --from=0 /usr/local/go/src                          /usr/local/src
+COPY --from=0 --parents /cache                                     \
+                        /lib/ld-musl-*.so.1                        \
+                        /usr/bin/gowrapper                         \
+                        /usr/local/go/bin/go                       \
+                        /usr/local/go/pkg/tool/linux_amd64/asm     \
+                        /usr/local/go/pkg/tool/linux_amd64/compile \
+                        /usr/local/go/pkg/tool/linux_amd64/link    \
+                        /usr/local/go/src                          /
 
 ENTRYPOINT ["gowrapper"]
 

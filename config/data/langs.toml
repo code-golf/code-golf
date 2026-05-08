@@ -826,7 +826,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '350 MiB'
-version = '1.26.2'
+version = '1.26.3'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1278,7 +1278,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.66 MiB'
-version    = '0.719'
+version    = '0.720'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1407,7 +1407,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.5'
+version = '8.5.6'
 website = 'https://www.php.net'
 example = '''
 # Printing
