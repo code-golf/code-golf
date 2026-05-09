@@ -14,9 +14,6 @@ RUN ./configure            \
     --with-features=normal \
  && make -j`nproc` install
 
-# Remove the docs.
-RUN rm -r /usr/share/vim/vim92/doc
-
 # Quiet warnings about missing ftdetect.
 RUN mkdir /usr/share/vim/vim92/ftdetect \
  && touch /usr/share/vim/vim92/ftdetect/vim.vim
