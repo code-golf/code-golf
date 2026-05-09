@@ -1,10 +1,10 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache dash gcc git make musl-dev ncurses-dev
+RUN apk add --no-cache dash gcc make musl-dev ncurses-dev ncurses-static
 
-ENV VER=9.2.0010
+ENV LDFLAGS='-static' VER=9.2.0010
 
-RUN git clone --branch v$VER --depth 1 https://github.com/vim/vim
+ADD https://github.com/vim/vim.git#v$VER /vim
 
 WORKDIR /vim/src
 
@@ -24,13 +24,11 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/viml -s -static /viml.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/dash             /bin/sh
-COPY --from=0 /lib/ld-musl-*.so.1       /lib/
-COPY --from=0 /usr/bin/vim              \
-              /usr/bin/viml             /usr/bin/
-COPY --from=0 /usr/lib/libncurses.so    \
-              /usr/lib/libncursesw.so.6 /usr/lib/
-COPY --from=0 /usr/share/vim/vim92      /usr/share/vim/vim92
+COPY --from=0           /usr/bin/dash        /bin/sh
+COPY --from=0 --parents /lib/ld-musl-*.so.1  \
+                        /usr/bin/vim         \
+                        /usr/bin/viml        \
+                        /usr/share/vim/vim92 /
 
 ENTRYPOINT ["viml"]
 
