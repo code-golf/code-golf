@@ -82,6 +82,11 @@
             href=/ title=Home>
             {{ svg "logo" }}
         </a>
+        <a {{ if eq .Path "/about" }} class=on {{ end }}
+            href=/about title=About>
+            <span class=thin>{{ svg "question-circle" }}</span>
+            <span class=wide>About</span>
+        </a>
         <a {{ if eq .Path "/ideas" }} class=on {{ end }}
             href=/ideas title=Ideas>
             <span class=thin>{{ svg "lightbulb-light" }}</span>
@@ -97,21 +102,12 @@
             <span class=thin>{{ svg "trophy" }}</span>
             <span class=wide>Rankings</span>
         </a>
-        <a {{ if hasPrefix .Path "/stats" }} class=on {{ end }}
-            href=/stats title=Statistics>
-            <span class=thin>{{ svg "graph-up" }}</span>
-            <span class=wide>Stats</span>
-        </a>
         <a {{ if hasPrefix .Path "/wiki" }} class=on {{ end }}
             href=/wiki title=Wiki>
             <span class=thin>{{ svg "journals" }}</span>
             <span class=wide>Wiki</span>
         </a>
         <div></div>
-        <a {{ if eq .Path "/about" }} class=on {{ end }}
-            href=/about title=About>
-            {{ svg "question-circle" }}
-        </a>
     {{ with .Golfer }}
         {{ $slug := (print "/golfers/" .Name) }}
 
