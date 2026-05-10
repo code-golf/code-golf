@@ -16,6 +16,14 @@
     --blue:       hsl(205, 80%, 36%);
     --purple:     hsl(265, 60%, 36%);
 
+    /* Foreground/icon colors — brighter so they read well on dark. */
+    --red-fg:     hsl(357, 80%, 65%);
+    --orange-fg:  hsl( 27, 90%, 60%);
+    --yellow-fg:  hsl( 50, 85%, 60%);
+    --green-fg:   hsl(150, 65%, 55%);
+    --blue-fg:    hsl(205, 80%, 65%);
+    --purple-fg:  hsl(265, 70%, 70%);
+
     /* For dark mode, the light colors are darker than the typical ones. */
     --light-blue:   hsl(210, 50%, 15%);
     --light-green:  hsl(150, 80%, 15%);
