@@ -21,8 +21,9 @@
         {{ template "page-settings" . }}
     </nav>
 {{ end }}
+    <h1 class=span>Holes</h1>
 {{ range .Data }}
-    <a class="card {{ .Hole.CategoryColor }}"
+    <a
     {{ if $.Golfer }}
         {{ $lang    := index $.SettingValues $.Name "points-for" }}
         {{ $scoring := index $.SettingValues $.Name "scoring"    }}
@@ -35,13 +36,11 @@
         href="{{ .Hole.ID }}"
     {{ end }}
        title="{{ .Hole.Name }} ({{ .Hole.Category }})">
+        {{ svg .Hole.CategoryIcon "class" .Hole.CategoryColor }}
         <h2>{{ .Hole.Name }}</h2>
-        {{ svg .Hole.CategoryIcon }}
     {{ if .Lang }}
-        <span title="{{ comma .Points }} points in {{ .Lang.Name }}">
-            {{ comma .Points }}
-            {{ svg .Lang.ID }}
-        </span>
+        {{ svg .Lang.ID }}
+        <span title="{{ comma .Points }} points in {{ .Lang.Name }}">{{ comma .Points }}</span>
     {{ end }}
     </a>
 {{ end }}

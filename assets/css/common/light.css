@@ -14,6 +14,14 @@
     --blue:       #45AAF2BB;
     --purple:     #8C7AE6BB;
 
+    /* Foreground/icon colors — darker so they read well on white. */
+    --red-fg:     #d32f2f;
+    --orange-fg:  #e68100;
+    --yellow-fg:  #f8b60b;
+    --green-fg:   #2ebd32;
+    --blue-fg:    #1565e0;
+    --purple-fg:  #8a1bca;
+
     --light-blue:   #def;
     --light-green:  #efd;
     --light-grey:   #eee;
