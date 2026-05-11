@@ -674,16 +674,16 @@ body > .tabs {
     display: block;
 }
 
-#home > nav {
+#home > h1 {
+    align-items: center;
     column-span: all;
     display: flex;
-    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: .5rem;
+    justify-content: space-between;
     margin-bottom: 1rem;
-}
 
-#home > h1 {
-    column-span: all;
-    margin-bottom: 1rem;
+    dialog { font-size: 1rem }
 }
 
 #home > a {

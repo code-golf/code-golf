@@ -16,12 +16,10 @@
 {{ end }}
 
 <main id=home>
-{{ if .Golfer }}
-    <nav class=span>
-        {{ template "page-settings" . }}
-    </nav>
-{{ end }}
-    <h1 class=span>Holes</h1>
+    <h1>
+        Holes
+        {{ if .Golfer }}{{ template "page-settings" . }}{{ end }}
+    </h1>
 {{ range .Data }}
     <a
     {{ if $.Golfer }}
