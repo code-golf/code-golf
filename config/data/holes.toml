@@ -5088,6 +5088,28 @@ preamble  = '''
     and any number of <b>arguments</b>. Everything on an individual line.
 '''
 
+['Ulam Sequence']
+authors = [
+    '018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
+category = 'Sequence'
+links = [
+    { name = 'OEIS A002858', url = '//oeis.org/A002858' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Ulam_number' },
+]
+experiment = 2639
+synopsis = 'Print the first 250 terms of the Ulam Sequence.'
+preamble = '''
+<p>
+    The Ulam sequence is defined as starting with <b>a(1)=1</b>,
+	<b>a(2)=2</b>, after which each term of the sequence is the least
+	number greater than all previous terms that can be expressed as the sum
+	of two distinct earlier terms in exactly one way.
+    
+<p>
+    Print the first 250 terms of the Ulam Sequence.
+'''
+
 ['United States']
 category = 'Transform'
 data = '''
