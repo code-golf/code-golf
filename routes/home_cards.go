@@ -11,9 +11,9 @@ import (
 )
 
 type Card struct {
-	Hole   *config.Hole
-	Lang   *config.Lang
-	Points int
+	Golfers, Points, Rank, TieCount int
+	Hole                            *config.Hole
+	Lang                            *config.Lang
 }
 
 var cardList, expCardList []Card
@@ -57,31 +57,38 @@ func getHomeCards(r *http.Request) (cards []Card) {
 		return cardList
 	}
 
-	var query string
-	var bind []any
-	var settings = session.Settings(r)["home"]
+	query := ""
+	settings := session.Settings(r)["home"]
+	bind := []any{settings["scoring"], golfer.ID}
 
 	if lang := settings["points-for"]; lang == "all" {
 		query = `WITH points AS (
-			   SELECT DISTINCT ON (hole) hole, lang, points
+			   SELECT DISTINCT ON (hole)
+			          golfers, hole, lang, points, rank, tie_count
 			     FROM rankings
 			    WHERE scoring = $1 AND user_id = $2
 			 ORDER BY hole, points DESC, lang
-			)  SELECT id hole, lang, COALESCE(points, -1) points
+			)  SELECT id hole, lang,
+			          COALESCE(golfers,   -1) golfers,
+			          COALESCE(points,    -1) points,
+			          COALESCE(rank,      -1) rank,
+			          COALESCE(tie_count, -1) tie_count
 			     FROM holes
 			LEFT JOIN points ON id = hole WHERE experiment = 0`
-
-		bind = []any{settings["scoring"], golfer.ID}
 	} else {
 		query = `WITH points AS (
-			   SELECT hole, lang, points_for_lang
+			   SELECT golfers, hole, lang, points_for_lang, rank, tie_count
 			     FROM rankings
 			    WHERE scoring = $1 AND user_id = $2 AND lang = $3
-			)  SELECT id hole, lang, COALESCE(points_for_lang, -1) points
+			)  SELECT id hole, lang,
+			          COALESCE(golfers,         -1) golfers,
+			          COALESCE(points_for_lang, -1) points,
+			          COALESCE(rank,            -1) rank,
+			          COALESCE(tie_count,       -1) tie_count
 			     FROM holes
 			LEFT JOIN points ON id = hole WHERE experiment = 0`
 
-		bind = []any{settings["scoring"], golfer.ID, lang}
+		bind = append(bind, lang)
 	}
 
 	if err := session.Database(r).Select(&cards, query, bind...); err != nil {

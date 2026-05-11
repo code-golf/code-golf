@@ -690,15 +690,15 @@ body > .tabs {
     align-items: center;
     break-inside: avoid;
     color: var(--color);
-    display: grid;
+    display: flex;
     gap: .5rem;
-    grid-template-columns: 1rem 1fr 1rem 3rem;
     padding: .25rem .25rem;
     text-decoration: none;
 
     &:hover h2 { text-decoration: underline }
 
     h2 {
+        flex: 1;
         font-size: 1rem;
         font-weight: normal;
         overflow: hidden;
@@ -706,10 +706,18 @@ body > .tabs {
         white-space: nowrap;
     }
 
-    span {
-        color: var(--grey);
-        font-variant-numeric: tabular-nums;
-        text-align: right;
+    .points {
+        align-items: center;
+        display: flex;
+        gap: .5rem;
+
+        span {
+            color: var(--grey);
+            flex: 1;
+            font-variant-numeric: tabular-nums;
+            text-align: right;
+            width: 3rem;
+        }
     }
 
     svg {
