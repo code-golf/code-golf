@@ -25,6 +25,7 @@ func init() {
 		sha, created, id string
 		hole             bool
 	}{
+		{"b2e2fde", "2026-05-11 23:37:28", "alphabetic-numbers", true},
 		{"3710ad0", "2026-05-01 00:00:21", "taxicab-numbers", true},
 		{"32718f4", "2026-04-01 00:00:35", "gray-code-decoder", true},
 		{"32718f4", "2026-04-01 00:00:35", "gray-code-encoder", true},
