@@ -1656,7 +1656,7 @@ end
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '38.6 MiB'
-version = '4.0.3'
+version = '4.0.4'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing

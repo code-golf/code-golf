@@ -1,14 +1,13 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache clang curl make
+RUN apk add --no-cache clang make
 
 # Also rebuild GolfScript, iogii.
-ENV VER=4.0.3
+ENV VER=4.0.4
 
-WORKDIR /ruby
+WORKDIR /ruby-$VER
 
-RUN curl -#L https://cache.ruby-lang.org/pub/ruby/4.0/ruby-$VER.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://cache.ruby-lang.org/pub/ruby/4.0/ruby-$VER.tar.xz /
 
 # Prefer clang to gcc as it produces smaller binaries with adequate stack.
 RUN ./configure            \
