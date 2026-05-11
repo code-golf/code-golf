@@ -161,8 +161,8 @@ authors = [
     '018c6260-7ddb-74d3-9665-234d0dfbd16f', # duckyluuk
 ]
 category = 'Sequence'
+released = 2026-05-12
 synopsis = 'Print all numbers from 0 to 1,000 in alphabetic order.'
-experiment = 2618
 preamble = '''
 <p>Print all numbers from <b>0</b> (<code>zero</code>) to <b>1,000</b> (<code>one thousand</code>) inclusive, in alphabetic order of their <a href="spelling-numbers">English written names</a>, each on their own line.</p>
 '''
