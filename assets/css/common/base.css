@@ -686,49 +686,45 @@ body > .tabs {
     margin-bottom: 1rem;
 }
 
-#home > .grid {
-    border: 2px solid var(--color);
-    padding: 1rem;
-}
-
 #home > a {
     align-items: center;
     break-inside: avoid;
     color: var(--color);
-    column-gap: .5rem;
     display: grid;
+    gap: .5rem;
     grid-template-columns: 1rem 1fr 1rem 3rem;
     padding: .25rem .25rem;
     text-decoration: none;
+
+    &:hover h2 { text-decoration: underline }
+
+    h2 {
+        font-size: 1rem;
+        font-weight: normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    span {
+        color: var(--grey);
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+    }
+
+    svg {
+        background: none;
+        height: 1rem;
+        width: 1rem;
+
+        &.red    { color: var(--red-fg)    }
+        &.orange { color: var(--orange-fg) }
+        &.yellow { color: var(--yellow-fg) }
+        &.green  { color: var(--green-fg)  }
+        &.blue   { color: var(--blue-fg)   }
+        &.purple { color: var(--purple-fg) }
+    }
 }
-
-#home > a:hover h2 { text-decoration: underline }
-
-#home > a > h2 {
-    font-size: 1rem;
-    font-weight: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#home > a > span {
-    color: var(--grey);
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-}
-
-#home > a > svg {
-    height: 1rem;
-    width: 1rem;
-}
-
-#home > a > svg.red    { background: none; color: var(--red-fg)    }
-#home > a > svg.orange { background: none; color: var(--orange-fg) }
-#home > a > svg.yellow { background: none; color: var(--yellow-fg) }
-#home > a > svg.green  { background: none; color: var(--green-fg)  }
-#home > a > svg.blue   { background: none; color: var(--blue-fg)   }
-#home > a > svg.purple { background: none; color: var(--purple-fg) }
 
 #popups {
     align-items: flex-end;
