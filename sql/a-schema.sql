@@ -77,7 +77,7 @@ CREATE TYPE hole AS ENUM (
     'taxicab-numbers', 'ten-pin-bowling', 'tic-tac-toe', 'time-distance',
     'tongue-twisters', 'topological-sort', 'tower-of-hanoi',
     'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
-    'united-states', 'vampire-numbers', 'van-eck-sequence',
+    'ulam-sequence', 'united-states', 'vampire-numbers', 'van-eck-sequence',
     'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ',
     'φ', '√2', '𝑒'
 );
