@@ -1,11 +1,12 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache clang curl llvm-dev make openssl-dev
+RUN apk add --no-cache clang llvm-dev make openssl-dev
 
 ENV PYVER=3.14.4 VER=3.2.0
 
-RUN curl -#L https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz /
+
+WORKDIR /Python-$PYVER
 
 RUN CC='clang' ./configure     \
     --disable-test-modules     \

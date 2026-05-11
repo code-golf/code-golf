@@ -1,12 +1,13 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache clang curl llvm-dev make
+RUN apk add --no-cache clang llvm-dev make
 
 # Also bump Coconut, Hy.
-ENV VER=3.14.4
+ENV VER=3.14.5
 
-RUN curl -#L https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz /
+
+WORKDIR /Python-$VER
 
 RUN CC='clang' ./configure     \
     --disable-test-modules     \

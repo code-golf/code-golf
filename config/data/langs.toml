@@ -874,7 +874,7 @@ args     = [ '/usr/bin/groovy', '-e', '$code' ]
 env      = [ 'JAVA_HOME=/opt/java', 'JAVA_OPTS=-XX:ActiveProcessorCount=1' ]
 released = 2025-08-29
 size     = '65.9 MiB'
-version  = '5.0.5'
+version  = '5.0.6'
 website  = 'https://groovy-lang.org'
 example  = '''
 // Printing
@@ -1497,8 +1497,8 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '30.1 MiB'
-version = '3.14.4'
+size    = '30.2 MiB'
+version = '3.14.5'
 website = 'https://www.python.org'
 example = '''
 import sys
