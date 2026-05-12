@@ -1,28 +1,6 @@
 /* TODO Stop having "thin" pages, make everything consistent. */
 body { max-width: 64rem }
 
-body > p { margin: 1rem 1rem 0 }
-
-h1 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 1rem 1rem 0;
-    white-space: nowrap;
-
-    > span {
-        flex: 1;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
-
-h1 nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
-}
-
 #pagination {
     display: flex;
     font-variant: tabular-nums;

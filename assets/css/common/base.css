@@ -107,9 +107,15 @@ h3 { font-size: 1.25rem }
     border-bottom: 2px solid var(--color);
     display: flex;
     flex-wrap: wrap;
-    gap: .5rem;
+    gap: 1rem .5rem;
     overflow: hidden;
     padding: 1rem;
+
+    /* Remove the bottom border/padding if tabs are directly underneath it */
+    &:has(+ .tabs) {
+        border: 0;
+        padding-bottom: 0;
+    }
 
     h1 {
         flex: 1;
@@ -121,6 +127,8 @@ h3 { font-size: 1.25rem }
         flex-wrap: wrap;
         gap: .5rem;
     }
+
+    p { flex: 100% }
 }
 
 #site-header {

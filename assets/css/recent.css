@@ -1,20 +1,2 @@
 /* TODO Stop having "thin" pages, make everything consistent. */
 body { max-width: 64rem }
-
-body > p { margin: 1rem 1rem 0 }
-
-h1 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 1rem 1rem 0;
-    white-space: nowrap;
-}
-
-h1 nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
-}
-
-h1 span { flex: 1 }

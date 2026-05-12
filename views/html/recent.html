@@ -1,5 +1,5 @@
-<h1>
-    <span>{{ .Title }}</span>
+<header id=page-header>
+    <h1>{{ .Title }}</h1>
 
 {{ if and (eq .Name "recent/solutions") .Data.Hole }}
     <nav>
@@ -19,7 +19,7 @@
         </a>
     </nav>
 {{ end }}
-</h1>
+</header>
 
 <nav class=tabs>
     <a {{ if hasPrefix .Path "/recent/cheevos/" }} class=on {{ end }}
