@@ -682,16 +682,9 @@ body > .tabs {
     display: block;
 }
 
-#home > h1 {
-    align-items: center;
+#home > :not(a) {
     column-span: all;
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
-    justify-content: space-between;
     margin-bottom: 1rem;
-
-    dialog { font-size: 1rem }
 }
 
 #home > a {

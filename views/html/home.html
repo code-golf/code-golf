@@ -1,25 +1,26 @@
 {{ template "header" . }}
 
-{{ if not .Golfer }}
-    <div class=info>
-        {{ svg "info-circle" }}
-        <p>
-            Code Golf is a game designed to let you show off your code-fu by
-            solving problems in the least number of characters.
-        <p>
-            Since this is your first time here, we suggest starting with
-            something simple like the <a href=tutorial>Tutorial hole</a>.
-        <p>
-            Also visit <a href=//discord.gg/eVCTkYQ>our Discord server</a>
-            for some advice.
-    </div>
-{{ end }}
+<header id=page-header>
+    <h1>Code Golf</h1>
+
+    {{ if .Golfer }}<nav>{{ template "page-settings" . }}</nav>{{ end }}
+</header>
 
 <main id=home>
-    <h1>
-        Holes
-        {{ if .Golfer }}{{ template "page-settings" . }}{{ end }}
-    </h1>
+    <p>{{ .Description }}
+
+{{ if not .Golfer }}
+    <p>
+        Since this is your first time here, we suggest starting with
+        something simple like the <a href=tutorial>Tutorial hole</a>.
+
+    <p>
+        Also visit <a href=//discord.gg/eVCTkYQ>our Discord server</a>
+        for some advice.
+{{ end }}
+
+    <h2>Holes</h2>
+
 {{ range .Data }}
     <a
     {{ if $.Golfer }}
