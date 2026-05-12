@@ -28,8 +28,15 @@ main {
 
 .card {
     align-items: center;
+    border: 2px solid var(--color);
+    color: var(--color);
+    display: grid;
     gap: .5rem .25rem;
     grid-template: min-content / min-content min-content 1fr min-content min-content;
+    padding: .5rem;
+    text-decoration: none;
+
+    &:hover { background: none }
 
     > h2 {
         align-items: center;

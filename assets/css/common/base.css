@@ -542,45 +542,6 @@ td .btn {
     text-decoration: none;
 }
 
-.card {
-    align-items: end;
-    border: 2px solid var(--color);
-    color: var(--color);
-    display: grid;
-    gap: .5rem;
-    grid-template: min-content / 1fr min-content;
-    height: 100%;
-    padding: .5rem;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.card:hover { background: none !important }
-
-.card h2 {
-    font-size: 1.25rem;
-    grid-column: 1 / -1;
-    line-height: 1.25;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.card p {
-    align-self: start;
-    white-space: normal;
-}
-
-.card span {
-    align-items: center;
-    display: flex;
-    gap: .25rem;
-}
-
-.card svg {
-    height: 1rem;
-    width: 1rem;
-}
-
 .red    { background: var(--red)    }
 .orange { background: var(--orange) }
 .yellow { background: var(--yellow) }
