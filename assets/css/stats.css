@@ -1,6 +1,3 @@
-/* TODO Stop having "thin" pages, make everything consistent. */
-body { max-width: 64rem }
-
 table { width: 100% }
 
 .flag { margin-right: .5rem }

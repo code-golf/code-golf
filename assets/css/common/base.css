@@ -768,7 +768,7 @@ body > .tabs {
 #two-pane {
     display: grid;
     gap: 1rem 2rem;
-    grid-template: min-content 1fr / min-content 1fr;
+    grid-template: min-content 1fr / 2fr 5fr;
 
     & > #form-nav { display: none }
 
@@ -781,7 +781,6 @@ body > .tabs {
         grid-row: span 2;
         justify-content: flex-end;
         padding: .5rem 2rem .5rem 0;
-        width: 20rem;
 
         & > * {
             align-items: center;
