@@ -1,20 +1,23 @@
 {{ template "header" . }}
 
-<main>
+<header id=page-header>
     <h1>Feeds</h1>
 
-    <p>
-        New languages are released in a fairly ad-hoc manner. New holes target
-        a monthly release schedule with new holes appearing on the first of the
-        month. Exceptions can occur, for example the simpler
-        <a href=day-of-week>Day of Week</a> hole was released mid-month.
-
-    <p>
+    <nav>
         <a href=feeds/atom>Atom</a>
         /
         <a href=feeds/json>JSON</a>
         /
         <a href=feeds/rss>RSS</a>
+    </nav>
+</header>
+
+<main>
+    <p>
+        New languages are released in a fairly ad-hoc manner. New holes target
+        a monthly release schedule with new holes appearing on the first of the
+        month. Exceptions can occur, for example the simpler
+        <a href=day-of-week>Day of Week</a> hole was released mid-month.
 
     <ul>
     {{ range .Data.Items }}
