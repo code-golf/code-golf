@@ -1,5 +1,8 @@
 #!/bin/sh -e
 
+# Sourced from https://code.golf/stats/sessions
+TARGET='chrome100,edge146,firefox115,opera129,safari16.6'
+
 mkdir -p assets/out
 find assets/out -type f ! -name .gitignore -delete
 
@@ -20,6 +23,6 @@ node_modules/.bin/esbuild "$@"            \
     --outdir=assets/out                   \
     --public-path=/assets                 \
     --sourcemap                           \
-    --target=es2020,chrome88              \
+    --target="$TARGET"                    \
     `find assets/css assets/js assets/svg \
         -type f -not -name '_*' -not -path '*/vendor/*'`
