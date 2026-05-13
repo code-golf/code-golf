@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.5 MiB'
-version = 'V8 14.8.178.14'
+version = 'V8 14.8.178.21'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1717,7 +1717,7 @@ args.foreach(println)
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
 size    = '8.21 MiB'
-version = 'Chez Scheme 10.4.0'
+version = 'Chez Scheme 10.4.1'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
 ; Printing
