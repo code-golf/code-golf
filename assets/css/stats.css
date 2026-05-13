@@ -1,6 +1,23 @@
 table { width: 100% }
 
+.browser { gap: 1rem }
+
 .flag { margin-right: .5rem }
+
+.versions {
+    columns: 4.5rem;
+    column-rule: 1px solid;
+    color: var(--grey);
+    font-size: .875rem;
+    gap: 2rem;
+    line-height: 1rem;
+    padding-bottom: .5rem;
+
+    > div {
+        display: flex;
+        justify-content: space-between;
+    }
+}
 
 #chart-container { min-width: 0 }
 

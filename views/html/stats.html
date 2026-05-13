@@ -145,9 +145,21 @@
                 <tr>
                     <td>{{ $rank }}<sup>{{ ord $rank }}</sup>
                     <td>
-                        <div>
+                        <div class=browser>
                             {{ svg (print "browsers/" .ID) }}
-                            <span>{{ .Name }}</span>
+                            <span>
+                                {{ .Name }}
+                            {{ with .Versions }}
+                                <div class=versions>
+                                {{ range $v, $c := . }}
+                                    <div>
+                                        <span>{{ $v }}</span>
+                                        <span>({{ comma $c }})</span>
+                                    </div>
+                                {{ end }}
+                                </div>
+                            {{ end }}
+                            </span>
                         </div>
                     <td class=right>{{ comma .Count }}
                     <td class=right>{{ .Percent }}%

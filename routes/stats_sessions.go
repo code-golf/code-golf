@@ -3,6 +3,7 @@ package routes
 import (
 	"cmp"
 	"fmt"
+	"maps"
 	"net/http"
 	"slices"
 	"strings"
@@ -21,33 +22,53 @@ func statsSessionsGET(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	counts := map[string]int{}
-
-	// Whitelist browser names to avoid displaying inappropriate text.
-	for _, userAgent := range userAgents {
-		switch name := userAgent.Name; name {
-		case "Chrome", "curl", "Edge", "Firefox", "Opera", "Safari",
-			"Samsung Browser":
-			counts[name]++
-		default:
-			counts["Other"]++
-		}
-	}
-
 	type browser struct {
 		Count             int
 		ID, Name, Percent string
+		Versions          map[string]int
+	}
+	browsers := map[string]*browser{}
+
+	for _, userAgent := range userAgents {
+		name, version := userAgent.Name, ""
+
+		// Whitelist browser names to avoid displaying inappropriate text.
+		switch name {
+		case "Chrome", "Edge", "Firefox", "Opera":
+			version = fmt.Sprint(userAgent.VersionNo.Major)
+		case "Safari":
+			version = fmt.Sprintf("%d.%d",
+				userAgent.VersionNo.Major, userAgent.VersionNo.Minor)
+		case "Samsung Browser", "curl":
+		default:
+			name = "Other"
+		}
+
+		b, ok := browsers[name]
+		if !ok {
+			b = &browser{
+				ID:       config.ID(name),
+				Name:     name,
+				Versions: map[string]int{},
+			}
+			browsers[name] = b
+		}
+
+		b.Count++
+
+		if version != "" {
+			b.Versions[version]++
+		}
 	}
 
-	data := make([]browser, 0, len(counts))
-	for name, count := range counts {
-		data = append(data, browser{
-			count, config.ID(name), name,
-			fmt.Sprintf("%.2f", float32(count)/float32(len(userAgents))*100),
-		})
+	data := slices.Collect(maps.Values(browsers))
+
+	for _, browser := range data {
+		browser.Percent = fmt.Sprintf("%.2f",
+			float32(browser.Count)/float32(len(userAgents))*100)
 	}
 
-	slices.SortFunc(data, func(a, b browser) int {
+	slices.SortFunc(data, func(a, b *browser) int {
 		return cmp.Or(
 			cmp.Compare(b.Count, a.Count),
 			cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name)),
