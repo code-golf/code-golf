@@ -1,5 +1,3 @@
-FROM codegolf/lang-erlang
-
 FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
@@ -8,7 +6,7 @@ RUN apt-get update                   \
 
 ENV LANG='C.UTF-8' VER=1.19.5
 
-COPY --from=0 /usr /usr
+COPY --from=codegolf/lang-erlang /usr /usr
 
 WORKDIR /usr/local
 
@@ -19,8 +17,8 @@ RUN make
 
 FROM codegolf/lang-erlang
 
-COPY --from=1 /usr/local/bin/elixir      /usr/local/bin/
-COPY --from=1 /usr/local/lib/elixir/ebin /usr/local/lib/elixir/ebin
+COPY --from=0 /usr/local/bin/elixir      /usr/local/bin/
+COPY --from=0 /usr/local/lib/elixir/ebin /usr/local/lib/elixir/ebin
 
 ENTRYPOINT ["elixir"]
 

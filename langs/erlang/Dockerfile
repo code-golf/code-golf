@@ -2,15 +2,14 @@ FROM debian:trixie-slim AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl gcc make perl
+    apt-get install --yes gcc make perl
 
 # Also rebuild Elixir, Gleam.
-ENV VER=28.4
+ENV VER=29.0
 
-WORKDIR /erlang
+WORKDIR /otp_src_$VER
 
-RUN curl -#L https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz \
-  | tar xz --strip-components 1
+ADD --unpack https://github.com/erlang/otp/releases/download/OTP-$VER/otp_src_$VER.tar.gz /
 
 RUN ./configure            \
     --enable-m64-build     \
