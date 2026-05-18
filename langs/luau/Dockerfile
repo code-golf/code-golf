@@ -1,12 +1,16 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache g++ linux-headers make
+RUN apk add --no-cache g++ linux-headers make patch
 
-ENV VER=0.720
+ENV VER=0.721
 
 WORKDIR /luau
 
 ADD https://github.com/luau-lang/luau.git#$VER .
+
+COPY algorithm.patch .
+
+RUN patch -p0 < algorithm.patch
 
 RUN make config=release luau \
  && strip build/release/luau
