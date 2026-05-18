@@ -82,7 +82,7 @@ example    = '''
 args     = [ '/usr/bin/arkscript', '-' ]
 env      = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 released = 2026-03-19
-size     = '3.08 MiB'
+size     = '3.12 MiB'
 version  = '4.6.0'
 website  = 'https://arkscript-lang.dev'
 example  = '''
