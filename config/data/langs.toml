@@ -390,7 +390,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '115 MiB'
-version = 'Clang 22.1.5'
+version = 'Clang 22.1.6'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -418,7 +418,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '80.4 MiB'
-version = '0.11.9'
+version = '0.11.10'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -612,8 +612,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '119 MiB'
-version = '3.11.5'
+size    = '121 MiB'
+version = '3.12.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.5 MiB'
-version = 'V8 14.8.178.21'
+version = 'V8 14.8.178.22'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1656,7 +1656,7 @@ end
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '38.6 MiB'
-version = '4.0.4'
+version = '4.0.5'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
