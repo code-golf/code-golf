@@ -1,8 +1,9 @@
-FROM alpine:3.22 AS builder
+FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache autoconf cmake curl g++ gfortran linux-headers make python3
 
-ENV CXXFLAGS='-flto' LDFLAGS='-flto' VER=1.12.6
+# Fix GCC 15 with cstdint, see https://github.com/JuliaLang/julia/issues/58478
+ENV CXXFLAGS='-include cstdint -flto' LDFLAGS='-flto' VER=1.12.6
 
 RUN curl -#L https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz \
   | tar xz
