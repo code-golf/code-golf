@@ -17,6 +17,7 @@ export function highlightCodeBlocks(selector: string){
         if (lang == 'cs' ) lang = 'c-sharp';
         if (lang == 'fs' ) lang = 'f-sharp';
         if (lang == 'ijs') lang = 'j';
+        if (lang == 'vim') lang = 'viml';
 
         // Clear the existing code and replace with a read-only editor.
         const pre = code.parentElement!;
