@@ -7,7 +7,7 @@
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
-const char* iogii = "/usr/local/bin/iogii", *ghcii = "/usr/bin/ghcii", *code[2] = {"code.iog", "code.ism"};
+const char* iogii = "/usr/local/bin/iogii", *ghcii = "/usr/bin/ghcii", *code[2] = {"/proc/self/fd/0", "code.ism"};
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -17,21 +17,6 @@ int main(int argc, char* argv[]) {
 
     if (chdir("/tmp"))
         ERR_AND_EXIT("chdir");
-
-    FILE* fp;
-
-    if (!(fp = fopen(code[0], "w")))
-        ERR_AND_EXIT("fopen");
-
-    char buffer[4096];
-    ssize_t nbytes;
-
-    while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))))
-        if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
-            ERR_AND_EXIT("fwrite");
-
-    if (fclose(fp))
-        ERR_AND_EXIT("fclose");
 
     pid_t pid;
 
@@ -44,7 +29,7 @@ int main(int argc, char* argv[]) {
         if (close(fd))
             ERR_AND_EXIT("close");
 
-        execl(iogii, iogii, "-e", code[0], NULL);
+        execl(iogii, iogii, "--engine", code[0], NULL);
         ERR_AND_EXIT("execl");
     }
 
@@ -57,9 +42,6 @@ int main(int argc, char* argv[]) {
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
-
-    if (remove(code[0]))
-        ERR_AND_EXIT("remove");
 
     int iargc = argc + 1;
     char** iargv = malloc(iargc * sizeof(char*));
