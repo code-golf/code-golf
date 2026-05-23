@@ -43,7 +43,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.56 MiB'
-version  = 'Algol 68 Genie 3.12.1'
+version  = 'Algol 68 Genie 3.12.2'
 website  = 'https://algol68genie.nl/en/algol-68-genie/'
 example  = '''
 # Printing #
@@ -368,8 +368,8 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '112 MiB'
-version = 'C# 14.0 on .NET 10.0.7'
+size    = '111 MiB'
+version = 'C# 14.0 on .NET 10.0.8'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -695,7 +695,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.7'
+version = 'F# 10.0 on .NET 10.0.8'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.73 MiB'
-version    = '0.721'
+size       = '5.74 MiB'
+version    = '0.722'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1457,8 +1457,8 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '140 MiB'
-version    = 'PowerShell 7.6.1 on .NET 10.0.7'
+size       = '139 MiB'
+version    = 'PowerShell 7.6.2 on .NET 10.0.8'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1577,7 +1577,7 @@ example    = '''
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
 size      = '80.4 MiB'
-version   = 'Raku 6.d on Rakudo 2026.04'
+version   = 'Raku 6.d on Rakudo 2026.05'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1807,7 +1807,7 @@ foreach (arg in vargv)
 args       = [ '/usr/bin/stax', '-' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 experiment = 439
-size       = '79.6 MiB'
+size       = '79.5 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''

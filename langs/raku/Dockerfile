@@ -2,11 +2,11 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache gcc git make musl-dev perl
 
-ENV VER=2026.04
+ENV VER=2026.05
 
-RUN git clone --branch $VER https://github.com/rakudo/rakudo
+WORKDIR /raku
 
-WORKDIR /rakudo
+ADD https://github.com/rakudo/rakudo.git#$VER .
 
 RUN CFLAGS='-flto'            \
     ./Configure.pl            \
@@ -26,11 +26,11 @@ RUN rm rakudo.moarvm       \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1 /lib/
-COPY --from=0 /usr/bin/rakudo     /usr/bin/raku
-COPY --from=0 /usr/lib/libmoar.so /usr/lib/
-COPY --from=0 /usr/share/nqp      /usr/share/nqp
-COPY --from=0 /usr/share/perl6    /usr/share/perl6
+COPY --from=0           /usr/bin/rakudo     /usr/bin/raku
+COPY --from=0 --parents /lib/ld-musl-*.so.1 \
+                        /usr/lib/libmoar.so \
+                        /usr/share/nqp      \
+                        /usr/share/perl6    /
 
 ENTRYPOINT ["raku"]
 
