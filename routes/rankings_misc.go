@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"html/template"
 	"net/http"
 	"time"
 
@@ -14,7 +13,7 @@ import (
 
 // GET /rankings/misc/{type}
 func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
-	var desc template.HTML
+	var desc any
 	var sql string
 
 	data := struct {
@@ -65,7 +64,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		}
 		args = append(args, uuids, counts)
 	case "holes-of-the-week":
-		desc, _ = config.HoleOfTheWeek()
+		desc = config.HoleOfTheWeekText()
 		sql = `WITH holes AS (
 			    SELECT user_id, COUNT(*), MAX(completed) submitted
 			      FROM weekly_solves
