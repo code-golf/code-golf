@@ -10,9 +10,6 @@ ADD https://golfscript.com/iogii/$VER/engine.hs /usr/bin/ghcii.hs
 
 RUN sed -i '1c#!/usr/bin/ruby --disable=gems' /usr/local/bin/iogii
 
-# Strip the file exists check so we can pass stdin.
-RUN sed -i '/File\.file?(ARGV\[0\])/d' /usr/local/bin/iogii
-
 RUN ghc -O2 -optl -static /usr/bin/ghcii.hs && strip /usr/bin/ghcii
 
 COPY iogii.c /
