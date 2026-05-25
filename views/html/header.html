@@ -13,13 +13,15 @@
 
 <title>{{ .Title }}</title>
 
+{{ $description := html2text .Description }}
+
 <!-- FIXME theme-color won't change for dark themes -->
-<meta name=description  content="{{ .Description }}">
+<meta name=description  content="{{ $description }}">
 <meta name=theme-color  content=#343A40>
 <meta name=twitter:card content=summary>
 <meta name=viewport     content="width=device-width">
 
-<meta property=og:description  content="{{ .Description }}">
+<meta property=og:description  content="{{ $description }}">
 <meta property=og:image        content="{{ with .GolferInfo -}}
     {{ avatar .AvatarURL 200 }}
 {{- else -}}

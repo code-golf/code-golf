@@ -64,7 +64,7 @@ func rankingsMiscGET(w http.ResponseWriter, r *http.Request) {
 		}
 		args = append(args, uuids, counts)
 	case "holes-of-the-week":
-		desc = config.HoleOfTheWeekText()
+		desc, _ = config.HoleOfTheWeek()
 		sql = `WITH holes AS (
 			    SELECT user_id, COUNT(*), MAX(completed) submitted
 			      FROM weekly_solves

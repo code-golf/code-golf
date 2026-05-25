@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"html/template"
 	"net/http"
 	"strings"
 	"time"
@@ -192,5 +191,5 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 	desc.WriteString(data.Scoring)
 	desc.WriteByte('.')
 
-	render(w, r, "rankings/holes", data, "Rankings: Holes", template.HTML(desc.String()))
+	render(w, r, "rankings/holes", data, "Rankings: Holes", desc.String())
 }

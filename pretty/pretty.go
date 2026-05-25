@@ -3,9 +3,15 @@ package pretty
 import (
 	"fmt"
 	"html/template"
+	"regexp"
 	"strings"
 	"time"
+
+	"golang.org/x/net/html"
+	"golang.org/x/net/html/atom"
 )
+
+var whitespace = regexp.MustCompile(`\s+`)
 
 // Bytes returns a string of integer bytes formatted as B/KiB/MiB/GiB.
 func Bytes(b int) string {
@@ -40,6 +46,42 @@ func Duration(d time.Duration) template.HTML {
 		`<time datetime="PT%gS">%sms</time>`,
 		d.Seconds(), Comma(int(d.Milliseconds()))),
 	)
+}
+
+// HTML2Text converts HTML into plain text. All whitespace collapses to space.
+func HTML2Text(markup template.HTML) string {
+	doc, err := html.Parse(strings.NewReader(string(markup)))
+	if err != nil {
+		panic(err)
+	}
+
+	var text strings.Builder
+	for node := range doc.Descendants() {
+		if node.Type == html.TextNode {
+			if node.Parent.DataAtom == atom.Sup {
+				// Convert superscript runes to the unicode equivalent.
+				for _, r := range node.Data {
+					switch r {
+					case 'd':
+						r = 'ᵈ'
+					case 'h':
+						r = 'ʰ'
+					case 'n':
+						r = 'ⁿ'
+					case 's':
+						r = 'ˢ'
+					case 't':
+						r = 'ᵗ'
+					}
+					text.WriteRune(r)
+				}
+			} else {
+				text.WriteString(whitespace.ReplaceAllString(node.Data, " "))
+			}
+		}
+	}
+
+	return strings.TrimSpace(text.String())
 }
 
 // Ordinal returns the ordinal of an integer.

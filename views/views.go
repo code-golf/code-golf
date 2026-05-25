@@ -62,6 +62,17 @@ var tmpl = template.New("").Funcs(template.FuncMap{
 		return u, nil
 	},
 
+	"html2text": func(a any) string {
+		switch v := a.(type) {
+		case string:
+			return v
+		case template.HTML:
+			return pretty.HTML2Text(v)
+		default:
+			panic("unknown type passed to html2text")
+		}
+	},
+
 	"map": func(kv ...any) map[any]any {
 		m := make(map[any]any, len(kv)/2)
 		for i := 0; i < len(kv); i += 2 {

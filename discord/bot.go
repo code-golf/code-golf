@@ -491,10 +491,10 @@ func UpdateHoleOfTheWeekTopic() error {
 		return nil
 	}
 
-	topic := config.HoleOfTheWeekText()
+	topic, _ := config.HoleOfTheWeek()
 
 	_, err := bot.ChannelEdit(
-		chanHOTWID, &discordgo.ChannelEdit{Topic: topic},
+		chanHOTWID, &discordgo.ChannelEdit{Topic: pretty.HTML2Text(topic)},
 	)
 	return err
 }
