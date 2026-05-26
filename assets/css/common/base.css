@@ -193,9 +193,9 @@ h3 { font-size: 1.25rem }
 button {
     color: var(--color);
     font: inherit;
-}
 
-button:not(:disabled) { cursor: pointer }
+    &:not(:disabled) { cursor: pointer }
+}
 
 dialog {
     background: var(--background);
@@ -373,13 +373,13 @@ summary {
     cursor: pointer;
     line-height: 2rem;
     padding: 0 .5rem;
-}
 
-summary:focus { outline: none }
+    &:focus { outline: none }
 
-summary:hover {
-    background: inherit !important;
-    color: inherit !important;
+    &:hover {
+        background: inherit !important;
+        color: inherit !important;
+    }
 }
 
 sup {
@@ -524,6 +524,15 @@ thead th {
     user-select: none;
     white-space: nowrap;
 
+    &[disabled] { opacity: .5 }
+
+    &:not([disabled]):hover {
+        background: none;
+        color: var(--color);
+        cursor: pointer;
+        text-decoration: none;
+    }
+
     > svg {
         height: 1rem;
         width: 1rem;
@@ -535,15 +544,6 @@ td .btn {
     font-size: .75rem;
     line-height: .75rem;
     padding: .25rem;
-}
-
-.btn[disabled] { opacity: .5 }
-
-.btn:not([disabled]):hover {
-    background: none;
-    color: var(--color);
-    cursor: pointer;
-    text-decoration: none;
 }
 
 .red    { background: var(--red)    }
@@ -735,9 +735,9 @@ body > .tabs {
     gap: 1rem 2rem;
     grid-template: min-content 1fr / 2fr 5fr;
 
-    & > #form-nav { display: none }
+    > #form-nav { display: none }
 
-    & > nav {
+    > nav {
         align-content: flex-start;
         border-right: 2px solid var(--color);
         display: flex;
@@ -747,7 +747,7 @@ body > .tabs {
         justify-content: flex-end;
         padding: .5rem 2rem .5rem 0;
 
-        & > * {
+        > * {
             align-items: center;
             display: flex;
             gap: .5rem;
@@ -755,16 +755,16 @@ body > .tabs {
             white-space: nowrap;
         }
 
-        & > a:hover { text-decoration: none }
+        > a:hover { text-decoration: none }
 
-        & > a[href]:hover span:first-child { text-decoration: underline }
+        > a[href]:hover span:first-child { text-decoration: underline }
 
-        & > a:not([href]) {
+        > a:not([href]) {
             color: var(--color);
             font-weight: bold;
         }
 
-        & > h2 {
+        > h2 {
             font-size: 1rem;
             text-decoration: underline;
             width: 100%;
@@ -773,11 +773,11 @@ body > .tabs {
         }
     }
 
-    & > nav#one-per-row {
+    > nav#one-per-row {
         flex-direction: column;
         justify-content: flex-start;
 
-        & > a { width: 100% }
+        > a { width: 100% }
     }
 }
 
