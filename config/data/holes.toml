@@ -644,6 +644,7 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Connect_Four' },
 ]
+released = 2026-06-01
 synopsis = 'Determine eventual winners in Connect 4 games.'
 preamble = '''
 <p>
