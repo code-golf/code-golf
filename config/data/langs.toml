@@ -1322,16 +1322,16 @@ size       = '46.5 MiB'
 version    = '0.113.0'
 website    = 'https://www.nushell.sh'
 example    = '''
-# Printing
-print 'Hello, World!'
-
-# Looping
-for i in 0..9 {
-    print $i
-}
-
-# Accessing arguments
 def main [...argv] {
+    # Printing
+    print 'Hello, World!'
+
+    # Looping
+    for i in 0..9 {
+        print $i
+    }
+
+    # Accessing arguments
     for arg in $argv {
         print $arg
     }
