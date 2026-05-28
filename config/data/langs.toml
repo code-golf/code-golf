@@ -1315,6 +1315,29 @@ for arg in commandLineParams():
     echo arg
 '''
 
+[Nushell]
+args       = [ '/usr/bin/nushell', '--no-config-file', '--no-history', '/proc/self/fd/0' ]
+experiment = 2620
+size       = '46.5 MiB'
+version    = '0.113.0'
+website    = 'https://www.nushell.sh'
+example    = '''
+# Printing
+print 'Hello, World!'
+
+# Looping
+for i in 0..9 {
+    print $i
+}
+
+# Accessing arguments
+def main [...argv] {
+    for arg in $argv {
+        print $arg
+    }
+}
+'''
+
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
 size    = '79.6 MiB'

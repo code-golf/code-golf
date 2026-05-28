@@ -45,6 +45,7 @@ COPY --from=codegolf/lang-prolog       / /langs/prolog/rootfs/
 COPY --from=codegolf/lang-java         / /langs/java/rootfs/
 COPY --from=codegolf/lang-erlang       / /langs/erlang/rootfs/
 COPY --from=codegolf/lang-javascript   / /langs/javascript/rootfs/
+COPY --from=codegolf/lang-nushell      / /langs/nushell/rootfs/
 COPY --from=codegolf/lang-hy           / /langs/hy/rootfs/
 COPY --from=codegolf/lang-v            / /langs/v/rootfs/
 COPY --from=codegolf/lang-haxe         / /langs/haxe/rootfs/

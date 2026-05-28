@@ -195,6 +195,7 @@ export const extensions : { [key: string]: any } = {
     'lua':           StreamLanguage.define(lua),
     'luau':          StreamLanguage.define(lua),
     'nim':           StreamLanguage.define({ ...nim( {}, {} ), languageData: { commentTokens: { line: '#' } } }),
+    'nushell':       StreamLanguage.define(shell),
     'ocaml':         StreamLanguage.define(oCaml),
     // TODO odin
     'pascal':        StreamLanguage.define(pascal),
