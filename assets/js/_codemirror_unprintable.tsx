@@ -1,5 +1,5 @@
 // CodeMirror unprintable character extensions
-import { Decoration, EditorView, keymap, MatchDecorator, Panel, ViewPlugin, WidgetType, showPanel } from '@codemirror/view';
+import { EditorView, keymap, Panel, showPanel, highlightSpecialChars } from '@codemirror/view';
 import { EditorState, StateEffect, StateField } from '@codemirror/state';
 import UnprintableElement from './_unprintable';
 
@@ -125,34 +125,7 @@ export const insertChar = EditorView.domEventHandlers({
     },
 });
 
-class UnprintableWidget extends WidgetType {
-    value;
-
-    constructor(value: number) {
-        super();
-        this.value = value;
-    }
-    toDOM() {
-        return <u-p c={String.fromCharCode(this.value)} />;
-    }
-}
-
-const unprintableDecorator = new MatchDecorator({
-    regexp: UnprintableElement.PATTERN,
-    decoration: match => Decoration.replace({
-        widget: new UnprintableWidget(match[0].charCodeAt(0)),
-    }),
+export const showUnprintables = highlightSpecialChars({
+    specialChars: UnprintableElement.PATTERN,
+    render: (code) => <u-p c={String.fromCharCode(code)} />,
 });
-
-export const showUnprintables = ViewPlugin.fromClass(
-    class {
-        decorations;
-        constructor(view: any) {
-            this.decorations = unprintableDecorator.createDeco(view);
-        }
-        update(update: any) {
-            this.decorations = unprintableDecorator.updateDeco(update, this.decorations);
-        }
-    },
-    { decorations: plugin => plugin.decorations },
-);
