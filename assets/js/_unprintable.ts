@@ -2,8 +2,8 @@ import { StyleModule } from 'style-mod'; // Already used by CodeMirror
 
 /* eslint no-unused-vars: ["off"] */
 
-const shadowStyle = new StyleModule({
-    ':host': {
+const style = new StyleModule({
+    'u-p': {
         display: 'inline-block',
         position: 'relative',
         verticalAlign: 'middle',
@@ -14,7 +14,7 @@ const shadowStyle = new StyleModule({
         lineHeight: 0.8,
         cursor: 'text',
     },
-    ':host > span': {
+    'u-p > span': {
         'WebkitTextFillColor': 'transparent',
         '&:before, &:after': {
             WebkitTextFillColor: 'currentcolor',
@@ -34,36 +34,32 @@ const shadowStyle = new StyleModule({
         },
     },
 
-    ':host([c])': {
+    'u-p[c]': {
         pointerEvents: 'none',
     },
-    ':host([c]) > span': {
+    'u-p[c] > span': {
         pointerEvents: 'auto',
     },
 });
+
+StyleModule.mount(document, style);
 
 // <u-p>&#...;</u-p> renders a single character and allows selection and copying.
 // <u-p c="&#...;"></u-p> renders a single character but doesn't allow copying.
 //
 // TODO:
 // Title doesn't show up for the attribute use case in Safari and others.
-// Firefox doesn't (yet) let the selection cross shadow root boundaries. (cf. bug #1867058)
 export default class UnprintableElement extends HTMLElement {
     #span;
 
     constructor(text = '') {
         super();
 
-        const shadow = this.attachShadow({ mode: 'closed' });
-        StyleModule.mount(shadow, shadowStyle);
-
         this.#span = document.createElement('span');
-        shadow.append(this.#span);
-
         if (text) this.textContent = text;
     }
 
-    // For the simplicity, we only update the shadow DOM when connected.
+    // For simplicity, we only build the DOM when connected.
     connectedCallback() {
         let c = this.getAttribute('c'), h, l, t;
         const ignoreTextContent = !!c;
@@ -94,6 +90,7 @@ export default class UnprintableElement extends HTMLElement {
         this.#span.setAttribute('data-l', l);
         this.#span.textContent = ignoreTextContent ? '' : c;
         this.#span.title = t;
+        this.replaceChildren(this.#span);
     }
 
     static PATTERN = /([\x00-\x08\x0B-\x1F\x7F-\xA0\uFEFF])/g;
