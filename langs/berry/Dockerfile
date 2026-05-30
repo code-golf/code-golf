@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache gcc make musl-dev python3 readline-static
 
-ENV VER=26e9cb5
+ENV VER=bd9c93b
 
 WORKDIR /berry
 

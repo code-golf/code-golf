@@ -5,7 +5,7 @@ RUN apt-get update                   \
     apt-get install --yes gcc make perl
 
 # Also rebuild Elixir, Gleam.
-ENV VER=29.0
+ENV VER=29.0.1
 
 WORKDIR /otp_src_$VER
 
