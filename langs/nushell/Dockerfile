@@ -1,25 +1,18 @@
-FROM rust:1.95.0-slim-trixie AS builder
+FROM rust:1.96.0-slim-trixie AS builder
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes musl-tools patch
+    apt-get install --yes musl-dev
 
-ENV CRT='x86_64-unknown-linux-musl' VER=0.113.0
-
-WORKDIR /nushell
-
-ADD https://github.com/nushell/nushell.git#$VER .
-
-COPY nushell.patch .
-
-RUN patch -p0 < nushell.patch
+ENV CRT='x86_64-unknown-linux-musl' VER=0.113.1
 
 RUN rustup target add $CRT
 
-RUN cargo install \
-    --path .      \
-    --root /usr   \
-    --target $CRT \
+RUN cargo install nu      \
+    --no-default-features \
+    --root /usr           \
+    --target $CRT         \
+    --version $VER        \
  && strip /usr/bin/nu
 
 FROM codegolf/lang-base

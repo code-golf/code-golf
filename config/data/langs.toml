@@ -1316,10 +1316,10 @@ for arg in commandLineParams():
 '''
 
 [Nushell]
-args       = [ '/usr/bin/nushell', '--no-config-file', '--no-history', '/proc/self/fd/0' ]
+args       = [ '/usr/bin/nushell', '/proc/self/fd/0' ]
 experiment = 2620
-size       = '46.5 MiB'
-version    = '0.113.0'
+size       = '32.9 MiB'
+version    = '0.113.1'
 website    = 'https://www.nushell.sh'
 example    = '''
 def main [...argv] {
