@@ -639,7 +639,6 @@ authors = [
     '01787f8c-ac53-7ea2-b9cd-2c20010ecdd5', # MeWhenI
     '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
 ]
-experiment = 1022
 category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Connect_Four' },
