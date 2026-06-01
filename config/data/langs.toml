@@ -2062,3 +2062,26 @@ pub fn main(init: std.process.Init) !void {
     try stdout.flush();
 }
 '''
+
+[ZuzuScript]
+args       = [ '/usr/bin/zuzu', '-e', '$code' ]
+experiment = 2677
+size       = '34.9 MiB'
+version    = '0.1.0'
+website    = 'https://zuzulang.org'
+example    = '''
+function __main__ ( args ) {
+    // Printing
+    say 'Hello, World!';
+
+    // Looping
+    for ( let i in 0...9 ) {
+        say i;
+    }
+
+    // Accessing arguments
+    for ( let arg in args ) {
+        say arg;
+    }
+}
+'''

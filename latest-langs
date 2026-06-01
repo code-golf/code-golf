@@ -110,6 +110,7 @@ constant %paths = (
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
     'Zig'          => 'ziglang.org',
+    'ZuzuScript'   => 'crates.io/api/v1/crates/zuzu-rust',
 );
 
 my %langs = from-toml 'config/data/langs.toml'.IO;
