@@ -1,7 +1,7 @@
 CREATE EXTENSION citext;
 
 CREATE TYPE cheevo AS ENUM (
-    '0xdead', '8-bit-wonder', 'aged-like-fine-wine', 'alchemist',
+    '0xdead', '4×4', '8-bit-wonder', 'aged-like-fine-wine', 'alchemist',
     'alphabet-soup', 'archivist', 'assembly-required', 'bakers-dozen',
     'big-brother', 'biohazard', 'bird-is-the-word', 'black-box-testing',
     'blackjack', 'bullseye', 'busy-beaver', 'caffeinated', 'card-sharp',

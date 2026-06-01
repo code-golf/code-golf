@@ -90,6 +90,7 @@ is save-solution(:hole<isbn> :lang<perl>), '{out-of-spec}',
     'isbn/perl earns {out-of-spec}';
 
 for Q:ww<
+    {4×4} connect-four 'bash perl ruby rust'
     {alchemist} game-of-life elixir
     {alphabet-soup} scrambled-sort 'c d j'
     {archivist} isbn 'basic cobol common-lisp'

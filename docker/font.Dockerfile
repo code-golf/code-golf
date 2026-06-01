@@ -126,6 +126,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f642.svg'            `# Slightly Smiling Face`        \
     '*/1f680.svg'            `# Rocket`                       \
     '*/1f697.svg'            `# Automobile`                   \
+    '*/1f699.svg'            `# Sport Utility Vehicle`        \
     '*/1f6a2.svg'            `# Ship`                         \
     '*/1f6a9.svg'            `# Triangular Flag on Post`      \
     '*/1f6df.svg'            `# Ring Buoy`                    \

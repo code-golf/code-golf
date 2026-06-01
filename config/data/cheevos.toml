@@ -98,6 +98,13 @@ emoji       = '💼'
 description = 'Solve <a href=/fizz-buzz>Fizz Buzz</a>.'
 
 [['Hole/Lang Specific']]
+name        = '4×4'
+emoji       = '🚙'
+description = 'Solve <a href=/connect-four>Connect Four</a> in any four languages with four letter names.'
+holes       = ['connect-four']
+target      = 4
+
+[['Hole/Lang Specific']]
 name        = 'Alchemist'
 emoji       = '🧙'
 description = 'Solve <a href=/game-of-life#elixir>Game of Life in Elixir</a>.'

@@ -44,7 +44,16 @@ BEGIN
     -- 💼 Interview Ready
     IF hole = 'fizz-buzz' THEN
         earned := earn(earned, 'interview-ready', user_id); END IF;
-        
+
+    -- 🚙 4×4
+    IF hole = 'connect-four' AND (
+        SELECT COUNT(*) >= 4 FROM UNNEST(langs_for_hole) WHERE unnest IN (
+            SELECT id FROM langs WHERE experiment = 0 AND char_length(name) = 4
+        )
+    ) THEN
+        earned := earn(earned, '4×4', user_id);
+    END IF;
+
     -- 🧙 Alchemist
     IF hole = 'game-of-life' AND lang = 'elixir' THEN
         earned := earn(earned, 'alchemist', user_id); END IF;
