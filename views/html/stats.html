@@ -176,7 +176,7 @@
         {{ end }}
 
         <a class=btn href="/{{ .Hole.ID }}#{{ .Lang.ID }}">
-            {{ svg .Lang.ID }} {{ .Lang.Name }}
+            {{ svg .Lang.ID }}<span>{{ .Lang.Name }}</span>
         </a>
     {{ end }}
     </div>

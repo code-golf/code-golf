@@ -534,6 +534,11 @@ thead th {
         text-decoration: none;
     }
 
+    > span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     > svg {
         height: 1rem;
         width: 1rem;
