@@ -390,7 +390,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '115 MiB'
-version = 'Clang 22.1.6'
+version = 'Clang 22.1.7'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -801,8 +801,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '73.6 MiB'
-version = '1.16.0'
+size    = '76.2 MiB'
+version = '1.17.0'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -826,7 +826,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '350 MiB'
-version = '1.26.3'
+version = '1.26.4'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1122,8 +1122,8 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '47.5 MiB'
-version = 'V8 14.8.178.28'
+size    = '47.4 MiB'
+version = 'V8 14.9.207.21'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1215,8 +1215,8 @@ example    = '''
 
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '139 MiB'
-version = '2.3.21'
+size    = '141 MiB'
+version = '2.4.0'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -2001,8 +2001,8 @@ w
 [Vyxal]
 args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
-size       = '78.3 MiB'
-version    = '3.11.0'
+size       = '78.4 MiB'
+version    = '3.12.0'
 website    = 'https://vyxal.github.io'
 example    = '''
 ## Printing

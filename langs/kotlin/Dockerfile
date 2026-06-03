@@ -1,11 +1,12 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache bash curl
+RUN apk add --no-cache bash
 
-ENV VER=2.3.21
+ENV VER=2.4.0
 
-RUN curl -#Lo kotlin.zip https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip \
- && unzip kotlin
+ADD https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip /kotlin.zip
+
+RUN unzip kotlin
 
 WORKDIR /kotlinc
 # Remove some unneeded libraries.
