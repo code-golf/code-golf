@@ -658,8 +658,8 @@ none
 [Elixir]
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '58.1 MiB'
-version = '1.19.5'
+size    = '58.8 MiB'
+version = '1.20.0'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -1193,8 +1193,8 @@ example = '''
 [Knight]
 args       = [ '/usr/bin/knight', '-e', '$code' ]
 experiment = 2360
-size       = '738 KiB'
-version    = 'd118d76'
+size       = '367 KiB'
+version    = '1981682'
 website    = 'https://github.com/synt7x/knightjit'
 example    = '''
 # Printing
@@ -1762,7 +1762,7 @@ G
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
 size    = '1.31 MiB'
-version = 'SQLite 3.53.1'
+version = 'SQLite 3.53.2'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1824,7 +1824,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '576 MiB'
-version = '6.3.1'
+version = '6.3.2'
 website = 'https://swift.org'
 example = '''
 // Printing

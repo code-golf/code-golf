@@ -1,19 +1,17 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache clang curl git make
+RUN apk add --no-cache clang git make
 
-ENV CFLAGS='-O3 -march=x86-64-v3 -DJIT_OFF' VER=d118d76
+ENV VER=1981682
 
 WORKDIR /knight
 
-RUN curl -#L https://github.com/synt7x/knightjit/tarball/$VER \
-  | tar xz --strip-components 1
+ADD https://github.com/synt7x/knightjit.git?commit=$VER /knight
 
-RUN make
+RUN make CFLAGS='-O3 -march=x86-64-v3 -DJIT_OFF -static' LDFLAGS='-static'
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1   /lib/
 COPY --from=0 /knight/target/knight /usr/bin/
 
 ENTRYPOINT ["knight"]
