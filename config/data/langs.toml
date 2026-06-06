@@ -418,7 +418,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 size    = '79.9 MiB'
-version = '0.11.11'
+version = '0.11.13'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -1407,7 +1407,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.6'
+version = '8.5.7'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -2067,7 +2067,7 @@ pub fn main(init: std.process.Init) !void {
 args       = [ '/usr/bin/zuzu', '-e', '$code' ]
 experiment = 2677
 size       = '34.9 MiB'
-version    = '0.1.0'
+version    = '0.1.1'
 website    = 'https://zuzulang.org'
 example    = '''
 function __main__ ( args ) {

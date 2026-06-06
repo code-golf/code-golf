@@ -3,7 +3,7 @@ FROM rust:1.96.0-slim-trixie AS builder
 RUN apt-get update \
  && apt-get install --yes libclang-dev libffi-dev libssl-dev libxml2-dev pkgconf
 
-ENV VER=0.1.0
+ENV VER=0.1.1
 
 RUN cargo install zuzu-rust --root /usr --version $VER \
  && strip /usr/bin/zuzu-rust
