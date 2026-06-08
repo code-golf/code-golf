@@ -3,9 +3,14 @@ FROM rust:1.96.0-slim-trixie AS builder
 RUN apt-get update \
  && apt-get install --yes libclang-dev libffi-dev libssl-dev libxml2-dev pkgconf
 
-ENV VER=0.1.1
+ENV VER=0.2.0
 
-RUN cargo install zuzu-rust --root /usr --version $VER \
+ADD git@github.com:zuzuscript/zuzu-rust.git#v$VER /zuzu
+
+WORKDIR /zuzu
+
+RUN cargo install --path . --root /usr \
+ && ./post-install.sh --prefix /usr    \
  && strip /usr/bin/zuzu-rust
 
 FROM codegolf/lang-base
@@ -22,6 +27,7 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6      \
               /lib/x86_64-linux-gnu/libzstd.so.1   /lib/x86_64-linux-gnu/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2          /lib64/
 COPY --from=0 /usr/bin/zuzu-rust                   /usr/bin/zuzu
+COPY --from=0 /usr/share/zuzu-rust/modules         /usr/share/zuzu-rust/modules
 
 ENTRYPOINT ["zuzu"]
 

@@ -32,6 +32,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
         # Tag the builder stage so "docker system prune" won't remove it.
         run <docker buildx build>,
             ( '--pull' unless $no-pull ),
+            '--ssh', 'default',
             '--tag', "{$img}-builder",
             '--target', 'builder',
             "langs/$id";
@@ -39,6 +40,7 @@ for %langs{@langs}:p -> (:key($name), :value(%lang)) {
 
     run <docker buildx build>,
         ( '--no-cache' if $no-cache ),
+        '--ssh', 'default',
         '--tag', $img,
         "langs/$id";
 
