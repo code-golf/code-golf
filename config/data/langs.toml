@@ -2064,7 +2064,7 @@ pub fn main(init: std.process.Init) !void {
 '''
 
 [ZuzuScript]
-args       = [ '/usr/bin/zuzu', '-e', '$code' ]
+args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
 size       = '35.9 MiB'
 version    = '0.2.0'
