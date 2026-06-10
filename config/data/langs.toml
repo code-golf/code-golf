@@ -613,7 +613,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '121 MiB'
-version = '3.12.1'
+version = '3.12.2'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -659,7 +659,7 @@ none
 args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
 size    = '58.8 MiB'
-version = '1.20.0'
+version = '1.20.1'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -677,7 +677,7 @@ args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
 size     = '51.1 MiB'
-version  = 'OTP 29.0.1'
+version  = 'OTP 29.0.2'
 website  = 'https://www.erlang.org'
 example  = '''
 main(Args) ->
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.4 MiB'
-version = 'V8 14.9.207.21'
+version = 'V8 14.9.207.27'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1278,7 +1278,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.76 MiB'
-version    = '0.723'
+version    = '0.724'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1340,7 +1340,7 @@ Sys.argv
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
 size       = '299 MiB'
-version    = '2026-05'
+version    = '2026-06'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -2067,7 +2067,7 @@ pub fn main(init: std.process.Init) !void {
 args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
 size       = '35.9 MiB'
-version    = '0.2.0'
+version    = '0.3.0'
 website    = 'https://zuzulang.org'
 example    = '''
 function __main__ ( args ) {
