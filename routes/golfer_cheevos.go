@@ -98,8 +98,60 @@ func golferCheevosGET(w http.ResponseWriter, r *http.Request) {
 		return ids
 	}
 
+	// Many langs in any hole
+	for _, cheevo := range config.CheevoTree["Hole/Lang Specific"] {
+		if !(len(cheevo.Holes) == 0 && len(cheevo.Langs) > 1) {
+			continue
+		}
+
+		progress := data[cheevo.ID]
+
+		// No need to calculate progress if they've already earnt it.
+		if progress.Earned != nil {
+			continue
+		}
+
+		var hole *config.Hole
+		var langs []string
+		if err := db.QueryRow(
+			` SELECT hole, array_agg(DISTINCT lang)
+			    FROM stable_passing_solutions
+			   WHERE lang = ANY($1) AND user_id = $2
+			GROUP BY hole
+			ORDER BY COUNT(DISTINCT lang) DESC, hole
+			   LIMIT 1`,
+			pq.Array(cheevo.Langs),
+			golfer.ID,
+		).Scan(
+			&hole, pq.Array(&langs),
+		); err != nil && !errors.Is(err, sql.ErrNoRows) {
+			panic(err)
+		}
+
+		for _, lang := range cheevo.Langs {
+			step := Step{
+				Complete: slices.Contains(langs, lang.ID),
+				Name:     lang.Name,
+			}
+
+			if hole != nil {
+				step.Path = "/" + hole.ID + "#" + lang.ID
+			}
+
+			progress.Steps = append(progress.Steps, step)
+		}
+
+		progress.Progress = len(langs)
+		data[cheevo.ID] = progress
+	}
+
 	for _, cheevo := range config.CheevoTree["Hole/Lang Specific"] {
 		if len(cheevo.Holes) == 0 && len(cheevo.Langs) == 0 {
+			continue
+		}
+
+		// Many langs in any hole, handled by the above block.
+		if len(cheevo.Holes) == 0 && len(cheevo.Langs) > 1 {
 			continue
 		}
 

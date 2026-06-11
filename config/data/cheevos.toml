@@ -288,6 +288,8 @@ target      = 26
 name        = 'Piña Colada'
 emoji       = '🍹'
 description = 'Solve any hole in Berry, Coconut, and Elixir.'
+langs       = ['berry', 'coconut', 'elixir']
+target      = 3
 
 [['Hole/Lang Specific']]
 name        = 'Ramanujan’s Lost Notebook'
@@ -351,6 +353,8 @@ description = 'Solve any hole in TeX.'
 name        = 'Tim Toady'
 emoji       = '🐪'
 description = 'Solve any hole in both Perl and Raku.'
+langs       = ['perl', 'raku']
+target      = 2
 
 [['Hole/Lang Specific']]
 name        = 'Typesetter'
