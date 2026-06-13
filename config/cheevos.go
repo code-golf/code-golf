@@ -45,10 +45,18 @@ func initCheevos() {
 	}
 
 	// Dyanmic cheevo langs.
-	fourByFour, ringToss := CheevoByID["4×4"], CheevoByID["ring-toss"]
+	var (
+		fourByFour     = CheevoByID["4×4"]
+		flagThoseMines = CheevoByID["flag-those-mines"]
+		ringToss       = CheevoByID["ring-toss"]
+	)
 	for _, lang := range LangList {
 		if len(lang.Name) == 4 {
 			fourByFour.Langs = append(fourByFour.Langs, lang)
+		}
+
+		if strings.HasPrefix(lang.Name, "F") {
+			flagThoseMines.Langs = append(flagThoseMines.Langs, lang)
 		}
 
 		if strings.ContainsRune(strings.ToLower(lang.Name), 'o') {

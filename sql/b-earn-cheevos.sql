@@ -51,8 +51,7 @@ BEGIN
             SELECT id FROM langs WHERE experiment = 0 AND char_length(name) = 4
         )
     ) THEN
-        earned := earn(earned, '4×4', user_id);
-    END IF;
+        earned := earn(earned, '4×4', user_id); END IF;
 
     -- 🧙 Alchemist
     IF hole = 'game-of-life' AND lang = 'elixir' THEN
@@ -130,9 +129,11 @@ BEGIN
         earned := earn(earned, 'fish-n-chips', user_id); END IF;
 
     -- 🚩 Flag Those Mines
-    SELECT COUNT(*) >= 3 INTO found FROM UNNEST(langs_for_hole)
-     WHERE unnest IN ('f-sharp', 'factor', 'forth', 'fortran');
-    IF hole = 'minesweeper' AND found THEN
+    IF hole = 'minesweeper' AND (
+        SELECT COUNT(*) >= 3 FROM UNNEST(langs_for_hole) WHERE unnest IN (
+            SELECT id FROM langs WHERE experiment = 0 AND name LIKE 'F%'
+        )
+    ) THEN
         earned := earn(earned, 'flag-those-mines', user_id); END IF;
 
     -- 🦄 Full Stack Dev
@@ -207,9 +208,11 @@ BEGIN
         earned := earn(earned, 'ramanujans-lost-notebook', user_id); END IF;
 
     -- 🛟 Ring Toss
-    SELECT COUNT(*) >= 9 INTO found FROM UNNEST(langs_for_hole)
-     WHERE unnest IN (SELECT id FROM langs WHERE experiment = 0 AND name LIKE '%O%');
-    IF hole = 'tower-of-hanoi' AND found THEN
+    IF hole = 'tower-of-hanoi' AND (
+        SELECT COUNT(*) >= 9 FROM UNNEST(langs_for_hole) WHERE unnest IN (
+            SELECT id FROM langs WHERE experiment = 0 AND name LIKE '%O%'
+        )
+    ) THEN
         earned := earn(earned, 'ring-toss', user_id); END IF;
 
     -- 🎮 S-box 360

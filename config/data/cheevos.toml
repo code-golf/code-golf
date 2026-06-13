@@ -197,7 +197,6 @@ name        = 'Flag Those Mines'
 emoji       = '🚩'
 description = 'Solve <a href=/minesweeper>Minesweeper</a> in any three languages beginning with the letter "F".'
 holes       = ['minesweeper']
-langs       = ['f-sharp', 'factor', 'forth', 'fortran']
 target      = 3
 
 [['Hole/Lang Specific']]
