@@ -10,11 +10,15 @@ is run('say "abc \t \x0B \f \r "')<runs>[0]<stdout>, 'abc', 'Different whitespac
 
 my $code = 'say "Fizz" x !($_ % 3) . "Buzz" x !($_ % 5) || $_ for 1 .. 100';
 
-is-deeply run($code)<runs>[0]<pass>:kv.Hash,
-    { :pass }, 'Passing without overflow';
+is-deeply run($code)<runs>[0]<pass stderr>:kv.Hash,
+    { :pass, :stderr('') }, 'Passing without overflow';
 
-is-deeply run("$code; say ' ' x (128 * 1024)")<runs>[0]<pass>:kv.Hash,
-    { :!pass }, 'Failing with overflow';
+$code ~= '; say " " x (128 * 1024)';
+
+is-deeply run($code)<runs>[0]<pass stderr>:kv.Hash, {
+    pass            => False,
+    stderr          => 'Failed for exceeding the 131072 bytes output limit.',
+}, 'Failing with overflow';
 
 sub run { post-solution :$^code, :lang<perl> }
 
