@@ -52,6 +52,7 @@ type Run struct {
 	Pass                  bool          `json:"pass"`
 	Stderr                string        `json:"stderr"`
 	Stdout                string        `json:"stdout"`
+	StdoutOverflow        bool          `json:"-"`
 	Time                  time.Duration `json:"time_ns,format:nano"`
 	Timeout               bool          `json:"timeout"`
 
@@ -126,8 +127,8 @@ func play(
 	run.MultisetItemDelimiter = hole.MultisetItemDelimiter
 	run.Answer = holeJudges[hole.ID](*run)
 
-	// Timeouts and whitespace only output never pass.
-	if !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
+	// Stdout overflows, timeouts, and whitespace only output never pass.
+	if !run.StdoutOverflow && !run.Timeout && len(strings.TrimSpace(run.Stdout)) != 0 {
 		if hole.CaseFold {
 			run.Pass = strings.EqualFold(run.Answer, run.Stdout)
 		} else {
@@ -327,6 +328,12 @@ func runCode(
 
 	const maxLength = 128 * 1024 // 128 KiB
 
+	stdoutBytes := stdout.Next(maxLength)
+	if stdout.Len() != 0 {
+		run.StdoutOverflow = true
+		fmt.Fprint(&stderr, "Failed for exceeding the ", maxLength, " bytes output limit.\n")
+	}
+
 	// Trim trailing whitespace.
 	stderrBytes := bytes.TrimRightFunc(stderr.Next(maxLength), unicode.IsSpace)
 
@@ -337,8 +344,6 @@ func runCode(
 	if run.Stderr == "&nbsp;" {
 		run.Stderr = ""
 	}
-
-	stdoutBytes := stdout.Next(maxLength)
 
 	// Postprocess output in apl or sed.
 	// Convert apl's carriage returns or sed's null bytes to newlines.
