@@ -3,12 +3,12 @@ FROM alpine:3.23 AS builder
 RUN apk add --no-cache clang m4 make
 
 ENV CC='clang' CXX='clang++' LDFLAGS='-static' \
-    GCC_VER=15.2.0 GMP_VER=6.3.0 MPC_VER=1.4.1 MPFR_VER=4.2.2
+    GCC_VER=15.3.0 GMP_VER=6.3.0 MPC_VER=1.4.1 MPFR_VER=4.2.2
 
 ADD --unpack https://ftpmirror.gnu.org/gnu/gcc/gcc-$GCC_VER/gcc-$GCC_VER.tar.xz /
-ADD --unpack https://ftpmirror.gnu.org/gnu/gmp/gmp-$GMP_VER.tar.bz2             /
+ADD --unpack https://ftpmirror.gnu.org/gnu/gmp/gmp-$GMP_VER.tar.xz              /
 ADD --unpack https://ftpmirror.gnu.org/gnu/mpc/mpc-$MPC_VER.tar.xz              /
-ADD --unpack https://ftpmirror.gnu.org/gnu/mpfr/mpfr-$MPFR_VER.tar.bz2          /
+ADD --unpack https://ftpmirror.gnu.org/gnu/mpfr/mpfr-$MPFR_VER.tar.xz           /
 
 WORKDIR /gmp-$GMP_VER
 

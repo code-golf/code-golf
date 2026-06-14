@@ -505,7 +505,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '78.5 MiB'
+size    = '82.2 MiB'
 version = '3.2.0'
 website = 'https://coconut-lang.org'
 example = '''
@@ -774,7 +774,7 @@ bye
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
 size    = '78.1 MiB'
-version = 'GNU Fortran 15.2.0'
+version = 'GNU Fortran 15.3.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
 integer :: i
@@ -1032,7 +1032,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '43.5 MiB'
+size       = '43.6 MiB'
 version    = '1.3.0'
 website    = 'https://hylang.org'
 example    = '''
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.76 MiB'
-version    = '0.724'
+size       = '5.77 MiB'
+version    = '0.725'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1498,7 +1498,7 @@ example = '''
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
 size    = '30.2 MiB'
-version = '3.14.5'
+version = '3.14.6'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -2066,8 +2066,8 @@ pub fn main(init: std.process.Init) !void {
 [ZuzuScript]
 args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
-size       = '35.9 MiB'
-version    = '0.3.0'
+size       = '36.0 MiB'
+version    = '0.4.0'
 website    = 'https://zuzulang.org'
 example    = '''
 function __main__ ( args ) {
