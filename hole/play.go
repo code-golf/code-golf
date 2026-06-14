@@ -43,22 +43,23 @@ func trimPerLine(bytesSlice []byte) string {
 
 // Run holds the results of running a given solution once.
 type Run struct {
-	Answer                string   `json:"answer"`
-	Code                  string   `json:"-"`
-	MultisetItemDelimiter string   `json:"multiset_item_delimiter"`
-	OutputDelimiter       string   `json:"output_delimiter"`
-	Args                  []string `json:"args"`
-	ExitCode              int      `json:"exit_code"`
-	Pass                  bool     `json:"pass"`
-	Stderr                string   `json:"stderr"`
-	Stdout                string   `json:"stdout"`
-	stdoutOverflow        bool
+	Answer                string        `json:"answer"`
+	Code                  string        `json:"-"`
+	MultisetItemDelimiter string        `json:"multiset_item_delimiter"`
+	OutputDelimiter       string        `json:"output_delimiter"`
+	Args                  []string      `json:"args"`
+	ExitCode              int           `json:"exit_code"`
+	Pass                  bool          `json:"pass"`
+	Stderr                string        `json:"stderr"`
+	Stdout                string        `json:"stdout"`
 	Time                  time.Duration `json:"time_ns,format:nano"`
 	Timeout               bool          `json:"timeout"`
 
 	// This is a bit hacky, the only way to discover how long an assembly
 	// solution is is to compile it so we store it here but don't JSON it.
 	ASMBytes int `json:"-"`
+
+	stdoutOverflow bool
 }
 
 // Play a given hole, in a given lang, with given code and return the runs.
