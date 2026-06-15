@@ -7,7 +7,7 @@ import (
 
 var _ = answerFunc("chess960-encoder", func() []Answer { return chess960(false) })
 
-func grayCode(reverse bool) []Answer {
+func chess960(reverse bool) []Answer {
 	const count = 960
 
   knightArrangement := [10][2]int{{0, 1}, {0, 2}, {0, 3}, {0, 4}, {1, 2}, {1, 3}, {1, 4}, {2, 3}, {2, 4}, {3, 4}}
@@ -65,9 +65,9 @@ func grayCode(reverse bool) []Answer {
     
 
 		  if reverse {
-		  	  tests[i] = test{spid, layout.String()}
+		  	  tests[n] = test{spid, layout.String()}
 		  } else {
-		  	  tests[i] = test{layout.String(), spid}
+		  	  tests[n] = test{layout.String(), spid}
 		  }
 	}
 
