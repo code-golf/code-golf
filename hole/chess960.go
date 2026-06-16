@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+var _ = answerFunc("chess960-decoder", func() []Answer { return chess960(true) })
 var _ = answerFunc("chess960-encoder", func() []Answer { return chess960(false) })
 
 func chess960(reverse bool) []Answer {
