@@ -578,9 +578,23 @@ links = [
 ]
 synopsis = 'Output the Chess960 SP-ID for a Unicode chess board.'
 preamble = '''
+{{ if eq .Name "Chess960 Encoder" }}
 <p>
     Given a valid Chess960 starting back-rank arrangement (8 pieces: King, Queen, two Bishops, two Knights, two Rooks in any legal configuration), print its unique Starting Position Identifier (SP-ID).
+{{ else }}
+<p>
+    Given a Starting Position Identifier (SP-ID), print the Chess960 starting back-rank arrangement that it represents.
+{{ end }}
 '''
+
+[['Chess960 Encoder'.variants]]
+name     = 'Chess960 Decoder'
+experiment = 2674
+synopsis = 'Output the Unicode chess board for a Chess960 SP-ID.'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Find_Chess960_starting_position_identifier' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Chess960_numbering_scheme#Direct_derivation' },
+]
 
 ['Christmas Trees']
 category = 'Art'
