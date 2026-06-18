@@ -369,7 +369,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '111 MiB'
-version = 'C# 14.0 on .NET 10.0.8'
+version = 'C# 14.0 on .NET 10.0.9'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -390,7 +390,7 @@ foreach (String arg in args)
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
 size    = '115 MiB'
-version = 'Clang 22.1.7'
+version = 'Clang 22.1.8'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -695,7 +695,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.8'
+version = 'F# 10.0 on .NET 10.0.9'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.4 MiB'
-version = 'V8 14.9.207.27'
+version = 'V8 14.9.207.29'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1458,7 +1458,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '139 MiB'
-version    = 'PowerShell 7.6.2 on .NET 10.0.8'
+version    = 'PowerShell 7.6.3 on .NET 10.0.9'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing

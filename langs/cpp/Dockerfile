@@ -1,13 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache cmake curl g++ linux-headers ninja python3
+RUN apk add --no-cache cmake g++ linux-headers ninja python3
 
-ENV VER=22.1.7
+ENV VER=22.1.8
 
-RUN curl -#L https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz \
-  | tar xz --strip-components 1
+ADD --unpack https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz /
 
-WORKDIR /llvm/build
+WORKDIR /llvm-project-llvmorg-$VER/llvm/build
 
 RUN cmake -G Ninja                    \
     -DCMAKE_BUILD_TYPE='MinSizeRel'   \
