@@ -3,7 +3,7 @@ FROM rust:1.96.0-slim-trixie AS builder
 RUN apt-get update \
  && apt-get install --yes libclang-dev libffi-dev libssl-dev libxml2-dev pkgconf
 
-ENV VER=0.4.0
+ENV VER=0.5.0
 
 ADD git@github.com:zuzuscript/zuzu-rust.git#v$VER /zuzu
 
