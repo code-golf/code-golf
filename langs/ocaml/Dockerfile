@@ -1,11 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache gcc make musl-dev
 
-ENV VER=5.4.1
+ENV VER=5.5.0
 
-RUN curl -#L https://github.com/ocaml/ocaml/archive/refs/tags/$VER.tar.gz \
-  | tar xz --strip-components 1
+ADD --unpack https://github.com/ocaml/ocaml/archive/refs/tags/$VER.tar.gz /
+
+WORKDIR /ocaml-$VER
 
 RUN ./configure               \
     --disable-debug-runtime   \
@@ -28,13 +29,12 @@ WORKDIR /usr/lib/ocaml
 RUN rm -r compiler-libs \
  && find . \( -name '*.cmt*' -o -name '*.ml' \) -a -delete
 
+RUN rm /usr/bin/ocamldep* /usr/bin/ocamlopt*
+
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1 /lib/
-COPY --from=0 /usr/bin/ocaml      \
-              /usr/bin/ocamlc     \
-              /usr/bin/ocamlrun   /usr/bin/
-COPY --from=0 /usr/lib/ocaml      /usr/lib/ocaml
+COPY --from=0           /lib/ld-musl-*.so.1             /lib/
+COPY --from=0 --parents /usr/bin/*ocaml* /usr/lib/ocaml /
 
 ENTRYPOINT ["ocaml"]
 

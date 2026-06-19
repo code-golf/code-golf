@@ -1,15 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-# Also bump iogii.
-ENV VER=9.8.2
+ENV VER=9.10.3
 
 RUN apk add --no-cache ghc=$VER-r2 musl-dev
 
-RUN echo "#define VER \"$VER\"" > haskell.h
-
 COPY haskell.c /
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/haskell -s haskell.c
+RUN gcc -D VER="\"$VER\"" -Wall -Werror -Wextra -o /usr/bin/haskell -s haskell.c
 
 RUN find /usr/lib -name '*.a' -delete
 
@@ -23,10 +20,9 @@ RUN find /usr/lib -not \(                    \
     \) -delete
 
 # Delete unused binaries and libraries.
-RUN rm -r /usr/lib/ghc-$VER/lib/bin                           \
-          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER/Cabal-* \
-          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER/ghci-*  \
- && find /usr/lib/ghc-$VER/bin -type f                        \
+RUN rm -r /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER-inplace/Cabal-* \
+          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER-inplace/ghci-*  \
+ && find /usr/lib/ghc-$VER/bin -type f                                \
     -not \( -name ghc-$VER -or -name runghc-$VER \) -delete
 
 FROM codegolf/lang-base

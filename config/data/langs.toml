@@ -939,8 +939,8 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '339 MiB'
-version = 'GHC 9.8.2'
+size    = '356 MiB'
+version = 'GHC 9.10.3'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -1317,8 +1317,8 @@ for arg in commandLineParams():
 
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
-size    = '79.6 MiB'
-version = '5.4.1'
+size    = '101 MiB'
+version = '5.5.0'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -2067,7 +2067,7 @@ pub fn main(init: std.process.Init) !void {
 args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
 size       = '36.1 MiB'
-version    = '0.5.0'
+version    = '0.6.0'
 website    = 'https://zuzulang.org'
 example    = '''
 function __main__ ( args ) {
