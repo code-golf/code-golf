@@ -20,6 +20,7 @@ func grayCode(reverse bool) []Answer {
 	}
 
 	tests := make([]test, count)
+	sequential := make([]test, count)
 	for i, n := range shuffle(numbers) {
 		dec := strconv.Itoa(n)
 		rbc := strconv.FormatInt(int64(n^n>>1), 2)
@@ -28,8 +29,12 @@ func grayCode(reverse bool) []Answer {
 			tests[i] = test{rbc, dec}
 		} else {
 			tests[i] = test{dec, rbc}
+			sequential[i] = test{strconv.Itoa(i), strconv.FormatInt(int64(i^i>>1), 2)}
 		}
 	}
 
-	return outputTests(tests)
+	if reverse {
+		return outputTests(tests)
+	}
+	return outputTests(tests, sequential)
 }
