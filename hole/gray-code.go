@@ -1,6 +1,9 @@
 package hole
 
-import "strconv"
+import (
+	"slices"
+	"strconv"
+)
 
 var _ = answerFunc("gray-code-decoder", func() []Answer { return grayCode(true) })
 var _ = answerFunc("gray-code-encoder", func() []Answer { return grayCode(false) })
@@ -21,7 +24,8 @@ func grayCode(reverse bool) []Answer {
 
 	tests := make([]test, count)
 	sequential := make([]test, count)
-	for i, n := range shuffle(numbers) {
+	numbers_copy := slices.Clone(numbers)
+	for i, n := range shuffle(numbers_copy) {
 		dec := strconv.Itoa(n)
 		rbc := strconv.FormatInt(int64(n^n>>1), 2)
 
@@ -29,7 +33,7 @@ func grayCode(reverse bool) []Answer {
 			tests[i] = test{rbc, dec}
 		} else {
 			tests[i] = test{dec, rbc}
-			sequential[i] = test{strconv.Itoa(i), strconv.FormatInt(int64(i^i>>1), 2)}
+			sequential[i] = test{strconv.Itoa(numbers[i]), strconv.FormatInt(int64(numbers[i]^numbers[i]>>1), 2)}
 		}
 	}
 
