@@ -23,9 +23,9 @@ func grayCode(reverse bool) []Answer {
 	}
 
 	tests := make([]test, count)
-	sequential := make([]test, count)
-	numbers_copy := slices.Clone(numbers)
-	for i, n := range shuffle(numbers_copy) {
+	unpermuted := make([]test, count)
+	numbersCopy := slices.Clone(numbers)
+	for i, n := range shuffle(numbersCopy) {
 		dec := strconv.Itoa(n)
 		rbc := strconv.FormatInt(int64(n^n>>1), 2)
 
@@ -33,12 +33,12 @@ func grayCode(reverse bool) []Answer {
 			tests[i] = test{rbc, dec}
 		} else {
 			tests[i] = test{dec, rbc}
-			sequential[i] = test{strconv.Itoa(numbers[i]), strconv.FormatInt(int64(numbers[i]^numbers[i]>>1), 2)}
+			unpermuted[i] = test{strconv.Itoa(numbers[i]), strconv.FormatInt(int64(numbers[i]^numbers[i]>>1), 2)}
 		}
 	}
 
 	if reverse {
 		return outputTests(tests)
 	}
-	return outputTests(tests, sequential)
+	return outputTests(tests, unpermuted)
 }
