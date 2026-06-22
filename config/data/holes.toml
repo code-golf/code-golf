@@ -565,6 +565,37 @@ preamble = '''
 <p>Print the first <b>1,000</b> decimal digits of Catalan’s constant.
 '''
 
+['Chess960 Encoder']
+authors = [
+    '0178b7c9-b196-7af2-80fc-722c9493cbb6', # scpchicken
+	'018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
+category = 'Gaming'
+experiment = 2674
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Find_Chess960_starting_position_identifier' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Chess960_numbering_scheme#Direct_derivation' },
+]
+synopsis = 'Output the Chess960 SP-ID for a Unicode chess board.'
+preamble = '''
+{{ if eq .Name "Chess960 Encoder" }}
+<p>
+    Given a valid Chess960 starting back-rank arrangement (8 pieces: King, Queen, two Bishops, two Knights, two Rooks in any legal configuration), print its unique Starting Position Identifier (SP-ID).
+{{ else }}
+<p>
+    Given a Starting Position Identifier (SP-ID), print the Chess960 starting back-rank arrangement that it represents.
+{{ end }}
+'''
+
+[['Chess960 Encoder'.variants]]
+name     = 'Chess960 Decoder'
+experiment = 2674
+synopsis = 'Output the Unicode chess board for a Chess960 SP-ID.'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Find_Chess960_starting_position_identifier' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Chess960_numbering_scheme#Direct_derivation' },
+]
+
 ['Christmas Trees']
 category = 'Art'
 released = 2017-12-05
