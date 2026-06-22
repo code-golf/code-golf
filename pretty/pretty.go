@@ -68,6 +68,8 @@ func HTML2Text(markup template.HTML) string {
 						r = 'ʰ'
 					case 'n':
 						r = 'ⁿ'
+					case 'r':
+						r = 'ʳ'
 					case 's':
 						r = 'ˢ'
 					case 't':
