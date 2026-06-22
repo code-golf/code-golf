@@ -1,6 +1,7 @@
 package hole
 
 import (
+	"math/rand/v2"
 	"strconv"
 	"strings"
 )
