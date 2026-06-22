@@ -14,7 +14,7 @@ func chess960(reverse bool) []Answer {
 	knightArrangement := [10][2]int{{0, 1}, {0, 2}, {0, 3}, {0, 4}, {1, 2}, {1, 3}, {1, 4}, {2, 3}, {2, 4}, {3, 4}}
 
 	tests := make([]test, count)
-	for n := range count {
+	for x, n := range rand.Perm(count) {
 		spid := strconv.Itoa(n)
 		grid := [8]rune{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
 
@@ -65,11 +65,11 @@ func chess960(reverse bool) []Answer {
 		}
 
 		if reverse {
-			tests[n] = test{spid, layout.String()}
+			tests[x] = test{spid, layout.String()}
 		} else {
-			tests[n] = test{layout.String(), spid}
+			tests[x] = test{layout.String(), spid}
 		}
 	}
 
-	return shuffle(outputTests(tests))
+	return outputTests(tests[:480], tests[480:])
 }
