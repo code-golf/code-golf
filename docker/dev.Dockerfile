@@ -1,6 +1,6 @@
-FROM golang:1.26.4-alpine3.23
+FROM golang:1.27rc1-alpine3.24
 
-ENV CGO_ENABLED=0 GOEXPERIMENT=jsonv2 GOPATH= TZ=Europe/London
+ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
 RUN mkdir /run_root
 

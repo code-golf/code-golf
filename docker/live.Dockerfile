@@ -1,6 +1,6 @@
-FROM golang:1.26.4-alpine3.23
+FROM golang:1.27rc1-alpine3.24
 
-ENV CGO_ENABLED=0 GOAMD64=v4 GOEXPERIMENT=jsonv2 GOPATH=
+ENV CGO_ENABLED=0 GOAMD64=v4 GOPATH=
 
 RUN mkdir /run_root
 

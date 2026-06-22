@@ -10,7 +10,7 @@ bench:
 
 bump:
 	@go get -u
-	@go mod tidy -compat=1.26
+	@go mod tidy -compat=1.27
 	@npm upgrade
 
 cert:
@@ -75,8 +75,9 @@ mathjax-fonts:
 	@cp -r node_modules/mathjax/es5/output/chtml/fonts/woff-v2 public/mathjax-fonts
 
 lint:
-	@docker run --rm -v $(CURDIR):/app -w /app -e GOEXPERIMENT=jsonv2 \
-	    golangci/golangci-lint:v2.12.2 golangci-lint run
+# Disabled until 1.27 support: https://github.com/golangci/golangci-lint/issues/6643
+#	@docker run --rm -v $(CURDIR):/app -w /app \
+#	    golangci/golangci-lint:v2.12.2 golangci-lint run
 
 	@node_modules/.bin/eslint assets/js
 
@@ -112,7 +113,7 @@ svgo:
 	@node_modules/.bin/svgo --recursive --folder assets/svg
 
 test:
-	@GOEXPERIMENT=jsonv2 go test ./...
+	go test ./...
 
 .PHONY: xt
 xt:

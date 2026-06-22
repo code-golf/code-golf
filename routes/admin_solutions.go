@@ -3,6 +3,7 @@ package routes
 import (
 	"cmp"
 	"context"
+	json_v1 "encoding/json"
 	"encoding/json/v2"
 	"errors"
 	"net/http"
@@ -27,7 +28,7 @@ type solution struct {
 	Pass     bool          `json:"pass"`
 	Stderr   string        `json:"stderr"`
 	Tested   time.Time     `json:"tested"`
-	Took     time.Duration `json:"took,format:nano"`
+	Took     time.Duration `json:"took"`
 	Total    int           `json:"total"`
 }
 
@@ -134,7 +135,7 @@ func adminSolutionsRunGET(w http.ResponseWriter, r *http.Request) {
 					)
 				}
 
-				b, err := json.Marshal(s)
+				b, err := json.Marshal(s, json_v1.FormatDurationAsNano(true))
 				if err != nil {
 					panic(err)
 				}

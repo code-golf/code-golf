@@ -1,3 +1,0 @@
-{
-    "go.toolsEnvVars": { "GOEXPERIMENT": "jsonv2" }
-}
