@@ -58,6 +58,10 @@ select.selectActive {
     color: var(--background);
 }
 
-#hole-forsyth-edwards-notation :is(aside > div, pre, .readonly-output) {
+:is(
+    #hole-chess960-decoder,
+    #hole-chess960-encoder,
+    #hole-forsyth-edwards-notation
+) :is(aside > div, pre, .readonly-output) {
     font-family: chess, monospace;
 }
