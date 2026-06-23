@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl make
 
-ENV LANG='C.UTF-8' VER=1.20.1
+ENV LANG='C.UTF-8' VER=1.20.2
 
 COPY --from=codegolf/lang-erlang /usr /usr
 

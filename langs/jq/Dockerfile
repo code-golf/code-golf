@@ -1,11 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache gcc make musl-dev
 
-ENV VER=1.8.1
+ENV VER=1.8.2
 
-RUN curl -#L https://github.com/jqlang/jq/releases/download/jq-$VER/jq-$VER.tar.gz \
-  | tar xz --strip-components 1
+ADD --unpack https://github.com/jqlang/jq/releases/download/jq-$VER/jq-$VER.tar.gz /
+
+WORKDIR /jq-$VER
 
 RUN ./configure         \
     --enable-all-static \

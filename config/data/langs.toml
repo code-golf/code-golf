@@ -1123,7 +1123,7 @@ void main(String[] args) {
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
 size    = '47.4 MiB'
-version = 'V8 14.9.207.29'
+version = 'V8 14.9.207.35'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1140,8 +1140,8 @@ for (let arg of arguments)
 
 [jq]
 args    = [ '/usr/bin/jq', '--args', '--null-input', '--raw-output', '--', '$code' ]
-size    = '1.03 MiB'
-version = '1.8.1'
+size    = '1.04 MiB'
+version = '1.8.2'
 website = 'https://jqlang.github.io/jq/'
 example = '''
 # Printing
@@ -1277,8 +1277,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.77 MiB'
-version    = '0.725'
+size       = '5.78 MiB'
+version    = '0.726'
 website    = 'https://luau.org'
 example    = '''
 -- Printing

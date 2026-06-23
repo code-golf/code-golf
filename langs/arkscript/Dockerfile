@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache clang cmake gcc make
 
-ENV LDFLAGS='-static' VER=4.7.0
+ENV LDFLAGS='-static' VER=4.7.1
 
 WORKDIR /arkscript
 
