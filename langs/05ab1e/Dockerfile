@@ -40,19 +40,19 @@ COPY --from=0 /usr/bin/05ab1e                                   \
               /usr/bin/erl                                      \
               /usr/bin/escript                                  /usr/bin/
 COPY --from=0 /usr/lib/erlang/bin/no_dot_erlang.boot            /usr/lib/erlang/bin/
-COPY --from=0 /usr/lib/erlang/erts-13.2.2.9/bin/beam.smp        \
-              /usr/lib/erlang/erts-13.2.2.9/bin/erl_child_setup \
-              /usr/lib/erlang/erts-13.2.2.9/bin/erlexec         \
-              /usr/lib/erlang/erts-13.2.2.9/bin/inet_gethost    /usr/lib/erlang/erts-13.2.2.9/bin/
-COPY --from=0 /usr/lib/erlang/lib/asn1-5.0.21.1/ebin            /usr/lib/erlang/lib/asn1-5.0.21.1/ebin
-COPY --from=0 /usr/lib/erlang/lib/compiler-8.2.6.4/ebin         /usr/lib/erlang/lib/compiler-8.2.6.4/ebin
-COPY --from=0 /usr/lib/erlang/lib/crypto-5.1.4.3/ebin           /usr/lib/erlang/lib/crypto-5.1.4.3/ebin
-COPY --from=0 /usr/lib/erlang/lib/kernel-8.5.4.3/ebin           /usr/lib/erlang/lib/kernel-8.5.4.3/ebin
-COPY --from=0 /usr/lib/erlang/lib/public_key-1.13.3.2/ebin      /usr/lib/erlang/lib/public_key-1.13.3.2/ebin
-COPY --from=0 /usr/lib/erlang/lib/ssl-10.9.1.4/ebin             /usr/lib/erlang/lib/ssl-10.9.1.4/ebin
-COPY --from=0 /usr/lib/erlang/lib/stdlib-4.3.1.4/ebin           /usr/lib/erlang/lib/stdlib-4.3.1.4/ebin
-COPY --from=0 /usr/lib/erlang/lib/syntax_tools-3.0.1/ebin       /usr/lib/erlang/lib/syntax_tools-3.0.1/ebin
-COPY --from=0 /usr/lib/erlang/lib/tools-3.5.3/ebin              /usr/lib/erlang/lib/tools-3.5.3/ebin
+COPY --from=0 /usr/lib/erlang/erts-15.2.7/bin/beam.smp          \
+              /usr/lib/erlang/erts-15.2.7/bin/erl_child_setup   \
+              /usr/lib/erlang/erts-15.2.7/bin/erlexec           \
+              /usr/lib/erlang/erts-15.2.7/bin/inet_gethost      /usr/lib/erlang/erts-15.2.7/bin/
+COPY --from=0 /usr/lib/erlang/lib/asn1-5.3.4.1/ebin             /usr/lib/erlang/lib/asn1-5.3.4.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/compiler-8.6.1/ebin           /usr/lib/erlang/lib/compiler-8.6.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/crypto-5.5.3/ebin             /usr/lib/erlang/lib/crypto-5.5.3/ebin
+COPY --from=0 /usr/lib/erlang/lib/kernel-10.2.7.1/ebin          /usr/lib/erlang/lib/kernel-10.2.7.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/public_key-1.17.1/ebin        /usr/lib/erlang/lib/public_key-1.17.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/ssl-11.2.12.1/ebin            /usr/lib/erlang/lib/ssl-11.2.12.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/stdlib-6.2.2.1/ebin           /usr/lib/erlang/lib/stdlib-6.2.2.1/ebin
+COPY --from=0 /usr/lib/erlang/lib/syntax_tools-3.2.2/ebin       /usr/lib/erlang/lib/syntax_tools-3.2.2/ebin
+COPY --from=0 /usr/lib/erlang/lib/tools-4.1.1/ebin              /usr/lib/erlang/lib/tools-4.1.1/ebin
 
 ENTRYPOINT ["05ab1e"]
 
