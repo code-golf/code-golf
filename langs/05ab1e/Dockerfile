@@ -1,15 +1,12 @@
 FROM debian:trixie-slim AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl elixir erlang gcc patch
+RUN apt-get update && apt-get install --yes elixir erlang gcc patch
 
 ENV VER=c31668b
 
 WORKDIR /05ab1e
 
-RUN curl -#L https://github.com/Adriandmen/05AB1E/tarball/$VER \
-  | tar xz --strip-components 1
+ADD https://github.com/Adriandmen/05AB1E.git?commit=$VER .
 
 COPY 05ab1e.c interp.patch /
 
