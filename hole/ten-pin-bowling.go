@@ -9,24 +9,26 @@ var games = [...]struct {
 	frames []rune
 	score  string
 }{
+	// First 9 cases of the first run in this specific order.
+	{[]rune(" X 7/ 9-  X -8 8/ -6  X  X X8/"), "168"},
+	{[]rune("53 33 34  X  X  X 53 3/  X X43"), "163"},
 	{[]rune(" X  X  X  X  X  X  X  X  X XXX"), "300"},
 	{[]rune(" X 17 36 63 4-  X 61 7- 6- -- "), "85"},
-	{[]rune(" X 7/ 9-  X -8 8/ -6  X  X X81"), "167"},
-	{[]rune(" X 7/ 9-  X -8 8/ -6  X  X X8/"), "168"},
-	{[]rune(" X 8- 51  X 35 36 7- 9-  X 8- "), "109"},
-	{[]rune("-- -- -- -- -- -- -- -- -- -- "), "0"},
-	{[]rune("-9 5- 35 31 61 43 6- 63 6- 71 "), "69"},
-	{[]rune("32 3/  X  X  X  X 43 33 33 3/6"), "161"},
 	{[]rune("32 3/  X  X  X  X 43 33 33 36 "), "154"},
-	{[]rune("43 44 54 45  X  X  X  X 43 23 "), "146"},
-	{[]rune("53 33 34  X  X  X 53 3/  X X43"), "163"},
-	{[]rune("7/ 4- 36 81 8- 54 44 53 31 8- "), "81"},
+	{[]rune("-- -- -- -- -- -- -- -- -- -- "), "0"},
 	{[]rune("71 33 45 45  X  X  X  X 5/ 23 "), "154"},
-	{[]rune("71 7- 72 8- 81 51 8-  X 6- 81 "), "86"},
-	{[]rune("72 9- 81  X 9- 8/  X  X  X 9- "), "162"},
+	{[]rune("-9 5- 35 31 61 43 6- 63 6- 71 "), "69"},
 	{[]rune("81 16 8/ 33  X 7- -7 9- 8- -- "), "83"},
-	{[]rune("9- -2 35  X  X  X  X 62 22 62 "), "143"},
+	// First 9 cases of the second run in this specific order.
+	{[]rune("32 3/  X  X  X  X 43 33 33 3/6"), "161"},
+	{[]rune("72 9- 81  X 9- 8/  X  X  X 9- "), "162"},
+	{[]rune(" X 7/ 9-  X -8 8/ -6  X  X X81"), "167"},
+	{[]rune("43 44 54 45  X  X  X  X 43 23 "), "146"},
+	{[]rune("7/ 4- 36 81 8- 54 44 53 31 8- "), "81"},
 	{[]rune("9/ 5F 5- F/  X -/ 81  X F/ X-/"), "152"},
+	{[]rune(" X 8- 51  X 35 36 7- 9-  X 8- "), "109"},
+	{[]rune("71 7- 72 8- 81 51 8-  X 6- 81 "), "86"},
+	{[]rune("9- -2 35  X  X  X  X 62 22 62 "), "143"},
 }
 
 // Randomly create splits and fouls to make it more interesting.
@@ -62,15 +64,17 @@ func randReplacements(gFrames []rune) []rune {
 }
 
 var _ = answerFunc("ten-pin-bowling", func() []Answer {
-	extraCases := 22
-	tests := make([]test, len(games)+extraCases)
+	casesPerRun := 40
+	tests := make([]test, casesPerRun*3)
 
-	for i, game := range games {
-		frames := randReplacements(game.frames)
-		tests[i] = test{string(frames), game.score}
+	for i := range 2 {
+		for j, game := range games {
+			frames := randReplacements(game.frames)
+			tests[i*len(games)+j] = test{string(frames), game.score}
+		}
 	}
 
-	for i := range extraCases {
+	for i := range len(tests) - len(games)*2 {
 		rolls := make([]int, 24)
 
 		// Generate some random rolls
@@ -147,8 +151,14 @@ var _ = answerFunc("ten-pin-bowling", func() []Answer {
 		}
 		r := []rune(arg)
 		frames := randReplacements(r)
-		tests[i+len(games)] = test{string(frames), strconv.Itoa(score)}
+		tests[i+len(games)*2] = test{string(frames), strconv.Itoa(score)}
 	}
 
-	return outputTests(shuffle(tests))
+	shuffle(tests[len(games):])
+
+	for i := range 9 {
+		tests[casesPerRun+i], tests[9+i] = tests[9+i], tests[casesPerRun+i]
+	}
+
+	return outputTests(tests[:casesPerRun], tests[casesPerRun:casesPerRun*2], tests[casesPerRun*2:])
 })
