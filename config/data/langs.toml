@@ -1,5 +1,6 @@
 [05AB1E]
 args       = [ '/usr/bin/05ab1e', '-' ]
+env        = [ 'LANG=C.UTF-8' ]
 experiment = 233
 size       = '37.4 MiB'
 version    = 'c31668b'
