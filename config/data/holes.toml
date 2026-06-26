@@ -3070,6 +3070,7 @@ category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Nim' },
 ]
+released = 2026-07-01
 synopsis = 'Print the best move for a given Nim position.'
 preamble = '''
 <p>
