@@ -1539,7 +1539,7 @@ foreach string arg in (ARGV)
 args       = [ '/usr/bin/R', '-' ]
 args-quine = [ '/usr/bin/R', '-e', "source('stdin')" ]
 size       = '30.6 MiB'
-version    = '4.6.0'
+version    = '4.6.1'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
@@ -2067,8 +2067,8 @@ pub fn main(init: std.process.Init) !void {
 [ZuzuScript]
 args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
-size       = '36.1 MiB'
-version    = '0.6.0'
+size       = '36.2 MiB'
+version    = '0.7.0'
 website    = 'https://zuzulang.org'
 example    = '''
 function __main__ ( args ) {

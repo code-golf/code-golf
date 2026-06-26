@@ -1,12 +1,13 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache bzip2-dev curl curl-dev g++ gettext-dev gfortran make \
+RUN apk add --no-cache bzip2-dev curl-dev g++ gettext-dev gfortran make \
                        pcre2-dev perl tzdata xz-dev zlib-dev
 
-ENV VER=4.6.0
+ENV BUSYBOX_VER=1.37.0 VER=4.6.1
 
-RUN curl -#L https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz /
+
+WORKDIR /R-$VER
 
 RUN ./configure                      \
     --disable-byte-compiled-packages \
@@ -23,10 +24,9 @@ RUN ./configure                      \
 RUN strip /usr/lib/R/lib/libR*.so
 
 # R needs some UNIX utils, build our own BusyBox with symlinks to save space.
-WORKDIR /busybox
+ADD --unpack https://busybox.net/downloads/busybox-$BUSYBOX_VER.tar.bz2 /
 
-RUN curl -#L https://busybox.net/downloads/busybox-1.37.0.tar.bz2 \
-  | tar xj --strip-components 1
+WORKDIR /busybox-$BUSYBOX_VER
 
 COPY busybox-config .config
 
@@ -34,7 +34,7 @@ RUN make install
 
 FROM codegolf/lang-base
 
-COPY --from=0 /busybox/_install              /
+COPY --from=0 /busybox-*/_install            /
 COPY --from=0 /lib/ld-musl-*.so.1            /lib/
 COPY --from=0 /usr/bin/Rscript               /usr/bin/R
 COPY --from=0 /usr/lib/libbz2.so.1           \
