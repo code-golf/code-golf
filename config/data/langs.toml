@@ -1278,8 +1278,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.78 MiB'
-version    = '0.726'
+size       = '5.89 MiB'
+version    = '0.727'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1577,8 +1577,8 @@ example    = '''
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
 redirects = [ 'perl6' ]
-size      = '80.4 MiB'
-version   = 'Raku 6.d on Rakudo 2026.05'
+size      = '80.7 MiB'
+version   = 'Raku 6.d on Rakudo 2026.06'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1762,8 +1762,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.31 MiB'
-version = 'SQLite 3.53.2'
+size    = '1.32 MiB'
+version = 'SQLite 3.53.3'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1844,8 +1844,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.81 MiB'
-version = '9.0.3'
+size    = '5.82 MiB'
+version = '9.0.4'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing

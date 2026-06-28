@@ -1,8 +1,8 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 
-ENV VER=3530200
+ENV VER=3530300
 
 ADD --unpack https://www.sqlite.org/2026/sqlite-autoconf-$VER.tar.gz /
 

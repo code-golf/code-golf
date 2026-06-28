@@ -1,13 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache bsd-compat-headers curl gcc make musl-dev zlib-dev
+RUN apk add --no-cache bsd-compat-headers gcc make musl-dev zlib-dev
 
-ENV LDFLAGS='-static' VER=9.0.3
+ENV LDFLAGS='-static' VER=9.0.4
 
-RUN curl -#L https://downloads.sourceforge.net/tcl/tcl-core$VER-src.tar.gz \
-  | tar xz --strip-components 1
+ADD --unpack https://sourceforge.net/projects/tcl/files/Tcl/$VER/tcl-core$VER-src.tar.gz/download /
 
-WORKDIR /unix
+WORKDIR /tcl$VER/unix
 
 RUN ./configure      \
     --disable-load   \
@@ -19,7 +18,7 @@ RUN ./configure      \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /library      /library
+COPY --from=0 /tcl*/library /library
 COPY --from=0 /usr/bin/tcl* /usr/bin/tcl
 
 ENTRYPOINT ["tcl"]

@@ -1,8 +1,8 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache gcc git make musl-dev perl
 
-ENV VER=2026.05
+ENV VER=2026.06
 
 WORKDIR /raku
 
