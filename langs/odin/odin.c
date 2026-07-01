@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
@@ -31,16 +32,32 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int oargc = argc + 4;
+    pid_t pid;
+
+    if (!(pid = fork())) {
+        execl(odin, odin, "build", code, "-file", NULL);
+        ERR_AND_EXIT("execl");
+    }
+
+    int status;
+
+    waitpid(pid, &status, 0);
+
+    if (!WIFEXITED(status))
+        exit(EXIT_FAILURE);
+
+    if (WEXITSTATUS(status))
+        return WEXITSTATUS(status);
+
+    if (remove(code))
+        ERR_AND_EXIT("remove");
+
+    int oargc = argc;
     char** oargv = malloc(oargc * sizeof(char*));
-    oargv[0] = (char*) odin;
-    oargv[1] = "run";
-    oargv[2] = (char*) code;
-    oargv[3] = "-file";
-    oargv[4] = "-o:none";
-    memcpy(&oargv[5], &argv[2], (argc - 2) * sizeof(char*));
+    oargv[0] = "code";
+    memcpy(&oargv[1], &argv[2], (argc - 2) * sizeof(char*));
     oargv[oargc - 1] = NULL;
 
-    execv(odin, oargv);
+    execv("code", oargv);
     ERR_AND_EXIT("execv");
 }

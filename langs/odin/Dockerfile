@@ -18,9 +18,9 @@ WORKDIR /usr/local/lib
 RUN make -j`nproc` release \
  && strip odin
 
-COPY odin.c /
+COPY odin.c .
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/odinwrapper -s /odin.c
+RUN gcc -Wall -Werror -Wextra -o /usr/bin/odin -s odin.c
 
 FROM codegolf/lang-base
 
@@ -28,7 +28,7 @@ COPY --from=0 /usr/bin/dash                    /bin/sh
 COPY --from=0 /lib/ld-musl-*.so.1              /lib/
 COPY --from=0 /usr/bin/clang                   \
               /usr/bin/ld                      \
-              /usr/bin/odinwrapper             /usr/bin/
+              /usr/bin/odin                    /usr/bin/
 COPY --from=0 /usr/lib/crt1.o                  \
               /usr/lib/crti.o                  \
               /usr/lib/crtn.o                  \
@@ -57,6 +57,8 @@ COPY --from=0 /usr/local/bin/base              /usr/local/bin/base
 COPY --from=0 /usr/local/bin/core              /usr/local/bin/core
 COPY --from=0 /usr/local/bin/vendor            /usr/local/bin/vendor
 
-ENTRYPOINT ["odinwrapper"]
+ENV PATH='/usr/bin'
+
+ENTRYPOINT ["odin"]
 
 CMD ["--version"]
