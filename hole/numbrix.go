@@ -2,229 +2,213 @@ package hole
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 )
 
+// This implementation uses the constant variables defined in the Sudoku holes.
+//
+// Each submission tests one randomly chosen board from each of the 10 clue
+// topologies, presented in random order. The 50 input boards (5 per topology)
+// are pre-curated offline (see numbrix_curate.go) so each has a unique
+// solution that solveNumbrix finds in well under 20 ms; a correct submission
+// cannot time out by being unlucky with pattern roulette.
+//
+// The expected answer for each board is computed once at init time by running
+// solveNumbrix on the input. Because each board is uniquely solvable, the
+// default string-equality judge suffices — there is exactly one valid
+// solution, and any correct user output must match it.
+//
+// The 10 topologies originally defined as 81-char "0"/"1" clue masks were:
+//   0: 000000000000101000001010100010000010001000100010000010001010100000101000000000000
+//   1: 000000000001101100010000010010000010000000000010000010010000010001101100000000000
+//   2: 000000000010111010000000000010000010010010010010000010000000000010111010000000000
+//      (original 13 clues + (1,4)(4,1)(4,7)(7,4) → 17 clues)
+//   3: 000000000010101010001010100010000010001000100010000010001010100010101010000000000
+//   4: 000000000011010110010000010000000000010000010000000000010000010011010110000000000
+//   5: 000010000001000100011000110000000000100000001000000000011000110001000100000010000
+//   6: 001010100000010000101010101000101000111000111000101000101010101000010000001010100
+//   7: 100000001000101000000101000011000110000000000011000110000101000000101000100000001
+//   8: 100010001010010010000010000000000000111000111000000000000010000010010010100010001
+//      (original 16 clues + (2,4)(4,2)(4,6)(6,4) → 20 clues)
+//   9: 101010101000000000100000001000101000100000001000101000100000001000000000101010101
+//      (original 16 clues + (3,3)(3,5)(5,3)(5,5) → 20 clues)
+
+// numbrixBoardsPerPattern is the number of curated inputs per clue topology.
+// curatedNumbrixInputs holds them flat: indices [5p, 5p+5) belong to pattern p.
+const numbrixBoardsPerPattern = 5
+
+// numbrixAnswers is the rendered (input, solution) Answer cache, populated at
+// init by running solveNumbrix on each curated input. Same flat layout as
+// curatedNumbrixInputs.
+var numbrixAnswers [len(curatedNumbrixInputs)]Answer
+
 func init() {
-	judge("numbrix", numbrixJudge)
+	for i, raw := range curatedNumbrixInputs {
+		var input [boardSize][boardSize]int
+		for k := range cellCount {
+			input[k/boardSize][k%boardSize] = int(raw[k])
+		}
+		sol, ok := solveNumbrix(input)
+		if !ok {
+			panic(fmt.Sprintf(
+				"numbrix: curated input %d (pattern %d board %d) not solvable",
+				i, i/numbrixBoardsPerPattern, i%numbrixBoardsPerPattern))
+		}
+		numbrixAnswers[i] = Answer{
+			Args:   []string{printNumbrix(input)},
+			Answer: printNumbrix(sol),
+		}
+	}
 }
 
-// This implementation uses the constant variables defined in the Sudoku holes.
-
-var numbrixPatterns = shuffle([]string{
-	"000000000000101000001010100010000010001000100010000010001010100000101000000000000",
-	"000000000001101100010000010010000010000000000010000010010000010001101100000000000",
-	"000000000010101010000000000010000010000010000010000010000000000010101010000000000",
-	"000000000010101010001010100010000010001000100010000010001010100010101010000000000",
-	"000000000011010110010000010000000000010000010000000000010000010011010110000000000",
-	"000010000001000100011000110000000000100000001000000000011000110001000100000010000",
-	"001010100000010000101010101000101000111000111000101000101010101000010000001010100",
-	"100000001000101000000101000011000110000000000011000110000101000000101000100000001",
-	"100010001010010010000000000000000000110000011000000000000000000010010010100010001",
-	"101010101000000000100000001000000000100000001000000000100000001000000000101010101",
-})
-
-var numbrixSquares = shuffle([][2]int{
-	{0, 0}, {0, 8}, {1, 1}, {1, 7}, {2, 2}, {2, 6}, {3, 3}, {3, 5}, {4, 0},
-	{4, 4}, {5, 3}, {5, 5}, {6, 2}, {6, 6}, {7, 1}, {7, 7}, {8, 0}, {8, 8},
-})
-
 var _ = answerFunc("numbrix", func() []Answer {
-	answers := make([]Answer, blockSize)
-
-	for i := range answers {
-		var puzzle [boardSize][boardSize]int
-
-		solveNumbrix(&puzzle)
-
-		expected := printNumbrix(puzzle)
-
-		for j, ch := range randChoice(numbrixPatterns) {
-			if ch == '0' {
-				puzzle[j/boardSize][j%boardSize] = 0
-			}
-		}
-
-		argument := []string{printNumbrix(puzzle)}
-
-		answers[i] = Answer{Args: argument, Answer: expected}
+	patterns := len(numbrixAnswers) / numbrixBoardsPerPattern
+	answers := make([]Answer, patterns)
+	for p := range answers {
+		answers[p] = randChoice(numbrixAnswers[p*numbrixBoardsPerPattern : (p+1)*numbrixBoardsPerPattern])
 	}
-
+	shuffle(answers)
 	return answers
 })
 
-func numbrixJudge(run Run) string {
-	parseGrid := func(s string) ([boardSize][boardSize]int, bool) {
-		var grid [boardSize][boardSize]int
-		row := 0
-		for _, line := range strings.Split(s, "\n") {
-			if !strings.ContainsRune(line, '┃') {
-				continue
-			}
-			line = strings.ReplaceAll(line, "┃", "│")
-			cells := strings.Split(line, "│")
-			if len(cells) < boardSize+2 {
-				return grid, false
-			}
-			for col := range boardSize {
-				cell := strings.TrimSpace(cells[col+1])
-				if cell == "" {
-					grid[row][col] = 0
-				} else {
-					n, err := strconv.Atoi(cell)
-					if err != nil {
-						return grid, false
-					}
-					grid[row][col] = n
-				}
-			}
-			row++
-		}
-		return grid, row == boardSize
-	}
-
-	userGrid, ok := parseGrid(run.Stdout)
-	if !ok {
-		return run.Answer
-	}
-	inputGrid, _ := parseGrid(run.Args[0])
-
-	// Validate: all 1–81 present, clues respected, consecutive numbers adjacent.
-	valid := true
-	var pos [cellCount + 1][2]int
-	var seen [cellCount + 1]bool
-validate:
-	for i := range boardSize {
-		for j := range boardSize {
-			v := userGrid[i][j]
-			if v < 1 || v > cellCount || seen[v] {
-				valid = false
-				break validate
-			}
-			seen[v] = true
-			pos[v] = [2]int{i, j}
-			if inputGrid[i][j] != 0 && inputGrid[i][j] != v {
-				valid = false
-				break validate
-			}
-		}
-	}
-	if valid {
-		for n := 1; n < cellCount; n++ {
-			dr := pos[n][0] - pos[n+1][0]
-			dc := pos[n][1] - pos[n+1][1]
-			if dr < 0 {
-				dr = -dr
-			}
-			if dc < 0 {
-				dc = -dc
-			}
-			if dr+dc != 1 {
-				valid = false
-				break
-			}
-		}
-	}
-	if valid {
-		return run.Stdout
-	}
-
-	// Try to find a valid solution close to the user's output, so the diff
-	// highlights the user's actual mistakes rather than comparing against
-	// an unrelated solution.
-	if match, ok := closestNumbrixMatch(inputGrid, userGrid); ok {
-		return printNumbrix(match)
-	}
-
-	return run.Answer
-}
-
-// closestNumbrixMatch tries to build a valid Numbrix solution that overlaps
-// with userGrid by preferring the user's chosen positions for each number
-// (without violating the clues in input). Returns the first valid solution
-// found, or false if none exists.
-func closestNumbrixMatch(input, userGrid [boardSize][boardSize]int) ([boardSize][boardSize]int, bool) {
-	// Preferred position per number: clues always win over user's guess.
-	var preferred [cellCount + 1][2]int
-	var hasPref [cellCount + 1]bool
+// solveNumbrix returns the first solution to a Numbrix input, found via a
+// forward DFS guided by parity and a Manhattan-distance look-ahead to the
+// next clue. With a uniquely solvable input, that first solution is THE
+// solution. Returns false only if the input has no solution at all.
+func solveNumbrix(input [boardSize][boardSize]int) ([boardSize][boardSize]int, bool) {
+	var clueAt [cellCount + 1][2]int
+	var hasClue [cellCount + 1]bool
 	for i := range boardSize {
 		for j := range boardSize {
 			if v := input[i][j]; v > 0 {
-				preferred[v] = [2]int{i, j}
-				hasPref[v] = true
-			}
-		}
-	}
-	for i := range boardSize {
-		for j := range boardSize {
-			v := userGrid[i][j]
-			if v >= 1 && v <= cellCount && !hasPref[v] && input[i][j] == 0 {
-				preferred[v] = [2]int{i, j}
-				hasPref[v] = true
+				clueAt[v] = [2]int{i, j}
+				hasClue[v] = true
 			}
 		}
 	}
 
-	// Bound the search so a pathological input can't stall the judge.
-	const maxNodes = 200_000
-	nodes := 0
+	// nextClue[n] = smallest clue value >= n+1 (0 if none); used to prune
+	// branches whose remaining step budget can't reach the next forced cell.
+	var nextClue [cellCount + 2]int
+	last := 0
+	for v := cellCount; v >= 1; v-- {
+		if hasClue[v] {
+			last = v
+		}
+		nextClue[v] = last
+	}
 
-	var result [boardSize][boardSize]int
+	grid := input
+	dirs := [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
+
 	var dfs func(r, c, n int) bool
 	dfs = func(r, c, n int) bool {
-		nodes++
-		if nodes > maxNodes {
-			return false
-		}
-		if r < 0 || r >= boardSize || c < 0 || c >= boardSize {
-			return false
-		}
-		if result[r][c] != 0 {
-			return false
-		}
-		if input[r][c] != 0 && input[r][c] != n {
-			return false
-		}
-
-		result[r][c] = n
 		if n == cellCount {
 			return true
 		}
+		if nc := nextClue[n+1]; nc > 0 {
+			tr, tc := clueAt[nc][0], clueAt[nc][1]
+			dr := r - tr
+			if dr < 0 {
+				dr = -dr
+			}
+			dc := c - tc
+			if dc < 0 {
+				dc = -dc
+			}
+			dist := dr + dc
+			budget := nc - n
+			if dist > budget || (budget-dist)&1 != 0 {
+				return false
+			}
+		}
 
-		dirs := [4][2]int{{-1, 0}, {1, 0}, {0, -1}, {0, 1}}
-		if hasPref[n+1] {
-			tr, tc := preferred[n+1][0], preferred[n+1][1]
-			for i, d := range dirs {
+		ord := dirs
+		if hasClue[n+1] {
+			tr, tc := clueAt[n+1][0], clueAt[n+1][1]
+			for i, d := range ord {
 				if r+d[0] == tr && c+d[1] == tc {
-					dirs[0], dirs[i] = dirs[i], dirs[0]
+					ord[0], ord[i] = ord[i], ord[0]
 					break
 				}
 			}
 		}
-		for _, d := range dirs {
-			if dfs(r+d[0], c+d[1], n+1) {
+
+		for _, d := range ord {
+			nr, nc := r+d[0], c+d[1]
+			if nr < 0 || nr >= boardSize || nc < 0 || nc >= boardSize {
+				continue
+			}
+			cell := grid[nr][nc]
+			if cell != 0 && cell != n+1 {
+				continue
+			}
+			if cell == 0 && hasClue[n+1] {
+				if clueAt[n+1][0] != nr || clueAt[n+1][1] != nc {
+					continue
+				}
+			}
+			wasZero := cell == 0
+			if wasZero {
+				grid[nr][nc] = n + 1
+			}
+			if dfs(nr, nc, n+1) {
 				return true
 			}
+			if wasZero {
+				grid[nr][nc] = 0
+			}
 		}
-		result[r][c] = 0
 		return false
 	}
 
-	if hasPref[1] && dfs(preferred[1][0], preferred[1][1], 1) {
-		return result, true
+	tryStart := func(r, c int) bool {
+		if grid[r][c] != 0 && grid[r][c] != 1 {
+			return false
+		}
+		// Parity prune: every clue v at (rv,cv) must satisfy
+		// (rv+cv)%2 == (r+c+v-1)%2, otherwise no Hamiltonian path can hit it.
+		basePar := (r + c) & 1
+		for v := 1; v <= cellCount; v++ {
+			if !hasClue[v] {
+				continue
+			}
+			cellPar := (clueAt[v][0] + clueAt[v][1]) & 1
+			expected := (basePar + (v-1)&1) & 1
+			if cellPar != expected {
+				return false
+			}
+		}
+		wasZero := grid[r][c] == 0
+		if wasZero {
+			grid[r][c] = 1
+		}
+		if dfs(r, c, 1) {
+			return true
+		}
+		if wasZero {
+			grid[r][c] = 0
+		}
+		return false
+	}
+
+	if hasClue[1] {
+		if tryStart(clueAt[1][0], clueAt[1][1]) {
+			return grid, true
+		}
+		return grid, false
 	}
 	for i := range boardSize {
 		for j := range boardSize {
-			if hasPref[1] && i == preferred[1][0] && j == preferred[1][1] {
+			if input[i][j] != 0 {
 				continue
 			}
-			if dfs(i, j, 1) {
-				return result, true
+			if tryStart(i, j) {
+				return grid, true
 			}
 		}
 	}
-	return result, false
+	return grid, false
 }
 
 func printNumbrix(puzzle [boardSize][boardSize]int) string {
@@ -259,115 +243,565 @@ func printNumbrix(puzzle [boardSize][boardSize]int) string {
 	return s.String()
 }
 
-func solveNumbrix(puzzle *[boardSize][boardSize]int) bool {
-	sq, connects := randChoice(numbrixSquares), func() bool {
-		n, r, c := 0, -1, -1
-
-		for i, row := range puzzle {
-			for j, number := range row {
-				if number == 0 {
-					n++
-
-					if r < 0 {
-						r, c = i, j
-					}
-				}
-			}
-		}
-
-		if n == 0 {
-			return true
-		}
-
-		var used [boardSize][boardSize]bool
-
-		squares, t := [][2]int{{r, c}}, 1
-
-		used[r][c] = true
-
-		for i := 0; i < len(squares); i++ {
-			r, c := squares[i][0], squares[i][1]
-
-			for _, d := range [][2]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}} {
-				j, k := r+d[0], c+d[1]
-
-				if j >= 0 && j < boardSize && k >= 0 && k < boardSize && !used[j][k] && puzzle[j][k] == 0 {
-					squares = append(squares, [2]int{j, k})
-					t++
-					used[j][k] = true
-				}
-			}
-		}
-
-		return n == t
-	}
-
-	var dfs func(i, j, k int) bool
-
-	dfs = func(i, j, k int) bool {
-		if k > cellCount {
-			return true
-		}
-
-		type Direction struct{ i, j, k int }
-
-		dirs := make([]Direction, 0, 4)
-
-		add := func(r, c int) {
-			if r >= 0 && r < boardSize && c >= 0 && c < boardSize && puzzle[r][c] == 0 {
-				d := 0
-
-				if r > 0 && puzzle[r-1][c] == 0 {
-					d++
-				}
-
-				if r < boardSize-1 && puzzle[r+1][c] == 0 {
-					d++
-				}
-
-				if c > 0 && puzzle[r][c-1] == 0 {
-					d++
-				}
-
-				if c < boardSize-1 && puzzle[r][c+1] == 0 {
-					d++
-				}
-
-				dirs = append(dirs, Direction{r, c, d})
-			}
-		}
-
-		add(i-1, j)
-		add(i+1, j)
-		add(i, j-1)
-		add(i, j+1)
-
-		if len(dirs) == 0 {
-			return false
-		}
-
-		for i := 0; i < len(dirs); i++ {
-			for j := i; j > 0 && (dirs[j].k < dirs[j-1].k || dirs[j].k == dirs[j-1].k && randBool()); j-- {
-				dirs[j-1], dirs[j] = dirs[j], dirs[j-1]
-			}
-		}
-
-		for _, d := range dirs {
-			puzzle[d.i][d.j] = k
-
-			if connects() && dfs(d.i, d.j, k+1) {
-				return true
-			}
-
-			puzzle[d.i][d.j] = 0
-		}
-
-		return false
-	}
-
-	i, j := sq[0], sq[1]
-
-	puzzle[i][j] = 1
-
-	return dfs(i, j, 2)
+var curatedNumbrixInputs = [50][cellCount]uint8{
+	// pattern 0
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 41, 0, 43, 0, 0, 0,
+		0, 0, 49, 0, 47, 0, 15, 0, 0,
+		0, 37, 0, 0, 0, 0, 0, 13, 0,
+		0, 0, 53, 0, 0, 0, 3, 0, 0,
+		0, 35, 0, 0, 0, 0, 0, 65, 0,
+		0, 0, 55, 0, 75, 0, 81, 0, 0,
+		0, 0, 0, 59, 0, 77, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 39, 0, 37, 0, 0, 0,
+		0, 0, 81, 0, 77, 0, 73, 0, 0,
+		0, 43, 0, 0, 0, 0, 0, 71, 0,
+		0, 0, 61, 0, 0, 0, 65, 0, 0,
+		0, 45, 0, 0, 0, 0, 0, 55, 0,
+		0, 0, 47, 0, 49, 0, 51, 0, 0,
+		0, 0, 0, 15, 0, 13, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 43, 0, 3, 0, 0, 0,
+		0, 0, 29, 0, 45, 0, 1, 0, 0,
+		0, 25, 0, 0, 0, 0, 0, 73, 0,
+		0, 0, 31, 0, 0, 0, 81, 0, 0,
+		0, 23, 0, 0, 0, 0, 0, 75, 0,
+		0, 0, 33, 0, 49, 0, 61, 0, 0,
+		0, 0, 0, 37, 0, 59, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 43, 0, 71, 0, 0, 0,
+		0, 0, 39, 0, 79, 0, 77, 0, 0,
+		0, 29, 0, 0, 0, 0, 0, 75, 0,
+		0, 0, 37, 0, 0, 0, 49, 0, 0,
+		0, 31, 0, 0, 0, 0, 0, 51, 0,
+		0, 0, 35, 0, 9, 0, 3, 0, 0,
+		0, 0, 0, 13, 0, 5, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 61, 0, 3, 0, 0, 0,
+		0, 0, 71, 0, 51, 0, 1, 0, 0,
+		0, 75, 0, 0, 0, 0, 0, 13, 0,
+		0, 0, 69, 0, 0, 0, 25, 0, 0,
+		0, 79, 0, 0, 0, 0, 0, 23, 0,
+		0, 0, 67, 0, 47, 0, 31, 0, 0,
+		0, 0, 0, 43, 0, 45, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	// pattern 1
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 60, 43, 0, 45, 46, 0, 0,
+		0, 62, 0, 0, 0, 0, 0, 2, 0,
+		0, 65, 0, 0, 0, 0, 0, 15, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 79, 0, 0, 0, 0, 0, 13, 0,
+		0, 76, 0, 0, 0, 0, 0, 12, 0,
+		0, 0, 70, 37, 0, 23, 20, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 38, 41, 0, 55, 72, 0, 0,
+		0, 12, 0, 0, 0, 0, 0, 74, 0,
+		0, 13, 0, 0, 0, 0, 0, 77, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 15, 0, 0, 0, 0, 0, 81, 0,
+		0, 16, 0, 0, 0, 0, 0, 62, 0,
+		0, 0, 32, 31, 0, 29, 28, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 72, 55, 0, 51, 48, 0, 0,
+		0, 74, 0, 0, 0, 0, 0, 42, 0,
+		0, 77, 0, 0, 0, 0, 0, 17, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 79, 0, 0, 0, 0, 0, 11, 0,
+		0, 62, 0, 0, 0, 0, 0, 8, 0,
+		0, 0, 32, 33, 0, 23, 2, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 42, 43, 0, 23, 20, 0, 0,
+		0, 74, 0, 0, 0, 0, 0, 16, 0,
+		0, 77, 0, 0, 0, 0, 0, 17, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 79, 0, 0, 0, 0, 0, 5, 0,
+		0, 68, 0, 0, 0, 0, 0, 2, 0,
+		0, 0, 66, 49, 0, 51, 52, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 52, 57, 0, 59, 60, 0, 0,
+		0, 50, 0, 0, 0, 0, 0, 62, 0,
+		0, 49, 0, 0, 0, 0, 0, 69, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 15, 0, 0, 0, 0, 0, 75, 0,
+		0, 12, 0, 0, 0, 0, 0, 76, 0,
+		0, 0, 10, 3, 0, 81, 78, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	// pattern 2
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 77, 0, 79, 4, 7, 0, 15, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 71, 0, 0, 0, 0, 0, 29, 0,
+		0, 68, 0, 0, 43, 0, 0, 28, 0,
+		0, 67, 0, 0, 0, 0, 0, 27, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 63, 0, 49, 46, 37, 0, 25, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 39, 0, 41, 42, 43, 0, 45, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 71, 0, 0, 0, 0, 0, 47, 0,
+		0, 72, 0, 0, 21, 0, 0, 24, 0,
+		0, 75, 0, 0, 0, 0, 0, 5, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 79, 0, 59, 18, 9, 0, 11, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 81, 0, 77, 74, 73, 0, 69, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 57, 0, 0, 0, 0, 0, 51, 0,
+		0, 42, 0, 0, 45, 0, 0, 48, 0,
+		0, 41, 0, 0, 0, 0, 0, 35, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 25, 0, 23, 22, 21, 0, 19, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 39, 0, 69, 68, 67, 0, 65, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 37, 0, 0, 0, 0, 0, 11, 0,
+		0, 36, 0, 0, 75, 0, 0, 8, 0,
+		0, 35, 0, 0, 0, 0, 0, 3, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 33, 0, 81, 80, 57, 0, 55, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 47, 0, 31, 12, 11, 0, 81, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 45, 0, 0, 0, 0, 0, 75, 0,
+		0, 44, 0, 0, 7, 0, 0, 72, 0,
+		0, 43, 0, 0, 0, 0, 0, 71, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 41, 0, 25, 24, 23, 0, 67, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	// pattern 3
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 31, 0, 7, 0, 9, 0, 47, 0,
+		0, 0, 33, 0, 3, 0, 41, 0, 0,
+		0, 29, 0, 0, 0, 0, 0, 51, 0,
+		0, 0, 35, 0, 0, 0, 39, 0, 0,
+		0, 27, 0, 0, 0, 0, 0, 55, 0,
+		0, 0, 61, 0, 67, 0, 81, 0, 0,
+		0, 25, 0, 65, 0, 79, 0, 77, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 71, 0, 69, 0, 67, 0, 45, 0,
+		0, 0, 75, 0, 81, 0, 65, 0, 0,
+		0, 73, 0, 0, 0, 0, 0, 43, 0,
+		0, 0, 59, 0, 0, 0, 63, 0, 0,
+		0, 35, 0, 0, 0, 0, 0, 41, 0,
+		0, 0, 31, 0, 29, 0, 27, 0, 0,
+		0, 19, 0, 21, 0, 23, 0, 25, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 57, 0, 61, 0, 65, 0, 71, 0,
+		0, 0, 51, 0, 49, 0, 47, 0, 0,
+		0, 41, 0, 0, 0, 0, 0, 75, 0,
+		0, 0, 37, 0, 0, 0, 33, 0, 0,
+		0, 27, 0, 0, 0, 0, 0, 79, 0,
+		0, 0, 23, 0, 21, 0, 19, 0, 0,
+		0, 13, 0, 15, 0, 17, 0, 1, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 1, 0, 31, 0, 29, 0, 27, 0,
+		0, 0, 33, 0, 41, 0, 43, 0, 0,
+		0, 37, 0, 0, 0, 0, 0, 25, 0,
+		0, 0, 81, 0, 0, 0, 45, 0, 0,
+		0, 77, 0, 0, 0, 0, 0, 23, 0,
+		0, 0, 71, 0, 59, 0, 47, 0, 0,
+		0, 67, 0, 69, 0, 51, 0, 21, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 25, 0, 17, 0, 11, 0, 1, 0,
+		0, 0, 19, 0, 13, 0, 7, 0, 0,
+		0, 29, 0, 0, 0, 0, 0, 35, 0,
+		0, 0, 55, 0, 0, 0, 59, 0, 0,
+		0, 71, 0, 0, 0, 0, 0, 61, 0,
+		0, 0, 73, 0, 77, 0, 79, 0, 0,
+		0, 69, 0, 67, 0, 65, 0, 63, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	// pattern 4
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 11, 12, 0, 14, 0, 2, 53, 0,
+		0, 20, 0, 0, 0, 0, 0, 52, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 34, 0, 0, 0, 0, 0, 50, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 42, 0, 0, 0, 0, 0, 62, 0,
+		0, 41, 68, 0, 72, 0, 76, 79, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 11, 20, 0, 34, 0, 68, 69, 0,
+		0, 12, 0, 0, 0, 0, 0, 70, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 14, 0, 0, 0, 0, 0, 74, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 2, 0, 0, 0, 0, 0, 78, 0,
+		0, 57, 58, 0, 60, 0, 80, 81, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 13, 14, 0, 16, 0, 18, 1, 0,
+		0, 24, 0, 0, 0, 0, 0, 56, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 38, 0, 0, 0, 0, 0, 54, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 46, 0, 0, 0, 0, 0, 62, 0,
+		0, 45, 68, 0, 72, 0, 76, 81, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 11, 2, 0, 62, 0, 58, 45, 0,
+		0, 10, 0, 0, 0, 0, 0, 46, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 18, 0, 0, 0, 0, 0, 48, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 80, 0, 0, 0, 0, 0, 50, 0,
+		0, 79, 78, 0, 74, 0, 52, 51, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 79, 78, 0, 62, 0, 40, 27, 0,
+		0, 76, 0, 0, 0, 0, 0, 28, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 72, 0, 0, 0, 0, 0, 30, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 54, 0, 0, 0, 0, 0, 32, 0,
+		0, 53, 52, 0, 50, 0, 34, 33, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+	},
+	// pattern 5
+	{
+		0, 0, 0, 0, 61, 0, 0, 0, 0,
+		0, 0, 78, 0, 0, 0, 70, 0, 0,
+		0, 80, 81, 0, 0, 0, 71, 68, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		53, 0, 0, 0, 0, 0, 0, 0, 15,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 32, 25, 0, 0, 0, 1, 2, 0,
+		0, 0, 34, 0, 0, 0, 38, 0, 0,
+		0, 0, 0, 0, 45, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 25, 0, 0, 0, 0,
+		0, 0, 2, 0, 0, 0, 80, 0, 0,
+		0, 8, 1, 0, 0, 0, 81, 78, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		15, 0, 0, 0, 0, 0, 0, 0, 61,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 34, 33, 0, 0, 0, 71, 70, 0,
+		0, 0, 40, 0, 0, 0, 68, 0, 0,
+		0, 0, 0, 0, 45, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 37, 0, 0, 0, 0,
+		0, 0, 34, 0, 0, 0, 80, 0, 0,
+		0, 24, 31, 0, 0, 0, 79, 78, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		17, 0, 0, 0, 0, 0, 0, 0, 61,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 2, 1, 0, 0, 0, 71, 70, 0,
+		0, 0, 8, 0, 0, 0, 68, 0, 0,
+		0, 0, 0, 0, 45, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 35, 0, 0, 0, 0,
+		0, 0, 28, 0, 0, 0, 68, 0, 0,
+		0, 14, 15, 0, 0, 0, 71, 70, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		7, 0, 0, 0, 0, 0, 0, 0, 43,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 4, 1, 0, 0, 0, 79, 78, 0,
+		0, 0, 58, 0, 0, 0, 80, 0, 0,
+		0, 0, 0, 0, 51, 0, 0, 0, 0,
+	},
+	{
+		0, 0, 0, 0, 21, 0, 0, 0, 0,
+		0, 0, 32, 0, 0, 0, 28, 0, 0,
+		0, 34, 35, 0, 0, 0, 39, 40, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		13, 0, 0, 0, 0, 0, 0, 0, 43,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 54, 71, 0, 0, 0, 81, 80, 0,
+		0, 0, 52, 0, 0, 0, 48, 0, 0,
+		0, 0, 0, 0, 5, 0, 0, 0, 0,
+	},
+	// pattern 6
+	{
+		0, 0, 41, 0, 39, 0, 37, 0, 0,
+		0, 0, 0, 0, 48, 0, 0, 0, 0,
+		55, 0, 53, 0, 51, 0, 35, 0, 19,
+		0, 0, 0, 59, 0, 61, 0, 0, 0,
+		1, 66, 65, 0, 0, 0, 33, 26, 17,
+		0, 0, 0, 81, 0, 75, 0, 0, 0,
+		3, 0, 79, 0, 77, 0, 31, 0, 15,
+		0, 0, 0, 0, 72, 0, 0, 0, 0,
+		0, 0, 7, 0, 9, 0, 11, 0, 0,
+	},
+	{
+		0, 0, 35, 0, 37, 0, 39, 0, 0,
+		0, 0, 0, 0, 28, 0, 0, 0, 0,
+		13, 0, 15, 0, 17, 0, 19, 0, 43,
+		0, 0, 0, 5, 0, 3, 0, 0, 0,
+		11, 10, 7, 0, 0, 0, 21, 22, 45,
+		0, 0, 0, 51, 0, 49, 0, 0, 0,
+		55, 0, 79, 0, 75, 0, 71, 0, 67,
+		0, 0, 0, 0, 74, 0, 0, 0, 0,
+		0, 0, 59, 0, 61, 0, 63, 0, 0,
+	},
+	{
+		0, 0, 59, 0, 63, 0, 67, 0, 0,
+		0, 0, 0, 0, 62, 0, 0, 0, 0,
+		53, 0, 33, 0, 31, 0, 29, 0, 73,
+		0, 0, 0, 9, 0, 7, 0, 0, 0,
+		49, 48, 35, 0, 0, 0, 27, 76, 77,
+		0, 0, 0, 11, 0, 1, 0, 0, 0,
+		45, 0, 37, 0, 3, 0, 25, 0, 81,
+		0, 0, 0, 0, 16, 0, 0, 0, 0,
+		0, 0, 39, 0, 15, 0, 19, 0, 0,
+	},
+	{
+		0, 0, 23, 0, 21, 0, 19, 0, 0,
+		0, 0, 0, 0, 44, 0, 0, 0, 0,
+		27, 0, 51, 0, 49, 0, 47, 0, 3,
+		0, 0, 0, 53, 0, 55, 0, 0, 0,
+		29, 38, 61, 0, 0, 0, 57, 14, 5,
+		0, 0, 0, 63, 0, 65, 0, 0, 0,
+		31, 0, 71, 0, 69, 0, 67, 0, 7,
+		0, 0, 0, 0, 76, 0, 0, 0, 0,
+		0, 0, 73, 0, 77, 0, 81, 0, 0,
+	},
+	{
+		0, 0, 27, 0, 25, 0, 23, 0, 0,
+		0, 0, 0, 0, 38, 0, 0, 0, 0,
+		31, 0, 67, 0, 65, 0, 53, 0, 19,
+		0, 0, 0, 69, 0, 55, 0, 0, 0,
+		1, 80, 81, 0, 0, 0, 51, 44, 17,
+		0, 0, 0, 71, 0, 57, 0, 0, 0,
+		3, 0, 77, 0, 61, 0, 49, 0, 15,
+		0, 0, 0, 0, 60, 0, 0, 0, 0,
+		0, 0, 7, 0, 9, 0, 11, 0, 0,
+	},
+	// pattern 7
+	{
+		39, 0, 0, 0, 0, 0, 0, 0, 17,
+		0, 0, 0, 67, 0, 69, 0, 0, 0,
+		0, 0, 0, 66, 0, 70, 0, 0, 0,
+		0, 51, 56, 0, 0, 0, 30, 21, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 49, 58, 0, 0, 0, 28, 23, 0,
+		0, 0, 0, 62, 0, 78, 0, 0, 0,
+		0, 0, 0, 61, 0, 81, 0, 0, 0,
+		1, 0, 0, 0, 0, 0, 0, 0, 9,
+	},
+	{
+		59, 0, 0, 0, 0, 0, 0, 0, 37,
+		0, 0, 0, 75, 0, 71, 0, 0, 0,
+		0, 0, 0, 74, 0, 70, 0, 0, 0,
+		0, 79, 80, 0, 0, 0, 50, 41, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 11, 12, 0, 0, 0, 44, 43, 0,
+		0, 0, 0, 14, 0, 28, 0, 0, 0,
+		0, 0, 0, 15, 0, 25, 0, 0, 0,
+		5, 0, 0, 0, 0, 0, 0, 0, 21,
+	},
+	{
+		25, 0, 0, 0, 0, 0, 0, 0, 1,
+		0, 0, 0, 81, 0, 59, 0, 0, 0,
+		0, 0, 0, 76, 0, 58, 0, 0, 0,
+		0, 29, 74, 0, 0, 0, 50, 43, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 31, 70, 0, 0, 0, 52, 41, 0,
+		0, 0, 0, 68, 0, 54, 0, 0, 0,
+		0, 0, 0, 35, 0, 37, 0, 0, 0,
+		17, 0, 0, 0, 0, 0, 0, 0, 9,
+	},
+	{
+		5, 0, 0, 0, 0, 0, 0, 0, 27,
+		0, 0, 0, 33, 0, 31, 0, 0, 0,
+		0, 0, 0, 34, 0, 44, 0, 0, 0,
+		0, 9, 18, 0, 0, 0, 80, 81, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 11, 16, 0, 0, 0, 72, 71, 0,
+		0, 0, 0, 38, 0, 48, 0, 0, 0,
+		0, 0, 0, 51, 0, 49, 0, 0, 0,
+		55, 0, 0, 0, 0, 0, 0, 0, 63,
+	},
+	{
+		3, 0, 0, 0, 0, 0, 0, 0, 11,
+		0, 0, 0, 17, 0, 15, 0, 0, 0,
+		0, 0, 0, 26, 0, 28, 0, 0, 0,
+		0, 23, 24, 0, 0, 0, 34, 33, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 51, 50, 0, 0, 0, 44, 43, 0,
+		0, 0, 0, 58, 0, 60, 0, 0, 0,
+		0, 0, 0, 75, 0, 71, 0, 0, 0,
+		81, 0, 0, 0, 0, 0, 0, 0, 65,
+	},
+	// pattern 8
+	{
+		9, 0, 0, 0, 67, 0, 0, 0, 49,
+		0, 11, 0, 0, 68, 0, 0, 51, 0,
+		0, 0, 0, 0, 71, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		5, 14, 23, 0, 0, 0, 61, 54, 45,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 81, 0, 0, 0, 0,
+		0, 17, 0, 0, 80, 0, 0, 57, 0,
+		1, 0, 0, 0, 37, 0, 0, 0, 41,
+	},
+	{
+		3, 0, 0, 0, 37, 0, 0, 0, 79,
+		0, 1, 0, 0, 38, 0, 0, 81, 0,
+		0, 0, 0, 0, 39, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		7, 16, 21, 0, 0, 0, 59, 72, 73,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 43, 0, 0, 0, 0,
+		0, 13, 0, 0, 44, 0, 0, 67, 0,
+		11, 0, 0, 0, 45, 0, 0, 0, 65,
+	},
+	{
+		79, 0, 0, 0, 73, 0, 0, 0, 49,
+		0, 81, 0, 0, 72, 0, 0, 51, 0,
+		0, 0, 0, 0, 65, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		1, 38, 39, 0, 0, 0, 43, 44, 45,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 25, 0, 0, 0, 0,
+		0, 21, 0, 0, 18, 0, 0, 15, 0,
+		5, 0, 0, 0, 9, 0, 0, 0, 13,
+	},
+	{
+		35, 0, 0, 0, 73, 0, 0, 0, 81,
+		0, 37, 0, 0, 72, 0, 0, 79, 0,
+		0, 0, 0, 0, 71, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		31, 40, 47, 0, 0, 0, 17, 14, 5,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 63, 0, 0, 0, 0,
+		0, 43, 0, 0, 60, 0, 0, 11, 0,
+		27, 0, 0, 0, 23, 0, 0, 0, 9,
+	},
+	{
+		1, 0, 0, 0, 5, 0, 0, 0, 9,
+		0, 17, 0, 0, 14, 0, 0, 11, 0,
+		0, 0, 0, 0, 23, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		37, 38, 39, 0, 0, 0, 43, 44, 45,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 79, 0, 0, 0, 0,
+		0, 59, 0, 0, 78, 0, 0, 73, 0,
+		57, 0, 0, 0, 65, 0, 0, 0, 69,
+	},
+	// pattern 9
+	{
+		79, 0, 5, 0, 21, 0, 35, 0, 37,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		77, 0, 0, 0, 0, 0, 0, 0, 41,
+		0, 0, 0, 1, 0, 25, 0, 0, 0,
+		73, 0, 0, 0, 0, 0, 0, 0, 45,
+		0, 0, 0, 11, 0, 27, 0, 0, 0,
+		69, 0, 0, 0, 0, 0, 0, 0, 49,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		65, 0, 63, 0, 59, 0, 55, 0, 51,
+	},
+	{
+		45, 0, 47, 0, 51, 0, 55, 0, 79,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		41, 0, 0, 0, 0, 0, 0, 0, 77,
+		0, 0, 0, 27, 0, 1, 0, 0, 0,
+		37, 0, 0, 0, 0, 0, 0, 0, 73,
+		0, 0, 0, 25, 0, 7, 0, 0, 0,
+		35, 0, 0, 0, 0, 0, 0, 0, 69,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		19, 0, 17, 0, 13, 0, 63, 0, 65,
+	},
+	{
+		65, 0, 63, 0, 59, 0, 55, 0, 51,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		69, 0, 0, 0, 0, 0, 0, 0, 49,
+		0, 0, 0, 41, 0, 39, 0, 0, 0,
+		73, 0, 0, 0, 0, 0, 0, 0, 35,
+		0, 0, 0, 11, 0, 1, 0, 0, 0,
+		77, 0, 0, 0, 0, 0, 0, 0, 5,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		81, 0, 25, 0, 23, 0, 21, 0, 19,
+	},
+	{
+		55, 0, 53, 0, 51, 0, 49, 0, 15,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		57, 0, 0, 0, 0, 0, 0, 0, 13,
+		0, 0, 0, 33, 0, 35, 0, 0, 0,
+		59, 0, 0, 0, 0, 0, 0, 0, 11,
+		0, 0, 0, 3, 0, 1, 0, 0, 0,
+		61, 0, 0, 0, 0, 0, 0, 0, 81,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		63, 0, 67, 0, 71, 0, 75, 0, 77,
+	},
+	{
+		81, 0, 77, 0, 73, 0, 69, 0, 65,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		55, 0, 0, 0, 0, 0, 0, 0, 63,
+		0, 0, 0, 51, 0, 49, 0, 0, 0,
+		5, 0, 0, 0, 0, 0, 0, 0, 45,
+		0, 0, 0, 1, 0, 11, 0, 0, 0,
+		21, 0, 0, 0, 0, 0, 0, 0, 41,
+		0, 0, 0, 0, 0, 0, 0, 0, 0,
+		23, 0, 27, 0, 31, 0, 35, 0, 37,
+	},
 }
