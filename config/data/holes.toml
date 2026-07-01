@@ -3065,7 +3065,6 @@ acbcab
 authors = [
     '018830c2-e48b-781a-ae6f-5c4a581c0e35', # CornerMercury
 ]
-experiment = 2653
 category = 'Gaming'
 links = [
     { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Nim' },
