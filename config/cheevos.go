@@ -49,6 +49,7 @@ func initCheevos() {
 		fourByFour     = CheevoByID["4×4"]
 		flagThoseMines = CheevoByID["flag-those-mines"]
 		ringToss       = CheevoByID["ring-toss"]
+		scriptKiddie   = CheevoByID["script-kiddie"]
 	)
 	for _, lang := range LangList {
 		if len(lang.Name) == 4 {
@@ -61,6 +62,10 @@ func initCheevos() {
 
 		if strings.ContainsRune(strings.ToLower(lang.Name), 'o') {
 			ringToss.Langs = append(ringToss.Langs, lang)
+		}
+
+		if strings.HasSuffix(lang.Name, "Script") {
+			scriptKiddie.Langs = append(scriptKiddie.Langs, lang)
 		}
 	}
 

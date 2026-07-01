@@ -59,6 +59,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f41f.svg'            `# Fish`                         \
     '*/1f426.svg'            `# Bird`                         \
     '*/1f42a.svg'            `# Camel`                        \
+    '*/1f42d.svg'            `# Mouse Face`                   \
     '*/1f441.svg'            `# Eye`                          \
     '*/1f444.svg'            `# Mouth`                        \
     '*/1f445.svg'            `# Tongue`                       \
@@ -147,6 +148,7 @@ RUN echo [] > extras/ligatures.json                           \
     '*/1f9a5.svg'            `# Sloth`                        \
     '*/1f9ab.svg'            `# Beaver`                       \
     '*/1f9d1-200d-1f4bb.svg' `# Technologist`                 \
+    '*/1f9d2.svg'            `# Child`                        \
     '*/1f9d9.svg'            `# Mage`                         \
     '*/1f9db.svg'            `# Vampire`                      \
     '*/1f9e0.svg'            `# Brain`                        \

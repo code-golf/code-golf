@@ -310,6 +310,12 @@ emoji       = '🎮'
 description = 'Solve <a href=/rijndael-s-box>Rijndael S-box</a> in any Microsoft language.'
 
 [['Hole/Lang Specific']]
+name        = 'Script Kiddie'
+emoji       = '🧒'
+description = 'Solve any hole in any three languages whose names end in "Script".'
+target      = 3
+
+[['Hole/Lang Specific']]
 name        = 'SHOUT!'
 emoji       = '🗣️'
 description = 'Solve <a href=/isbn>ISBN</a> and <a href=/rot13>ROT13</a> in any of ALGOL 68, AWK, COBOL, PHP, or SQL.'
@@ -342,6 +348,11 @@ description = 'Solve <a href=/musical-chords>Musical Chords</a> in any three of 
 holes       = ['musical-chords']
 langs       = ['c', 'c-sharp', 'd', 'f-sharp']
 target      = 3
+
+[['Hole/Lang Specific']]
+name        = 'The Secret of NIM'
+emoji       = '🐭'
+description = 'Solve <a href=/nim#nim>Nim in Nim</a>.'
 
 [['Hole/Lang Specific']]
 name        = 'TeXnical Know-how'

@@ -219,6 +219,12 @@ BEGIN
     IF hole = 'rijndael-s-box' AND lang IN ('c-sharp', 'f-sharp', 'powershell') THEN
         earned := earn(earned, 's-box-360', user_id); END IF;
 
+    -- 🧒 Script Kiddie
+    IF (SELECT COUNT(*) >= 3 FROM UNNEST(langs_for_hole) WHERE unnest IN (
+        SELECT id FROM langs WHERE experiment = 0 AND name LIKE '%Script'
+    )) THEN
+        earned := earn(earned, 'script-kiddie', user_id); END IF;
+
     -- 🗣️ SHOUT!
     IF hole IN ('isbn', 'rot13') AND
         (SELECT COUNT(DISTINCT s.hole) >= 2 FROM stable_passing_solutions s
@@ -246,6 +252,10 @@ BEGIN
      WHERE unnest IN ('c', 'c-sharp', 'd', 'f-sharp');
     IF hole = 'musical-chords' AND found THEN
         earned := earn(earned, 'sounds-quite-nice', user_id); END IF;
+
+    -- 🐭 The Secret of NIM
+    IF hole = 'nim' AND lang = 'nim' THEN
+        earned := earn(earned, 'the-secret-of-nim', user_id); END IF;
 
     -- 🧑‍💻 TeXnical Know-how
     IF lang = 'tex' THEN

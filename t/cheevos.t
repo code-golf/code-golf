@@ -123,6 +123,7 @@ for Q:ww<
     {simon-sed} look-and-say sed
     {sinosphere} mahjong 'c j v'
     {sounds-quite-nice} musical-chords 'c c-sharp d'
+    {the-secret-of-nim} nim nim
     {texnical-know-how} 24-game tex
     {typesetter} star-wars-opening-crawl tex
     {under-pressure} pascals-triangle pascal
@@ -153,6 +154,7 @@ for $dbh.execute('SELECT id FROM langs WHERE experiment = 0').allrows.flat {
     # Add hole-specific cheevos on the front.
     $earns.=subst: '{', '{piña-colada,'       if $_ eq 'elixir';
     $earns.=subst: '{', '{caffeinated,'       if $_ eq 'java';
+    $earns.=subst: '{', '{script-kiddie,'     if $_ eq 'javascript';
     $earns.=subst: '{', '{go-forth,'          if $_ eq 'go';
     $earns.=subst: '{', '{just-kidding,'      if $_ eq 'k';
     $earns.=subst: '{', '{tim-toady,'         if $_ eq 'raku';
