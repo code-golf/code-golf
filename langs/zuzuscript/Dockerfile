@@ -1,9 +1,9 @@
-FROM rust:1.96.0-slim-trixie AS builder
+FROM rust:1.96.1-slim-trixie AS builder
 
 RUN apt-get update \
  && apt-get install --yes libclang-dev libffi-dev libssl-dev libxml2-dev pkgconf
 
-ENV VER=0.7.0
+ENV VER=0.7.1
 
 ADD git@github.com:zuzuscript/zuzu-rust.git#v$VER /zuzu
 

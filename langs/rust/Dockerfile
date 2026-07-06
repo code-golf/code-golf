@@ -1,7 +1,7 @@
 # Also bump Gleam, Hush, Uiua.
-ARG VER=1.96.0
+ARG VER=1.96.1
 
-FROM rust:$VER-alpine3.23 AS builder
+FROM rust:$VER-alpine3.24 AS builder
 
 ARG VER
 

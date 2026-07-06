@@ -44,7 +44,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.56 MiB'
-version  = 'Algol 68 Genie 3.12.2'
+version  = 'Algol 68 Genie 3.12.3'
 website  = 'https://algol68genie.nl/en/algol-68-genie/'
 example  = '''
 # Printing #
@@ -301,8 +301,8 @@ end
 [BQN]
 args       = [ '/usr/bin/bqn', '-' ]
 experiment = 474
-size       = '1.30 MiB'
-version    = 'CBQN 0.11.0'
+size       = '1.72 MiB'
+version    = 'CBQN 0.12.0'
 website    = 'https://github.com/dzaima/CBQN'
 example    = '''
 # Printing
@@ -569,7 +569,7 @@ example   = '''
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
 size    = '298 MiB'
-version = '1.20.2'
+version = '1.20.3'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -678,7 +678,7 @@ args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
 size     = '51.1 MiB'
-version  = 'OTP 29.0.2'
+version  = 'OTP 29.0.3'
 website  = 'https://www.erlang.org'
 example  = '''
 main(Args) ->
@@ -802,7 +802,7 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '76.2 MiB'
+size    = '76.3 MiB'
 version = '1.17.0'
 website = 'https://gleam.run'
 example = '''
@@ -1123,8 +1123,8 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', '$code', '--' ]
-size    = '47.4 MiB'
-version = 'V8 14.9.207.35'
+size    = '47.9 MiB'
+version = 'V8 15.0.245.13'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1278,8 +1278,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '5.89 MiB'
-version    = '0.727'
+size       = '5.90 MiB'
+version    = '0.728'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1340,8 +1340,8 @@ Sys.argv
 [Odin]
 args       = [ '/usr/bin/odinwrapper', '-', '--' ]
 experiment = 766
-size       = '299 MiB'
-version    = '2026-06'
+size       = '315 MiB'
+version    = '2026-07'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1408,7 +1408,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.7'
+version = '8.5.8'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1677,7 +1677,7 @@ end
 [Rust]
 args    = [ '/usr/bin/rust', '-' ]
 size    = '416 MiB'
-version = '1.96.0'
+version = '1.96.1'
 website = 'https://www.rust-lang.org'
 example = '''
 fn main() {
@@ -1825,7 +1825,7 @@ Lm
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 size    = '576 MiB'
-version = '6.3.2'
+version = '6.3.3'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -2068,7 +2068,7 @@ pub fn main(init: std.process.Init) !void {
 args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
 size       = '36.2 MiB'
-version    = '0.7.0'
+version    = '0.7.1'
 website    = 'https://zuzulang.org'
 example    = '''
 function __main__ ( args ) {

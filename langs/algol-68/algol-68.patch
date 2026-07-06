@@ -1,5 +1,5 @@
---- /src/a68g/genie-unix.c
-+++ /src/a68g/genie-unix.c
+--- src/a68g/genie-unix.c
++++ src/a68g/genie-unix.c
 @@ -174,10 +174,9 @@
    POP_OBJECT (p, &a68g_index, A68G_INT);
    if (VALUE (&a68g_index) >= 1 && VALUE (&a68g_index) <= A68G (argc)) {

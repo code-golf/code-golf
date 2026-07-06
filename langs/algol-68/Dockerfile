@@ -1,13 +1,14 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang curl make patch
+RUN apk add --no-cache clang gcc make patch
 
-ENV LDFLAGS='-static' VER=3.12.2
+ENV LDFLAGS='-static' VER=3.12.3
 
-RUN curl -#L https://algol68genie.nl/algol68g-$VER.tar.gz \
-  | tar xz --strip-components 1
+ADD --unpack https://algol68genie.nl/algol68g-$VER.tar.gz /
 
-COPY algol-68.patch /
+WORKDIR /algol68g-$VER
+
+COPY algol-68.patch .
 
 RUN patch -p0 < algol-68.patch
 

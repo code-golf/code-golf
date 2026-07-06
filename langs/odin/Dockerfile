@@ -1,8 +1,8 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang curl dash llvm-dev make
+RUN apk add --no-cache clang curl dash gcc llvm-dev make
 
-ENV CPPFLAGS='-march=x86-64-v3' VER=2026-06
+ENV CPPFLAGS='-march=x86-64-v3' VER=2026-07
 
 RUN curl -#L https://github.com/odin-lang/Odin/archive/refs/tags/dev-$VER.tar.gz \
   | tar xz --directory /usr/local/lib --strip-components 1
@@ -32,10 +32,10 @@ COPY --from=0 /usr/bin/clang                   \
 COPY --from=0 /usr/lib/crt1.o                  \
               /usr/lib/crti.o                  \
               /usr/lib/crtn.o                  \
-              /usr/lib/libLLVM.so.21.1         \
+              /usr/lib/libLLVM.so.22.1         \
               /usr/lib/libbfd-2.45.1.so        \
               /usr/lib/libc.so                 \
-              /usr/lib/libclang-cpp.so.21.1    \
+              /usr/lib/libclang-cpp.so.22.1    \
               /usr/lib/libctf.so.0             \
               /usr/lib/libffi.so.8             \
               /usr/lib/libgcc_s.so             \
