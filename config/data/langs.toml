@@ -1338,7 +1338,7 @@ Sys.argv
 '''
 
 [Odin]
-args       = [ '/usr/bin/odinwrapper', '-', '--' ]
+args       = [ '/usr/bin/odin', '-' ]
 experiment = 766
 size       = '315 MiB'
 version    = '2026-07'
