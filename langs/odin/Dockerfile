@@ -24,38 +24,41 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/odinwrapper -s /odin.c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/dash                    /bin/sh
-COPY --from=0 /lib/ld-musl-*.so.1              /lib/
-COPY --from=0 /usr/bin/clang                   \
-              /usr/bin/ld                      \
-              /usr/bin/odinwrapper             /usr/bin/
-COPY --from=0 /usr/lib/crt1.o                  \
-              /usr/lib/crti.o                  \
-              /usr/lib/crtn.o                  \
-              /usr/lib/libLLVM.so.22.1         \
-              /usr/lib/libbfd-2.45.1.so        \
-              /usr/lib/libc.so                 \
-              /usr/lib/libclang-cpp.so.22.1    \
-              /usr/lib/libctf.so.0             \
-              /usr/lib/libffi.so.8             \
-              /usr/lib/libgcc_s.so             \
-              /usr/lib/libgcc_s.so.1           \
-              /usr/lib/libjansson.so.4         \
-              /usr/lib/liblzma.so.5            \
-              /usr/lib/libm.a                  \
-              /usr/lib/libsframe.so.2          \
-              /usr/lib/libssp_nonshared.a      \
-              /usr/lib/libstdc++.so.6          \
-              /usr/lib/libxml2.so.2            \
-              /usr/lib/libz.so.1               \
-              /usr/lib/libzstd.so.1            /usr/lib/
-COPY --from=0 /usr/lib/gcc/*/15.2.0/crtbegin.o \
-              /usr/lib/gcc/*/15.2.0/crtend.o   \
-              /usr/lib/gcc/*/15.2.0/libgcc.a   /usr/lib/gcc/x86_64-alpine-linux-musl/15.2.0/
-COPY --from=0 /usr/local/lib/odin              /usr/local/bin/
-COPY --from=0 /usr/local/bin/base              /usr/local/bin/base
-COPY --from=0 /usr/local/bin/core              /usr/local/bin/core
-COPY --from=0 /usr/local/bin/vendor            /usr/local/bin/vendor
+COPY --from=0 /usr/bin/dash                     /bin/sh
+COPY --from=0 /lib/ld-musl-*.so.1               /lib/
+COPY --from=0 /usr/bin/clang                    \
+              /usr/bin/ld                       \
+              /usr/bin/odinwrapper              /usr/bin/
+COPY --from=0 /usr/lib/crt1.o                   \
+              /usr/lib/crti.o                   \
+              /usr/lib/crtn.o                   \
+              /usr/lib/libLLVM.so.22.1          \
+              /usr/lib/libbfd-2.45.1.so         \
+              /usr/lib/libc.so                  \
+              /usr/lib/libclang-cpp.so.22.1     \
+              /usr/lib/libctf.so.0              \
+              /usr/lib/libffi.so.8              \
+              /usr/lib/libgcc_s.so              \
+              /usr/lib/libgcc_s.so.1            \
+              /usr/lib/libjansson.so.4          \
+              /usr/lib/liblzma.so.5             \
+              /usr/lib/libm.a                   \
+              /usr/lib/libsframe.so.2           \
+              /usr/lib/libssp_nonshared.a       \
+              /usr/lib/libstdc++.so.6           \
+              /usr/lib/libxml2.so.2             \
+              /usr/lib/libz.so.1                \
+              /usr/lib/libzstd.so.1             \
+              /usr/lib/Scrt1.o                  /usr/lib/
+COPY --from=0 /usr/lib/gcc/*/15.2.0/crtbegin.o  \
+              /usr/lib/gcc/*/15.2.0/crtbeginS.o \
+              /usr/lib/gcc/*/15.2.0/crtend.o    \
+              /usr/lib/gcc/*/15.2.0/crtendS.o   \
+              /usr/lib/gcc/*/15.2.0/libgcc.a    /usr/lib/gcc/x86_64-alpine-linux-musl/15.2.0/
+COPY --from=0 /usr/local/lib/odin               /usr/local/bin/
+COPY --from=0 /usr/local/bin/base               /usr/local/bin/base
+COPY --from=0 /usr/local/bin/core               /usr/local/bin/core
+COPY --from=0 /usr/local/bin/vendor             /usr/local/bin/vendor
 
 ENTRYPOINT ["odinwrapper"]
 
