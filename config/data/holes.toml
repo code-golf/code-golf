@@ -2249,6 +2249,38 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence' },
 ]
 
+['Langton’s ant']
+authors = [
+	'01959b7d-0aad-76e4-ae6a-56b65459d21c', #kTheLemon
+	'018b4d65-bc7e-7862-8289-983baa125555', #albanian-laundromat
+]
+category = 'Computing'
+links = [
+	{ name = 'Rosetta Code', url = '//rosettacode.org/wiki/Langton%27s_ant' }
+	{ name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Langton%27s_ant' },
+]
+experiment = 2038
+synopsis = 'Compute the end result of 1000 iterations of Langton’s ant.'
+preamble = '''
+<p>
+	Langton's ant is a cellular automaton that operates on an square
+	grid in which each cell can be in any one of a finite number of states.
+	Rulesets are passed as a sequence of 2-9 Ls or Rs, with the length of the
+	ruleset indicating the number of states.
+
+<p>
+	At each step of the simulation, the ant turns either left or right according
+	to ruleset's rule for the state of the cell it is currently on, increments
+	the state of the cell it is on, and advances one cell in its new direction.
+
+<p>
+	Given the initial state where the ant starts facing upward in the center of
+	a 33 by 33 grid in which every cell starts in the first state, print the
+	state of the grid after 1000 iterations of the simulation or until the ant
+	first leaves the 33x33 grid. Represent the nth state in the output as the
+	digit (n-1).
+'''
+
 ['Leap Years']
 authors = [
     '0163a524-feb6-7e9e-9bbf-b6bbf0fe0116', # GrayJoKing
