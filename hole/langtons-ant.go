@@ -5,7 +5,7 @@ import "fmt"
 func generateRuleset(length int) string {
 	ruleset := ""
 	for range length {
-		ruleset += randChoice([2]string{"L", "R"})
+		ruleset += randChoice([]string{"L", "R"})
 	}
 	return ruleset
 }
@@ -52,7 +52,7 @@ var _ = answerFunc("langtons-ant", func() []Answer {
 	for i := range 9 {
 		ruleset := generateRuleset(i + 2)
 		grid := runAnt(ruleset)
-		tests[i] := test{ruleset, grid}
+		tests[i] = test{ruleset, grid}
 	}
 	shuffle(tests)
 	return outputTests(tests[:3], tests[3:6], tests[6:])
