@@ -57,7 +57,7 @@ CREATE TYPE hole AS ENUM (
     'hexagonal-spiral', 'hexdump', 'highly-composite-numbers',
     'hilbert-curve', 'huffman-encoder', 'intersection', 'inventory-sequence',
     'isbn', 'jacobi-symbol', 'kaprekar-numbers', 'kolakoski-constant',
-    'kolakoski-sequence', 'leap-years', 'levenshtein-distance',
+    'kolakoski-sequence', 'langtons-ant', 'leap-years', 'levenshtein-distance',
     'leyland-numbers', 'ln-2', 'look-and-say', 'lucky-numbers',
     'lucky-tickets', 'mahjong', 'mandelbrot', 'maze', 'medal-tally',
     'minesweeper', 'morse-decoder', 'morse-encoder', 'multitap-input',
