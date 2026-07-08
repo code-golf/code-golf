@@ -2256,7 +2256,7 @@ authors = [
 ]
 category = 'Computing'
 links = [
-	{ name = 'Rosetta Code', url = '//rosettacode.org/wiki/Langton%27s_ant' }
+	{ name = 'Rosetta Code', url = '//rosettacode.org/wiki/Langton%27s_ant' },
 	{ name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Langton%27s_ant' },
 ]
 experiment = 2038
