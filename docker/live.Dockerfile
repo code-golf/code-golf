@@ -1,4 +1,4 @@
-FROM golang:1.27rc1-alpine3.24
+FROM golang:1.27rc2-alpine3.24
 
 ENV CGO_ENABLED=0 GOAMD64=v4 GOPATH=
 
