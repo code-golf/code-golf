@@ -1,23 +1,26 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache gcc make musl-dev
 
-ENV VER=5.4.0
+ENV VER=5.4.1
 
-RUN curl -#L https://ftpmirror.gnu.org/gnu/gawk/gawk-$VER.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://ftpmirror.gnu.org/gnu/gawk/gawk-$VER.tar.xz /
 
-RUN ./configure    \
-    --disable-lint \
-    --prefix=/usr  \
- && make install   \
- && strip /usr/bin/gawk
+WORKDIR /gawk-$VER
+
+RUN ./configure                       \
+    --disable-lint                    \
+    --disable-pma                     \
+    --prefix=/usr                     \
+    --program-transform-name='s/^g//' \
+ && make install                      \
+ && strip /usr/bin/awk
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1 /lib/
-COPY --from=0 /usr/bin/gawk       /usr/bin/awk
-COPY --from=0 /usr/lib/gawk       /usr/lib/gawk
+COPY --from=0 --parents /lib/ld-musl-*.so.1 \
+                        /usr/bin/awk        \
+                        /usr/lib/gawk       /
 
 ENTRYPOINT ["awk"]
 
