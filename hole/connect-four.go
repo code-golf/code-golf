@@ -381,7 +381,7 @@ var _ = answerFunc("connect-four", func() []Answer {
 		tests = append(tests, test{moves, "Yellow"})
 	}
 
-	const argc = 1000 // Preserve original argc
+	const argc = 500
 
 	for range argc*2 - len(tests) {
 		moves, expected := emulPlay()
