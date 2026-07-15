@@ -1,6 +1,13 @@
 package hole
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand/v2"
+)
+
+var hardCodedRules = []string{
+	"LLLLR", "LRLRLLRR",
+}
 
 func generateRuleset(length int) string {
 	ruleset := ""
@@ -44,16 +51,25 @@ func runAnt(ruleset string) string {
 		}
 	}
 
-	return outp
+	return outp + "\n"
 }
 
 var _ = answerFunc("langtons-ant", func() []Answer {
-	tests := make([]test, 9)
+	tests := make([]test, 40)
+	for i, rule := range hardCodedRules {
+		grid := runAnt(rule)
+		tests[i] = test{rule, grid}
+	}
 	for i := range 9 {
 		ruleset := generateRuleset(i + 2)
+		grid := runAnt(ruleset)
+		tests[i + 2] = test{ruleset, grid}
+	}
+	for i:=11;i<40;i++ {
+		ruleset := generateRuleset(rand.IntN(8) + 2)
 		grid := runAnt(ruleset)
 		tests[i] = test{ruleset, grid}
 	}
 	shuffle(tests)
-	return outputTests(tests[:3], tests[3:6], tests[6:])
+	return outputTests(tests[:20], tests[20:])
 })
