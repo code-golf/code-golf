@@ -18,13 +18,13 @@ func runAnt(ruleset string) string {
 	pos_x, pos_y, vel_x, vel_y := 16, 16, 0, -1
 
 	for range 1000 {
-		dir := ruleset[grid[pos_x][pos_y]]
+		dir := ruleset[grid[pos_y][pos_x]]
 		if dir == 'L' {
 			vel_x, vel_y = vel_y, -vel_x
 		} else {
 			vel_x, vel_y = -vel_y, vel_x
 		}
-		grid[pos_x][pos_y] = (grid[pos_x][pos_y] + 1) % rulelength
+		grid[pos_y][pos_x] = (grid[pos_y][pos_x] + 1) % rulelength
 		pos_x += vel_x
 		pos_y += vel_y
 
