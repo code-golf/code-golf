@@ -2249,7 +2249,7 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Kolakoski_sequence' },
 ]
 
-['Langton’s ant']
+['Langton’s Ant']
 authors = [
 	'01959b7d-0aad-76e4-ae6a-56b65459d21c', #kTheLemon
 	'018b4d65-bc7e-7862-8289-983baa125555', #albanian-laundromat
