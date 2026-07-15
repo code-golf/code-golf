@@ -6,7 +6,7 @@ import (
 )
 
 var hardCodedRules = []string{
-	"LLLLR", "LRLRLLRR",
+	"LLLLR", "LRLRLLRR", "RRRRL", "LLLRRR", "RRRLLL",
 }
 
 func generateRuleset(length int) string {
@@ -63,9 +63,9 @@ var _ = answerFunc("langtons-ant", func() []Answer {
 	for i := range 9 {
 		ruleset := generateRuleset(i + 2)
 		grid := runAnt(ruleset)
-		tests[i + 2] = test{ruleset, grid}
+		tests[i + 5] = test{ruleset, grid}
 	}
-	for i:=11;i<40;i++ {
+	for i:=len(hardCodedRules)+9;i<40;i++ {
 		ruleset := generateRuleset(rand.IntN(8) + 2)
 		grid := runAnt(ruleset)
 		tests[i] = test{ruleset, grid}
