@@ -4,6 +4,7 @@ import { Vim }                                         from '@replit/codemirror-
 import { EditorState, EditorView, extensions }         from './_codemirror';
 import LZString                                        from 'lz-string';
 import { getAllowedStrokes }                           from './lang-allowed-strokes';
+import { assemble, Machine } from 'fluffy-6502';
 
 interface Lang {
     assembly:   boolean,
@@ -838,7 +839,14 @@ export function getScorings(tr: any, editor: any) {
     const selection: Scorings = {};
 
     if (currentLang.assembly)
-        total.byte = (editor.state.field(ASMStateField) as any).head.length();
+        if (currentLang.id === "assembly")
+            total.byte = (editor.state.field(ASMStateField) as any).head.length();
+        else 
+            try {
+                total.byte = new Machine(assemble(editor.state.doc.toString()).memory).nz_bytes();
+            } catch(e) {
+                total.byte = 0;
+            }
     else {
         total.byte = byteLen(code);
         total.char = charLen(code);
