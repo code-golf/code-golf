@@ -92,19 +92,19 @@ CREATE TYPE hole_category AS ENUM (
 CREATE TYPE idea_category AS ENUM ('cheevo', 'hole', 'lang', 'other');
 
 CREATE TYPE lang AS ENUM (
-    '05ab1e', 'algol-68', 'apl', 'arkscript', 'arturo', 'assembly', 'awk',
-    'bash', 'basic', 'befunge', 'berry', 'bqn', 'brainfuck', 'c', 'c-sharp',
-    'civet', 'cjam', 'clojure', 'cobol', 'coconut', 'coffeescript',
-    'common-lisp', 'cpp', 'crystal', 'd', 'dart', 'egel', 'elixir', 'erlang',
-    'f-sharp', 'factor', 'fennel', 'fish', 'forth', 'fortran', 'gleam', 'go',
-    'golfscript', 'groovy', 'harbour', 'hare', 'haskell', 'haxe', 'hexagony',
-    'hush', 'hy', 'iogii', 'j', 'janet', 'java', 'javascript', 'jq', 'julia',
-    'k', 'knight', 'kotlin', 'lily', 'lua', 'luau', 'nim', 'ocaml', 'odin',
-    'pascal', 'perl', 'php', 'picat', 'powershell', 'prolog', 'python',
-    'qore', 'r', 'racket', 'raku', 'rebol', 'rexx', 'rockstar', 'ruby',
-    'rust', 'scala', 'scheme', 'sed', 'sql', 'squirrel', 'stax', 'swift',
-    'tcl', 'tex', 'uiua', 'umka', 'v', 'vala', 'viml', 'vyxal', 'wren', 'zig',
-    'zuzuscript'
+    '05ab1e', '6502-assembly', 'algol-68', 'apl', 'arkscript', 'arturo',
+    'assembly', 'awk', 'bash', 'basic', 'befunge', 'berry', 'bqn',
+    'brainfuck', 'c', 'c-sharp', 'civet', 'cjam', 'clojure', 'cobol',
+    'coconut', 'coffeescript', 'common-lisp', 'cpp', 'crystal', 'd', 'dart',
+    'egel', 'elixir', 'erlang', 'f-sharp', 'factor', 'fennel', 'fish',
+    'forth', 'fortran', 'gleam', 'go', 'golfscript', 'groovy', 'harbour',
+    'hare', 'haskell', 'haxe', 'hexagony', 'hush', 'hy', 'iogii', 'j',
+    'janet', 'java', 'javascript', 'jq', 'julia', 'k', 'knight', 'kotlin',
+    'lily', 'lua', 'luau', 'nim', 'ocaml', 'odin', 'pascal', 'perl', 'php',
+    'picat', 'powershell', 'prolog', 'python', 'qore', 'r', 'racket', 'raku',
+    'rebol', 'rexx', 'rockstar', 'ruby', 'rust', 'scala', 'scheme', 'sed',
+    'sql', 'squirrel', 'stax', 'swift', 'tcl', 'tex', 'uiua', 'umka', 'v',
+    'vala', 'viml', 'vyxal', 'wren', 'zig', 'zuzuscript'
 );
 
 CREATE TYPE medal AS ENUM ('unicorn', 'diamond', 'gold', 'silver', 'bronze');
@@ -217,7 +217,7 @@ CREATE UNLOGGED TABLE holes (
 CREATE UNLOGGED TABLE langs (
     id           lang   NOT NULL PRIMARY KEY,
     experiment   int    NOT NULL,
-    digest_trunc bytea  NOT NULL,
+    digest_trunc bytea  , -- Null for unloaded languages.
     name         citext NOT NULL
 );
 
@@ -251,9 +251,11 @@ CREATE TABLE solutions (
     lang_digest bytea     NOT NULL,
     time_ms     smallint  NOT NULL,
     -- Assembly can only be scored on bytes, and they are compiled bytes.
-    CHECK ((lang  = 'assembly' AND chars IS NULL AND scoring = 'bytes')
-        OR (lang != 'assembly' AND bytes = octet_length(code)
-                               AND chars = char_length(code))),
+    CHECK (((lang  = 'assembly'
+          OR lang  = '6502-assembly') AND chars IS NULL AND scoring = 'bytes')
+        OR ((lang != 'assembly'
+         AND lang != '6502-assembly') AND bytes = octet_length(code)
+                                      AND chars = char_length(code))),
     -- Solutions are limited to 400 KiB, TODO < 128 KiB (not <=).
     CHECK (octet_length(code) <= 409600),
     PRIMARY KEY (user_id, hole, lang, scoring)
