@@ -11,7 +11,7 @@ bench:
 bump:
 	@go get -u
 	@go mod tidy -compat=1.27
-	@npm upgrade
+	@npm upgrade --allow-git=root
 
 cert:
 	@mkcert -install localhost
