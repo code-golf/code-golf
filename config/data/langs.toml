@@ -16,6 +16,82 @@ example    = '''
 |»,}
 '''
 
+['6502 Assembly']
+args       = [ '/usr/node_modules/fluffy-6502/runner.js' ]
+assembly   = true
+experiment = 628
+size       = '95.6 MiB'
+version    = 'Fluffy 6502 0.5.0'
+website    = 'https://github.com/CatsAreFluffy/6502golf/tree/main/packages/fluffy-6502'
+example    = '''
+ ; Syntax is DASM-like
+ ; Use z suffix for zeropage addressing
+ ; Arguments are provided at $4000 separated by 0 bytes
+ ; Output is read from $8000 after a `jam` instruction
+ ; Execution starts from the reset vector, which defaults to $0200
+ ; The assembler also starts from $0200
+ ; Only nonzero bytes are counted for scoring (including the reset vector)
+
+ ; Printing
+ org $1000
+ byte "Hello, World!\n"
+ org $200
+print_loop
+ lda $1000,y
+ sta $8000,y
+ iny
+ cmp #0
+ bne print_loop
+ dey
+
+ ; Looping
+ org 0
+counter byte '0'
+ org $212
+ ldaz counter
+number_loop
+ sta $8000,y
+ iny
+ lda #'\n'
+ sta $8000,y
+ iny
+ incz counter
+ ldaz counter
+ cmp #'9'+1
+ bne number_loop
+
+ ; Accessing arguments
+ org 1
+src word $4000
+dst word $8000
+ org $226
+ sty dst
+ ldy #0
+ lda (src),y
+ beq end_of_arg
+args_loop
+ sta (dst),y
+ jsr next
+ lda (src),y
+ bne args_loop
+end_of_arg
+ lda #'\n'
+ sta (dst),y
+ jsr next
+ lda (src),y
+ bne args_loop
+
+ jam
+
+next
+ iny
+ bne next_end
+ incz src+1
+ incz dst+1
+next_end
+ rts
+'''
+
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
 size    = '662 KiB'
@@ -602,7 +678,7 @@ end
 
 [D]
 args    = [ '/usr/bin/dmd', '-color=on', '-run', '-' ]
-chdir   = '/tmp'    # FIXME dmd `-od=/tmp` doesn't work with `-run -`
+chdir   = '/tmp'
 env     = [ 'PATH=/usr/bin' ]
 size    = '98.1 MiB'
 version = 'DMD 2.112.1'
