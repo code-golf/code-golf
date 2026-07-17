@@ -1,4 +1,4 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 ENV BIN='/usr/bin/golfscript' VER=6155e9f
 

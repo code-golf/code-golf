@@ -1,8 +1,8 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache gcc make musl-dev python3 readline-static
 
-ENV VER=bd9c93b
+ENV VER=26485d1
 
 WORKDIR /berry
 
