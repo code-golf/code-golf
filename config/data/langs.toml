@@ -369,8 +369,8 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '111 MiB'
-version = 'C# 14.0 on .NET 10.0.9'
+size    = '112 MiB'
+version = 'C# 14.0 on .NET 10.0.10'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -696,7 +696,7 @@ main(Args) ->
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.9'
+version = 'F# 10.0 on .NET 10.0.10'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -984,7 +984,7 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '7.71 MiB'
+size    = '7.72 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -1052,8 +1052,8 @@ example    = '''
 [iogii]
 args     = [ '/usr/bin/iogii', '-' ]
 released = 2026-05-21
-size     = '8.80 MiB'
-version  = '1.2'
+size     = '8.81 MiB'
+version  = '1.2.1'
 website  = 'https://golfscript.com/iogii/'
 example  = '''
 # Printing
@@ -1279,7 +1279,7 @@ end
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
 size       = '5.92 MiB'
-version    = '0.729'
+version    = '0.730'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1458,8 +1458,8 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '139 MiB'
-version    = 'PowerShell 7.6.3 on .NET 10.0.9'
+size       = '140 MiB'
+version    = 'PowerShell 7.6.4 on .NET 10.0.10'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing

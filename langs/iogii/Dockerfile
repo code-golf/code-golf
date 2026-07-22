@@ -1,6 +1,6 @@
 FROM alpine:3.24 AS builder
 
-ENV VER=1.2
+ENV VER=1.2.1
 
 RUN apk add --no-cache ghc gmp-static musl-dev
 
