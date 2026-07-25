@@ -2,10 +2,10 @@
 import { assemble, LocatedError, Machine } from "fluffy-6502"
 import { readFileSync, writeFileSync, writeSync } from "fs";
 const code = readFileSync(0, "utf-8");
+let byte_count = 0;
 try {
     const { memory } = assemble(code);
-    let byte_count = new Machine(memory).nz_bytes();
-    writeFileSync(3, byte_count.toString());
+    byte_count = new Machine(memory).nz_bytes();
     let in_ptr = 0x4000;
     for(const arg of process.argv.slice(2)) {
         for(const byte of Buffer.from(arg, "utf-8")) {
@@ -47,3 +47,4 @@ try {
         console.error(e);
     }
 }
+writeFileSync(3, byte_count.toString());
