@@ -26,9 +26,15 @@ website    = 'https://github.com/CatsAreFluffy/6502golf/tree/main/packages/fluff
 example    = '''
  ; Syntax is DASM-like
  ; Use z suffix for zeropage addressing
+ ; Arguments are provided at $4000 separated by 0 bytes
+ ; Output is read from $8000 after a `jam` instruction
+ ; Execution starts from the reset vector, which defaults to $0200
+ ; The assembler also starts from $0200
+ ; Only nonzero bytes are counted for scoring (including the reset vector)
+
  ; Printing
  org $1000
- byte "Hello, World!"
+ byte "Hello, World!\n"
  org $200
 print_loop
  lda $1000,y
@@ -37,9 +43,6 @@ print_loop
  cmp #0
  bne print_loop
  dey
- lda #'\n'
- sta $8000,y
- iny
 
  ; Looping
  org 0
