@@ -1,36 +1,51 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.302-alpine3.24-amd64 AS builder
+FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache gcc musl-dev
+RUN apk add --no-cache curl icu-data npm
 
 ENV VER=1.2.1
 
 WORKDIR /stax
 
-ADD https://github.com/tomtheisen/stax.git#v$VER .
+RUN curl -#L "https://github.com/tomtheisen/stax/tarball/v$VER" \
+  | tar xz --strip-components 1
 
-COPY stax.csproj StaxLang.CLI/StaxLang.CLI.csproj
+WORKDIR /stax/StaxLang.JS
 
-RUN dotnet publish StaxLang.CLI -c Release -o /out
+RUN npm install \
+ # Remove debug console.log that gets captured by the cli wrapper
+ && sed -i '/console\.log("macro", A2S(a))/d' stax.ts \
+ && npx tsc
 
-COPY stax.c .
+COPY stax.js /usr/bin/stax
 
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/stax -s -static stax.c
+RUN chmod +x /usr/bin/stax
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1      /lib/
-COPY --from=0 /usr/bin/stax            /usr/bin/
-COPY --from=0 /usr/lib/libgcc_s.so.1   \
-              /usr/lib/libstdc++.so.6  /usr/lib/
-COPY --from=0 /out/*.dll               \
-              /out/libSystem.Native.so \
-              /out/libclrjit.so        \
-              /out/libcoreclr.so       \
-              /out/libhostfxr.so       \
-              /out/libhostpolicy.so    \
-              /out/stax                /usr/local/bin/
-
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 PATH=/usr/bin
+COPY --from=0 /lib/ld-musl-*.so.1              /lib/
+COPY --from=0 /usr/bin/env                     \
+              /usr/bin/node                    \
+              /usr/bin/stax                    /usr/bin/
+COPY --from=0 /usr/lib/libada.so.3             \
+              /usr/lib/libbrotlicommon.so.1    \
+              /usr/lib/libbrotlidec.so.1       \
+              /usr/lib/libbrotlienc.so.1       \
+              /usr/lib/libcares.so.2           \
+              /usr/lib/libcrypto.so.3          \
+              /usr/lib/libgcc_s.so.1           \
+              /usr/lib/libicudata.so.76        \
+              /usr/lib/libicui18n.so.76        \
+              /usr/lib/libicuuc.so.76          \
+              /usr/lib/libnghttp2.so.14        \
+              /usr/lib/libsimdjson.so.25       \
+              /usr/lib/libsimdutf.so.27        \
+              /usr/lib/libsqlite3.so.0         \
+              /usr/lib/libssl.so.3             \
+              /usr/lib/libstdc++.so.6          \
+              /usr/lib/libz.so.1               \
+              /usr/lib/libzstd.so.1            /usr/lib/
+COPY --from=0 /stax/StaxLang.JS/js/*.js        /usr/lib/stax/
+COPY --from=0 /usr/share/icu/76.1/icudt76l.dat /usr/share/icu/
 
 ENTRYPOINT ["stax"]
 
