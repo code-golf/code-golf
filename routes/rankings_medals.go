@@ -116,7 +116,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 			      AND $2 IN ('all', lang::text)
 			      AND $3 IN ('all', scoring::text)
 			 GROUP BY hole, lang, scoring
-			   HAVING COUNT(*) > 1
+				HAVING COUNT(*) > 1
 			 ORDER BY rank, hole, lang, scoring
 			    LIMIT $4 OFFSET $5`
 
