@@ -12,8 +12,8 @@ import (
 	"github.com/code-golf/code-golf/github"
 	"github.com/code-golf/code-golf/routes"
 	"github.com/code-golf/code-golf/uuid"
-	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/vinovest/sqlx"
 )
 
 func main() {

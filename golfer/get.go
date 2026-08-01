@@ -6,7 +6,7 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/uuid"
-	"github.com/jmoiron/sqlx"
+	"github.com/vinovest/sqlx"
 )
 
 // Get a Golfer given a session ID, updates the session's last used time.

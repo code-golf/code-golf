@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/jmoiron/sqlx"
 	"github.com/shurcooL/graphql"
+	"github.com/vinovest/sqlx"
 )
 
 /* https://docs.github.com/en/graphql/overview/explorer

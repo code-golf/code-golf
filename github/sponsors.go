@@ -3,7 +3,7 @@ package github
 import (
 	"context"
 
-	"github.com/jmoiron/sqlx"
+	"github.com/vinovest/sqlx"
 )
 
 func sponsors(db *sqlx.DB) (limits []rateLimit, err error) {

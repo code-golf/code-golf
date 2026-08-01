@@ -16,7 +16,7 @@ import (
 	"github.com/code-golf/code-golf/config"
 	Golfer "github.com/code-golf/code-golf/golfer"
 	"github.com/code-golf/code-golf/pretty"
-	"github.com/jmoiron/sqlx"
+	"github.com/vinovest/sqlx"
 )
 
 const minElapsedTimeToShowDate = 30 * 24 * time.Hour

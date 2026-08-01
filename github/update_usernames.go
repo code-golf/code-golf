@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/jmoiron/sqlx"
+	"github.com/vinovest/sqlx"
 )
 
 // Updates the usernames of every GitHub connection.
