@@ -1,17 +1,12 @@
 FROM rust:1.97.1-slim-trixie AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl make
-
-ENV VER=1.17.0
+ENV VER=1.18.0
 
 WORKDIR /gleam
 
-RUN curl -#L https://github.com/gleam-lang/gleam/archive/refs/tags/v$VER.tar.gz \
-  | tar xz --strip-components 1
+ADD https://github.com/gleam-lang/gleam.git#v$VER .
 
-RUN make -j`nproc` install
+RUN cargo install --path gleam-bin --force --locked
 
 WORKDIR /usr/local
 

@@ -1,16 +1,17 @@
 FROM alpine:3.23 AS builder
 
-RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev curl fontconfig-dev \
-                       libxrandr-dev libxrender-dev libxt-dev libxtst-dev musl-locales zip
+RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev \
+                       fontconfig-dev libxrandr-dev libxrender-dev    \
+                       libxt-dev libxtst-dev musl-locales zip
 
 # Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
-ENV VER=25.0.3 BUILD=9
+ENV VER=25.0.4 BUILD=7
 
-RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk_x64_alpine-linux_hotspot_${VER}_$BUILD.tar.gz \
-  | tar xz --directory /tmp --strip-components 1
+ADD --unpack https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk_x64_alpine-linux_hotspot_${VER}_$BUILD.tar.gz .
 
-RUN curl -#L https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk-sources_${VER}_$BUILD.tar.gz \
-  | tar xz --strip-components 1
+ADD --unpack https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk-sources_${VER}_$BUILD.tar.gz .
+
+WORKDIR /jdk-$VER+$BUILD-src
 
 RUN bash configure                     \
     --enable-cds                       \
@@ -18,23 +19,24 @@ RUN bash configure                     \
     --enable-jvm-feature-link-time-opt \
     --enable-jvm-feature-management    \
     --enable-jvm-feature-opt-size      \
-    --with-boot-jdk=/tmp               \
+    --with-boot-jdk=/jdk-$VER+$BUILD   \
     --with-conf-name=release           \
     --with-jobs=`nproc`                \
  && make jdk-image
 
-RUN /build/release/images/jdk/bin/jlink           \
-    --add-modules java.base,java.se               \
-    --add-modules jdk.compiler,jdk.unsupported    \
-    --compress zip-9                              \
-    --generate-cds-archive                        \
-    --module-path /build/release/images/jdk/jmods \
-    --output /opt/java                            \
+RUN build/release/images/jdk/bin/jlink           \
+    --add-modules java.base,java.se              \
+    --add-modules jdk.compiler,jdk.unsupported   \
+    --compress zip-9                             \
+    --generate-cds-archive                       \
+    --module-path build/release/images/jdk/jmods \
+    --output /opt/java                           \
     --strip-debug
 
-RUN /opt/java/bin/java -XX:+AutoCreateSharedArchive -XX:SharedArchiveFile=cds.jsa -X
+RUN /opt/java/bin/java -XX:+AutoCreateSharedArchive \
+                       -XX:SharedArchiveFile=/cds.jsa -X
 
-COPY java.c /
+COPY java.c .
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/java -s -static java.c
 
