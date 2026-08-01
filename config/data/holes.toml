@@ -596,6 +596,29 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Chess960_numbering_scheme#Direct_derivation' },
 ]
 
+['Chess Move Validation']
+authors = [
+    '01923841-7fc8-7cce-b6b9-50df9ea1756e', # 4atj
+]
+category = 'Gaming'
+experiment = 2705
+synopsis = 'Determine if a chess move is valid.'
+preamble = '''
+<p>
+    Given a list of moves on an empty 8&times;8 chessboard, determine which ones are legal and print them.
+</p>
+
+<h3>Move Format</h3>
+<p>
+    A 5-character string formatted as <code>[Piece][Start File][Start Rank][End File][End Rank]</code>:
+</p>
+<ul>
+    <li><b>Pieces:</b> <code>K</code> (King), <code>Q</code> (Queen), <code>R</code> (Rook), <code>B</code> (Bishop), <code>N</code> (Knight)</li>
+    <li><b>Files:</b> <code>a</code> through <code>h</code></li>
+    <li><b>Ranks:</b> <code>1</code> through <code>8</code></li>
+</ul>
+'''
+
 ['Christmas Trees']
 category = 'Art'
 released = 2017-12-05

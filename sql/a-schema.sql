@@ -44,7 +44,7 @@ CREATE TYPE hole AS ENUM (
     'apérys-constant', 'arabic-to-roman', 'arithmetic-numbers', 'arrows',
     'ascending-primes', 'ascii-table', 'billiards', 'binary-lambda-calculus',
     'brainfuck', 'calendar', 'card-number-validation', 'catalan-numbers',
-    'catalans-constant', 'chess960-decoder', 'chess960-encoder',
+    'catalans-constant', 'chess960-decoder', 'chess960-encoder', 'chess-move-validation',
     'christmas-trees', 'collatz', 'connect-four', 'continued-fractions', 
     'crossword', 'css-colors', 'css-colors-inverse', 'css-grid', 'cubes', 
     'day-of-week', 'dfa-simulator', 'diamonds', 'divisors', 'dragon-curve', 
