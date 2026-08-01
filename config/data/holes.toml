@@ -5160,7 +5160,6 @@ links = [
     { name = 'OEIS A002858', url = '//oeis.org/A002858' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Ulam_number' },
 ]
-experiment = 2639
 released = 2026-08-01
 synopsis = 'Print the first 250 terms of the Ulam Sequence.'
 preamble = '''
