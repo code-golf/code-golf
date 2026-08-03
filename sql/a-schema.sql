@@ -80,8 +80,8 @@ CREATE TYPE hole AS ENUM (
     'tongue-twisters', 'topological-sort', 'tower-of-hanoi',
     'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
     'ulam-sequence', 'united-states', 'vampire-numbers', 'van-eck-sequence',
-    'zeckendorf-representation', 'zodiac-signs', 'γ', 'λ', 'π', 'τ',
-    'φ', '√2', '𝑒'
+    'yellowstone-permutation', 'zeckendorf-representation', 'zodiac-signs',
+    'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
 );
 
 -- FIXME Not wild about these being titlecase, all other enums are lowercase.
