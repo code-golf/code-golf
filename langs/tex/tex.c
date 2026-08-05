@@ -154,20 +154,21 @@ int main(int argc, char* argv[]) {
 
 // Join the length-`cnt` array `arr` of strings with separator `sep`.
 char* each_join(char* arr[], int cnt, const char* sep) {
-    size_t len;
+    size_t len = strlen(sep) * (cnt - 1);
 
     for (int i = 0; i < cnt; i++)
-        len += strlen(arr[i]) + strlen(sep);
+        len += strlen(arr[i]);
 
     char* rt;
 
     if (!(rt = malloc(len + 1)))
         ERR_AND_EXIT("malloc");
 
-    for (int i = 0; i < cnt; i++) {
+    for (int i = 0; i < cnt - 1; i++) {
         strcat(rt, arr[i]);
         strcat(rt, sep);
     }
+    strcat(rt, arr[cnt - 1]);
 
     return rt;
 }
