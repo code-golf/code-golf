@@ -65,7 +65,11 @@ int main(int argc, char* argv[]) {
         // ensures that arg0 is preceded by a digit (which removes the space), or a macro which doesn't get expanded (which removes the space).
         //
         // Note: If you ever come back to this, make sure it works for argv{\the\i}, argv\i, and argv{\count0}, and hole args starting with digits.
-        if (!snprintf(body, sizeof(body), "\x05global\x05""def\x05""argv\x06""1\x01\x05ifnum\x06""1=0\x04%s\x05""else\x05ifcase\x06""1\x05or\x04%s\x05""fi\x05""fi\x02\x02", argv[1], each_join(&argv[1], argc, "\05or\x04")))
+        const char* first = argv[1];
+        const char* rest = each_join(&argv[1], argc, "\05or\x04");
+        //                         \global     \def     \argv     #1   {   \ifnum     #1=0 [first]   \else   \ifcase     #1   \or [rest]    \fi     \fi   }   }
+        const char* template = "\x05global\x05""def\x05""argv\x06""1\x01\x05ifnum\x06""1=0\x04%s\x05""else\x05ifcase\x06""1\x05or\x04%s\x05""fi\x05""fi\x02\x02";
+        if (!snprintf(body, sizeof(body), template, first, rest))
             ERR_AND_EXIT("snprintf");
 
         strcat(init, body);
