@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
         //
         // Note: If you ever come back to this, make sure it works for argv{\the\i}, argv\i, and argv{\count0}, and hole args starting with digits.
         const char* first = argv[1];
-        const char* rest = each_join(&argv[1], argc, "\05or\x04");
+        const char* rest = each_join(&argv[2], argc - 1, "\05or\x04");
         //                         \global   \def   \argv   #1   {   \ifnum   #1=0 [first] \else   \ifcase   #1   \or [rest]  \fi   \fi   }   }
         const char* template = "\x05global\x05def\x05argv\x061\x01\x05ifnum\x061=0\x04%s\x05else\x05ifcase\x061\x05or\x04%s\x05fi\x05fi\x02\x02";
         if (!snprintf(body, sizeof(body), template, first, rest))
@@ -152,8 +152,7 @@ int main(int argc, char* argv[]) {
     }
 }
 
-// Based on the original Bash implementation:
-// https://stackoverflow.com/a/17841619/7481517
+// Join the length-`cnt` array `arr` of strings with separator `sep`.
 char* each_join(char* arr[], int cnt, const char* sep) {
     size_t len;
 
@@ -165,7 +164,7 @@ char* each_join(char* arr[], int cnt, const char* sep) {
     if (!(rt = malloc(len + 1)))
         ERR_AND_EXIT("malloc");
 
-    for (int i = 1; i < cnt; i++) {
+    for (int i = 0; i < cnt; i++) {
         strcat(rt, arr[i]);
         strcat(rt, sep);
     }
