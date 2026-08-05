@@ -5310,7 +5310,7 @@ preamble = '''
 
 ['Yellowstone Permutation']
 category = 'Sequence'
-experiment = 2705
+experiment = 2707
 synopsis = 'Print the first 1,000 terms of the Yellowstone Permutation.'
 preamble = '''
 <p>The Yellowstone Permutation is defined as starting with <code>a(1)=1</code>, <code>a(2)=2</code>, <code>a(3)=3</code>, after which each term of the sequence is the smallest unused integer <code>k&gt;3</code> such that <code>gcd(k,a(n-1))=1</code> and <code>gcd(k,a(n-2))&gt;1</code>.</p>
