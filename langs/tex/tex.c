@@ -38,12 +38,12 @@ int main(int argc, char* argv[]) {
         // All the special characters \{}%&#^_%~ are set to catcode 12 ("other").
         // Also set the whitespace characters to catcode 12, unlike \dospecials.
         // But we still need access to some to finish the definition, so we use
-        //   byte 1 = begin group (previously {)
-        //   byte 2 = end group (previously })
-        //   byte 4 = space
-        //   byte 5 = escape (previously \)
-        //   byte 6 = parameter (previously #)
-        //   byte 7 = comment (previously %)
+        //   \x01 = begin group (previously {)
+        //   \x02 = end group (previously })
+        //   \x04 = space
+        //   \x05 = escape (previously \)
+        //   \x06 = parameter (previously #)
+        //   \x07 = comment (previously %)
         // The end of the group resets all the catcodes for future tokenizing, but it does not change the catcodes of the tokens already created.
         strcat(init, "{\\catcode1=1\\catcode2=2\\catcode5=0\\catcode6=6\\catcode4=10\\catcode7=14\\catcode`$=12\\catcode`&=12\\catcode`^=12\\catcode`_=12\\catcode37=12"
             "\\catcode`~=12\\catcode`#=12\\catcode`{=12\\catcode`}=12\\catcode9=12\\catcode32=12\\catcode10=12\\catcode12=12\\catcode13=13\\catcode92=12");
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
         // ensures that arg0 is preceded by a digit (which removes the space), or a macro which doesn't get expanded (which removes the space).
         //
         // Note: If you ever come back to this, make sure it works for argv{\the\i}, argv\i, and argv{\count0}, and hole args starting with digits.
-        if (!snprintf(body, sizeof(body), "globaldefargv1ifnum1=0%selseifcase1or%sfifi", argv[1], each_join(&argv[1], argc, "or")))
+        if (!snprintf(body, sizeof(body), "\x05global\x05def\x05argv\x061\x01\x05ifnum\x061=0\x04%s\x05else\x05ifcase\x061\x05or\x04%s\x05fi\x05fi\x02\x02", argv[1], each_join(&argv[1], argc, "\05or\x04")))
             ERR_AND_EXIT("snprintf");
 
         strcat(init, body);
