@@ -5310,6 +5310,10 @@ preamble = '''
 
 ['Yellowstone Permutation']
 category = 'Sequence'
+links = [
+    { name = 'OEIS A098550', url = '//oeis.org/A098550' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Yellowstone_sequence' },
+]
 experiment = 2707
 synopsis = 'Print the first 1,000 terms of the Yellowstone Permutation.'
 preamble = '''
