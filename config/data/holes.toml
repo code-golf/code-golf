@@ -5309,6 +5309,9 @@ preamble = '''
 '''
 
 ['Yellowstone Permutation']
+authors = [
+    '0199e39c-12da-7bb5-9bd5-73eb397e3d2c', # JOrE20
+]
 category = 'Sequence'
 links = [
     { name = 'OEIS A098550', url = '//oeis.org/A098550' },
