@@ -21,8 +21,8 @@ github.com/buildkite/terminal-to-html/v3 v3.17.1 h1:gs9WhKUwxK27YHf3hijj4tG4wuDL
 github.com/buildkite/terminal-to-html/v3 v3.17.1/go.mod h1:0pv+Z75FC+NvIju2o+Cw+YHIDkueeudIoeyfVm8i8GQ=
 github.com/bwmarrin/discordgo v0.29.1-0.20260214123928-f43dd94faaac h1:W9t/lhAHWwtLHME/ceUE5c49Wl+5jnOVcEezmjlJ0Fc=
 github.com/bwmarrin/discordgo v0.29.1-0.20260214123928-f43dd94faaac/go.mod h1:JsaNXATZGUDc+uiR1/TGW4Aq4IKc2Hh/O8LhsBiSIBs=
-github.com/cloudflare/circl v1.6.4 h1:pOXuDTCEYyzydgUpQ0CQz3LsinKjiSk6nNP5Lt5K64U=
-github.com/cloudflare/circl v1.6.4/go.mod h1:YxarevkLlbaHuWsxG6vmYNWBEsSp4pnp7j+4VljMavY=
+github.com/cloudflare/circl v1.6.5 h1:O64F26HEqNhznd/hrC5KZXVKYuKM2rx4deZDTc4ihQA=
+github.com/cloudflare/circl v1.6.5/go.mod h1:h5LNyxAc5nTue9DS5jT+48en2PSDYt3zdGnz5OstK6c=
 github.com/cyphar/filepath-securejoin v0.7.0 h1:s0Y3ITPy6sQn5xt54DuYvTF8hu134ooYLUb58DX/HjE=
 github.com/cyphar/filepath-securejoin v0.7.0/go.mod h1:ymLGms/u3BYaviIiuKFnUx8EkQEZeK6cInNoAPJA3o4=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
