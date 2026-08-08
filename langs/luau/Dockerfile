@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache g++ linux-headers make
 
-ENV VER=0.732
+ENV VER=0.733
 
 WORKDIR /luau
 

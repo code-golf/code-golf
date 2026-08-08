@@ -1,9 +1,9 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang llvm-dev make
+RUN apk add --no-cache clang gcc llvm-dev make
 
 # Also bump Coconut, Hy.
-ENV VER=3.14.6
+ENV VER=3.14.7
 
 ADD --unpack https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz /
 
