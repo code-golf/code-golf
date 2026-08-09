@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache clang gcc make patch
 
-ENV LDFLAGS='-static' VER=3.13.0
+ENV LDFLAGS='-static' VER=3.13.1
 
 ADD --unpack https://algol68genie.nl/algol68g-$VER.tar.gz /
 

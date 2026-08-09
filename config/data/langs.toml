@@ -44,7 +44,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.44 MiB'
-version  = 'Algol 68 Genie 3.13.0'
+version  = 'Algol 68 Genie 3.13.1'
 website  = 'https://algol68genie.nl/en/algol-68-genie/'
 example  = '''
 # Printing #
@@ -1519,8 +1519,8 @@ for arg in sys.argv[1:]:
 [Qore]
 args       = [ '/usr/bin/qore', '--allow-bare-refs', '-K', '--mit', '-pno-external-access', '-e', '$code', '--' ]
 experiment = 1928
-size       = '17.6 MiB'
-version    = '2.2.0'
+size       = '17.7 MiB'
+version    = '2.2.1'
 website    = 'https://qore.org'
 example    = '''
 # Printing
