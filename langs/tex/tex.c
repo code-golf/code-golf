@@ -168,7 +168,7 @@ int main(int argc, char* argv[]) {
 // Join the length-`cnt` array `arr` of strings with separator `sep`.
 char* each_join(const char* arr[], int cnt, const char* sep) {
     if (cnt == 0) return "";
-    size_t len;
+    size_t len = 0;
 
     for (int i = 0; i < cnt; i++)
         len += strlen(arr[i]) + strlen(sep);
