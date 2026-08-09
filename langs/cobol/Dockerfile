@@ -1,13 +1,14 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang curl make mpir-dev patch
+RUN apk add --no-cache clang gcc make mpir-dev patch
 
 ENV CC='clang' VER=3.2
 
-RUN curl -#L https://ftpmirror.gnu.org/gnu/gnucobol/gnucobol-$VER.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://ftpmirror.gnu.org/gnu/gnucobol/gnucobol-$VER.tar.xz /
 
-COPY cobol.patch /
+WORKDIR /gnucobol-$VER
+
+COPY cobol.patch .
 
 RUN patch -p0 < cobol.patch
 
@@ -20,7 +21,7 @@ RUN ./configure               \
 
 RUN find /usr/local/lib -not -name 'libcob.so*' -delete
 
-COPY cobol.c /
+COPY cobol.c .
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/cobol -s cobol.c
 

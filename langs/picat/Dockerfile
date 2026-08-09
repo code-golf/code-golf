@@ -1,12 +1,10 @@
 FROM debian:trixie-slim AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes curl g++ make
+RUN apt-get update && apt-get install --yes g++ make
 
 ENV VER=397
 
-RUN curl -# https://picat-lang.org/download/picat${VER}_src.tar.gz | tar xz
+ADD --unpack https://picat-lang.org/download/picat${VER}_src.tar.gz /
 
 WORKDIR /Picat/emu
 

@@ -1,4 +1,4 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache curl icu-data npm
 
@@ -25,12 +25,12 @@ COPY --from=0 /usr/lib/libada.so.3                  \
               /usr/lib/libcares.so.2                \
               /usr/lib/libcrypto.so.3               \
               /usr/lib/libgcc_s.so.1                \
-              /usr/lib/libicudata.so.76             \
-              /usr/lib/libicui18n.so.76             \
-              /usr/lib/libicuuc.so.76               \
+              /usr/lib/libicudata.so.78             \
+              /usr/lib/libicui18n.so.78             \
+              /usr/lib/libicuuc.so.78               \
               /usr/lib/libnghttp2.so.14             \
-              /usr/lib/libsimdjson.so.25            \
-              /usr/lib/libsimdutf.so.27             \
+              /usr/lib/libsimdjson.so.29            \
+              /usr/lib/libsimdutf.so.34             \
               /usr/lib/libsqlite3.so.0              \
               /usr/lib/libssl.so.3                  \
               /usr/lib/libstdc++.so.6               \
@@ -48,7 +48,7 @@ COPY --from=0 /usr/lib/coffeescript/coffeescript.js \
               /usr/lib/coffeescript/rewriter.js     \
               /usr/lib/coffeescript/scope.js        \
               /usr/lib/coffeescript/sourcemap.js    /usr/lib/coffeescript/
-COPY --from=0 /usr/share/icu/76.1/icudt76l.dat      /usr/share/icu/
+COPY --from=0 /usr/share/icu/78.1/icudt78l.dat      /usr/share/icu/
 
 ENTRYPOINT ["coffee"]
 

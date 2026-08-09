@@ -1,13 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache cmake curl gcc make musl-dev
+RUN apk add --no-cache cmake gcc make musl-dev
 
 ENV CFLAGS='-Wno-implicit-function-declaration' LDFLAGS='-static' VER=29e4cfa
 
-RUN curl -#L https://github.com/VorpalBlade/cfunge/tarball/$VER \
-  | tar xz --strip-components 1
+ADD --unpack https://github.com/VorpalBlade/cfunge/tarball/$VER /
 
-WORKDIR /build
+WORKDIR /VorpalBlade-cfunge-$VER/build
 
 RUN cmake                            \
     -DCMAKE_BUILD_TYPE='MinSizeRel'  \

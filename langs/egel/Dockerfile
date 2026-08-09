@@ -1,6 +1,7 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache autoconf automake bash clang cmake curl libtool linux-headers make patch texinfo
+RUN apk add --no-cache autoconf automake bash clang cmake curl gcc libtool \
+                       linux-headers make patch texinfo
 
 ENV CC='clang' CXX='clang++' MAKEFLAGS=-j8 VER=0.1.14
 

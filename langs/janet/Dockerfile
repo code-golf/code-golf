@@ -1,11 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache gcc make musl-dev
 
 ENV LDFLAGS='-static' LIBJANET_LDFLAGS='' VER=1.41.2
 
-RUN curl -#L https://github.com/janet-lang/janet/archive/refs/tags/v$VER.tar.gz \
-  | tar xz --strip-components 1
+WORKDIR /janet
+
+ADD https://github.com/janet-lang/janet.git#v$VER .
 
 RUN make build/janet install \
  && strip /usr/local/bin/janet

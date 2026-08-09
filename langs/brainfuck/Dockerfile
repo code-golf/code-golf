@@ -1,11 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc musl-dev
+RUN apk add --no-cache gcc musl-dev
 
 ENV VER=103be5b
 
-RUN curl -#L https://github.com/primo-ppcg/bfci/tarball/$VER \
-  | tar xz --strip-components 1
+WORKDIR /brainfuck
+
+ADD https://github.com/primo-ppcg/bfci.git?commit=$VER .
 
 RUN cc --std=c99 -O3 -o /usr/bin/brainfuck -s -static bfci.c src/*.c
 

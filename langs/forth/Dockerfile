@@ -1,6 +1,6 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang curl m4 make
+RUN apk add --no-cache clang curl gcc m4 make
 
 ENV CC='clang' LDFLAGS='-static' VER=0.7.3
 

@@ -123,7 +123,7 @@ loop arg [a] [
 [Assembly]
 args     = [ '/usr/node_modules/@defasm/cli/cli.js', '--size-out=3', '-w', '-r' ]
 assembly = true
-size     = '74.0 MiB'
+size     = '74.9 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
 example  = '''
@@ -344,7 +344,7 @@ with 65536 cells; and cells are 8 bit with wrapping;
 
 [C]
 args    = [ '/usr/bin/c', '-run', '-' ]
-size    = '1.74 MiB'
+size    = '1.75 MiB'
 version = 'TCC 0.9.27'
 website = 'https://bellard.org/tcc/'
 example = '''
@@ -418,7 +418,7 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '79.9 MiB'
+size    = '80.8 MiB'
 version = '0.11.13'
 website = 'https://civet.dev'
 example = '''
@@ -471,7 +471,7 @@ example = '''
 
 [COBOL]
 args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.25 MiB'
+size    = '4.26 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -528,7 +528,7 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffee', '/proc/self/fd/0' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '78.2 MiB'
+size       = '79.2 MiB'
 version    = '2.7.0'
 website    = 'https://coffeescript.org'
 example    = '''
@@ -636,7 +636,7 @@ void main(List<String> argv) {
 [Egel]
 args       = [ '/usr/bin/egel', '-' ]
 experiment = 1434
-size       = '7.50 MiB'
+size       = '7.52 MiB'
 version    = '0.1.14'
 website    = 'https://egel-lang.github.io'
 example    = '''
@@ -752,7 +752,7 @@ example    = '''
 
 [Forth]
 args    = [ '/usr/bin/forth', '/proc/self/fd/0' ]
-size    = '639 KiB'
+size    = '618 KiB'
 version = 'GNU Forth 0.7.3'
 website = 'https://www.gnu.org/software/gforth/'
 example = '''
@@ -774,7 +774,7 @@ bye
 
 [Fortran]
 args    = [ '/usr/bin/fortran', '-' ]
-size    = '78.1 MiB'
+size    = '78.0 MiB'
 version = 'GNU Fortran 15.3.0'
 website = 'https://gcc.gnu.org/fortran/'
 example = '''
@@ -1085,7 +1085,7 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '985 KiB'
+size    = '989 KiB'
 version = '1.41.2'
 website = 'https://janet-lang.org'
 example = '''
@@ -1194,7 +1194,7 @@ example = '''
 [Knight]
 args       = [ '/usr/bin/knight', '-e', '$code' ]
 experiment = 2360
-size       = '367 KiB'
+size       = '372 KiB'
 version    = '1981682'
 website    = 'https://github.com/synt7x/knightjit'
 example    = '''
@@ -1594,7 +1594,7 @@ say 'Hello, World!';
 [Rebol]
 args       = [ '/usr/bin/rebol', '-qw', '--do', '$code', '--', '--script', '' ]
 experiment = 189
-size       = '1.23 MiB'
+size       = '1.24 MiB'
 version    = '2.7.8.4.10'
 website    = 'https://www.rebol.com'
 example    = '''
@@ -1717,7 +1717,7 @@ args.foreach(println)
 
 [Scheme]
 args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '8.21 MiB'
+size    = '8.22 MiB'
 version = 'Chez Scheme 10.4.1'
 website = 'https://cisco.github.io/ChezScheme/'
 example = '''
@@ -1733,7 +1733,7 @@ example = '''
 
 [sed]
 args    = [ '/usr/bin/sed', '-E', '-z', '--sandbox', '-u', '--', '$code' ]
-size    = '249 KiB'
+size    = '253 KiB'
 version = 'GNU sed 4.10'
 website = 'https://www.gnu.org/software/sed/'
 example = '''
@@ -1906,7 +1906,7 @@ example    = '''
 [Umka]
 args       = [ '/usr/bin/umka', '-' ]
 experiment = 1921
-size       = '998 KiB'
+size       = '1.00 MiB'
 version    = '1.5.6'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
@@ -1954,7 +1954,7 @@ for arg in os.args[1..] {
 args       = [ '/usr/bin/vala', '-' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1354
-size       = '104 MiB'
+size       = '106 MiB'
 version    = '0.56.19'
 website    = 'https://vala.dev'
 example    = '''
@@ -2018,7 +2018,7 @@ example    = '''
 
 [Wren]
 args    = [ '/usr/bin/wren', '-' ]
-size    = '517 KiB'
+size    = '522 KiB'
 version = '0.4.0'
 website = 'https://wren.io'
 example = '''
