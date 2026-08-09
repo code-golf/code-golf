@@ -1,4 +1,4 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache curl icu-data npm
 
@@ -6,8 +6,7 @@ ENV VER=1.2.1
 
 WORKDIR /stax
 
-RUN curl -#L "https://github.com/tomtheisen/stax/tarball/v$VER" \
-  | tar xz --strip-components 1
+ADD https://github.com/tomtheisen/stax.git#v$VER .
 
 WORKDIR /stax/StaxLang.JS
 
@@ -17,8 +16,6 @@ RUN npm install \
  && npx tsc
 
 COPY stax.js /usr/bin/stax
-
-RUN chmod +x /usr/bin/stax
 
 FROM codegolf/lang-base
 
