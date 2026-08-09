@@ -92,7 +92,8 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         holes                                        holes,
 			         name                                         name,
 			         points                                       points,
-			         RANK() OVER (ORDER BY points DESC, strokes)  rank,
+			         RANK() OVER (
+			           ORDER BY points DESC, holes DESC, strokes) rank,
 			         strokes                                      strokes,
 			         submitted                                    submitted,
 			         COUNT(*) OVER()                              total
