@@ -1,6 +1,6 @@
 FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl icu-data npm
+RUN apk add --no-cache icu-data npm
 
 ENV VER=1.2.1
 
