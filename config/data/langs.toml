@@ -1808,7 +1808,7 @@ foreach (arg in vargv)
 args       = [ '/usr/bin/stax', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 439
-size       = '105 MiB'
+size       = '109 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
