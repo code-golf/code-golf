@@ -1233,7 +1233,7 @@ for (arg in args)
 '''
 
 [Lean]
-args       = [ '/usr/local/lean' ]
+args       = [ '/usr/bin/lean' ]
 env        = [ 'LEAN_MAIN_USE_THREAD=0', 'LEAN_NUM_THREADS=0' ]
 experiment = 2702
 size       = ''
