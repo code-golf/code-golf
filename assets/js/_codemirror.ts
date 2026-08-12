@@ -49,6 +49,7 @@ import { jq }                                       from 'codemirror-lang-jq';
 import { julia }                                    from '@codemirror/legacy-modes/mode/julia';
 import { k }                                        from 'codemirror-lang-k';
 import { knight }                                   from 'codemirror-lang-knight';
+//import { leanFallbackHighlightStyle, leanFallbackLanguageSupport } from "codemirror-lean4-lsp";
 import { lua }                                      from '@codemirror/legacy-modes/mode/lua';
 import { nim }                                      from 'nim-codemirror-mode';
 import { pascal }                                   from '@codemirror/legacy-modes/mode/pascal';
@@ -191,6 +192,7 @@ export const extensions : { [key: string]: any } = {
     'k':             k(),
     'knight':        knight(),
     'kotlin':        StreamLanguage.define(kotlin),
+    // 'lean':       leanFallbackLanguageSupport({ highlightStyle: leanFallbackHighlightStyle }),
     // TODO lily
     'lua':           StreamLanguage.define(lua),
     'luau':          StreamLanguage.define(lua),
