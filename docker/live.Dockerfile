@@ -127,6 +127,7 @@ COPY --from=codegolf/lang-lily         / /langs/lily/rootfs/
 COPY --from=codegolf/lang-befunge      / /langs/befunge/rootfs/
 COPY --from=codegolf/lang-sed          / /langs/sed/rootfs/
 COPY --from=codegolf/lang-brainfuck    / /langs/brainfuck/rootfs/
+COPY --from=codegolf/lang-lean         / /langs/lean/rootfs/
 
 COPY --from=0 /go/hash-langs /
 
