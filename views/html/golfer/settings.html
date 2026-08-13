@@ -45,6 +45,17 @@
                 {{ if .Golfer.ShowCountry }}checked{{ end }}>
         </label>
 
+        <h2>AI Assistance</h2>
+
+        Let others know that you sometimes use AI tools (LLMs) to help write your solutions.
+		This will show a badge on your profile.
+
+        <label>
+            I use AI assistance for my solutions
+            <input name=uses_ai type=checkbox
+                {{ if .Golfer.UsesAI }}checked{{ end }}>
+        </label>
+
         <h2>Pronouns</h2>
 
         Preferred pronouns.
