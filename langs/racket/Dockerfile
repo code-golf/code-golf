@@ -1,19 +1,20 @@
 FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc linux-headers make musl-dev
+RUN apk add --no-cache gcc linux-headers make musl-dev
 
-ENV VER=9.2
+ENV VER=9.3
 
-RUN curl -#L https://github.com/racket/racket/archive/refs/tags/v$VER.tar.gz \
-  | tar xz --strip-components 1
+WORKDIR /racket
+
+ADD https://github.com/racket/racket.git#v$VER .
 
 RUN make bc -j`nproc` PKGS='' RACKETBC_SUFFIX=''
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1 /lib/
-COPY --from=0 /racket/bin/racket  /usr/bin/
-COPY --from=0 /racket/collects    /usr/collects
+COPY --from=0 /lib/ld-musl-*.so.1       /lib/
+COPY --from=0 /racket/racket/bin/racket /usr/bin/
+COPY --from=0 /racket/racket/collects   /usr/collects
 
 ENTRYPOINT ["racket"]
 

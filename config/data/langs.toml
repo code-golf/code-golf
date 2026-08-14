@@ -44,7 +44,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.44 MiB'
-version  = 'Algol 68 Genie 3.13.1'
+version  = 'Algol 68 Genie 3.13.3'
 website  = 'https://algol68genie.nl/en/algol-68-genie/'
 example  = '''
 # Printing #
@@ -281,7 +281,7 @@ v Accessing arguments
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '832 KiB'
-version = '65f234e'
+version = 'c304823'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -613,8 +613,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '121 MiB'
-version = '3.12.2'
+size    = '187 MiB'
+version = '3.13.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1559,8 +1559,8 @@ for (arg in commandArgs(TRUE)) {
 [Racket]
 args       = [ '/usr/bin/racket', '-e', '$code', '--' ]
 experiment = 1358
-size       = '30.1 MiB'
-version    = '9.2'
+size       = '30.2 MiB'
+version    = '9.3'
 website    = 'https://racket-lang.org'
 example    = '''
 ; Printing
