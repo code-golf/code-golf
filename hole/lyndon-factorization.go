@@ -26,7 +26,7 @@ var _ = answerFunc("lyndon-factorization", func() []Answer {
 	for i := len(fixedInputs); i < len(tests); i++ {
 		testLength := 1 + rand.IntN(30)
 		input := ""
-		for range baseLength {
+		for range testLength {
 			j := randInt(0, 25)
 			input += alphabet[j : j+1]
 		}
