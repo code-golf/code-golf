@@ -14,6 +14,16 @@
                 <th colspan=6><div id=chart-container><canvas></canvas></div>
         {{ end }}
             <tr>
+                <th colspan=6>
+                    <div class=tabs id=ai-filter>
+                        <a {{ if eq .Data.AI "all" }} class=on {{ end }}
+                            href="?ai=all">Both</a>
+                        <a {{ if eq .Data.AI "human" }} class=on {{ end }}
+                            href="?ai=human">Human Only</a>
+                        <a {{ if eq .Data.AI "ai" }} class=on {{ end }}
+                            href="?ai=ai">AI-Assisted Only</a>
+                    </div>
+            <tr>
                 <th>#
                 <th>Golfer
                 {{ if eq .Data.HoleID "all" }}<th class=right>Holes{{ end }}

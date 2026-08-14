@@ -44,6 +44,7 @@ func Get(db *sqlx.DB, sessionID uuid.UUID, userAgent string) *Golfer {
 		          u.sponsor                                 sponsor,
 		          u.theme                                   theme,
 		          u.time_zone                               time_zone,
+		          u.uses_ai                                 uses_ai,
 		          ARRAY(SELECT cheevo
 		                  FROM cheevos
 		                 WHERE user_id = u.id

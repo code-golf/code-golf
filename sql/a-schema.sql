@@ -146,6 +146,7 @@ CREATE TABLE users (
     delete       timestamp,
     country      char(2),
     show_country bool      NOT NULL DEFAULT false,
+    uses_ai      bool      NOT NULL DEFAULT false,
     referrer_id  int                REFERENCES users(id) ON DELETE SET NULL,
     theme        theme     NOT NULL DEFAULT 'auto',
     pronouns     pronouns,
