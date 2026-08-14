@@ -3,7 +3,7 @@ package hole
 import (
 	  "math/rand/v2"
 	  "strings"
-)
+	)
 
 var fixedInputs = []string{
 	  "lyndon", "factorization", "codegolf",
@@ -14,17 +14,17 @@ var fixedInputs = []string{
     "aaaaaaaaaa",
 }
 
-var _ = answerFunc("continued-fractions", func() []Answer {
+var _ = answerFunc("lyndon-factorization", func() []Answer {
     const alphabet = "qwertzuiopasdfghjklyxcvbnm"
   
-	  tests := make([]test, 100)
+	tests := make([]test, 100)
 
-	  for i, input := range fixedInputs {
-		    tests[i] = lyndonFactorizationTest(input)
-	  }
+	for i, input := range fixedInputs {
+	    tests[i] = lyndonFactorizationTest(input)
+	}
 
-	  for i := len(fixedInputs); i < len(tests); i++ {
-        testLength := 1+rand.IntN(30)
+	for i := len(fixedInputs); i < len(tests); i++ {
+	testLength := 1+rand.IntN(30)
         input := ""
         for range baseLength {
 			      j := randInt(0, 25)
@@ -35,28 +35,28 @@ var _ = answerFunc("continued-fractions", func() []Answer {
 	return outputTests(shuffle(tests))
 })
 
-func lyndonFactorizationTest(input int) test {
+func lyndonFactorizationTest(input string) test {
 	in := input
 	
-  var out strings.Builder
-  i := 0
+  	var out strings.Builder
+  	i := 0
   
 	for i < len(input) {
-      j := i + 1
-      k := i
+      		j := i + 1
+      		k := i
 
       for j < len(input) && input[k] <= input[j] {
-          if s[k] < s[j] { k = i } else { k += 1 }
+          if input[k] < input[j] { k = i } else { k += 1 }
           j += 1
       }
     
       for i <= k {
-          out.writeString(input[i:i + j - k])
-          out.writeByte(' ')
+          out.WriteString(input[i:i + j - k])
+          out.WriteByte(' ')
           i += j - k
-      }
+		}
     
-  }
+  	}
 
 	return test{in, strings.TrimSpace(out.String())}
 }
