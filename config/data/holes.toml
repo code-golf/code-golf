@@ -2489,7 +2489,7 @@ authors = [
 category = 'Computing'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Factorize_string_into_Lyndon_words' },
-	{ name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Lyndon_word' }.
+	{ name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Lyndon_word' },
 ]
 experiment = 2712
 synopsis = 'Factorize a string into Lyndon words.'
