@@ -140,6 +140,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          sponsor,
 		          started,
 		          COALESCE(unicorn, 0)                  unicorn,
+		          uses_ai,
 		          uuid
 		     FROM golfers_with_avatars
 		LEFT JOIN medals       ON id = medals.user_id
