@@ -83,8 +83,8 @@ example    = '''
 args     = [ '/usr/bin/arkscript', '-' ]
 env      = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 released = 2026-03-19
-size     = '3.17 MiB'
-version  = '4.7.0'
+size     = '3.21 MiB'
+version  = '4.7.2'
 website  = 'https://arkscript-lang.dev'
 example  = '''
 (import std.List)
@@ -1278,8 +1278,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '6.01 MiB'
-version    = '0.733'
+size       = '6.09 MiB'
+version    = '0.734'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
