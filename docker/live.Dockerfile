@@ -100,6 +100,7 @@ COPY --from=codegolf/lang-perl         / /langs/perl/rootfs/
 COPY --from=codegolf/lang-tcl          / /langs/tcl/rootfs/
 COPY --from=codegolf/lang-arturo       / /langs/arturo/rootfs/
 COPY --from=codegolf/lang-cobol        / /langs/cobol/rootfs/
+COPY --from=codegolf/lang-lean         / /langs/lean/rootfs/
 COPY --from=codegolf/lang-squirrel     / /langs/squirrel/rootfs/
 COPY --from=codegolf/lang-rockstar     / /langs/rockstar/rootfs/
 COPY --from=codegolf/lang-arkscript    / /langs/arkscript/rootfs/
@@ -127,7 +128,6 @@ COPY --from=codegolf/lang-lily         / /langs/lily/rootfs/
 COPY --from=codegolf/lang-befunge      / /langs/befunge/rootfs/
 COPY --from=codegolf/lang-sed          / /langs/sed/rootfs/
 COPY --from=codegolf/lang-brainfuck    / /langs/brainfuck/rootfs/
-COPY --from=codegolf/lang-lean         / /langs/lean/rootfs/
 
 COPY --from=0 /go/hash-langs /
 

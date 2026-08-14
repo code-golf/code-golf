@@ -31,12 +31,12 @@ int main(int argc, char* argv[]) {
     if (fclose(fp))
         ERR_AND_EXIT("fclose");
 
-    int iargc = argc + 2;
+    int iargc = argc + 3;
     char** iargv = malloc(iargc * sizeof(char*));
     iargv[0] = (char*) lean;
     iargv[1] = "--run";
     iargv[2] = (char*) code;
-    memcpy(&iargv[3], &argv[2], (argc - 2) * sizeof(char*));
+    memcpy(&iargv[3], &argv[1], (argc - 1) * sizeof(char*));
     iargv[iargc - 1] = NULL;
 
     execv(lean, iargv);
