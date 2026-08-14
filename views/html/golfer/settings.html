@@ -20,6 +20,17 @@
 
         <textarea maxlength=255 name=about rows=4>{{ .Golfer.About }}</textarea>
 
+        <h2>AI Assistance</h2>
+
+        Let others know that you sometimes use AI tools (LLMs) to help write
+        your solutions. This will show a badge on your profile.
+
+        <label>
+            I use AI assistance for my solutions
+            <input name=uses_ai type=checkbox
+                {{ if .Golfer.UsesAI }}checked{{ end }}>
+        </label>
+
         <h2>Country</h2>
 
         Is used in aggregate on the statistics page.
@@ -43,17 +54,6 @@
             Show my country publicly?
             <input name=show_country type=checkbox
                 {{ if .Golfer.ShowCountry }}checked{{ end }}>
-        </label>
-
-        <h2>AI Assistance</h2>
-
-        Let others know that you sometimes use AI tools (LLMs) to help write your solutions.
-		This will show a badge on your profile.
-
-        <label>
-            I use AI assistance for my solutions
-            <input name=uses_ai type=checkbox
-                {{ if .Golfer.UsesAI }}checked{{ end }}>
         </label>
 
         <h2>Pronouns</h2>
