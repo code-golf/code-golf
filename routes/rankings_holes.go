@@ -19,6 +19,7 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			Me        bool `json:"me"`
 			Strokes   int  `json:"strokes"`
 		}
+		AI                                    string
 		Hole, PrevHole, NextHole              *config.Hole
 		HoleID, LangID, OtherScoring, Scoring string
 		Pager                                 *pager.Pager
@@ -32,10 +33,29 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			Time                                     time.Duration
 		}
 	}{
+		AI:      r.URL.Query().Get("ai"),
 		HoleID:  param(r, "hole"),
 		LangID:  param(r, "lang"),
 		Pager:   pager.New(r),
 		Scoring: param(r, "scoring"),
+	}
+
+	// aiFilter is nil for "Both", true for "AI Only", false for "Human Only".
+	var aiFilter *bool
+
+	switch data.AI {
+	case "":
+		data.AI = "all"
+	case "human":
+		f := false
+		aiFilter = &f
+	case "ai":
+		t := true
+		aiFilter = &t
+	case "all":
+	default:
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	if data.HoleID != "all" && config.AllHoleByID[data.HoleID] == nil ||
@@ -71,10 +91,11 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			    FROM points
 			    JOIN golfers_with_avatars ON user_id = id
 			   WHERE scoring = $1
+			     AND ($4::bool IS NULL OR uses_ai = $4)
 			ORDER BY rank, submitted
 			   LIMIT $2 OFFSET $3`
 
-		bind = []any{data.Scoring, pager.PerPage, data.Pager.Offset}
+		bind = []any{data.Scoring, pager.PerPage, data.Pager.Offset, aiFilter}
 	} else if data.HoleID == "all" {
 		sql = `WITH summed AS (
 			    SELECT user_id,
@@ -99,10 +120,13 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			         COUNT(*) OVER()                              total
 			    FROM summed
 			    JOIN golfers_with_avatars ON user_id = id
+			   WHERE ($5::bool IS NULL OR uses_ai = $5)
 			ORDER BY rank, submitted
 			   LIMIT $3 OFFSET $4`
 
-		bind = []any{data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
+		bind = []any{
+			data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset, aiFilter,
+		}
 	} else if data.LangID == "all" {
 		sql = `SELECT avatar_url       avatar_url,
 			          country_flag     country_flag,
@@ -119,10 +143,13 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			     FROM rankings
 			     JOIN golfers_with_avatars ON user_id = id
 			    WHERE hole = $1 AND scoring = $2
+			      AND ($5::bool IS NULL OR uses_ai = $5)
 			 ORDER BY rank_overall, submitted
 			    LIMIT $3 OFFSET $4`
 
-		bind = []any{data.HoleID, data.Scoring, pager.PerPage, data.Pager.Offset}
+		bind = []any{
+			data.HoleID, data.Scoring, pager.PerPage, data.Pager.Offset, aiFilter,
+		}
 	} else {
 		sql = `SELECT avatar_url       avatar_url,
 			          country_flag     country_flag,
@@ -139,10 +166,14 @@ func rankingsHolesGET(w http.ResponseWriter, r *http.Request) {
 			     FROM rankings
 			     JOIN golfers_with_avatars ON user_id = id
 			    WHERE hole = $1 AND lang = $2 AND scoring = $3
+			      AND ($6::bool IS NULL OR uses_ai = $6)
 			 ORDER BY rank, submitted
 			    LIMIT $4 OFFSET $5`
 
-		bind = []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
+		bind = []any{
+			data.HoleID, data.LangID, data.Scoring, pager.PerPage,
+			data.Pager.Offset, aiFilter,
+		}
 	}
 
 	if err := session.Database(r).Select(&data.Rows, sql, bind...); err != nil {

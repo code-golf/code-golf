@@ -1,4 +1,4 @@
-FROM golang:1.27rc2-alpine3.24
+FROM golang:1.27rc3-alpine3.24
 
 ENV CGO_ENABLED=0 GOPATH= TZ=Europe/London
 
@@ -16,10 +16,10 @@ COPY --from=codegolf/lang-go           / /langs/go/rootfs/
 COPY --from=codegolf/lang-odin         / /langs/odin/rootfs/
 COPY --from=codegolf/lang-crystal      / /langs/crystal/rootfs/
 COPY --from=codegolf/lang-zig          / /langs/zig/rootfs/
+COPY --from=codegolf/lang-dart         / /langs/dart/rootfs/
 COPY --from=codegolf/lang-factor       / /langs/factor/rootfs/
 COPY --from=codegolf/lang-kotlin       / /langs/kotlin/rootfs/
 COPY --from=codegolf/lang-powershell   / /langs/powershell/rootfs/
-COPY --from=codegolf/lang-dart         / /langs/dart/rootfs/
 COPY --from=codegolf/lang-cpp          / /langs/cpp/rootfs/
 COPY --from=codegolf/lang-f-sharp      / /langs/f-sharp/rootfs/
 COPY --from=codegolf/lang-c-sharp      / /langs/c-sharp/rootfs/

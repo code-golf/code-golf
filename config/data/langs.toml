@@ -44,7 +44,7 @@ x is a no-op.
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
 released = 2026-02-21
 size     = '1.44 MiB'
-version  = 'Algol 68 Genie 3.13.1'
+version  = 'Algol 68 Genie 3.13.3'
 website  = 'https://algol68genie.nl/en/algol-68-genie/'
 example  = '''
 # Printing #
@@ -83,8 +83,8 @@ example    = '''
 args     = [ '/usr/bin/arkscript', '-' ]
 env      = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 released = 2026-03-19
-size     = '3.17 MiB'
-version  = '4.7.0'
+size     = '3.21 MiB'
+version  = '4.7.2'
 website  = 'https://arkscript-lang.dev'
 example  = '''
 (import std.List)
@@ -281,7 +281,7 @@ v Accessing arguments
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
 size    = '832 KiB'
-version = '65f234e'
+version = 'c304823'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -370,7 +370,7 @@ int main(int argc, char* argv[]) {
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size    = '112 MiB'
-version = 'C# 14.0 on .NET 10.0.10'
+version = 'C# 14.0 on .NET 10.0.11'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -613,8 +613,8 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '121 MiB'
-version = '3.12.2'
+size    = '187 MiB'
+version = '3.13.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -695,8 +695,8 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '113 MiB'
-version = 'F# 10.0 on .NET 10.0.10'
+size    = '114 MiB'
+version = 'F# 10.0 on .NET 10.0.11'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -827,7 +827,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '350 MiB'
-version = '1.26.5'
+version = '1.26.6'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1299,8 +1299,8 @@ end
 [Luau]
 args       = [ '/usr/bin/luau', '-' ]
 experiment = 1044
-size       = '6.01 MiB'
-version    = '0.733'
+size       = '6.09 MiB'
+version    = '0.734'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1480,7 +1480,7 @@ args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
 size       = '140 MiB'
-version    = 'PowerShell 7.6.4 on .NET 10.0.10'
+version    = 'PowerShell 7.6.5 on .NET 10.0.11'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1580,8 +1580,8 @@ for (arg in commandArgs(TRUE)) {
 [Racket]
 args       = [ '/usr/bin/racket', '-e', '$code', '--' ]
 experiment = 1358
-size       = '30.1 MiB'
-version    = '9.2'
+size       = '30.2 MiB'
+version    = '9.3'
 website    = 'https://racket-lang.org'
 example    = '''
 ; Printing

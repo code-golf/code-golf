@@ -9,7 +9,7 @@ my $session = new-golfer :$dbh :id(123) :name<foo>;
 
 is-deeply settings, {
     :country(Str), :referrer_id(Int),
-    :!show_country, :theme<auto>, :time_zone(Str),
+    :!show_country, :theme<auto>, :time_zone(Str), :!uses_ai,
 }, 'DB has defaults';
 
 for <country time_zone> {
@@ -18,9 +18,9 @@ for <country time_zone> {
 }
 
 post my %args = :country<GB>, :show_country<on>,
-    :theme<dark>, :time_zone<Europe/London>;
+    :theme<dark>, :time_zone<Europe/London>, :uses_ai<on>;
 
-is-deeply settings, %( |%args, :referrer_id(Int), :show_country ),
+is-deeply settings, %( |%args, :referrer_id(Int), :show_country, :uses_ai ),
     'DB is updated';
 
 post %( |%args, :referrer<BaR> );   # Case-insensitive
@@ -36,7 +36,7 @@ post %( |%args, :referrer<foo> );   # Can't be yourself
 is-deeply settings<referrer_id>, Int, 'referrer_id is NULL';
 
 sub settings { $dbh.execute(q:to/SQL/).row :hash }
-    SELECT country, referrer_id, show_country, theme, time_zone
+    SELECT country, referrer_id, show_country, theme, time_zone, uses_ai
       FROM users
      WHERE id = 123
 SQL

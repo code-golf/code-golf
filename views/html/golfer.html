@@ -80,6 +80,7 @@
     <div id=badges>
     {{ if .Admin   }}<div><p>🔑<p class=orange>Admin  </div>{{ end }}
     {{ if .Sponsor }}<div><p>💰<p class=yellow>Sponsor</div>{{ end }}
+    {{ if .UsesAI  }}<div title="This golfer uses AI assistance for some solutions"><p>🤖<p class=blue>AI-Assisted</div>{{ end }}
 
     {{ with len .HolesAuthored }}
         <button command=show-modal commandfor=holes-authored-dialog>

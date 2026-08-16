@@ -135,7 +135,12 @@ my $layers;
 $layers ~= sprintf(
     q:b[COPY --from=codegolf/lang-%-*s / /langs/%2$s/rootfs/\n],
     $ //= %langs.keys».&id».chars.max, id(.key),
-) for %langs.sort: { so .value<size> ~~ /K/, -.value<size>.split(" ")[0], id(.key) };
+) for %langs.sort: {
+    not .value<size> ~~ /GiB/,      # First gigs,
+    not .value<size> ~~ /MiB/,      # then megs,
+    -.value<size>.split(" ")[0],    # then numeric value,
+    id(.key)                        # and finally id.
+};
 
 .spurt: .slurp.subst: / ( 'COPY --from=codegolf' \N+ \n )+ /, $layers
     for <docker/dev.Dockerfile docker/live.Dockerfile>».IO;
