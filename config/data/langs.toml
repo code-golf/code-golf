@@ -1236,7 +1236,7 @@ for (arg in args)
 args       = [ '/usr/bin/lean' ]
 env        = [ 'LEAN_MAIN_USE_THREAD=0', 'LEAN_NUM_THREADS=0' ]
 experiment = 2702
-size       = '4.19 GiB'
+size       = '3.91 GiB'
 version    = '4.33.0'
 website    = 'https://lean-lang.org'
 example    = '''

@@ -31,6 +31,7 @@ RUN go build -ldflags -s -trimpath \
 
 FROM scratch
 
+COPY --from=codegolf/lang-lean         / /langs/lean/rootfs/
 COPY --from=codegolf/lang-swift        / /langs/swift/rootfs/
 COPY --from=codegolf/lang-rust         / /langs/rust/rootfs/
 COPY --from=codegolf/lang-julia        / /langs/julia/rootfs/
@@ -100,7 +101,6 @@ COPY --from=codegolf/lang-perl         / /langs/perl/rootfs/
 COPY --from=codegolf/lang-tcl          / /langs/tcl/rootfs/
 COPY --from=codegolf/lang-arturo       / /langs/arturo/rootfs/
 COPY --from=codegolf/lang-cobol        / /langs/cobol/rootfs/
-COPY --from=codegolf/lang-lean         / /langs/lean/rootfs/
 COPY --from=codegolf/lang-squirrel     / /langs/squirrel/rootfs/
 COPY --from=codegolf/lang-rockstar     / /langs/rockstar/rootfs/
 COPY --from=codegolf/lang-arkscript    / /langs/arkscript/rootfs/

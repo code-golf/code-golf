@@ -1,7 +1,7 @@
 FROM debian:trixie-slim AS builder
 
 RUN apt-get update \
- && apt-get install --yes curl gcc unzip
+ && apt-get install --yes curl gcc unzip binutils
 
 ENV VER=4.33.0
 
@@ -14,6 +14,9 @@ RUN curl -sSL -o /lean.zip https://github.com/leanprover/lean4/releases/download
 COPY leanwrapper.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/lean -s -static leanwrapper.c
+
+RUN strip $(find /lean -type f -name "*.a")
+RUN strip $(find /lean -type f -name "*.so*" ! -name "*libc++.so" ! -name "*libgcc_s.so")
 
 FROM codegolf/lang-base
 
