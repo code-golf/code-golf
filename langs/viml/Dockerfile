@@ -1,8 +1,8 @@
 FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache dash gcc make musl-dev ncurses-dev ncurses-static
+RUN apk add --no-cache gcc make musl-dev ncurses-dev ncurses-static
 
-ENV LDFLAGS='-static' VER=9.2.0010
+ENV LDFLAGS='-static' VER=9.2.0958
 
 ADD https://github.com/vim/vim.git#v$VER /vim
 
@@ -24,7 +24,6 @@ RUN gcc -Wall -Werror -Wextra -o /usr/bin/viml -s -static /viml.c
 
 FROM codegolf/lang-base
 
-COPY --from=0           /usr/bin/dash        /bin/sh
 COPY --from=0 --parents /lib/ld-musl-*.so.1  \
                         /usr/bin/vim         \
                         /usr/bin/viml        \
