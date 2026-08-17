@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache dash gcc make musl-dev ncurses-dev ncurses-static
 
-ENV LDFLAGS='-static' VER=9.2.0010
+ENV LDFLAGS='-static' VER=9.2.0958
 
 ADD https://github.com/vim/vim.git#v$VER /vim
 
