@@ -5,7 +5,7 @@ import (
 
 	"github.com/code-golf/code-golf/middleware"
 	"github.com/go-chi/chi/v5"
-	"github.com/jmoiron/sqlx"
+	"github.com/vinovest/sqlx"
 )
 
 func Router(db *sqlx.DB) http.Handler {

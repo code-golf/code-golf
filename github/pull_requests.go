@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/jmoiron/sqlx"
 	"github.com/shurcooL/graphql"
+	"github.com/vinovest/sqlx"
 )
 
 func pullRequests(db *sqlx.DB) (limits []rateLimit, err error) {

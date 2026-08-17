@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/golfer"
-	"github.com/jmoiron/sqlx"
+	"github.com/vinovest/sqlx"
 )
 
 type key struct{}

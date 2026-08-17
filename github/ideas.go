@@ -3,8 +3,8 @@ package github
 import (
 	"context"
 
-	"github.com/jmoiron/sqlx"
 	"github.com/shurcooL/graphql"
+	"github.com/vinovest/sqlx"
 )
 
 func ideas(db *sqlx.DB) (limits []rateLimit, err error) {

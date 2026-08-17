@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/null"
+	"github.com/vinovest/sqlx"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/endpoints"
 )
@@ -106,7 +106,7 @@ func init() {
 	}
 }
 
-func GetConnections(db db.Queryable, golferID int, onlyPublic bool) (c []Connection) {
+func GetConnections(db sqlx.Queryable, golferID int, onlyPublic bool) (c []Connection) {
 	if err := db.Select(
 		&c,
 		` SELECT avatar_url, connection, discriminator, id, public, username

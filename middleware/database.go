@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/code-golf/code-golf/session"
-	"github.com/jmoiron/sqlx"
+	"github.com/vinovest/sqlx"
 )
 
 // Database adds the database handle to the context.

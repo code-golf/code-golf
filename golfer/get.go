@@ -6,7 +6,7 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/uuid"
-	"github.com/jmoiron/sqlx"
+	"github.com/vinovest/sqlx"
 )
 
 // Get a Golfer given a session ID, updates the session's last used time.
@@ -44,6 +44,7 @@ func Get(db *sqlx.DB, sessionID uuid.UUID, userAgent string) *Golfer {
 		          u.sponsor                                 sponsor,
 		          u.theme                                   theme,
 		          u.time_zone                               time_zone,
+		          u.uses_ai                                 uses_ai,
 		          ARRAY(SELECT cheevo
 		                  FROM cheevos
 		                 WHERE user_id = u.id
@@ -139,6 +140,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          sponsor,
 		          started,
 		          COALESCE(unicorn, 0)                  unicorn,
+		          uses_ai,
 		          uuid
 		     FROM golfers_with_avatars
 		LEFT JOIN medals       ON id = medals.user_id

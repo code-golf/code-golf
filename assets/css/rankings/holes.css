@@ -9,6 +9,14 @@ th:has(#chart-container) {
     position: initial;
 }
 
+th:has(#ai-filter) {
+    position: initial;
+}
+
 #chart-container {
     position: relative;
+}
+
+#ai-filter {
+    justify-content: center;
 }

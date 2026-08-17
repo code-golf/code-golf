@@ -1,12 +1,13 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
-
-ENV VER=5.5.0
+RUN apk add --no-cache gcc make musl-dev
 
 # Also rebuild Fennel.
-RUN curl -#L https://www.lua.org/ftp/lua-$VER.tar.gz \
-  | tar xz --strip-components 1
+ENV VER=5.5.1
+
+ADD --unpack https://www.lua.org/ftp/lua-$VER.tar.gz /
+
+WORKDIR /lua-$VER
 
 RUN make generic install \
     AR='gcc-ar rcu'      \

@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
+	"github.com/vinovest/sqlx"
 )
 
 func TestEarn(t *testing.T) {

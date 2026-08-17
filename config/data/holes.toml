@@ -596,6 +596,29 @@ links = [
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Chess960_numbering_scheme#Direct_derivation' },
 ]
 
+['Chess Move Validation']
+authors = [
+    '01923841-7fc8-7cce-b6b9-50df9ea1756e', # 4atj
+]
+category = 'Gaming'
+experiment = 2705
+synopsis = 'Determine if a chess move is valid.'
+preamble = '''
+<p>
+    Given a list of moves on an empty 8&times;8 chessboard, determine which ones are legal and print them.
+</p>
+
+<h3>Move Format</h3>
+<p>
+    A 5-character string formatted as <code>[Piece][Start File][Start Rank][End File][End Rank]</code>:
+</p>
+<ul>
+    <li><b>Pieces:</b> <code>K</code> (King), <code>Q</code> (Queen), <code>R</code> (Rook), <code>B</code> (Bishop), <code>N</code> (Knight)</li>
+    <li><b>Files:</b> <code>a</code> through <code>h</code></li>
+    <li><b>Ranks:</b> <code>1</code> through <code>8</code></li>
+</ul>
+'''
+
 ['Christmas Trees']
 category = 'Art'
 released = 2017-12-05
@@ -2456,6 +2479,31 @@ preamble = '''
     <b>2 ≤ d ≤ 14</b>. The second is the base of the numbering system
     <b>2 ≤ b ≤ 16</b>. For each argument, output the total number of lucky
     tickets for the numbering system on a separate line.
+'''
+
+['Lyndon Factorization']
+authors = [
+    '01995abc-9866-756f-94d4-ee6390c37fc8', # hellopir2
+	'018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
+category = 'Computing'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Factorize_string_into_Lyndon_words' },
+	{ name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Lyndon_word' },
+]
+experiment = 2712
+synopsis = 'Factorize a string into Lyndon words.'
+preamble = '''
+<p>
+    A Lyndon word is a nonempty word that is strictly smaller in
+	lexicographic order than all of its rotations. Any string may
+	be formed by concatenating a sequence of Lyndon words; the
+	Lyndon factorization of a string is the unique such sequence
+	that is non-increasing lexicographically.
+
+<p>
+	For each argument, print its Lyndon factorization, with the
+	constituent Lyndon words separated by spaces.
 '''
 
 [Mahjong]
@@ -5160,7 +5208,6 @@ links = [
     { name = 'OEIS A002858', url = '//oeis.org/A002858' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Ulam_number' },
 ]
-experiment = 2639
 released = 2026-08-01
 synopsis = 'Print the first 250 terms of the Ulam Sequence.'
 preamble = '''
@@ -5284,6 +5331,28 @@ preamble = '''
 <p>
     Print the first <b>1,000</b> terms of the Van Eck sequence, with each term
     on a new line.
+'''
+
+['Yellowstone Permutation']
+authors = [
+    '0199e39c-12da-7bb5-9bd5-73eb397e3d2c', # JOrE20
+]
+category = 'Sequence'
+links = [
+    { name = 'OEIS A098550', url = '//oeis.org/A098550' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Yellowstone_sequence' },
+]
+experiment = 2684
+synopsis = 'Print the first 1,000 terms of the Yellowstone Permutation.'
+preamble = '''
+<p>
+    The Yellowstone Permutation is defined as starting with
+    <code>a(1)=1</code>, <code>a(2)=2</code>, <code>a(3)=3</code>,
+    after which each term of the sequence is the smallest unused integer
+    <code>k&gt;3</code> such that <code>gcd(k,a(n-1))=1</code> and
+    <code>gcd(k,a(n-2))&gt;1</code>.
+
+<p>Print the first 1,000 terms of the Yellowstone Permutation.
 '''
 
 ['Zeckendorf Representation']

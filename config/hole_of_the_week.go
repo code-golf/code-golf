@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/views"
 	"github.com/lib/pq"
+	"github.com/vinovest/sqlx"
 )
 
 var firstWeek = time.Date(2026, time.January, 19, 0, 0, 0, 0, time.UTC).Unix()
@@ -44,7 +44,7 @@ func HoleOfTheWeek() (template.HTML, time.Time) {
 	return template.HTML(b.String()), thisWeek
 }
 
-func PopulateHolesOfTheWeek(db db.Queryable) error {
+func PopulateHolesOfTheWeek(db sqlx.Queryable) error {
 	thisWeek := ThisWeek()
 	nextWeek := thisWeek.AddDate(0, 0, 7)
 

@@ -1,6 +1,6 @@
 ARG VER=3.2.2
 
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 ARG VER
 

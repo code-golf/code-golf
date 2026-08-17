@@ -1,8 +1,8 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang llvm-dev make openssl-dev
+RUN apk add --no-cache clang gcc llvm-dev make openssl-dev
 
-ENV PYVER=3.14.6 VER=1.3.0
+ENV PYVER=3.14.7 VER=1.3.1
 
 ADD --unpack https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz /
 
@@ -20,7 +20,7 @@ RUN CC='clang' ./configure     \
  && strip /usr/bin/python3.14  \
           /usr/lib/python3.14/lib-dynload/*.so
 
-RUN pip3 install hy==$VER
+RUN pip3 install --break-system-packages hy==$VER
 
 WORKDIR /usr/lib/python3.14
 

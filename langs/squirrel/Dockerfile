@@ -1,6 +1,6 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang cmake curl make patch
+RUN apk add --no-cache clang cmake curl gcc make patch
 
 ENV VER=3.2
 

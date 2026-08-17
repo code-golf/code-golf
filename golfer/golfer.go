@@ -7,11 +7,10 @@ import (
 	"time"
 
 	"github.com/code-golf/code-golf/config"
-	"github.com/code-golf/code-golf/db"
 	"github.com/code-golf/code-golf/null"
 	"github.com/code-golf/code-golf/uuid"
-	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
+	"github.com/vinovest/sqlx"
 )
 
 const (
@@ -32,16 +31,16 @@ type GolferLink struct {
 type Golfer struct {
 	GolferLink
 
-	About, Referrer, Theme                string
-	Admin, HasNotes, ShowCountry, Sponsor bool
-	BytesPoints, CharsPoints, ID          int
-	Cheevos                               pq.StringArray
-	Country                               *config.Country
-	Delete                                null.Time
-	FailingSolutions                      FailingSolutions
-	Following, Hiding                     pq.Int64Array
-	Pronouns, TimeZone                    null.String
-	Settings                              Settings
+	About, Referrer, Theme                        string
+	Admin, HasNotes, ShowCountry, Sponsor, UsesAI bool
+	BytesPoints, CharsPoints, ID                  int
+	Cheevos                                       pq.StringArray
+	Country                                       *config.Country
+	Delete                                        null.Time
+	FailingSolutions                              FailingSolutions
+	Following, Hiding                             pq.Int64Array
+	Pronouns, TimeZone                            null.String
+	Settings                                      Settings
 
 	// Has the golfer solved the latest hole/lang? Includes failing solutions.
 	SolvedHoleOfTheWeek, SolvedLatestHole, SolvedLatestLang bool
@@ -101,7 +100,7 @@ func (f *FailingSolutions) Scan(src any) error {
 }
 
 // Earn the given cheevo, no-op if already earned.
-func (g *Golfer) Earn(db db.Queryable, cheevoID string) (earned *config.Cheevo) {
+func (g *Golfer) Earn(db sqlx.Queryable, cheevoID string) (earned *config.Cheevo) {
 	if rowsAffected, _ := db.MustExec(
 		"INSERT INTO cheevos (user_id, cheevo) VALUES ($1, $2) ON CONFLICT DO NOTHING",
 		g.ID,

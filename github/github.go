@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/jmoiron/sqlx"
 	"github.com/shurcooL/graphql"
+	"github.com/vinovest/sqlx"
 	"golang.org/x/oauth2"
 )
 
