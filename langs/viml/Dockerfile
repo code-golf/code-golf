@@ -1,6 +1,6 @@
 FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache dash gcc make musl-dev ncurses-dev ncurses-static
+RUN apk add --no-cache gcc make musl-dev ncurses-dev ncurses-static
 
 ENV LDFLAGS='-static' VER=9.2.0958
 
