@@ -75,9 +75,8 @@ mathjax-fonts:
 	@cp -r node_modules/mathjax/es5/output/chtml/fonts/woff-v2 public/mathjax-fonts
 
 lint:
-# Disabled until 1.27 support: https://github.com/golangci/golangci-lint/issues/6643
-#	@docker run --rm -v $(CURDIR):/app -w /app \
-#	    golangci/golangci-lint:v2.12.2 golangci-lint run
+	@docker run --rm -v $(CURDIR):/app -w /app \
+	    golangci/golangci-lint:v2.13.0 golangci-lint run
 
 	@node_modules/.bin/eslint assets/js
 
