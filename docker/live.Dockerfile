@@ -31,6 +31,7 @@ RUN go build -ldflags -s -trimpath \
 
 FROM scratch
 
+COPY --from=codegolf/lang-lean         / /langs/lean/rootfs/
 COPY --from=codegolf/lang-swift        / /langs/swift/rootfs/
 COPY --from=codegolf/lang-rust         / /langs/rust/rootfs/
 COPY --from=codegolf/lang-go           / /langs/go/rootfs/
