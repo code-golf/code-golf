@@ -1,6 +1,6 @@
 module github.com/code-golf/code-golf
 
-go 1.27rc1
+go 1.27
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
