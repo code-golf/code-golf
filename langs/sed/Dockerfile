@@ -1,11 +1,12 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc linux-headers make musl-dev
+RUN apk add --no-cache gcc linux-headers make musl-dev
 
 ENV LDFLAGS='-static' VER=4.10
 
-RUN curl -#L https://ftpmirror.gnu.org/gnu/sed/sed-$VER.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://ftpmirror.gnu.org/gnu/sed/sed-$VER.tar.xz /
+
+WORKDIR /sed-$VER
 
 RUN ./configure   \
     --enable-lto  \

@@ -1,13 +1,14 @@
 ARG VER=0.56
 
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-ARG VER
+ARG PATCH=19 VER
 
-RUN apk add --no-cache bison curl flex g++ gobject-introspection-dev make
+RUN apk add --no-cache bison flex g++ gobject-introspection-dev make
 
-RUN curl -#L https://download.gnome.org/sources/vala/$VER/vala-$VER.19.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://download.gnome.org/sources/vala/$VER/vala-$VER.$PATCH.tar.xz /
+
+WORKDIR /vala-$VER.$PATCH
 
 RUN ./configure                      \
     --disable-valadoc                \
@@ -16,7 +17,7 @@ RUN ./configure                      \
  && strip /usr/lib/libvala-$VER.so.0 \
           /usr/lib/vala-$VER/libvalaccodegen.so
 
-COPY vala.c /
+COPY vala.c .
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/vala -s vala.c
 

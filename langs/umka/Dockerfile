@@ -1,15 +1,16 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache gcc make musl-dev
 
 ENV VER=1.5.6
 
-RUN curl -#L https://github.com/vtereshkov/umka-lang/archive/refs/tags/v$VER.tar.gz \
-  | tar xz --strip-components 1
+WORKDIR /umka
+
+ADD https://github.com/vtereshkov/umka-lang.git#v$VER .
 
 RUN make -j`nproc` install
 
-COPY umka.c /
+COPY umka.c .
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/umka -s umka.c
 

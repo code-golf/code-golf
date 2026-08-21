@@ -1,6 +1,6 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang git make
+RUN apk add --no-cache clang gcc git make
 
 ENV VER=1981682
 

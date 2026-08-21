@@ -1,4 +1,4 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache coreutils
 
@@ -12,7 +12,7 @@ COPY --from=0 /cjam.jar                   /
 COPY --from=0 /usr/lib/libacl.so.1        \
               /usr/lib/libattr.so.1       \
               /usr/lib/libcrypto.so.3     \
-              /usr/lib/libskarnet.so.2.14 \
+              /usr/lib/libskarnet.so.2.15 \
               /usr/lib/libutmps.so.0.1    /usr/lib/
 
 ENTRYPOINT ["cjam"]

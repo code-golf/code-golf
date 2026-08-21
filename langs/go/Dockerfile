@@ -1,6 +1,6 @@
-ARG VER=1.26.5
+ARG VER=1.27.0
 
-FROM golang:$VER-alpine3.23 AS builder
+FROM golang:$VER-alpine3.24 AS builder
 
 RUN apk add --no-cache gcc musl-dev
 

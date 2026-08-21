@@ -22,20 +22,20 @@ func runAnt(ruleset string) string {
 
 	var grid [33][33]int
 
-	pos_x, pos_y, vel_x, vel_y := 16, 16, 0, -1
+	posX, posY, velX, velY := 16, 16, 0, -1
 
 	for range 1000 {
-		dir := ruleset[grid[pos_y][pos_x]]
+		dir := ruleset[grid[posY][posX]]
 		if dir == 'L' {
-			vel_x, vel_y = vel_y, -vel_x
+			velX, velY = velY, -velX
 		} else {
-			vel_x, vel_y = -vel_y, vel_x
+			velX, velY = -velY, velX
 		}
-		grid[pos_y][pos_x] = (grid[pos_y][pos_x] + 1) % rulelength
-		pos_x += vel_x
-		pos_y += vel_y
+		grid[posY][posX] = (grid[posY][posX] + 1) % rulelength
+		posX += velX
+		posY += velY
 
-		if pos_x < 0 || pos_x > 32 || pos_y < 0 || pos_y > 32 {
+		if posX < 0 || posX > 32 || posY < 0 || posY > 32 {
 			break
 		}
 	}
@@ -63,9 +63,9 @@ var _ = answerFunc("langtons-ant", func() []Answer {
 	for i := range 9 {
 		ruleset := generateRuleset(i + 2)
 		grid := runAnt(ruleset)
-		tests[i + 5] = test{ruleset, grid}
+		tests[i+5] = test{ruleset, grid}
 	}
-	for i:=len(hardCodedRules)+9;i<40;i++ {
+	for i := len(hardCodedRules) + 9; i < 40; i++ {
 		ruleset := generateRuleset(rand.IntN(8) + 2)
 		grid := runAnt(ruleset)
 		tests[i] = test{ruleset, grid}

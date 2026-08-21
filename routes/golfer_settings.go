@@ -132,11 +132,12 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		    SET about = $1,
 		      country = $2,
 		     pronouns = $3,
-		  referrer_id = (SELECT id FROM users WHERE name = $4 AND id != $8),
+		  referrer_id = (SELECT id FROM users WHERE name = $4 AND id != $9),
 		 show_country = $5,
 		        theme = $6,
-		    time_zone = $7
-		  WHERE id = $8`,
+		    time_zone = $7,
+		      uses_ai = $8
+		  WHERE id = $9`,
 		r.Form.Get("about"),
 		null.NullIfZero(r.Form.Get("country")),
 		null.NullIfZero(r.Form.Get("pronouns")),
@@ -144,6 +145,7 @@ func golferSettingsPOST(w http.ResponseWriter, r *http.Request) {
 		r.Form.Get("show_country") == "on",
 		r.Form.Get("theme"),
 		r.Form.Get("time_zone"),
+		r.Form.Get("uses_ai") == "on",
 		golfer.ID,
 	)
 

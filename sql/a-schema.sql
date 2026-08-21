@@ -155,6 +155,7 @@ CREATE TABLE users (
     uuid         uuid      NOT NULL UNIQUE DEFAULT uuidv7(),
     started      timestamp NOT NULL GENERATED ALWAYS AS
         (timezone('UTC', uuid_extract_timestamp(uuid))),
+    uses_ai      bool      NOT NULL DEFAULT false,
     CHECK (country IS NULL OR country ~ '^[A-Z]{2}$'),
     CHECK (id != referrer_id),             -- Can't refer yourself!
     CHECK (name ~ '^[A-Za-z0-9_-]{1,42}$') -- 1 - 42 ASCII word/hyphen chars.

@@ -2481,6 +2481,31 @@ preamble = '''
     tickets for the numbering system on a separate line.
 '''
 
+['Lyndon Factorization']
+authors = [
+    '01995abc-9866-756f-94d4-ee6390c37fc8', # hellopir2
+	'018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
+category = 'Computing'
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Factorize_string_into_Lyndon_words' },
+	{ name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Lyndon_word' },
+]
+experiment = 2712
+synopsis = 'Factorize a string into Lyndon words.'
+preamble = '''
+<p>
+    A Lyndon word is a nonempty word that is strictly smaller in
+	lexicographic order than all of its rotations. Any string may
+	be formed by concatenating a sequence of Lyndon words; the
+	Lyndon factorization of a string is the unique such sequence
+	that is non-increasing lexicographically.
+
+<p>
+	For each argument, print its Lyndon factorization, with the
+	constituent Lyndon words separated by spaces.
+'''
+
 [Mahjong]
 authors = [
     '018252b9-d40a-7f68-8adb-bbf3071e94af', # commandz0

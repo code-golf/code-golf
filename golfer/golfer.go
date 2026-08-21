@@ -31,16 +31,16 @@ type GolferLink struct {
 type Golfer struct {
 	GolferLink
 
-	About, Referrer, Theme                string
-	Admin, HasNotes, ShowCountry, Sponsor bool
-	BytesPoints, CharsPoints, ID          int
-	Cheevos                               pq.StringArray
-	Country                               *config.Country
-	Delete                                null.Time
-	FailingSolutions                      FailingSolutions
-	Following, Hiding                     pq.Int64Array
-	Pronouns, TimeZone                    null.String
-	Settings                              Settings
+	About, Referrer, Theme                        string
+	Admin, HasNotes, ShowCountry, Sponsor, UsesAI bool
+	BytesPoints, CharsPoints, ID                  int
+	Cheevos                                       pq.StringArray
+	Country                                       *config.Country
+	Delete                                        null.Time
+	FailingSolutions                              FailingSolutions
+	Following, Hiding                             pq.Int64Array
+	Pronouns, TimeZone                            null.String
+	Settings                                      Settings
 
 	// Has the golfer solved the latest hole/lang? Includes failing solutions.
 	SolvedHoleOfTheWeek, SolvedLatestHole, SolvedLatestLang bool

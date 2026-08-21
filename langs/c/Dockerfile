@@ -1,13 +1,14 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev patch
+RUN apk add --no-cache gcc make musl-dev patch
 
 ENV VER=0.9.27
 
-RUN curl -#L https://download.savannah.nongnu.org/releases/tinycc/tcc-$VER.tar.bz2 \
-  | tar xj --strip-components 1
+ADD --unpack https://download.savannah.nongnu.org/releases/tinycc/tcc-$VER.tar.bz2 /
 
-COPY c.patch /
+WORKDIR /tcc-$VER
+
+COPY c.patch .
 
 RUN patch -p0 < c.patch
 

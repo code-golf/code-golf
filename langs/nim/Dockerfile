@@ -1,12 +1,13 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl dash gcc musl-dev pcre tcc tcc-libs-static
+RUN apk add --no-cache dash gcc musl-dev pcre tcc tcc-libs-static
 
 # Also bump Arturo.
 ENV VER=2.2.10
 
-RUN curl -#L https://nim-lang.org/download/nim-$VER.tar.xz \
-  | tar xJ --strip-components 1
+ADD --unpack https://nim-lang.org/download/nim-$VER.tar.xz /
+
+WORKDIR /nim-$VER
 
 RUN ./build.sh             \
  && ./bin/nim c koch       \
