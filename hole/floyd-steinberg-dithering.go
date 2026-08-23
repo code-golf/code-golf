@@ -7,4 +7,4 @@ var _ = answerFunc("floyd-steinberg-dithering", func() []Answer {
         runs[i] = Run{Args: []string{test.in}, Answer: test.out}
     }
     return shuffle(runs)
-}
+})
