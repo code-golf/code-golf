@@ -26,7 +26,7 @@ var _ = answerFunc("transpose-sentence", func() []Answer {
 	tests = append(tests, test{sentence, transpose(sentence)})
 
 	// Two adjacent single-letter words.
-	sentence := "up begin for a a very"
+	sentence = "up begin for a a very"
 	tests = append(tests, test{sentence, transpose(sentence)})
 
 	return outputTests(shuffle(tests))
