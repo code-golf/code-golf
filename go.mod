@@ -7,7 +7,7 @@ require (
 	github.com/agnivade/levenshtein v1.2.1
 	github.com/buildkite/terminal-to-html/v3 v3.17.1
 	github.com/bwmarrin/discordgo v0.29.1-0.20260214123928-f43dd94faaac
-	github.com/go-chi/chi/v5 v5.3.1
+	github.com/go-chi/chi/v5 v5.3.2
 	github.com/go-git/go-billy/v5 v5.9.1
 	github.com/go-git/go-git/v5 v5.19.2
 	github.com/gorilla/feeds v1.2.0
