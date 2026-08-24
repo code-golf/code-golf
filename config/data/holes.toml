@@ -4982,24 +4982,25 @@ preamble = '''
     is the total number of pins knocked down plus strike and spare bonuses.
 '''
 
-['Thue-Morse Constant']
+['Thue–Morse Constant']
 authors = [
     '0199e39c-12da-7bb5-9bd5-73eb397e3d2c', # JOrE20
 ]
 category = 'Mathematics'
 links = [
     { name = 'OEIS A010060', url = '//oeis.org/A010060' },
-    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Prouhet%E2%80%93Thue%E2%80%93Morse_constant' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Prouhet–Thue–Morse_constant' },
 ]
 experiment = 2721
-synopsis = 'Print the first 1,000 digits of the Thue-Morse Constant.'
+synopsis = 'Print the first 1,000 digits of the Thue–Morse Constant.'
 preamble = '''
 <p>
-    The Thue-Morse constant is created by interpreting the
-    <a href="https://oeis.org/A010060">Thue-Morse sequence (A010060)</a>
-    (the parity of the popcount of each nonnegative integer) as a binary fraction.
+    The Thue–Morse constant is created by interpreting the
+    <a href=//oeis.org/A010060>Thue–Morse sequence (A010060)</a>
+    (the parity of the popcount of each nonnegative integer) as a binary
+    fraction.
 
-<p>Print the first 1,000 decimal digits of the Thue-Morse constant.
+<p>Print the first 1,000 decimal digits of the Thue–Morse constant.
 '''
 
 [Tic-tac-toe]
