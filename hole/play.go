@@ -75,7 +75,7 @@ func Play(
 		answers = outputTests(shuffle(fixedTests(hole.ID)))
 	case "emojify", "flags", "rock-paper-scissors-spock-lizard", "tic-tac-toe", "united-states":
 		answers = outputMultirunTests(fixedTests(hole.ID))
-	case "floyd-steinberg-dithering", "hexdump", "proximity-grid", "star-wars-opening-crawl":
+	case "hexdump", "proximity-grid", "star-wars-opening-crawl":
 		answers = outputTestsWithSep("\n\n", shuffle(fixedTests(hole.ID)))
 	case "minesweeper":
 		answers = outputTestsWithSep("\n\n", fixedTests(hole.ID), shuffle(fixedTests(hole.ID)))
