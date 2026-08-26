@@ -49,9 +49,9 @@ func lyndonFactorizationTest(input string) test {
 			if input[k] < input[j] {
 				k = i
 			} else {
-				k += 1
+				k++
 			}
-			j += 1
+			j++
 		}
 
 		for i <= k {
