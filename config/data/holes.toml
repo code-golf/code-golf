@@ -602,20 +602,27 @@ authors = [
 ]
 category = 'Gaming'
 experiment = 2705
+released = 2026-09-01
 synopsis = 'Determine if a chess move is valid.'
 preamble = '''
 <p>
-    Given a list of moves on an empty 8&times;8 chessboard, determine which ones are legal and print them.
-</p>
+    Given a list of moves on an empty 8×8 chessboard, determine which ones are
+    legal and print them.
 
 <h3>Move Format</h3>
+
 <p>
-    A 5-character string formatted as <code>[Piece][Start File][Start Rank][End File][End Rank]</code>:
-</p>
+    A 5-character string formatted as
+    <code>[Piece][Start File][Start Rank][End File][End Rank]</code>:
+
 <ul>
-    <li><b>Pieces:</b> <code>K</code> (King), <code>Q</code> (Queen), <code>R</code> (Rook), <code>B</code> (Bishop), <code>N</code> (Knight)</li>
-    <li><b>Files:</b> <code>a</code> through <code>h</code></li>
-    <li><b>Ranks:</b> <code>1</code> through <code>8</code></li>
+    <li><b>Pieces:</b>
+        <code>K</code> (King), <code>Q</code> (Queen), <code>R</code> (Rook),
+        <code>B</code> (Bishop), <code>N</code> (Knight)
+    <li><b>Files:</b>
+        <code>a</code> through <code>h</code>
+    <li><b>Ranks:</b>
+        <code>1</code> through <code>8</code>
 </ul>
 '''
 
