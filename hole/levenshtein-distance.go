@@ -31,7 +31,7 @@ var _ = answerFunc("levenshtein-distance", func() []Answer {
 		tests = append(tests, levenshteinTest(randWord(), randWord()))
 	}
 
-	tests = shuffle(tests)
+	shuffle(tests)
 
 	const argc = 20 // Preserve original argc
 	return outputTests(tests[:argc], tests[len(tests)-argc:])

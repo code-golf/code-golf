@@ -43,11 +43,7 @@ func formatDistance(secs int) string {
 }
 
 var _ = answerFunc("time-distance", func() []Answer {
-	inputs := []int{0}
-
-	// Fixed cases
-	inputs = append(inputs, 2759)
-	inputs = append(inputs, -2759)
+	inputs := []int{0, 2759, -2759} // Fixed cases
 
 	timeUnitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
 	for i := 0; i <= 32; i++ {
@@ -78,5 +74,8 @@ var _ = answerFunc("time-distance", func() []Answer {
 		tests[i] = test{strconv.Itoa(inp), formatDistance(inp)}
 	}
 
-	return outputTests(shuffle(tests))
+	shuffle(tests)
+
+	const argc = 321 // Preserve original argc
+	return outputTests(tests[:argc], tests[len(tests)-argc:])
 })

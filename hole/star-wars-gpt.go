@@ -120,7 +120,7 @@ var _ = answerFunc("star-wars-gpt", func() []Answer {
 	tests[13] = test{staticTest9, staticResult9}
 	tests[14] = test{staticTest10, staticResult10}
 
-	tests = shuffle(tests)
+	shuffle(tests)
 
 	const argc = 13 // Preserve original argc
 	return outputTests(tests[:argc], tests[len(tests)-argc:])
