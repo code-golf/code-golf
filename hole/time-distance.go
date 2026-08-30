@@ -45,6 +45,10 @@ func formatDistance(secs int) string {
 var _ = answerFunc("time-distance", func() []Answer {
 	inputs := []int{0}
 
+	// Fixed cases
+	inputs = append(inputs, 2759)
+	inputs = append(inputs, -2759)
+
 	timeUnitsChosen := []int{1, 2, 3, 4, 5, 6, 7}
 	for i := 0; i <= 32; i++ {
 		// Randomize which timeUnits will appear.
