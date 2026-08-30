@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache gcc make musl-dev
 
-ENV VER=1.5.6
+ENV VER=1.5.7
 
 WORKDIR /umka
 

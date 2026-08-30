@@ -4,7 +4,7 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ git pkgconf procps python3
 
-ENV PATH=/javascript:$PATH VER=15.1.206.16
+ENV PATH=/javascript:$PATH VER=15.2.124.18
 
 WORKDIR /javascript
 

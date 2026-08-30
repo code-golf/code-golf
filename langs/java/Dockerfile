@@ -5,7 +5,7 @@ RUN apk add --no-cache alsa-lib-dev autoconf bash build-base cups-dev \
                        libxt-dev libxtst-dev musl-locales zip
 
 # Also rebuild CJam, Groovy, Kotlin, Scala, Vyxal.
-ENV VER=25.0.4 BUILD=7
+ENV VER=25.0.4.1 BUILD=1
 
 ADD --unpack https://github.com/adoptium/temurin25-binaries/releases/download/jdk-$VER+$BUILD/OpenJDK25U-jdk_x64_alpine-linux_hotspot_${VER}_$BUILD.tar.gz .
 
