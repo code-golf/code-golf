@@ -601,7 +601,6 @@ authors = [
     '01923841-7fc8-7cce-b6b9-50df9ea1756e', # 4atj
 ]
 category = 'Gaming'
-experiment = 2705
 released = 2026-09-01
 synopsis = 'Determine if a chess move is valid.'
 preamble = '''
