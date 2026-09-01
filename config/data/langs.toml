@@ -418,8 +418,8 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '80.8 MiB'
-version = '0.11.13'
+size    = '81.0 MiB'
+version = '0.11.15'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -453,8 +453,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/bb', '/proc/self/fd/0' ]
-size    = '70.1 MiB'
-version = 'Babashka 1.13.219'
+size    = '72.2 MiB'
+version = 'Babashka 1.13.220'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -874,8 +874,8 @@ n*
 args     = [ '/usr/bin/groovy', '-e', '$code' ]
 env      = [ 'JAVA_HOME=/opt/java', 'JAVA_OPTS=-XX:ActiveProcessorCount=1' ]
 released = 2025-08-29
-size     = '66.0 MiB'
-version  = '5.1.0'
+size     = '66.1 MiB'
+version  = '5.1.1'
 website  = 'https://groovy-lang.org'
 example  = '''
 // Printing
@@ -1085,8 +1085,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '989 KiB'
-version = '1.41.2'
+size    = '1.00 MiB'
+version = '1.42.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1408,7 +1408,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.9'
+version = '8.5.10'
 website = 'https://www.php.net'
 example = '''
 # Printing
