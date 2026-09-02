@@ -68,7 +68,9 @@ export function requestResults(search: string, updateResults: (results: SearchNa
     const [holeSearch, langSearch] = search.includes('#')
         ? [search.slice(0, search.indexOf('#')), search.slice(search.indexOf('#') + 1)]
         : [search, undefined];
-    const currentHole = location.pathname.slice(1) in holes ? location.pathname.slice(1) : undefined;
+
+    const currentPath = decodeURI(location.pathname.slice(1));
+    const currentHole = currentPath in holes ? currentPath : undefined;
 
     let matches: SearchNavResultInternal[] = [];
 
