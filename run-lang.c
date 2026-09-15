@@ -3,6 +3,7 @@
 #define _GNU_SOURCE
 #include <asm/unistd.h>
 #include <errno.h>
+#include <linux/audit.h>
 #include <linux/filter.h>
 #include <linux/seccomp.h>
 #include <sched.h>
@@ -27,6 +28,11 @@
 #define ALLOW(name) \
     BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
     BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
+
+#define ALLOW_I386(number) \
+    BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, number, 0, 1), \
+    BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
+#define I386_SYSCALL_COUNT 24 // Update when adding/removing ALLOW_I386 entries.
 
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 #define STR_WITH_LEN(str) str, sizeof(str) - 1
@@ -87,6 +93,39 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     // sudo journalctl -f _AUDIT_TYPE_NAME=SECCOMP
     // ... SECCOMP ... syscall=xxx ...
     struct sock_filter filter[] = {
+        BPF_STMT(BPF_LD+BPF_W+BPF_ABS, offsetof(struct seccomp_data, arch)),
+        BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, AUDIT_ARCH_I386, 3, 0),
+        BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, AUDIT_ARCH_X86_64, 1, 0),
+        BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_KILL),
+        BPF_STMT(BPF_JMP+BPF_JA, I386_SYSCALL_COUNT * 2 + 2),
+
+        BPF_STMT(BPF_LD+BPF_W+BPF_ABS, offsetof(struct seccomp_data, nr)),
+        ALLOW_I386(1),   // exit
+        ALLOW_I386(3),   // read
+        ALLOW_I386(4),   // write
+        ALLOW_I386(6),   // close
+        ALLOW_I386(19),  // lseek
+        ALLOW_I386(20),  // getpid
+        ALLOW_I386(45),  // brk
+        ALLOW_I386(78),  // gettimeofday
+        ALLOW_I386(90),  // mmap
+        ALLOW_I386(91),  // munmap
+        ALLOW_I386(125), // mprotect
+        ALLOW_I386(145), // readv
+        ALLOW_I386(146), // writev
+        ALLOW_I386(162), // nanosleep
+        ALLOW_I386(163), // mremap
+        ALLOW_I386(168), // poll
+        ALLOW_I386(192), // mmap2
+        ALLOW_I386(224), // gettid
+        ALLOW_I386(252), // exit_group
+        ALLOW_I386(265), // clock_gettime
+        ALLOW_I386(308), // pselect6
+        ALLOW_I386(309), // ppoll
+        ALLOW_I386(355), // getrandom
+        ALLOW_I386(403), // clock_gettime64
+        BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_KILL),
+
         BPF_STMT(BPF_LD+BPF_W+BPF_ABS, offsetof(struct seccomp_data, nr)),
 
         // FIXME Julia attempts this wildly high syscall :-S
