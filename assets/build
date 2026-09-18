@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 # Sourced from https://code.golf/stats/sessions
-TARGET='chrome100,edge146,firefox115,opera129,safari16.6'
+TARGET='chrome120,edge120,firefox117,opera106,safari17.2'
 
 mkdir -p assets/out
 find assets/out -type f ! -name .gitignore -delete
