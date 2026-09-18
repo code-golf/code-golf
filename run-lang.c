@@ -58,7 +58,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount proc");
 
-    // Clobber /proc/meminfo. It can be used to inject state.
+    // Clobber /proc/{locks,meminfo}. They can be used to inject state.
+    if (mount("/dev/null", "/proc/locks", NULL, MS_BIND, NULL) < 0)
+        ERR_AND_EXIT("mount /proc/locks");
     if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
         ERR_AND_EXIT("mount /proc/meminfo");
 
