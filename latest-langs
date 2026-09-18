@@ -129,10 +129,10 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'algol68genie'      / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'alpinelinux'       / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki'           / { $res ~~ / ' release' .+? <(<ver>)> / }
-        when / 'chromium'          / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'chromium'          / { $res ~~ / '>Version' .+? <(<ver>)> / }
         when / 'codeberg'          / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'         / { $res.&from-json<crate><max_stable_version> }
-        when / 'dyalog.com'        / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
+        when / 'dyalog.com'        / { $res ~~ / <(<ver>)> ' for Linux' / }
         when / 'endoflife'         / { $res.&from-json[0]<latest>.match(/<(<ver>)>/).subst(/\+.*/) }
         when / 'fennel-lang'       / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'       / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
