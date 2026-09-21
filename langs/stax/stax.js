@@ -18,7 +18,7 @@ function showDebug(runtime) {
         "",
     ];
 
-    process.stdout.write(lines.join("\n") + "\n");
+    process.stderr.write(lines.join("\n") + "\n");
 }
 
 
