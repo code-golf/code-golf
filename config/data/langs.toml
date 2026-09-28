@@ -1930,7 +1930,7 @@ fn main() {
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '43.4 MiB'
+size    = '43.5 MiB'
 version = '0.5.1'
 website = 'https://vlang.io'
 example = '''
