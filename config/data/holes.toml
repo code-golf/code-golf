@@ -5168,6 +5168,25 @@ boy
 <p><b>awanpmjadb lonolaauo lrdakcly kyekl s</b>.
 '''
 
+['Triangular Numbers']
+category = 'Sequence'
+links = [
+    { name = 'OEIS A000217', url = '//oeis.org/A000217' },
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Triangular_numbers' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Triangular_number' },
+]
+synopsis = 'Print the first 50 triangular numbers.'
+preamble = '''
+<p>
+    A triangular number is a number that can be represented as the sum of
+    consecutive positive integers starting from 1.
+<p>
+    For example, <b>10</b> is a triangular number since
+    <b>10 = 1 + 2 + 3 + 4</b>.
+<p>
+    Print the first <b>50</b> triangular numbers, each on their own line.
+'''
+
 [Turtle]
 authors = [
     '0178b7c9-b196-7af2-80fc-722c9493cbb6', # scpchicken
