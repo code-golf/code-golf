@@ -5170,6 +5170,7 @@ boy
 
 ['Triangular Numbers']
 category = 'Sequence'
+experiment = 2735
 links = [
     { name = 'OEIS A000217', url = '//oeis.org/A000217' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Triangular_numbers' },
