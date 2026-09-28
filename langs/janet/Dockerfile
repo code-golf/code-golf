@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache gcc make musl-dev
 
-ENV LDFLAGS='-static' LIBJANET_LDFLAGS='' VER=1.42.0
+ENV LDFLAGS='-static' LIBJANET_LDFLAGS='' VER=1.42.1
 
 WORKDIR /janet
 
