@@ -4,13 +4,13 @@ RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
     apt-get install --yes curl g++ git ninja-build python3
 
-ENV PATH=/depot_tools:$PATH VER=3.13.3
+ENV PATH=/depot_tools:$PATH VER=3.13.4
 
 RUN git clone --progress https://chromium.googlesource.com/chromium/tools/depot_tools
 
 WORKDIR /dart
 
-RUN fetch --force dart
+RUN update_depot_tools && fetch --force dart
 
 WORKDIR /dart/sdk
 

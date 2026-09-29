@@ -4660,6 +4660,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Snake' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Snake_(1998_video_game)' },
 ]
+released = 2026-10-01
 synopsis = 'Print Snake trails.'
 preamble = '''
 <p>
@@ -4691,8 +4692,7 @@ preamble = '''
     <li>Move two cells forward
 </ul>
 
-<p>
-    Using hashes, the aforementioned trail is visualized as follows:
+<p>Using hashes, the aforementioned trail is visualized as follows:
 
 <pre>
 ####

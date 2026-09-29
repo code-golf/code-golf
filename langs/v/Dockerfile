@@ -1,16 +1,20 @@
-FROM alpine:3.23 AS builder
+FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache dash gc-dev gcc git make musl-dev
 
-ENV VER=0.5.1
+# Pin the vc commit to the commit message that matches the V version.
+#   e.g. [v:master] xxx - V $VER
+ENV VER=0.5.1 VC_VER=f461dfe
 
 WORKDIR /usr/local
 
-RUN wget -O- https://github.com/vlang/v/archive/refs/tags/$VER.tar.gz \
-  | tar xz --strip-components 1
+ADD https://github.com/vlang/v.git#$VER .
 
-RUN make \
- && strip v
+# TODO Why no worky? - ADD https://github.com/vlang/vc.git?commit=$VC_VER vc
+RUN git clone --depth=1000 https://github.com/vlang/vc \
+ && cd vc && git reset --hard $VC_VER
+
+RUN make GITCLEANPULL=true && strip v
 
 COPY v.c /
 
