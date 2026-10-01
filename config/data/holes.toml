@@ -4637,7 +4637,6 @@ authors = [
     '016836a5-3eaa-7700-9b51-d6c9685d25ba', # Bubbler-4
     '018619a9-90fd-794c-b95c-665bb60807b4', # Yewzir
 ]
-experiment = 1039
 category = 'Gaming'
 links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Snake' },
