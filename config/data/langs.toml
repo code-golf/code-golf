@@ -801,7 +801,7 @@ end
 
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
-env     = [ 'LANG=C.UTF-8' ]
+env     = [ 'ERL_LIBS=/tmp/build/dev/erlang', 'LANG=C.UTF-8' ]
 size    = '75.9 MiB'
 version = '1.18.1'
 website = 'https://gleam.run'
