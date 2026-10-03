@@ -92,19 +92,19 @@ var _ = answerFunc("medal-tally", func() []Answer {
 			if q3 < j && j < datasetmax*2 {
 				x = "──"
 			}
-			if j == q1 && j == q3 {
-				x = "┼─"
-			}
 			if datasetmin*2 == j {
 				x = "├─"
 			}
 			if j == datasetmax*2 {
 				x = "┤ "
 			}
-			if j == datasetmin*2 && j == q1 {
+			if j == q1 && j == q3 {
+				x = "┼─"
+			}
+			if j == datasetmin*2 && j == q1 && j != q3 {
 				x = "│ "
 			}
-			if j == q3 && j == datasetmax*2 {
+			if j == q3 && j == datasetmax*2 && j != q1 {
 				x = "│ "
 			}
 			if j == datasetmin*2 && j == datasetmax*2 {
