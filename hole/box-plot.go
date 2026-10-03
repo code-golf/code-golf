@@ -34,10 +34,10 @@ var _ = answerFunc("medal-tally", func() []Answer {
 		medpos = datasetlength - 1
 		if medpos%2 == 0 {
 			q1pos = (medpos - 2) / 2
-			q3pos = (medpos + 2 + datasetlength - 2) / 2
+			q3pos = (medpos + 2 + datasetlength*2 - 2) / 2
 		} else {
 			q1pos = (medpos - 1) / 2
-			q3pos = (medpos + 1 + datasetlength - 2) / 2
+			q3pos = (medpos + 1 + datasetlength*2 - 2) / 2
 		}
 
 		var q1, median, q3 int
@@ -88,6 +88,9 @@ var _ = answerFunc("medal-tally", func() []Answer {
 			}
 			if j == q3 {
 				x = "├─"
+			}
+			if j == median {
+				x = "│ "
 			}
 			if q3 < j && j < datasetmax*2 {
 				x = "──"
