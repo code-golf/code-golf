@@ -10,7 +10,7 @@ var _ = answerFunc("medal-tally", func() []Answer {
 	tests := make([]test, 50)
 
 	for i := 0; i < len(tests); i++ {
-    	datasetlength := rand.IntN(16) + 5
+		datasetlength := rand.IntN(16) + 5
 		datasetmin := rand.IntN(7)
 		datasetmax := rand.IntN(11-datasetmin) + datasetmin
 
@@ -138,6 +138,6 @@ var _ = answerFunc("medal-tally", func() []Answer {
 
 		tests[i] = test{inp, outp}
 	}
-  
+
 	return outputTests(shuffle(tests))
 })
