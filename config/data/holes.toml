@@ -4654,9 +4654,10 @@ preamble = '''
 <p>
     Each argument is a series of the creature's movements: <b>left</b>,
     <b>right</b>, and <b>forward</b>, denoted by <b>L</b>, <b>R</b>, and
-    <b>F</b> respectively. The snake always starts its track in the upper left
-    corner, facing east. Furthermore, it never intersects itself and leaves no
-    terrain along the north and west sides, both of which would end the game.
+    <b>F</b> respectively. The terrain is 20 cells wide and 11 cells tall.
+    The snake always starts its track in the upper left corner, facing east.
+    Furthermore, it never intersects itself and never leaves the 20x11 boundary,
+    both of which would end the game.
 
 <p>
     For example, <code>FFFRFFLFFFFLFLFF</code> indicates the snake's movements
