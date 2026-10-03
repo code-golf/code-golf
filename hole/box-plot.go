@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand/v2"
 	"slices"
-	"strings"
 )
 
 var _ = answerFunc("medal-tally", func() []Answer {
