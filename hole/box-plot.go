@@ -6,7 +6,7 @@ import (
 	"slices"
 )
 
-var _ = answerFunc("medal-tally", func() []Answer {
+var _ = answerFunc("box-plot", func() []Answer {
 	tests := make([]test, 50)
 
 	for i := 0; i < len(tests); i++ {
