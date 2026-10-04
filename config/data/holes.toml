@@ -4885,6 +4885,9 @@ redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
 
 ['Suit Up']
+authors = [
+    '01733431-9aee-7e0f-833f-85a6a3691149', # o0lit3
+]
 category = 'Gaming'
 experiment = 2739
 synopsis = 'Play a game of Suit Up solitaire and print each revealed card.'
