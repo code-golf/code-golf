@@ -76,7 +76,7 @@ CREATE TYPE hole AS ENUM (
     'semiprime-numbers', 'set', 'seven-segment', 'si-units',
     'sierpiński-triangle', 'smith-numbers', 'smooth-numbers', 'snake',
     'spelling-numbers', 'sphenic-numbers', 'star-wars-gpt',
-    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
+    'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in', 'suit-up',
     'taxicab-numbers', 'ten-pin-bowling', 'thue-morse-constant', 'tic-tac-toe',
     'time-distance',  'tongue-twisters', 'topological-sort', 'tower-of-hanoi',
     'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',

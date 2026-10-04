@@ -4884,6 +4884,39 @@ name      = 'Sudoku (Fill-in)'
 redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
 
+['Suit Up']
+category = 'Gaming'
+experiment = 2739
+synopsis = 'Play a game of Suit Up solitaire and print each revealed card.'
+preamble = '''
+<p>
+    In the solitaire game <b>Suit Up</b>, a deck is dealt into four piles, one
+    per suit. Small cards quietly bury whatever is on top of their pile, while
+    high cards reveal it. The game always ends with exactly one card on each
+    pile, and you only win if every pile ends with a high card.
+
+<p>
+    Given a shuffled deck of 52 playing cards as arguments, top card first,
+    print each revealed card on its own line, in the order the cards are
+    revealed. Each card is two characters: a rank (<code>A 2 3 4 5 6 7 8 9 T J
+    Q K</code>) followed by a suit (<code>S H D C</code>).
+
+<p>
+    Keep one pile for each suit, all starting empty, and deal from the top of
+    the deck one card at a time:
+
+<ul>
+    <li>If the card’s suit pile is empty, or the card is a 6 through 9, place
+        it on top of its suit pile.
+    <li>Otherwise, if the card is a 2 through 5, discard the top card of its
+        suit pile and put this card on the bottom of the deck.
+    <li>Otherwise (<code>A T J Q K</code>), remove and reveal the top card of
+        its suit pile and put this card on the bottom of the deck.
+</ul>
+
+<p>Keep dealing until the deck is empty.
+'''
+
 ['Taxicab Numbers']
 authors = [
     '0171fa59-629b-738f-8bb5-3c52b6722d5d', # AlephSquirrel
