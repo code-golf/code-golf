@@ -4901,6 +4901,37 @@ name      = 'Sudoku (Fill-in)'
 redirects = [ 'sudoku-v2' ]
 released  = 2021-04-25
 
+['Suit Up']
+authors = [
+    '01733431-9aee-7e0f-833f-85a6a3691149', # o0lit3
+]
+category = 'Gaming'
+experiment = 2739
+synopsis = 'Play a game of Suit Up solitaire and print each revealed card.'
+preamble = '''
+<p>
+    Input is a randomized deck of 52 playing cards, one card per argument with
+	the top card coming first. Each card is two characters: a rank, followed
+	by a suit.
+
+<p>
+    For each card drawn from the randomized deck, follow these rules applied to
+	one pile for each suit, which start empty:
+
+<ul>
+    <li>If the card’s suit pile is empty, or the card is a 6 through 9, place
+        it on top of its suit pile.
+    <li>Otherwise, if the card is a 2 through 5, discard the top card of its
+        suit pile and put this card on the bottom of the deck.
+    <li>Otherwise (<code>A T J Q K</code>), remove and reveal the top card of
+        its suit pile and put this card on the bottom of the deck.
+</ul>
+
+<p>
+    Keep dealing until the deck is empty, and print each revealed card on its
+	own line, in order.
+'''
+
 ['Taxicab Numbers']
 authors = [
     '0171fa59-629b-738f-8bb5-3c52b6722d5d', # AlephSquirrel
