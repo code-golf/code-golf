@@ -82,17 +82,17 @@ var _ = answerFunc("box-plot", func() []Answer {
 			if datasetmin*2 < j && j < q1 {
 				x = "──"
 			}
+			if q3 < j && j < datasetmax*2 {
+				x = "──"
+			}
+			if j == median {
+				x = "│ "
+			}
 			if j == q1 {
 				x = "┤ "
 			}
 			if j == q3 {
 				x = "├─"
-			}
-			if j == median {
-				x = "│ "
-			}
-			if q3 < j && j < datasetmax*2 {
-				x = "──"
 			}
 			if datasetmin*2 == j {
 				x = "├─"
