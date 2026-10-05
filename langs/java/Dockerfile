@@ -36,13 +36,14 @@ RUN build/release/images/jdk/bin/jlink           \
 RUN /opt/java/bin/java -XX:+AutoCreateSharedArchive \
                        -XX:SharedArchiveFile=/cds.jsa -X
 
-COPY java.c .
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/java -s -static java.c
+# The launcher rejects non-Java filenames. The symlink works around this,
+# allowing us to run from stdin.
+RUN mkdir /out && ln -s /proc/self/fd/0 /out/code.java
 
 FROM codegolf/lang-base
 
 COPY --from=0 /cds.jsa                              /
+COPY --from=0 /out/                                 /
 COPY --from=0 /lib/ld-musl-*.so.1                   /lib/
 COPY --from=0 /opt/java/bin/java                    /opt/java/bin/
 COPY --from=0 /opt/java/conf/security/java.security /opt/java/conf/security/
@@ -59,9 +60,8 @@ COPY --from=0 /opt/java/lib/jrt-fs.jar              \
               /opt/java/lib/modules                 \
               /opt/java/lib/tzdb.dat                /opt/java/lib/
 COPY --from=0 /opt/java/lib/server/libjvm.so        /opt/java/lib/server/
-COPY --from=0 /usr/bin/java                         /usr/bin/
 COPY --from=0 /usr/lib/libz.so.1                    /usr/lib/
 
-ENTRYPOINT ["java"]
+ENTRYPOINT ["/opt/java/bin/java"]
 
 CMD ["--version"]

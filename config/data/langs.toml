@@ -1102,7 +1102,7 @@ example = '''
 '''
 
 [Java]
-args    = [ '/usr/bin/java', '-' ]
+args    = [ '/opt/java/bin/java', '-XX:+AutoCreateSharedArchive', '-XX:SharedArchiveFile=/cds.jsa', '-Xlog:cds=off', '/code.java' ]
 size    = '52.5 MiB'
 version = 'OpenJDK 25.0.4.1'
 website = 'https://openjdk.java.net'
