@@ -79,7 +79,7 @@ CREATE TYPE hole AS ENUM (
     'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
     'taxicab-numbers', 'ten-pin-bowling', 'thue-morse-constant', 'tic-tac-toe',
     'time-distance',  'tongue-twisters', 'topological-sort', 'tower-of-hanoi',
-    'transpose-sentence', 'trinomial-triangle', 'turtle', 'tutorial',
+    'transpose-sentence', 'triangular-numbers', 'trinomial-triangle', 'turtle', 'tutorial',
     'ulam-sequence', 'united-states', 'vampire-numbers', 'van-eck-sequence',
     'yellowstone-permutation', 'zeckendorf-representation', 'zodiac-signs',
     'γ', 'λ', 'π', 'τ', 'φ', '√2', '𝑒'
