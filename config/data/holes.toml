@@ -399,6 +399,23 @@ preamble = '''
     forms. You can assume that there are no infinite loops in the inputs.
 '''
 
+['Box Plot']
+authors = [
+    '017f1f16-d64c-7bc5-b56c-faf57c4ff62c', # bizy-coder
+    '018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
+category = 'Transform'
+links = [
+    { name = 'Wikipedia', url = '//en.wikipedia.org/wiki/Box_plot' },
+]
+experiment = 1225
+synopsis = 'Draw a box-and-whisker plot given a dataset.'
+preamble = '''
+<p>
+    Given a list of space-separated integers between 0 and 10 (inclusive),
+	draw its box-and-whisker plot. The plot needs to show the minimum,
+	first quartile, median, third quartile, and maximum of the data set.
+'''
 
 [brainfuck]
 category = 'Computing'
