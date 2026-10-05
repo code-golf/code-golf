@@ -15,7 +15,6 @@
 #  - Perfect Numbers
 #  - Semiprime Numbers
 #  - Sphenic Numbers
-#  - Triangular Numbers
 #
 # Transform
 #  - £sd
@@ -5216,8 +5215,11 @@ boy
 '''
 
 ['Triangular Numbers']
+authors = [
+    '0199e39c-12da-7bb5-9bd5-73eb397e3d2c', # JOrE20
+]
 category = 'Sequence'
-experiment = 2735
+experiment = 2734
 links = [
     { name = 'OEIS A000217', url = '//oeis.org/A000217' },
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Triangular_numbers' },
