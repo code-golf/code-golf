@@ -7,6 +7,9 @@ import (
 
 var directions = [][]int{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
 
+const snakeHeight = 11
+const snakeWidth = 20
+
 func randTrail(length int) string {
 	var trail []rune
 
@@ -21,7 +24,7 @@ func randTrail(length int) string {
 		case 'F':
 			dy, dx := y+directions[d][0], x+directions[d][1]
 
-			if dx < 0 || dy < 0 || dx > 19 || dy > 10 || visited[[2]int{dy, dx}] {
+			if dx < 0 || dy < 0 || dx >= snakeWidth || dy >= snakeHeight || visited[[2]int{dy, dx}] {
 				trail = trail[:len(trail)-1]
 				continue
 			}
@@ -35,6 +38,32 @@ func randTrail(length int) string {
 	}
 
 	return string(trail)
+}
+
+func trailToCorner() string {
+	var trail strings.Builder
+
+	//0 = right, 1 = down
+	directions := make([]int, snakeHeight+snakeWidth-2)
+	for i := 0; i < snakeHeight-1; i++ {
+		directions[i] = 1
+	}
+	shuffle(directions)
+
+	prevDirection := 0
+	for _, nextDirection := range directions {
+		switch nextDirection - prevDirection {
+		case -1:
+			trail.WriteString("LF")
+		case 0:
+			trail.WriteString("F")
+		case 1:
+			trail.WriteString("RF")
+		}
+		prevDirection = nextDirection
+	}
+
+	return trail.String()
 }
 
 func printTrail(s string) string {
@@ -83,7 +112,12 @@ var _ = answerFunc("snake", func() []Answer {
 	tests := make([]test, 100)
 
 	for i := range tests {
-		argument := randTrail(randInt(10, randInt(20, 100)))
+		var argument string
+		if i < 4 {
+			argument = trailToCorner()
+		} else {
+			argument = randTrail(randInt(10, randInt(20, 100)))
+		}
 
 		tests[i] = test{argument, printTrail(argument)}
 	}
