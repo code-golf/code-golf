@@ -11,7 +11,7 @@
 void copy_file(const char* src_file, const char* dst_file);
 void copy_folder(const char* src_dir, const char* dst_dir);
 
-const char* gleam = "/usr/local/bin/gleam", *code = "src/main.gleam";
+const char* gleam = "/usr/local/bin/gleam", *code = "src/main.gleam", *erl = "/usr/bin/erl";
 
 int main(int argc, char* argv[]) {
     if (!strcmp(argv[1], "--version")) {
@@ -58,17 +58,21 @@ int main(int argc, char* argv[]) {
 
     if (WEXITSTATUS(status))
         return WEXITSTATUS(status);
+    
+    if (remove(code))
+        ERR_AND_EXIT("remove");
 
-    int gargc = argc + 3;
+    int gargc = argc + 4;
     char** gargv = malloc(gargc * sizeof(char*));
-    gargv[0] = (char*) gleam;
-    gargv[1] = "run";
-    gargv[2] = "--no-print-progress";
-    gargv[3] = "--";
-    memcpy(&gargv[4], &argv[2], (argc - 2) * sizeof(char*));
+    gargv[0] = (char *) erl;
+    gargv[1] = "-eval";
+    gargv[2] = "main@@main:run(main)";
+    gargv[3] = "-noshell";
+    gargv[4] = "-extra";
+    memcpy(&gargv[5], &argv[2], (argc - 2) * sizeof(char*));
     gargv[gargc - 1] = NULL;
 
-    execv(gleam, gargv);
+    execv(erl, gargv);
     ERR_AND_EXIT("execv");
 }
 
