@@ -374,7 +374,7 @@ redirects = ["billiard"]
 ['Blackjack Dealer']
 category = 'Gaming'
 synopsis = 'Simulate a blackjack dealer.'
-experiment = 2742
+experiment = 2743
 preamble = '''
 <p>
     Given a randomized standard <b>52-card deck</b>, with one card per argument,
