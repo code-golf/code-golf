@@ -371,6 +371,43 @@ preamble = '''
 '''
 redirects = ["billiard"]
 
+['Blackjack Dealer']
+category = 'Gaming'
+synopsis = 'Simulate a blackjack dealer.'
+experiment = 2742
+preamble = '''
+<p>
+    Given a randomized standard <b>52-card deck</b>, with one card per argument,
+    simulate the dealer's hand.
+</p>
+
+<p>
+    Each card consists of a rank followed by a suit:
+    <code>A</code>, <code>2</code>–<code>9</code>, <code>T</code>,
+    <code>J</code>, <code>Q</code>, or <code>K</code>, followed by
+    <code>C</code>, <code>D</code>, <code>H</code>, or <code>S</code>.
+</p>
+
+<p>
+    The first two cards are dealt to the dealer. The dealer then draws cards
+    from the deck until the hand has a value of at least 17.
+    The dealer <b>hits on soft 17</b> and stands on hard 17.
+</p>
+
+<p>
+    Number cards are worth their face value. <code>T</code>, <code>J</code>,
+    <code>Q</code>, and <code>K</code> are worth 10. An <code>A</code> is
+    worth 11 unless doing so would make the hand exceed 21, in which case it
+    is worth 1.
+</p>
+
+<p>
+    Output all cards in the dealer's final hand, in the order they were dealt,
+    followed by a space and the hand's value. If the hand exceeds 21, output
+    <code>BUST</code> instead of the value.
+</p>
+'''
+
 ['Binary Lambda Calculus']
 authors = [
     '0183d965-3116-7d88-9a37-f9afcad007e8', # CatsAreFluffy
