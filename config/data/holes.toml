@@ -3028,17 +3028,17 @@ links = [
 synopsis = 'Print the first 100 numbers that are narcissistic in at least 1 base.'
 preamble = '''
 <p>
-    Print the first 100 numbers that are narcissistic in at least one base
-    <var>b</var>, where 2 &le; <var>b</var> &le; <var>n</var>.
+    Print the first <b>100</b> numbers that are narcissistic in at least one base
+    <b>b</b>, where <b>2</b> &le; <b>b</b> &le; <b>n</b>.
 
 <p>
-    A number <var>n</var> is <b>narcissistic</b> in a given base
-    <var>b</var> if the sum of its own digits, each raised to the power of the
-    number of digits, is equal to <var>n</var>.
+    A number <b>n</b> is narcissistic in a given base
+    <b>b</b> if the sum of its own digits, each raised to the power of the
+    number of digits, is equal to <b>n</b>.
 
 <p>
-    For example, in base 10, <b>153</b> is narcissistic since
-    1<sup>3</sup> + 5<sup>3</sup> + 3<sup>3</sup> = 153.
+    For example, in base <b>10</b>, <b>153</b> is narcissistic since
+    <b>1<sup>3</sup> + 5<sup>3</sup> + 3<sup>3</sup> = 153</b>.
 '''
 
 ['N Queens']
