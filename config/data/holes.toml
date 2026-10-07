@@ -3015,6 +3015,32 @@ preamble = '''
     <b>C+</b> and <b>E+</b> respectively.
 '''
 
+['Narcissistic Numbers']
+authors = [
+    '018830c2-e48b-781a-ae6f-5c4a581c0e35', # CornerMercury
+]
+category = 'Sequence'
+experiment = 2744
+links = [
+    { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Narcissistic_decimal_number' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Narcissistic_number' }
+]
+synopsis = 'Print the first 100 numbers that are narcissistic in at least 1 base.'
+preamble = '''
+<p>
+    Print the first 100 numbers that are narcissistic in at least one base
+    <var>b</var>, where 2 &le; <var>b</var> &le; <var>n</var>.
+
+<p>
+    A number <var>n</var> is <b>narcissistic</b> in a given base
+    <var>b</var> if the sum of its own digits, each raised to the power of the
+    number of digits, is equal to <var>n</var>.
+
+<p>
+    For example, in base 10, <b>153</b> is narcissistic since
+    1<sup>3</sup> + 5<sup>3</sup> + 3<sup>3</sup> = 153.
+'''
+
 ['N Queens']
 authors = [
     '017cdac0-2967-7e98-804c-984d105cb54d', # MichalMarsalek
