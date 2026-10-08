@@ -3037,8 +3037,9 @@ preamble = '''
     <b>1<sup>3</sup> + 5<sup>3</sup> + 3<sup>3</sup> = 153</b>.
 
 <p>
-    Print the first <b>100</b> numbers that are narcissistic in at least one base
-    <b>b</b>, where <b>2</b> &le; <b>b</b> &le; <b>n</b>, each on their own line.
+    Print the numbers from <b>1</b> to <b>1,000</b> inclusive that are
+    narcissistic in at least one base <b>b</b>, where <b>2</b> &le; <b>b</b>
+    &le; <b>n</b>, each on their own line.
 '''
 
 ['N Queens']
