@@ -3025,7 +3025,7 @@ links = [
     { name = 'Rosetta Code', url = '//rosettacode.org/wiki/Narcissistic_decimal_number' },
     { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Narcissistic_number' }
 ]
-synopsis = 'Print the first 100 numbers that are narcissistic in at least 1 base.'
+synopsis = 'Print all numbers 1-1000 that are narcissistic in at least 1 base.'
 preamble = '''
 <p>
     A number <b>n</b> is narcissistic in a given base
