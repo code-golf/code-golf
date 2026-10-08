@@ -2,16 +2,14 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache gcc git make musl-dev perl
 
-ENV VER=2026.07
+ENV VER=2026.09
 
 WORKDIR /raku
 
 ADD https://github.com/rakudo/rakudo.git#$VER .
 
-RUN CFLAGS='-flto'            \
-    ./Configure.pl            \
+RUN ./Configure.pl            \
     --gen-moar                \
-    --moar-option=--ar=gcc-ar \
     --prefix=/usr             \
  && make -j`nproc` install    \
  && strip /usr/bin/rakudo     \

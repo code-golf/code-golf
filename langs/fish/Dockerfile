@@ -1,27 +1,25 @@
 FROM alpine:3.24 AS builder
 
 RUN apk add -X https://dl-cdn.alpinelinux.org/alpine/edge/testing \
-    --no-cache curl gcc libffi-dev linux-headers make musl-dev pypy
+    --no-cache gcc libffi-dev linux-headers make musl-dev pypy
 
-ENV LDFLAGS='-static' PYVER=3.11-v7.3.23 VER=96b1cfc
+ENV LDFLAGS='-static' PYVER=3.12-v8.0.0 VER=e9fe296
 
-RUN curl -#L https://downloads.python.org/pypy/pypy$PYVER-src.tar.bz2 \
-  | tar xj --strip-components 1
+ADD --unpack https://downloads.python.org/pypy/pypy$PYVER-src.tar.gz /
 
-WORKDIR /usr/bin
+WORKDIR /fish
 
-RUN curl -#L https://github.com/primo-ppcg/fish-jit/tarball/$VER \
-  | tar xz --strip-components 1
+ADD https://github.com/primo-ppcg/fish-jit.git?commit=$VER .
 
-RUN pypy /rpython fish-jit \
-    --lto                  \
-    --make-jobs=`nproc`    \
-    --opt=jit              \
+RUN pypy /pypy$PYVER-src/rpython fish-jit \
+    --lto                                 \
+    --make-jobs=`nproc`                   \
+    --opt=jit                             \
  && strip fish-jit-c
 
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/fish-jit-c /usr/bin/fish
+COPY --from=0 /fish/fish-jit-c /usr/bin/fish
 
 ENTRYPOINT ["fish"]
 

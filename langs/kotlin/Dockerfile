@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache bash
 
-ENV VER=2.4.20
+ENV VER=2.4.21
 
 ADD https://github.com/JetBrains/kotlin/releases/download/v$VER/kotlin-compiler-$VER.zip /kotlin.zip
 

@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache clang dash gcc llvm-dev make
 
-ENV CPPFLAGS='-march=x86-64-v3' VER=2026-09
+ENV CPPFLAGS='-march=x86-64-v3' VER=2026-10
 
 ADD https://github.com/odin-lang/Odin.git#dev-$VER /usr/local/lib
 

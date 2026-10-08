@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache cmake g++ linux-headers ninja python3
 
-ENV VER=23.1.2
+ENV VER=23.1.3
 
 ADD --unpack https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz /
 
