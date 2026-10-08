@@ -3,7 +3,6 @@ package hole
 import (
 	"fmt"
 	"math"
-	"math/rand/v2"
 )
 
 func perimeter(ai, bi int) (p float64) {
@@ -19,14 +18,24 @@ func perimeter(ai, bi int) (p float64) {
 }
 
 var _ = answerFunc("ellipse-perimeters", func() []Answer {
-	tests := make([]test, 10)
+	const (
+		aMin = 5
+		aLen = 15
+		bMin = 1
+		bLen = 5
+	)
 
-	// some random tests
-	for i := range tests {
-		a := rand.IntN(15) + 5
-		b := rand.IntN(5) + 1
-		tests[i] = test{fmt.Sprint(a, b), fmt.Sprint(int(perimeter(a, b)))}
+	tests := make([]test, 0, aLen*bLen)
+
+	for i := range aLen {
+		for j := range bLen {
+			a := aMin + i
+			b := bMin + j
+			tests = append(tests, test{fmt.Sprint(a, b), fmt.Sprint(int(perimeter(a, b)))})
+		}
 	}
 
-	return outputTests(tests)
+	shuffle(tests)
+	mid := len(tests) / 2
+	return outputTests(tests[:mid], tests[mid:])
 })
