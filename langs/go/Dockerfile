@@ -1,4 +1,4 @@
-ARG VER=1.27.1
+ARG VER=1.27.2
 
 FROM golang:$VER-alpine3.24 AS builder
 
