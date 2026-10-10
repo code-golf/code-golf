@@ -1232,6 +1232,27 @@ for (arg in args)
     println(arg)
 '''
 
+[Lean]
+args       = [ '/usr/bin/lean' ]
+env        = [ 'LEAN_MAIN_USE_THREAD=0', 'LEAN_NUM_THREADS=0' ]
+experiment = 2702
+size       = '3.91 GiB'
+version    = '4.33.0'
+website    = 'https://lean-lang.org'
+example    = '''
+def main (args : List String) : IO Unit := do
+  -- Printing
+  IO.println "Hello, World!"
+
+  -- Looping
+  for i in 0...10 do
+    IO.println i
+
+  -- Accessing arguments
+  for arg in args do
+    IO.println arg
+'''
+
 [Lily]
 args       = [ '/usr/bin/lily', '-s', '$code' ]
 experiment = 2577
