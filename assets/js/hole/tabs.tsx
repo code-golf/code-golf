@@ -12,7 +12,7 @@ import {
     setCode, refreshScores, getHideDeleteBtn, submit, ReadonlyPanelsData,
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
-    getScorings,
+    getScorings, describeSelectedChar,
     updateLocalStorage,
     getLang,
     setState,
@@ -164,21 +164,9 @@ function makeEditor(parent: HTMLDivElement) {
                     .join(', ');
             }
 
-            $('#strokes').innerText = (() => {
-                let innertext = scorings.selection
-                    ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
-                    : formatScore(scorings.total);
-                if (scorings.selection?.char === 1) {
-                    const sel = tr.state.sliceDoc(tr.state.selection.main.from, tr.state.selection.main.to);
-                    const code = sel.codePointAt(0);
-                    if (code !== undefined) {
-                        const hex = code.toString(16).toUpperCase().padStart(4, '0');
-                        const bin = code.toString(2).padStart(8, '0');
-                        innertext += ` ${sel} - ${code} - 0x${hex} - ${bin}`;
-                    }
-                }
-                return innertext;
-            })();
+            $('#strokes').innerText = (scorings.selection
+                ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
+                : formatScore(scorings.total)) + describeSelectedChar(tr.state, scorings);
 
 
             updateLocalStorage(code);

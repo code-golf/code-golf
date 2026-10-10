@@ -37,14 +37,18 @@ export const carriageReturn = [
 interface InsertCharState {
     code?: string;
     toggleMode?: boolean;
+    decimal?: boolean;
 }
 
+// Alt + hex digits inserts a character by its code point, Alt + N + digits by its decimal one.
 const updateInsertCharState = StateEffect.define<string | boolean>();
+const setDecimalInsertChar  = StateEffect.define<null>();
 export const insertCharState = StateField.define<InsertCharState>({
     create: () => ({}),
     update(value, tr) {
         if (tr.docChanged) value = {};
         for (const e of tr.effects) {
+            if (e.is(setDecimalInsertChar)) value = { ...value, decimal: true };
             if (!e.is(updateInsertCharState)) continue;
             if (e.value === true) {
                 value = { ...value, toggleMode: true };
@@ -66,9 +70,14 @@ const createPanel = (): Panel => {
     return {
         dom,
         update(update) {
-            const { code, toggleMode } = update.state.field(insertCharState);
+            const { code, toggleMode, decimal } = update.state.field(insertCharState);
             const toggleModeHelp = toggleMode ? ' (press Alt again to insert)' : '';
-            if (code) {
+            if (decimal) {
+                dom.textContent = code
+                    ? 'Composing decimal ' + code + '...' + toggleModeHelp
+                    : 'Type decimal digits and ' + (toggleMode ? 'press Alt again' : 'release Alt') + ' to insert.';
+            }
+            else if (code) {
                 dom.textContent = 'Composing \\u' + code + '...' + toggleModeHelp;
             }
             else if (toggleMode) {
@@ -92,12 +101,24 @@ export const insertChar = EditorView.domEventHandlers({
             return;
         }
 
-        const { code, toggleMode } = view.state.field(insertCharState);
-        if ((event.altKey || toggleMode) && !hasOtherMods && event.key.match(/^[0-9a-f]$/i)) {
+        const { code, toggleMode, decimal } = view.state.field(insertCharState);
+        const composing = (event.altKey || toggleMode) && !hasOtherMods;
+        // Decimal digits are read from the physical key, so that the digit row
+        // also works on layouts where it needs Shift (e.g. AZERTY).
+        const digit = event.code.match(/^(?:Digit|Numpad)(\d)$/)?.[1];
+        if (composing && code === '' && !decimal && event.key.toLowerCase() == 'n') {
+            view.dispatch({ effects: setDecimalInsertChar.of(null) });
+            event.preventDefault();
+        }
+        else if (composing && decimal && digit) {
+            view.dispatch({ effects: updateInsertCharState.of(digit) });
+            event.preventDefault();
+        }
+        else if (composing && !decimal && event.key.match(/^[0-9a-f]$/i)) {
             view.dispatch({ effects: updateInsertCharState.of(event.key.toUpperCase()) });
             event.preventDefault();
         }
-        else if (code || toggleMode) {
+        else if (code || toggleMode || decimal) {
             // Reset the state whenever possible.
             view.dispatch({ effects: updateInsertCharState.of(false) });
         }
@@ -106,15 +127,15 @@ export const insertChar = EditorView.domEventHandlers({
     keyup: (event, view) => {
         if (event.key != 'Alt') return;
 
-        const { code, toggleMode } = view.state.field(insertCharState);
-        if (code === '' && !toggleMode) {
+        const { code, toggleMode, decimal } = view.state.field(insertCharState);
+        if (code === '' && !toggleMode && !decimal) {
             view.dispatch({ effects: updateInsertCharState.of(true) });
             return;
         }
 
         let codepoint;
         try {
-            if (code) codepoint = String.fromCodePoint(parseInt(code, 16));
+            if (code) codepoint = String.fromCodePoint(parseInt(code, decimal ? 10 : 16));
         }
         catch {}
 
