@@ -28,6 +28,7 @@ name    = 'Editor Keymap'
 options = [
     { id = 'default', name = 'Default' },
     { id = 'vim',     name = 'Vim' },
+    { id = 'vscode',  name = 'VS Code' },
 ]
 
 [[hole]]

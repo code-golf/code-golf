@@ -8,8 +8,13 @@ export { EditorState, EditorView };
 // Extensions.
 import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
-import { history, historyKeymap, indentLess, insertNewline,
-    insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
+import { addCursorAbove, addCursorBelow, deleteLine,
+    history, historyKeymap, indentLess, indentMore,
+    insertNewline, insertTab, moveLineDown, moveLineUp,
+    selectLine, simplifySelection, standardKeymap,
+    toggleComment }                              from '@codemirror/commands';
+import { selectNextOccurrence,
+    selectSelectionMatches }                     from '@codemirror/search';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
     HighlightStyle, LanguageSupport, StreamLanguage,
@@ -132,6 +137,26 @@ export const extensions : { [key: string]: any } = {
     ),
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
+    'vscode': [
+        EditorState.allowMultipleSelections.of(true),
+        EditorView.clickAddsSelectionRange.of(e => e.altKey),
+        // preventDefault stops Mod-d/Mod-l from bookmarking/focusing the address bar.
+        keymap.of([
+            { key: 'Mod-d',               run: selectNextOccurrence, preventDefault: true },
+            { key: 'Mod-Shift-l',         run: selectSelectionMatches },
+            { key: 'Mod-l',               run: selectLine, preventDefault: true },
+            { key: 'Mod-Shift-k',         run: deleteLine },
+            { key: 'Alt-ArrowUp',         run: moveLineUp },
+            { key: 'Alt-ArrowDown',       run: moveLineDown },
+            { key: 'Mod-Alt-ArrowUp',     run: addCursorAbove },
+            { key: 'Mod-Alt-ArrowDown',   run: addCursorBelow },
+            { key: 'Shift-Alt-ArrowUp',   run: addCursorAbove },
+            { key: 'Shift-Alt-ArrowDown', run: addCursorBelow },
+            { key: 'Mod-]',               run: indentMore },
+            { key: 'Mod-[',               run: indentLess },
+            { key: 'Escape',              run: simplifySelection },
+        ]),
+    ],
 
     // Languages.
     // TODO 05ab1e
