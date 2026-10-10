@@ -5,7 +5,7 @@ import {
     init, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyButtons, getScorings,
+    initDeleteBtn, initCopyButtons, getScorings, describeSelectedChar,
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
@@ -30,9 +30,9 @@ const editor = new EditorView({
                 .join(', ');
         }
 
-        $('#strokes').innerText = scorings.selection
+        $('#strokes').innerText = (scorings.selection
             ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
-            : formatScore(scorings.total);
+            : formatScore(scorings.total)) + describeSelectedChar(tr.state, scorings);
 
         updateLocalStorage(code);
         updateRestoreLinkVisibility(editor);

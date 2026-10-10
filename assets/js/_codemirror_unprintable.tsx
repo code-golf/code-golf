@@ -37,14 +37,18 @@ export const carriageReturn = [
 interface InsertCharState {
     code?: string;
     toggleMode?: boolean;
+    decimal?: boolean;
 }
 
+// Alt + hex digits inserts a character by hex code point, Shift + Alt + digits by decimal.
 const updateInsertCharState = StateEffect.define<string | boolean>();
+const startDecimalInsertChar = StateEffect.define<null>();
 export const insertCharState = StateField.define<InsertCharState>({
     create: () => ({}),
     update(value, tr) {
         if (tr.docChanged) value = {};
         for (const e of tr.effects) {
+            if (e.is(startDecimalInsertChar)) value = { code: '', decimal: true };
             if (!e.is(updateInsertCharState)) continue;
             if (e.value === true) {
                 value = { ...value, toggleMode: true };
@@ -66,9 +70,14 @@ const createPanel = (): Panel => {
     return {
         dom,
         update(update) {
-            const { code, toggleMode } = update.state.field(insertCharState);
+            const { code, toggleMode, decimal } = update.state.field(insertCharState);
             const toggleModeHelp = toggleMode ? ' (press Alt again to insert)' : '';
-            if (code) {
+            if (decimal) {
+                dom.textContent = code
+                    ? `Composing decimal ${code}...`
+                    : 'Type decimal digits and release Shift+Alt to insert.';
+            }
+            else if (code) {
                 dom.textContent = 'Composing \\u' + code + '...' + toggleModeHelp;
             }
             else if (toggleMode) {
@@ -85,6 +94,23 @@ export const insertChar = EditorView.domEventHandlers({
     keydown: (event, view) => {
         const hasOtherMods = event.ctrlKey || event.shiftKey || event.metaKey;
 
+        if (event.altKey && event.shiftKey && !event.ctrlKey && !event.metaKey) {
+            const { decimal } = view.state.field(insertCharState);
+            // Use the physical key, as Shift changes the digit row's characters on most layouts.
+            const digit = event.code.match(/^(?:Digit|Numpad)(\d)$/)?.[1];
+
+            if (event.key == 'Alt' || event.key == 'Shift') {
+                if (!decimal) view.dispatch({ effects: startDecimalInsertChar.of(null) });
+                event.preventDefault();
+                return;
+            }
+            if (decimal && digit) {
+                view.dispatch({ effects: updateInsertCharState.of(digit) });
+                event.preventDefault();
+                return;
+            }
+        }
+
         if (event.key == 'Alt' && !hasOtherMods) {
             // This might be a toggle start, so we start buffering keys.
             view.dispatch({ effects: updateInsertCharState.of('')});
@@ -92,21 +118,38 @@ export const insertChar = EditorView.domEventHandlers({
             return;
         }
 
-        const { code, toggleMode } = view.state.field(insertCharState);
+        const { code, toggleMode, decimal } = view.state.field(insertCharState);
         if ((event.altKey || toggleMode) && !hasOtherMods && event.key.match(/^[0-9a-f]$/i)) {
             view.dispatch({ effects: updateInsertCharState.of(event.key.toUpperCase()) });
             event.preventDefault();
         }
-        else if (code || toggleMode) {
+        else if (code || toggleMode || decimal) {
             // Reset the state whenever possible.
             view.dispatch({ effects: updateInsertCharState.of(false) });
         }
     },
 
     keyup: (event, view) => {
+        const { code, toggleMode, decimal } = view.state.field(insertCharState);
+
+        // Insert as soon as either Shift or Alt is released.
+        if (decimal && (event.key == 'Alt' || event.key == 'Shift')) {
+            let codepoint;
+            try {
+                if (code) codepoint = String.fromCodePoint(parseInt(code, 10));
+            }
+            catch {}
+
+            view.dispatch(
+                { effects: updateInsertCharState.of(false) },
+                codepoint ? view.state.replaceSelection(codepoint) : {},
+            );
+            event.preventDefault();
+            return;
+        }
+
         if (event.key != 'Alt') return;
 
-        const { code, toggleMode } = view.state.field(insertCharState);
         if (code === '' && !toggleMode) {
             view.dispatch({ effects: updateInsertCharState.of(true) });
             return;
