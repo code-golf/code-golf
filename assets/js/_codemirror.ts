@@ -118,30 +118,17 @@ export const extensions : { [key: string]: any } = {
         history(),
         insertChar,
         insertCharState,
+        EditorState.allowMultipleSelections.of(true),
+        EditorView.clickAddsSelectionRange.of(e => e.altKey),
         keymap.of([
             // Replace "enter" with a non auto indenting action.
             ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
             { key: 'Enter', run: insertNewline },
             { key: 'Tab',   run: insertTab, shift: indentLess },
             { key: 'Mod-/', run: toggleComment },
-        ]),
-        highlightWhitespace(),
-    ],
-    'lineNumbers': lineNumbers(),
-    'zeroIndexedLineNumbers': lineNumbers(
-        {
-            formatNumber(num: number) {
-                return `${num - 1}`;
-            },
-        },
-    ),
-    'bracketMatching': bracketMatching(),
-    'vim': vim({ status: true }),
-    'vscode': [
-        EditorState.allowMultipleSelections.of(true),
-        EditorView.clickAddsSelectionRange.of(e => e.altKey),
-        // preventDefault stops Mod-d/Mod-l from bookmarking/focusing the address bar.
-        keymap.of([
+
+            // VS Code style shortcuts. preventDefault stops Mod-d/Mod-l from
+            // bookmarking/focusing the address bar.
             { key: 'Mod-d',               run: selectNextOccurrence, preventDefault: true },
             { key: 'Mod-Shift-l',         run: selectSelectionMatches },
             { key: 'Mod-l',               run: selectLine, preventDefault: true },
@@ -156,8 +143,18 @@ export const extensions : { [key: string]: any } = {
             { key: 'Mod-[',               run: indentLess },
             { key: 'Escape',              run: simplifySelection },
         ]),
+        highlightWhitespace(),
     ],
-
+    'lineNumbers': lineNumbers(),
+    'zeroIndexedLineNumbers': lineNumbers(
+        {
+            formatNumber(num: number) {
+                return `${num - 1}`;
+            },
+        },
+    ),
+    'bracketMatching': bracketMatching(),
+    'vim': vim({ status: true }),
     // Languages.
     // TODO 05ab1e
     // TODO algol-68
