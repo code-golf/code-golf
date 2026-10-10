@@ -39,7 +39,9 @@ var _ = answerFunc("box-plot", func() []Answer {
 			q3pos = (medpos + 1 + datasetlength*2 - 2) / 2
 		}
 
-		var q1, median, q3 int
+		var minval, q1, median, q3, maxval int
+		minval = datasetmin * 2
+		maxval = datasetmax * 2
 		if q1pos%2 == 0 {
 			q1 = dataset[q1pos/2] * 2
 		} else {
@@ -79,37 +81,52 @@ var _ = answerFunc("box-plot", func() []Answer {
 		outp += "\n"
 		for j := range 21 {
 			x := "  "
-			if datasetmin*2 < j && j < q1 {
+			if minval < j && j < q1 || q3 < j && j < maxval {
 				x = "──"
 			}
-			if q3 < j && j < datasetmax*2 {
-				x = "──"
-			}
-			if j == median {
-				x = "│ "
+			if j == minval {
+				x = "├─"
 			}
 			if j == q1 {
 				x = "┤ "
 			}
+			if j == median {
+				x = "│ "
+			}
 			if j == q3 {
 				x = "├─"
 			}
-			if datasetmin*2 == j {
-				x = "├─"
-			}
-			if j == datasetmax*2 {
+			if j == maxval {
 				x = "┤ "
 			}
+			if j == minval && j == q1 {
+				x = "│ "
+			}
+			if j == q1 && j == median {
+				x = "┤ "
+			}
+			if j == median && j == q3 {
+				x = "├─"
+			}
+			if j == q3 && j == maxval {
+				x = "┤ "
+			}
+			if j == minval && j == median {
+				x = "│ "
+			}
 			if j == q1 && j == q3 {
-				x = "┼─"
+				x = "┼ "
 			}
-			if j == datasetmin*2 && j == q1 && j != q3 {
+			if j == median && j == maxval {
 				x = "│ "
 			}
-			if j == q3 && j == datasetmax*2 && j != q1 {
-				x = "│ "
+			if j == minval && j == q3 {
+				x = "├─"
 			}
-			if j == datasetmin*2 && j == datasetmax*2 {
+			if j == q1 && j == maxval {
+				x = "┤ "
+			}
+			if j == minval && j == maxval {
 				x = "│ "
 			}
 			outp += x
