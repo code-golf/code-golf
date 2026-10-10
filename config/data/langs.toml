@@ -1806,9 +1806,9 @@ foreach (arg in vargv)
 
 [Stax]
 args       = [ '/usr/bin/stax', '-' ]
-env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 439
-size       = '79.5 MiB'
+size       = '105 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
