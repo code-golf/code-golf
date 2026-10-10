@@ -137,11 +137,9 @@ const solutions    = JSON.parse($('#solutions').innerText);
 const settings = JSON.parse($('#settings').innerText);
 
 const vimMode = settings['editor-keymap'] === 'vim';
-const keymapExtensions =
-    vimMode ? [extensions.vim] :
-    settings['editor-keymap'] === 'vscode' ? [extensions.vscode] : [];
+const vimModeExtensions = vimMode ? [extensions.vim] : [];
 
-const baseExtensions = [...keymapExtensions, ...extensions.base, ...extensions.editor];
+const baseExtensions = [...vimModeExtensions, ...extensions.base, ...extensions.editor];
 
 let latestSubmissionID = 0;
 let solution = scorings.indexOf(localStorage.getItem('solution') ?? 'Bytes') as 0 | 1;
