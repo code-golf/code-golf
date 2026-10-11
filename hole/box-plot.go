@@ -109,7 +109,7 @@ var _ = answerFunc("box-plot", func() []Answer {
 				x = "├─"
 			}
 			if j == q3 && j == maxval {
-				x = "┤ "
+				x = "│ "
 			}
 			if j == minval && j == median {
 				x = "│ "
