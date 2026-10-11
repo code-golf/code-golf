@@ -3,13 +3,13 @@ FROM alpine:3.24 AS builder
 RUN apk add --no-cache clang gcc llvm-dev make
 
 # Also bump Coconut, Hy.
-ENV VER=3.14.8
+ENV CC=clang VER=3.15.0
 
 ADD --unpack https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz /
 
 WORKDIR /Python-$VER
 
-RUN CC='clang' ./configure     \
+RUN ./configure                \
     --disable-test-modules     \
     --prefix=/usr              \
     --with-lto=thin            \
@@ -19,10 +19,10 @@ RUN CC='clang' ./configure     \
     --without-remote-debug     \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.14  \
-          /usr/lib/python3.14/lib-dynload/*.so
+ && strip /usr/bin/python3.15  \
+          /usr/lib/python3.15/lib-dynload/*.so
 
-WORKDIR /usr/lib/python3.14
+WORKDIR /usr/lib/python3.15
 
 # Remove some unneeded libraries.
 RUN find . -name '*.opt-[12].pyc' -delete   \
@@ -43,8 +43,8 @@ RUN find . -name '*.opt-[12].pyc' -delete   \
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-*.so.1 /lib/
-COPY --from=0 /usr/bin/python3.14 /usr/bin/python
-COPY --from=0 /usr/lib/python3.14 /usr/lib/python3.14
+COPY --from=0 /usr/bin/python3.15 /usr/bin/python
+COPY --from=0 /usr/lib/python3.15 /usr/lib/python3.15
 
 ENTRYPOINT ["python"]
 

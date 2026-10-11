@@ -2,13 +2,13 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache clang gcc llvm-dev make openssl-dev
 
-ENV PYVER=3.14.8 VER=3.2.0
+ENV CC='clang' PYVER=3.15.0 VER=3.2.0
 
 ADD --unpack https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz /
 
 WORKDIR /Python-$PYVER
 
-RUN CC='clang' ./configure     \
+RUN ./configure                \
     --disable-test-modules     \
     --prefix=/usr              \
     --with-lto=thin            \
@@ -17,12 +17,12 @@ RUN CC='clang' ./configure     \
     --without-remote-debug     \
     --without-static-libpython \
  && make -j`nproc` install     \
- && strip /usr/bin/python3.14  \
-          /usr/lib/python3.14/lib-dynload/*.so
+ && strip /usr/bin/python3.15  \
+          /usr/lib/python3.15/lib-dynload/*.so
 
 RUN pip3 install --break-system-packages coconut==$VER
 
-WORKDIR /usr/lib/python3.14
+WORKDIR /usr/lib/python3.15
 
 # Remove some unneeded libraries.
 RUN find . -name '*.opt-[12].pyc' -delete \
@@ -39,11 +39,11 @@ RUN find . -name '*.opt-[12].pyc' -delete \
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1 /lib/
-COPY --from=0 /usr/bin/coconut    \
-              /usr/bin/python3.14 /usr/bin/
-COPY --from=0 /usr/lib/libz.so.1  /usr/lib/
-COPY --from=0 /usr/lib/python3.14 /usr/lib/python3.14
+COPY --from=0 --parents /lib/ld-musl-*.so.1 \
+                        /usr/bin/coconut    \
+                        /usr/bin/python3.15 \
+                        /usr/lib/libz.so*   \
+                        /usr/lib/python3.15 /
 
 ENTRYPOINT ["coconut"]
 
