@@ -832,6 +832,19 @@ export interface Scorings {
     stroke?: number;
 }
 
+// Describe a single selected character, e.g. " 9 - 57 - 0x0039 - 00111001".
+export function describeSelectedChar(state: EditorState, scorings: {selection?: Scorings}) {
+    if (scorings.selection?.char !== 1) return '';
+
+    const sel  = state.sliceDoc(state.selection.main.from, state.selection.main.to);
+    const code = sel.codePointAt(0);
+    if (code === undefined) return '';
+
+    const hex = code.toString(16).toUpperCase().padStart(4, '0');
+    const bin = code.toString(2).padStart(8, '0');
+    return ` ${sel} - ${code} - 0x${hex} - ${bin}`;
+}
+
 export function getScorings(tr: any, editor: any) {
     const code = tr.state.doc.toString();
     const total: Scorings = {};
