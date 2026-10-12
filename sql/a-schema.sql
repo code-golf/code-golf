@@ -75,7 +75,7 @@ CREATE TYPE hole AS ENUM (
     'reversi', 'rijndael-s-box', 'rock-paper-scissors-spock-lizard',
     'roman-to-arabic', 'rot13', 'rule-110', 'scrambled-sort',
     'semiprime-numbers', 'set', 'seven-segment', 'si-units',
-    'significant-figures', 'sierpiński-triangle', 'smith-numbers',
+    'sierpiński-triangle', 'significant-figures', 'smith-numbers',
     'smooth-numbers', 'snake', 'spelling-numbers', 'sphenic-numbers',
     'star-wars-gpt', 'star-wars-opening-crawl', 'sudoku', 'sudoku-fill-in',
     'suit-up', 'taxicab-numbers', 'ten-pin-bowling', 'thue-morse-constant',
