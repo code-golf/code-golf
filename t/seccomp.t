@@ -44,6 +44,17 @@ subtest 'i386 syscalls' => {
     ASM
 };
 
+subtest 'io_uring' => {
+    is run( 'perl', 'syscall 425; exit $!' )<exit_code>, 38,
+        'io_uring_setup syscall returns ENOSY';
+
+    is run( 'perl', 'syscall 426, -1; exit $!' )<exit_code>, 38,
+        'io_uring_enter syscall returns ENOSY';
+
+    is run( 'perl', 'syscall 427, -1; exit $!' )<exit_code>, 38,
+        'io_uring_register syscall returns ENOSY';
+};
+
 sub run($lang, $code) { post-solution( :$code :$lang )<runs>[0] }
 
 done-testing;

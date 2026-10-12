@@ -34,6 +34,11 @@
     BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
 #define I386_SYSCALL_COUNT 24 // Update when adding/removing ALLOW_I386 entries.
 
+// Soft deny, errors rather than killing the process, used for io_uring.
+#define DENY(name) \
+    BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
+    BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ERRNO | ENOSYS)
+
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 #define STR_WITH_LEN(str) str, sizeof(str) - 1
 
@@ -266,9 +271,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(io_getevents),      // 208
         ALLOW(io_setup),          // 206
         ALLOW(io_submit),         // 209
-        ALLOW(io_uring_enter),    // 426
-        ALLOW(io_uring_register), // 427
-        ALLOW(io_uring_setup),    // 425
+        DENY(io_uring_enter),     // 426
+        DENY(io_uring_register),  // 427
+        DENY(io_uring_setup),     // 425
 
         // Multiplexed I/O
         ALLOW(epoll_create),  // 213
