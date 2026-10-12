@@ -1,6 +1,6 @@
 FROM rust:1.99.0-slim-trixie AS builder
 
-ENV VER=1.19.1
+ENV VER=1.19.2
 
 WORKDIR /gleam
 

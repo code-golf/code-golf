@@ -568,8 +568,8 @@ example   = '''
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '299 MiB'
-version = '1.21.1'
+size    = '330 MiB'
+version = '1.22.0'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -614,7 +614,7 @@ void main(string[] argv) {
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 size    = '187 MiB'
-version = '3.13.4'
+version = '3.13.5'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -803,7 +803,7 @@ end
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'ERL_LIBS=/tmp/build/dev/erlang', 'LANG=C.UTF-8' ]
 size    = '76.1 MiB'
-version = '1.19.1'
+version = '1.19.2'
 website = 'https://gleam.run'
 example = '''
 import argv
