@@ -6,6 +6,7 @@
 #include <linux/audit.h>
 #include <linux/filter.h>
 #include <linux/seccomp.h>
+#include <linux/vm_sockets.h>
 #include <sched.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -315,8 +316,20 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(listen),      // 50
         ALLOW(setsockopt),  // 54
         ALLOW(shutdown),    // 48
-        ALLOW(socket),      // 41
-        ALLOW(socketpair),  // 53
+
+        // socket 41: if domain == AF_VSOCK then kill, else allow.
+        BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, __NR_socket, 0, 4),
+        BPF_STMT(BPF_LD + BPF_W + BPF_ABS, offsetof(struct seccomp_data, args[0])),
+        BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, AF_VSOCK, 0, 1),
+        BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_KILL),
+        BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_ALLOW),
+
+        // socketpair 53: if domain == AF_VSOCK then kill, else allow.
+        BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, __NR_socketpair, 0, 4),
+        BPF_STMT(BPF_LD + BPF_W + BPF_ABS, offsetof(struct seccomp_data, args[0])),
+        BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, AF_VSOCK, 0, 1),
+        BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_KILL),
+        BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_ALLOW),
 
         // Send/Receive
         ALLOW(recvfrom), // 45

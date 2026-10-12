@@ -55,6 +55,20 @@ subtest 'io_uring' => {
         'io_uring_register syscall returns ENOSY';
 };
 
+subtest 'vsock' => {
+    is run( 'python', 'import socket; socket.socket(socket.AF_UNIX)' )<exit_code>,
+        0, 'socket AF_UNIX is allowed';
+
+    is run( 'python', 'import socket; socket.socket(socket.AF_VSOCK)' )<stderr>,
+        'signal: bad system call (core dumped)', 'socket AF_VSOCK is killed';
+
+    is run( 'python', 'import socket; socket.socketpair(socket.AF_UNIX)' )<exit_code>,
+        0, 'socketpair AF_UNIX is allowed';
+
+    is run( 'python', 'import socket; socket.socketpair(socket.AF_VSOCK)' )<stderr>,
+        'signal: bad system call (core dumped)', 'socketpair AF_VSOCK is killed';
+};
+
 sub run($lang, $code) { post-solution( :$code :$lang )<runs>[0] }
 
 done-testing;
