@@ -50,7 +50,7 @@ var _ = answerFunc("significant-figures", func() []Answer {
 			mantissalength += trailingZeroes
 		}
 
-		tests[i] = tests{fullNumber, fmt.Sprint(mantissalength)}
+		tests[i] = test{fullNumber, fmt.Sprint(mantissalength)}
 	}
 
 	return outputTests(shuffle(tests))
