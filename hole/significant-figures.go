@@ -16,12 +16,12 @@ var _ = answerFunc("significant-figures", func() []Answer {
 		x := rand.IntN(9) + 1
 		mantissa += fmt.Sprint(x)
 
-		for len(mantissa) < mantissalength - 1{
+		for len(mantissa) < mantissalength-1 {
 			x := rand.IntN(10)
 			mantissa += fmt.Sprint(x)
 		}
 
-		for len(mantissa) < mantissalength{
+		for len(mantissa) < mantissalength {
 			x := rand.IntN(9) + 1
 			mantissa += fmt.Sprint(x)
 		}
@@ -40,18 +40,18 @@ var _ = answerFunc("significant-figures", func() []Answer {
 			fullNumber = mantissa + strings.Repeat("0", trailingBeforeDecimal) + "." + strings.Repeat("0", trailingAfterDecimal)
 			mantissalength += trailingBeforeDecimal + trailingAfterDecimal
 		} else {
-			magnitude := rand.IntN(14 + mantissalength) - 16
+			magnitude := rand.IntN(14+mantissalength) - 16
 			trailingZeroes := rand.IntN(8)
 			if magnitude < 0 {
-				fullNumber = "0." + strings.Repeat("0", -1 - magnitude) + mantissa + strings.Repeat("0", trailingZeroes)
+				fullNumber = "0." + strings.Repeat("0", -1-magnitude) + mantissa + strings.Repeat("0", trailingZeroes)
 			} else {
-				fullNumber = mantissa[:mantissalength - 1 - magnitude] + "." + mantissa[mantissalength - 1 - magnitude:] + strings.Repeat("0", trailingZeroes)
+				fullNumber = mantissa[:mantissalength-1-magnitude] + "." + mantissa[mantissalength-1-magnitude:] + strings.Repeat("0", trailingZeroes)
 			}
 			mantissalength += trailingZeroes
 		}
 
 		tests[i] = tests{fullNumber, fmt.Sprint(mantissalength)}
 	}
-	
+
 	return outputTests(shuffle(tests))
 })
