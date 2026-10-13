@@ -437,7 +437,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/opt/java/bin/java', '-jar', 'cjam.jar', '/proc/self/fd/0' ]
 experiment = 1493
-size       = '57.8 MiB'
+size       = '58.4 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
@@ -874,7 +874,7 @@ n*
 args     = [ '/usr/bin/groovy', '-e', '$code' ]
 env      = [ 'JAVA_HOME=/opt/java', 'JAVA_OPTS=-XX:ActiveProcessorCount=1' ]
 released = 2025-08-29
-size     = '67.3 MiB'
+size     = '67.8 MiB'
 version  = '6.0.0'
 website  = 'https://groovy-lang.org'
 example  = '''
@@ -1103,8 +1103,8 @@ example = '''
 
 [Java]
 args    = [ '/opt/java/bin/java', '-XX:+AutoCreateSharedArchive', '-XX:SharedArchiveFile=/cds.jsa', '-Xlog:cds=off', '/code.java' ]
-size    = '52.4 MiB'
-version = 'OpenJDK 25.0.4.1'
+size    = '53.0 MiB'
+version = 'OpenJDK 27.0'
 website = 'https://openjdk.java.net'
 example = '''
 void main(String[] args) {
@@ -1216,7 +1216,7 @@ example    = '''
 
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '139 MiB'
+size    = '140 MiB'
 version = '2.4.21'
 website = 'https://kotlinlang.org'
 example = '''
@@ -1700,7 +1700,7 @@ fn main() {
 args       = [ '/usr/local/bin/scala', '-opt:none', '-Xsource:3-cross', '-e', '$code', '--' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 235
-size       = '84.2 MiB'
+size       = '84.9 MiB'
 version    = '2.13.18'
 website    = 'https://www.scala-lang.org'
 example    = '''
@@ -2002,7 +2002,7 @@ w
 [Vyxal]
 args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
-size       = '78.4 MiB'
+size       = '79.0 MiB'
 version    = '3.12.0'
 website    = 'https://vyxal.github.io'
 example    = '''
