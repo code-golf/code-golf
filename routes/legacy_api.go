@@ -372,6 +372,17 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		userID = golfer.ID
 	}
 
+	// aiFilter is nil for "Both", true for "AI Only", false for "Human Only".
+	var aiFilter *bool
+	switch session.Settings(r)["hole"]["ai-filter"] {
+	case "human":
+		f := false
+		aiFilter = &f
+	case "ai":
+		t := true
+		aiFilter = &t
+	}
+
 	type entry struct {
 		Bytes      *int              `json:"bytes"`
 		BytesChars *int              `json:"bytes_chars"`
@@ -393,6 +404,9 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 
 	// We don't use the rankings view as we want instant updates upon solution
 	// submit, therefore we skip scoring to keep it fast.
+	//
+	// The AI filter is applied before ranking so that ranks are recomputed,
+	// e.g. with "Human Only" the best human is shown as 1st.
 	entries := make([]entry, 0, limit)
 	if err := session.Database(r).Select(
 		&entries,
@@ -408,6 +422,8 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		       AND lang = $3
 		       AND scoring = $4
 		       AND NOT failing
+		       AND ($7::bool IS NULL OR user_id IN (
+		           SELECT id FROM users WHERE uses_ai = $7))
 		), other_scoring AS (
 		    SELECT user_id,
 		           `+otherScoring+`,
@@ -431,6 +447,7 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 		scoring,
 		otherScoring,
 		limit,
+		aiFilter,
 	); err != nil {
 		panic(err)
 	}
