@@ -407,3 +407,43 @@ h2 {
 
 .pass.lastSubmittedCode .cm-editor { border-color: var(--green) !important }
 .fail.lastSubmittedCode .cm-editor { border-color: var(--red)   !important }
+
+/* Polyglot progress: compiled and passed bars, then one chip per lang. */
+#polyglot-progress {
+    align-items: center;
+    display: grid;
+    gap: .5rem 1rem;
+    grid-column: 1 / -1;
+    grid-template-columns: auto 1fr auto auto;
+
+    progress {
+        accent-color: var(--blue-fg);
+        height: 1rem;
+        width: 100%;
+    }
+
+    .ok {
+        color: var(--green-fg);
+        font-weight: bold;
+    }
+}
+
+#polyglot-langs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    grid-column: 1 / -1;
+
+    button {
+        border: 1px solid var(--color);
+        border-radius: .25rem;
+        font-size: .875rem;
+        padding: 0 .375rem;
+
+        &.pass    { background: var(--green) }
+        &.fail    { background: var(--orange) }
+        &.testing { background: var(--light-blue) }
+        &.error   { background: var(--light-grey); color: var(--grey) }
+        &:disabled { outline: 2px solid var(--color) }
+    }
+}
