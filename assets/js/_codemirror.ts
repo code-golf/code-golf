@@ -155,6 +155,7 @@ export const extensions : { [key: string]: any } = {
     ),
     'bracketMatching': bracketMatching(),
     'vim': vim({ status: true }),
+
     // Languages.
     // TODO 05ab1e
     // TODO algol-68
