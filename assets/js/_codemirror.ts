@@ -1,4 +1,4 @@
-import { EditorState }                                    from '@codemirror/state';
+import { EditorSelection, EditorState }                   from '@codemirror/state';
 import { EditorView, keymap, lineNumbers, drawSelection,
     highlightWhitespace } from '@codemirror/view';
 import { $ }                                              from './_util';
@@ -8,10 +8,10 @@ export { EditorState, EditorView };
 // Extensions.
 import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
-import { addCursorAbove, addCursorBelow, deleteLine,
-    history, historyKeymap, indentLess, indentMore,
-    insertNewline, insertTab, moveLineDown, moveLineUp,
-    selectLine, simplifySelection, standardKeymap,
+import { addCursorAbove, addCursorBelow, history,
+    historyKeymap, indentLess, insertNewline, insertTab,
+    moveLineDown, moveLineUp, selectLine,
+    simplifySelection, standardKeymap,
     toggleComment }                              from '@codemirror/commands';
 import { selectNextOccurrence,
     selectSelectionMatches }                     from '@codemirror/search';
@@ -98,6 +98,23 @@ const fontFamily = "'Source Code Pro', monospace";
 // This was disabled in the upstream due to the old Safari issue (codemirror/dev#524).
 const lineWrapping: any = CSS.supports('overflow-wrap', 'anywhere') ? { wordBreak: 'break-all' } : {};
 
+// Like VS Code's Shift-Alt-i, put a cursor at the end of every selected line.
+const addCursorsToLineEnds = (view: EditorView) => {
+    const { doc, selection } = view.state;
+    const ranges = selection.ranges.flatMap(range => {
+        const first = doc.lineAt(range.from).number, last = doc.lineAt(range.to).number;
+        if (first == last) return [range];
+
+        const cursors = [];
+        for (let n = first; n < last; n++) cursors.push(EditorSelection.cursor(doc.line(n).to));
+        cursors.push(EditorSelection.cursor(range.to));
+        return cursors;
+    });
+
+    view.dispatch({ selection: EditorSelection.create(ranges, ranges.length - 1) });
+    return true;
+};
+
 export const extensions : { [key: string]: any } = {
     // Extensions.
     'base': [
@@ -132,15 +149,13 @@ export const extensions : { [key: string]: any } = {
             { key: 'Mod-d',               run: selectNextOccurrence, preventDefault: true },
             { key: 'Mod-Shift-l',         run: selectSelectionMatches },
             { key: 'Mod-l',               run: selectLine, preventDefault: true },
-            { key: 'Mod-Shift-k',         run: deleteLine },
             { key: 'Alt-ArrowUp',         run: moveLineUp },
             { key: 'Alt-ArrowDown',       run: moveLineDown },
             { key: 'Mod-Alt-ArrowUp',     run: addCursorAbove },
             { key: 'Mod-Alt-ArrowDown',   run: addCursorBelow },
             { key: 'Shift-Alt-ArrowUp',   run: addCursorAbove },
             { key: 'Shift-Alt-ArrowDown', run: addCursorBelow },
-            { key: 'Mod-]',               run: indentMore },
-            { key: 'Mod-[',               run: indentLess },
+            { key: 'Shift-Alt-i',         run: addCursorsToLineEnds },
             { key: 'Escape',              run: simplifySelection },
         ]),
         highlightWhitespace(),
