@@ -17,10 +17,9 @@ var _ = answerFunc("significant-figures", func() []Answer {
 
 	for i := 5; i < len(tests); i++ {
 		mantissalength := rand.IntN(16) + 1
-		mantissa := ""
 
 		x := rand.IntN(9) + 1
-		mantissa += fmt.Sprint(x)
+		mantissa := fmt.Sprint(x)
 
 		for len(mantissa) < mantissalength-1 {
 			x := rand.IntN(10)
