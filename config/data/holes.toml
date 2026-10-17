@@ -4657,6 +4657,23 @@ preamble = '''
 <pre>{{ .Answer }}</pre>
 '''
 
+['Significant Figures']
+authors = [
+    '018b4d65-bc7e-7862-8289-983baa125555', # albanian-laundromat
+]
+category = 'Mathematics' # Could also be Transform
+links = [
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Significant_figures' },
+]
+experiment = 2738
+synopsis = 'Determine the number of significant figures in a number.'
+preamble = '''
+<p>
+    Significant digits are specific digits in a number that communicate the
+	accuracy and precision of a particular quantity. Given a number written in
+	positional notation, output the number of significant digits.
+'''
+
 ['Smith Numbers']
 category = 'Sequence'
 links = [
