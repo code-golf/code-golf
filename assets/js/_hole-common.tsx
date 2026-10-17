@@ -1,5 +1,6 @@
 import { ASMStateField }                               from '@defasm/codemirror';
-import { $, $$, avatar, byteLen, charLen, comma, ord, strokeLen } from './_util';
+import { $, $$, amount, avatar, byteLen, charLen, comma, ord, strokeLen } from './_util';
+import { diffChars }                                   from 'diff';
 import { Vim }                                         from '@replit/codemirror-vim';
 import { EditorState, EditorView, extensions }         from './_codemirror';
 import LZString                                        from 'lz-string';
@@ -44,12 +45,16 @@ async function _getLangWikiContent(lang: string): Promise<string | null> {
 }
 
 const holeLangNotesCache: Record<string, string | null> = {};
-async function getHoleLangNotesContent(lang: string): Promise<string> {
+export async function getHoleLangNotesContent(lang: string): Promise<string> {
     if (!(lang in holeLangNotesCache)) {
         const resp  = await fetch(`/api/notes/${hole}/${lang}`);
         holeLangNotesCache[lang] = resp.status === 200 ? (await resp.text()) : null;
     }
     return holeLangNotesCache[lang] ?? '';
+}
+
+export function setHoleLangNotesCache(lang: string, content: string) {
+    holeLangNotesCache[lang] = content;
 }
 
 const renamedHoles: Record<string, string> = JSON.parse($('#renamed-holes').innerText);
@@ -546,6 +551,32 @@ export function getLastSubmittedCode(){
     return lastSubmittedCode;
 }
 
+// The solution replaced by the last submission, kept for panels opened later.
+let previousSolution: { previous: string, code: string, scoring: 0 | 1, lang: Lang } | null = null;
+
+// Show the solution a submission replaced, highlighting what changed.
+export function renderPreviousSolution() {
+    const section = $('#previous');
+    if (!section) return;
+
+    section.classList.toggle('hide', !previousSolution);
+    if (!previousSolution) return;
+
+    const { previous, code, scoring, lang } = previousSolution;
+
+    // Assembly is scored on the assembled bytes, not the source.
+    const unit = scoring ? 'char' : 'byte';
+    $('#previous h2').innerText = `Previous ${lang.name} solution` + (lang.assembly ? '' :
+        ` (${comma(getScoring(previous, scoring))} → ${amount(getScoring(code, scoring), unit)})`);
+
+    $('#previous pre').replaceChildren(...diffChars(previous, code)
+        .filter(part => !part.added)
+        .map(part => part.removed ? <mark>{part.value}</mark> : part.value));
+
+    $<HTMLButtonElement>('#copyPreviousBtn').onclick = () =>
+        navigator.clipboard.writeText(previous);
+}
+
 export async function submit(
     editor: any,
     // eslint-disable-next-line no-unused-vars
@@ -554,6 +585,8 @@ export async function submit(
     if (!editor) return false;
     $('#status > h2').innerText = '…';
     $('#status').className = 'grey';
+    previousSolution = null;
+    renderPreviousSolution();
 
     const code = editor.state.doc.toString();
     lastSubmittedCode = code;
@@ -581,10 +614,13 @@ export async function submit(
     $('main')?.classList.remove('fail');
     $('main')?.classList.add(pass ? 'pass' : 'fail');
     $('main')?.classList.add('lastSubmittedCode');
+    // The solutions replaced by this submission, per scoring.
+    const replaced: (string | undefined)[] = [];
     if (pass) {
         for (const i of [0, 1] as const) {
             const solutionCode = getSolutionCode(codeLang, i);
             if (!solutionCode || getScoring(code, i) <= getScoring(solutionCode, i)) {
+                if (solutionCode && solutionCode !== code) replaced[i] = solutionCode;
                 solutions[i][codeLang] = code;
 
                 // Don't need to keep solution in local storage because it's
@@ -617,6 +653,14 @@ export async function submit(
             else
                 localStorage.removeItem(key);
         }
+    }
+
+    // Prefer showing the replaced solution of the current scoring.
+    const shownScoring = replaced[solution] !== undefined ? solution : getOtherScoring(solution);
+    const previousCode = replaced[shownScoring];
+    if (previousCode !== undefined) {
+        previousSolution = { previous: previousCode, code, scoring: shownScoring, lang: langs[codeLang] };
+        renderPreviousSolution();
     }
 
     // Automatically switch to the solution whose code matches the current

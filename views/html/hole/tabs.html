@@ -29,6 +29,19 @@
 
 <template id=template-details>{{ template "hole-details" . }}</template>
 
+<template id=template-previous>
+    <div class=hide id=previous>
+        <header>
+            <h2></h2>
+            <button class="btn blue" id=copyPreviousBtn>
+                Copy previous solution
+            </button>
+        </header>
+        <pre></pre>
+    </div>
+    <p id=previous-empty>Improve a solution to see the one it replaced here.</p>
+</template>
+
 <template id=template-scoreboard>
     <div id=scores-wrapper>
         <header>

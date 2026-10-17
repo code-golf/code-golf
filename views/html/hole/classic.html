@@ -13,7 +13,20 @@
         <div id=editor>
             <header>
                 <div id=strokes>0 bytes, 0 chars</div>
-                <a class=hide href id=restoreLink>Restore solution</a>
+                <div class=header-actions>
+                    <a class=hide href id=restoreLink>Restore solution</a>
+                {{ with .Golfer }}{{ if or .SponsorOrAdmin .HasNotes }}
+                    <nav class=tabs id=editorTabs><a>Code</a><a href>Notes</a></nav>
+                {{ end }}{{ end }}
+                </div>
+            </header>
+        </div>
+        <div id=notes>
+            <header>
+                <div id=notesTitle></div>
+                <div class=header-actions>
+                    <span id=notesStatus></span>
+                </div>
             </header>
         </div>
         <div id=rankings class=wide>
@@ -46,6 +59,7 @@
     {{ end }}
         <span>ctrl + enter</span> or
         <button class="btn blue" id=runBtn>{{ svg "play" }} Run</button>
+        <button class="btn blue" disabled id=saveNotesBtn>Save</button>
     </div>
     <div class=hide id=status>
         <h2></h2>
@@ -55,6 +69,15 @@
         <aside id=exp><h3>Expected</h3><div></div></aside>
         <aside id=out><h3>Output</h3><div></div></aside>
         <aside id=diff><h3>Diff</h3><div id=diff-content></div></aside>
+    </div>
+    <div class=hide id=previous>
+        <header>
+            <h2></h2>
+            <button class="btn blue" id=copyPreviousBtn>
+                Copy previous solution
+            </button>
+        </header>
+        <pre></pre>
     </div>
 </main>
 

@@ -16,8 +16,10 @@ import {
     updateLocalStorage,
     getLang,
     setState,
+    setHoleLangNotesCache,
     ctrlEnter,
     getLastSubmittedCode,
+    renderPreviousSolution,
     Scorings,
 } from '../_hole-common';
 import { highlightCodeBlocks } from '../_wiki';
@@ -247,7 +249,10 @@ async function upsertNotes() {
             content ? { method: 'PUT', body: content} : { method: 'DELETE' },
         );
         if (resp.status !== 204) $<HTMLButtonElement>('#upsert-notes-btn').disabled = false;
-        else holeLangNotesContent = content;
+        else {
+            holeLangNotesContent = content;
+            setHoleLangNotesCache(getLang(), content);
+        }
     }
 };
 
@@ -337,6 +342,17 @@ layout.registerComponentFactoryFunction('scoreboard', async container => {
     delinkRankingsView();
 });
 
+layout.registerComponentFactoryFunction('previous', async container => {
+    container.setTitle(getTitle('previous'));
+    autoFocus(container);
+    container.element.append(
+        $<HTMLTemplateElement>('#template-previous').content.cloneNode(true),
+    );
+    container.element.id = 'previous-section';
+    await afterDOM();
+    renderPreviousSolution();
+});
+
 layout.registerComponentFactoryFunction('details', container => {
     container.setTitle(getTitle('details'));
     autoFocus(container);
@@ -354,6 +370,7 @@ const titles: Record<string, string | undefined> = {
     err: 'Errors',
     arg: 'Arguments',
     diff: 'Diff',
+    previous: 'Previous solution',
     code: 'Code',
     langWiki: 'Wiki',
     holeLangNotes: 'Notes',
@@ -408,6 +425,7 @@ const defaultLayout: LayoutConfig = {
                             plainComponent('out'),
                             plainComponent('err'),
                             plainComponent('diff'),
+                            plainComponent('previous'),
                         ],
                     },
                 ],
@@ -417,7 +435,7 @@ const defaultLayout: LayoutConfig = {
 };
 
 function getPoolFromLayoutConfig(config: LayoutConfig) {
-    const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'details', 'langWiki'];
+    const allComponents = ['code', 'scoreboard', 'arg', 'exp', 'out', 'err', 'diff', 'previous', 'details', 'langWiki'];
     if (isSponsor || hasNotes) allComponents.push('holeLangNotes');
     const activeComponents = getComponentNamesRecursive(config.root!);
     return allComponents.filter(x => !activeComponents.includes(x));
