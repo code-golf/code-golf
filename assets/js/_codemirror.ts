@@ -1,4 +1,4 @@
-import { EditorState }                                    from '@codemirror/state';
+import { EditorSelection, EditorState }                   from '@codemirror/state';
 import { EditorView, keymap, lineNumbers, drawSelection,
     highlightWhitespace } from '@codemirror/view';
 import { $ }                                              from './_util';
@@ -8,8 +8,13 @@ export { EditorState, EditorView };
 // Extensions.
 import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
-import { history, historyKeymap, indentLess, insertNewline,
-    insertTab, standardKeymap, toggleComment }   from '@codemirror/commands';
+import { addCursorAbove, addCursorBelow, history,
+    historyKeymap, indentLess, insertNewline, insertTab,
+    moveLineDown, moveLineUp, selectLine,
+    simplifySelection, standardKeymap,
+    toggleComment }                              from '@codemirror/commands';
+import { selectNextOccurrence,
+    selectSelectionMatches }                     from '@codemirror/search';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
     HighlightStyle, LanguageSupport, StreamLanguage,
@@ -93,6 +98,23 @@ const fontFamily = "'Source Code Pro', monospace";
 // This was disabled in the upstream due to the old Safari issue (codemirror/dev#524).
 const lineWrapping: any = CSS.supports('overflow-wrap', 'anywhere') ? { wordBreak: 'break-all' } : {};
 
+// Like VS Code's Shift-Alt-i, put a cursor at the end of every selected line.
+const addCursorsToLineEnds = (view: EditorView) => {
+    const { doc, selection } = view.state;
+    const ranges = selection.ranges.flatMap(range => {
+        const first = doc.lineAt(range.from).number, last = doc.lineAt(range.to).number;
+        if (first == last) return [range];
+
+        const cursors = [];
+        for (let n = first; n < last; n++) cursors.push(EditorSelection.cursor(doc.line(n).to));
+        cursors.push(EditorSelection.cursor(range.to));
+        return cursors;
+    });
+
+    view.dispatch({ selection: EditorSelection.create(ranges, ranges.length - 1) });
+    return true;
+};
+
 export const extensions : { [key: string]: any } = {
     // Extensions.
     'base': [
@@ -113,12 +135,28 @@ export const extensions : { [key: string]: any } = {
         history(),
         insertChar,
         insertCharState,
+        EditorState.allowMultipleSelections.of(true),
+        EditorView.clickAddsSelectionRange.of(e => e.altKey),
         keymap.of([
             // Replace "enter" with a non auto indenting action.
             ...historyKeymap, ...standardKeymap.filter(k => k.key != 'Enter'),
             { key: 'Enter', run: insertNewline },
             { key: 'Tab',   run: insertTab, shift: indentLess },
             { key: 'Mod-/', run: toggleComment },
+
+            // VS Code style shortcuts. preventDefault stops Mod-d/Mod-l from
+            // bookmarking/focusing the address bar.
+            { key: 'Mod-d',               run: selectNextOccurrence, preventDefault: true },
+            { key: 'Mod-Shift-l',         run: selectSelectionMatches },
+            { key: 'Mod-l',               run: selectLine, preventDefault: true },
+            { key: 'Alt-ArrowUp',         run: moveLineUp },
+            { key: 'Alt-ArrowDown',       run: moveLineDown },
+            { key: 'Mod-Alt-ArrowUp',     run: addCursorAbove },
+            { key: 'Mod-Alt-ArrowDown',   run: addCursorBelow },
+            { key: 'Shift-Alt-ArrowUp',   run: addCursorAbove },
+            { key: 'Shift-Alt-ArrowDown', run: addCursorBelow },
+            { key: 'Shift-Alt-i',         run: addCursorsToLineEnds },
+            { key: 'Escape',              run: simplifySelection },
         ]),
         highlightWhitespace(),
     ],
