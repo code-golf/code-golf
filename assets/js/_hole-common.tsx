@@ -205,19 +205,69 @@ let historyKey: string | null = null;
 let pendingHistoryState: EditorState | null = null;
 let historyTimeout: ReturnType<typeof setTimeout> | undefined;
 
+// Keep the histories small so they never crowd out the autosaved code.
+const maxHistoryLength = 32 * 1024;
+const maxHistories     = 20;
+
+function getHistoryKeys() {
+    return Object.keys(localStorage).filter(key => key.startsWith('history_'));
+}
+
+// Evict the least recently saved histories beyond maxHistories.
+function pruneHistories() {
+    const keys = getHistoryKeys();
+    if (keys.length <= maxHistories) return;
+
+    const savedAt = (key: string) => {
+        try {
+            return JSON.parse(localStorage.getItem(key)!).savedAt ?? 0;
+        }
+        catch {
+            return 0;
+        }
+    };
+
+    keys.map(key => ({ key, savedAt: savedAt(key) }))
+        .sort((a, b) => b.savedAt - a.savedAt)
+        .slice(maxHistories)
+        .forEach(({ key }) => localStorage.removeItem(key));
+}
+
+// Store autosaved code, dropping every history if that's what it takes.
+function setAutoSave(key: string, code: string) {
+    try {
+        localStorage.setItem(key, code);
+    }
+    catch {
+        getHistoryKeys().forEach(key => localStorage.removeItem(key));
+        localStorage.setItem(key, code);
+    }
+}
+
 function flushHistory() {
     clearTimeout(historyTimeout);
     if (!historyKey || !pendingHistoryState) return;
 
+    const value = JSON.stringify({
+        savedAt: Date.now(),
+        state:   pendingHistoryState.toJSON({ history: historyField }),
+    });
+    pendingHistoryState = null;
+
+    // Too big to be worth keeping.
+    if (value.length > maxHistoryLength) {
+        localStorage.removeItem(historyKey);
+        return;
+    }
+
     try {
-        localStorage.setItem(historyKey, JSON.stringify(
-            pendingHistoryState.toJSON({ history: historyField })));
+        localStorage.setItem(historyKey, value);
+        pruneHistories();
     }
     catch {
         // Quota exceeded, the history isn't worth evicting anything else.
         localStorage.removeItem(historyKey);
     }
-    pendingHistoryState = null;
 }
 
 export function saveHistory(state: EditorState) {
@@ -230,7 +280,7 @@ addEventListener('pagehide', flushHistory);
 
 function loadHistory(key: string, code: string) {
     try {
-        const json = JSON.parse(localStorage.getItem(key) ?? 'null');
+        const json = JSON.parse(localStorage.getItem(key) ?? 'null')?.state;
 
         // Only restore the history if it was recorded on the very same code,
         // it may have changed since (e.g. on another browser).
@@ -267,9 +317,18 @@ export function setState(code: string, editor: EditorView, newHistoryKey?: strin
         json = loadHistory(historyKey, code);
     }
 
-    editor.setState(json
-        ? EditorState.fromJSON(json, config, { history: historyField })
-        : EditorState.create(config));
+    let state = null;
+    if (json) {
+        try {
+            state = EditorState.fromJSON(json, config, { history: historyField });
+        }
+        catch {
+            // Saved by an incompatible CodeMirror version, or corrupted.
+            localStorage.removeItem(historyKey!);
+        }
+    }
+
+    editor.setState(state ?? EditorState.create(config));
     editor.dispatch();  // Dispatch to update strokes.
 }
 
@@ -673,7 +732,7 @@ export async function submit(
             // the solution picker being show unnecessarily.
             if ((i == 0 || getSolutionCode(codeLang, 0) != getSolutionCode(codeLang, i)) &&
                 getSolutionCode(codeLang, i) !== langs[codeLang].example)
-                localStorage.setItem(key, getSolutionCode(codeLang, i));
+                setAutoSave(key, getSolutionCode(codeLang, i));
             else
                 localStorage.removeItem(key);
         }
@@ -776,7 +835,7 @@ export function updateLocalStorage(code: string) {
     const wantLocalStorage = code && (code !== serverCode || !getSavedInDB()) && code !== currentLang.example;
 
     if (wantLocalStorage)
-        localStorage.setItem(key, code);
+        setAutoSave(key, code);
     else
         localStorage.removeItem(key);
 
