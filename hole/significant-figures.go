@@ -9,7 +9,13 @@ import (
 var _ = answerFunc("significant-figures", func() []Answer {
 	tests := make([]test, 100)
 
-	for i := 0; i < len(tests); i++ {
+	tests[0] = test{"48721", "5"}
+	tests[1] = test{"1", "1"}
+	tests[2] = test{"10.0", "3"}
+	tests[3] = test{"830.970", "6"}
+	tests[4] = test{"12321", "5"}
+
+	for i := 5; i < len(tests); i++ {
 		mantissalength := rand.IntN(16) + 1
 		mantissa := ""
 
