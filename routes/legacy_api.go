@@ -376,11 +376,9 @@ func apiMiniRankingsGET(w http.ResponseWriter, r *http.Request) {
 	var aiFilter *bool
 	switch session.Settings(r)["hole"]["ai-filter"] {
 	case "human":
-		f := false
-		aiFilter = &f
+		aiFilter = new(false)
 	case "ai":
-		t := true
-		aiFilter = &t
+		aiFilter = new(true)
 	}
 
 	type entry struct {
