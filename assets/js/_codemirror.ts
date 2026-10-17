@@ -3,14 +3,14 @@ import { EditorView, keymap, lineNumbers, drawSelection,
     highlightWhitespace } from '@codemirror/view';
 import { $ }                                              from './_util';
 
-export { EditorState, EditorView };
+export { EditorState, EditorView, historyField };
 
 // Extensions.
 import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
 import { addCursorAbove, addCursorBelow, history,
-    historyKeymap, indentLess, insertNewline, insertTab,
-    moveLineDown, moveLineUp, selectLine,
+    historyField, historyKeymap, indentLess, insertNewline,
+    insertTab, moveLineDown, moveLineUp, redo, selectLine,
     simplifySelection, standardKeymap,
     toggleComment }                              from '@codemirror/commands';
 import { selectNextOccurrence,
@@ -143,6 +143,8 @@ export const extensions : { [key: string]: any } = {
             { key: 'Enter', run: insertNewline },
             { key: 'Tab',   run: insertTab, shift: indentLess },
             { key: 'Mod-/', run: toggleComment },
+            // Alternative to Mod-y, the default only binds it on Linux and macOS.
+            { key: 'Mod-Shift-z', run: redo, preventDefault: true },
 
             // VS Code style shortcuts. preventDefault stops Mod-d/Mod-l from
             // bookmarking/focusing the address bar.

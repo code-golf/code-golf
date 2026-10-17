@@ -1,7 +1,8 @@
 import { ASMStateField }                               from '@defasm/codemirror';
 import { $, $$, avatar, byteLen, charLen, comma, ord, strokeLen } from './_util';
 import { Vim }                                         from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions }         from './_codemirror';
+import { EditorState, EditorView, extensions,
+    historyField }                                     from './_codemirror';
 import LZString                                        from 'lz-string';
 import { getAllowedStrokes }                           from './lang-allowed-strokes';
 
@@ -92,7 +93,7 @@ export function init(_tabLayout: boolean, setSolution: any, setCodeForLangAndSol
     });
 
     for (const [key, value] of Object.entries(localStorage)) {
-        if (key.startsWith('code_')) {
+        if (key.startsWith('code_') || key.startsWith('history_')) {
             const [prefix, hole, lang, scoring] = key.split('_');
 
             const newHole = renamedHoles[hole] ?? hole;
@@ -193,23 +194,82 @@ export function getSolution() {
     return solution;
 }
 
-export function setState(code: string, editor: EditorView) {
+export function getHistoryKey(lang: string, solution: 0 | 1) {
+    return `history_${hole}_${lang}_${solution}`;
+}
+
+// The undo history of the main editor is persisted in localStorage, so that
+// undo/redo survives a page reload. historyKey is the key the current editor
+// state belongs to, pendingHistoryState is the state waiting to be saved.
+let historyKey: string | null = null;
+let pendingHistoryState: EditorState | null = null;
+let historyTimeout: ReturnType<typeof setTimeout> | undefined;
+
+function flushHistory() {
+    clearTimeout(historyTimeout);
+    if (!historyKey || !pendingHistoryState) return;
+
+    try {
+        localStorage.setItem(historyKey, JSON.stringify(
+            pendingHistoryState.toJSON({ history: historyField })));
+    }
+    catch {
+        // Quota exceeded, the history isn't worth evicting anything else.
+        localStorage.removeItem(historyKey);
+    }
+    pendingHistoryState = null;
+}
+
+export function saveHistory(state: EditorState) {
+    pendingHistoryState = state;
+    clearTimeout(historyTimeout);
+    historyTimeout = setTimeout(flushHistory, 500);
+}
+
+addEventListener('pagehide', flushHistory);
+
+function loadHistory(key: string, code: string) {
+    try {
+        const json = JSON.parse(localStorage.getItem(key) ?? 'null');
+
+        // Only restore the history if it was recorded on the very same code,
+        // it may have changed since (e.g. on another browser).
+        if (json?.doc === code) return json;
+    }
+    catch {}
+
+    localStorage.removeItem(key);
+    return null;
+}
+
+export function setState(code: string, editor: EditorView, newHistoryKey?: string) {
     if (!editor) return;
-    editor.setState(
-        EditorState.create({
-            doc: code,
-            extensions: [
-                ...baseExtensions,
-                extensions[lang as keyof typeof extensions] ?? [],
-                // These languages shouldn't match brackets.
-                ['fish', 'hexagony'].includes(lang)
-                    ? extensions.zeroIndexedLineNumbers : [extensions.lineNumbers, extensions.bracketMatching],
-                // These languages shouldn't wrap lines.
-                (currentLang.assembly || ['fish', 'hexagony'].includes(lang))
-                    ? [] : EditorView.lineWrapping,
-            ],
-        }),
-    );
+
+    const config = {
+        doc: code,
+        extensions: [
+            ...baseExtensions,
+            extensions[lang as keyof typeof extensions] ?? [],
+            // These languages shouldn't match brackets.
+            ['fish', 'hexagony'].includes(lang)
+                ? extensions.zeroIndexedLineNumbers : [extensions.lineNumbers, extensions.bracketMatching],
+            // These languages shouldn't wrap lines.
+            (currentLang.assembly || ['fish', 'hexagony'].includes(lang))
+                ? [] : EditorView.lineWrapping,
+        ],
+    };
+
+    let json = null;
+    if (newHistoryKey) {
+        // Save the history of the previous lang/solution before switching.
+        flushHistory();
+        historyKey = newHistoryKey;
+        json = loadHistory(historyKey, code);
+    }
+
+    editor.setState(json
+        ? EditorState.fromJSON(json, config, { history: historyField })
+        : EditorState.create(config));
     editor.dispatch();  // Dispatch to update strokes.
 }
 
@@ -752,7 +812,7 @@ export function setCodeForLangAndSolution(editor: any) {
 
     if (settings['show-example-code']) code ||= currentLang.example;
 
-    setState(code, editor);
+    setState(code, editor, getHistoryKey(lang, solution));
 
     if (currentLang.assembly) scoring = 0;
     const charsTab = $('#scoringTabs a:last-child');
