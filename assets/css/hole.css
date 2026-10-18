@@ -109,25 +109,43 @@ main .info {
 
 #err div, #exp div, #out div { white-space: pre }
 
-#arg, #err, #exp, #out { position: relative }
+#arg, #err, #exp, #out {
+    position: relative;
+
+    /* Leave room for the copy button. */
+    > h3 { padding: 1.5rem 0 .25rem }
+}
 
 aside > .copy {
+    /* Sits at the top of the panel's vertical title. */
     align-items: center;
     display: flex;
-    flex-direction: row-reverse;
+    left: 0;
     position: absolute;
-    right: 0;
     top: 0;
 
     .btn {
         background: #fff;
-        border-color: #000;
+        border: 0;
         color: #000;
-        font-size: .875rem;
-        padding: .125rem .5rem;
+        justify-content: center;
+        padding: .25rem 0;
+        width: 2rem;
     }
 
-    [data-copy]:active + span { padding: 0 .5rem 0 0 }
+    svg {
+        height: 1rem;
+        width: 1rem;
+    }
+
+    > span {
+        background: var(--color);
+        color: var(--background);
+        font-weight: bold;
+        padding: .25rem .5rem;
+    }
+
+    [data-copy]:active + span { padding-left: .5rem }
 }
 
 #arg div {
@@ -138,7 +156,7 @@ aside > .copy {
     gap: .375rem;
 }
 
-#arg span {
+#arg span:not(.copy, .copy *) {
     background: var(--arg-background);
     border-radius: .5rem;
     font-family: emoji, mahjong, 'Source Code Pro', monospace;
