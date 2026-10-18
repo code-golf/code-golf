@@ -131,6 +131,17 @@ aside > .copy {
         justify-content: center;
         padding: .25rem 0;
         width: 2rem;
+
+        /* Embolden the icon rather than inheriting the generic .btn hover. */
+        &:hover {
+            background: var(--color);
+            color: var(--background);
+        }
+
+        &:hover svg {
+            stroke: currentColor;
+            stroke-width: .75;
+        }
     }
 
     svg {
