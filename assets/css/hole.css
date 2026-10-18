@@ -400,13 +400,16 @@ h2 {
     }
 }
 
+/* Sits at the top of the panel's vertical title. */
 aside > .copy {
-    /* Sits at the top of the panel's vertical title. */
-    align-items: center;
-    display: flex;
     left: 0;
     position: absolute;
     top: 0;
+}
+
+.copy {
+    align-items: center;
+    display: flex;
 
     .btn {
         background: var(--color);
