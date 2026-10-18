@@ -125,6 +125,19 @@ main .info {
     white-space: pre;
 }
 
+#arg span:hover, .arg-highlight {
+    background: var(--color);
+    color: var(--background);
+}
+
+/* Widen the highlight around the line without shifting the text. */
+#exp .arg-highlight, #out .arg-highlight {
+    border-radius: .25em;
+    color: #000;
+    margin: 0 -.2em;
+    padding: 0 .2em;
+}
+
 #arrows code { font-size: 1.5rem }
 #arrows td   { font-family: emoji, mahjong, 'Source Code Pro', monospace }
 #arrows td:last-child  { width: 100% }

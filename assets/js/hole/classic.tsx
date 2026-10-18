@@ -11,7 +11,7 @@ import {
     getLastSubmittedCode,
     Scorings,
 } from '../_hole-common';
-import UnprintableElement from '../_unprintable';
+import { argLines, argSpans } from '../_arg-highlight';
 
 const editor = new EditorView({
     dispatch: tr => {
@@ -77,7 +77,7 @@ $$('#rankingsView a').forEach(a => a.onclick = e => {
 
 function updateReadonlyPanels(data: ReadonlyPanelsData) {
     // Hide arguments unless we have some.
-    $('#arg div').replaceChildren(...data.Argv.map(a => <span>{a}</span>));
+    $('#arg div').replaceChildren(...argSpans(data.Argv));
     $('#arg').classList.toggle('hide', !data.Argv.length);
 
     // Hide stderr if we're passing or have no stderr output.
@@ -85,8 +85,8 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     $('#err').classList.toggle('hide', data.Pass || !data.Err);
 
     // Always show exp & out.
-    $('#exp div').innerText = data.Exp;
-    $('#out div').replaceChildren(UnprintableElement.escape(data.Out));
+    $('#exp div').replaceChildren(argLines(data.Exp, data.Argv));
+    $('#out div').replaceChildren(argLines(data.Out, data.Argv, true));
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
     const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.OutputDelimiter, data.MultisetItemDelimiter);
