@@ -566,15 +566,19 @@ export function renderPreviousSolution() {
 
     // Assembly is scored on the assembled bytes, not the source.
     const unit = scoring ? 'char' : 'byte';
-    $('#previous h2').innerText = `Previous ${lang.name} solution` + (lang.assembly ? '' :
+    // Only the tabs layout has a heading, the classic one has a fixed title.
+    const heading = $('#previous h2');
+    if (heading) heading.innerText = `Previous ${lang.name} solution` + (lang.assembly ? '' :
         ` (${comma(getScoring(previous, scoring))} → ${amount(getScoring(code, scoring), unit)})`);
 
-    $('#previous pre').replaceChildren(...diffChars(previous, code)
+    $('#previous .previous-code').replaceChildren(...diffChars(previous, code)
         .filter(part => !part.added)
         .map(part => part.removed ? <mark>{part.value}</mark> : part.value));
 
-    $<HTMLButtonElement>('#copyPreviousBtn').onclick = () =>
-        navigator.clipboard.writeText(previous);
+    // data-copy also shows the "Copied" feedback where there is one.
+    const copyBtn = $<HTMLButtonElement>('#copyPreviousBtn');
+    copyBtn.dataset.copy = previous;
+    copyBtn.onclick = () => navigator.clipboard.writeText(previous);
 }
 
 export async function submit(

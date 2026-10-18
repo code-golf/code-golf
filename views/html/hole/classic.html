@@ -69,15 +69,13 @@
         <aside id=exp><h3>Expected</h3><div></div></aside>
         <aside id=out><h3>Output</h3><div></div></aside>
         <aside id=diff><h3>Diff</h3><div id=diff-content></div></aside>
-    </div>
-    <div class=hide id=previous>
-        <header>
-            <h2></h2>
-            <button class="btn blue" id=copyPreviousBtn>
-                Copy previous solution
-            </button>
-        </header>
-        <pre></pre>
+        <div class=hide id=previous>
+            <aside>
+                <h3>Previous solution</h3>
+                <div class=previous-code></div>
+                <span class=copy><button class=btn data-copy id=copyPreviousBtn title=Copy>{{ svg "copy" }}</button><span>Copied</span></span>
+            </aside>
+        </div>
     </div>
 </main>
 

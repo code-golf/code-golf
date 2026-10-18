@@ -352,6 +352,7 @@ h2 {
 #previous {
     display: grid;
     gap: .5rem;
+    grid-column: 1 / -1;
 
     header {
         align-items: center;
@@ -367,14 +368,74 @@ h2 {
         max-height: 12rem;
         overflow: auto;
         padding: .375rem;
+    }
+
+    .previous-code {
         white-space: pre-wrap;
         word-break: break-all;
+    }
+
+    /* Classic layout: a panel like Expected and Output. */
+    aside {
+        position: relative;
+
+        /* Leave room for the copy button, and a smaller font for the
+           longer title. */
+        > h3 {
+            font-size: 1.1rem;
+            padding: 2rem 0 .25rem;
+        }
+
+        /* Size the code box to the title rather than the other panels' fixed
+           height, scrolling any longer code. */
+        > div {
+            contain: size;
+            height: auto;
+        }
     }
 
     mark {
         background: var(--red);
         color: inherit;
     }
+}
+
+aside > .copy {
+    /* Sits at the top of the panel's vertical title. */
+    align-items: center;
+    display: flex;
+    left: 0;
+    position: absolute;
+    top: 0;
+
+    .btn {
+        background: var(--color);
+        border: 0;
+        color: var(--background);
+        justify-content: center;
+        padding: .25rem 0;
+        width: 2rem;
+
+        /* Embolden the icon rather than inheriting the generic .btn hover. */
+        &:hover {
+            background: var(--color);
+            color: var(--background);
+        }
+
+        &:hover svg {
+            stroke: currentColor;
+            stroke-width: .75;
+        }
+    }
+
+    > span {
+        background: var(--color);
+        color: var(--background);
+        font-weight: bold;
+        padding: .25rem .5rem;
+    }
+
+    [data-copy]:active + span { padding-left: .5rem }
 }
 
 .header-actions {
@@ -390,7 +451,7 @@ h2 {
 }
 
 main:not(.notes-mode) :is(#notes, #saveNotesBtn),
-main.notes-mode :is(#editor, #solutionPicker, #runBtn, #deleteBtn, #status, #previous) {
+main.notes-mode :is(#editor, #solutionPicker, #runBtn, #deleteBtn) {
     display: none;
 }
 
