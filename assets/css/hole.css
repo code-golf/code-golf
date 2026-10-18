@@ -109,7 +109,7 @@ main .info {
 
 #err div, #exp div, #out div { white-space: pre }
 
-#exp, #out { position: relative }
+#arg, #err, #exp, #out { position: relative }
 
 aside > .copy {
     align-items: center;
