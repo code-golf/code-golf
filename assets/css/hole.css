@@ -144,11 +144,6 @@ aside > .copy {
         }
     }
 
-    svg {
-        height: 1rem;
-        width: 1rem;
-    }
-
     > span {
         background: var(--color);
         color: var(--background);
