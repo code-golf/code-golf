@@ -133,7 +133,7 @@ main .info {
 /* Widen the highlight around the line without shifting the text. */
 #exp .arg-highlight, #out .arg-highlight {
     border-radius: .25em;
-    color: #000;
+    color: var(--arg-highlight);
     margin: 0 -.2em;
     padding: 0 .2em;
 }

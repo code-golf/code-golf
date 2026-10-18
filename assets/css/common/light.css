@@ -33,6 +33,7 @@
     --link-color: #07b;
 
     --arg-background:     #eee;
+    --arg-highlight:      var(--background);
     --asm-error:          red;
     --badge-background:   #343a40;
     --cheevo-not-earned:  #343a40;
