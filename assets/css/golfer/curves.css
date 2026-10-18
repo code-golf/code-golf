@@ -1,6 +1,3 @@
-/* No cyan in the theme, this one reads on both light & dark backgrounds. */
-:root { --diamond: hsl(185, 70%, 42%) }
-
 main {
     display: flex;
     flex-direction: column;
@@ -19,17 +16,30 @@ main {
     position: relative;
 }
 
+/* Not in a form, so reset the browser's fieldset frame like base.css does. */
 #series {
+    border: 0;
     display: flex;
     flex-wrap: wrap;
     gap: .5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+
+    label {
+        align-items: center;
+        display: flex;
+        gap: .375rem;
+    }
+
+    label:has(:disabled) { color: var(--grey) }
 
     legend {
         font-weight: 600;
         margin-bottom: .5rem;
+        padding: 0;
     }
 
-    label:has(:disabled) { color: var(--grey) }
+    .swatch { width: 1.5rem }
 }
 
 #note {

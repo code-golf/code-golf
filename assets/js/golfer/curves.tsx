@@ -1,11 +1,11 @@
 import { $, $$, comma } from '../_util';
 
-import { Chart, Legend, LinearScale, LineController, LineElement,
+import { Chart, LinearScale, LineController, LineElement,
     LogarithmicScale, PointElement, TimeScale, Tooltip } from 'chart.js';
 
 import 'chartjs-adapter-luxon';
 
-Chart.register(Legend, LinearScale, LineController, LineElement,
+Chart.register(LinearScale, LineController, LineElement,
     LogarithmicScale, PointElement, TimeScale, Tooltip);
 
 interface Improvement {
@@ -40,10 +40,10 @@ const series = [
     { id: 'langs',       label: '🔣 Langs',     color: '--color',     dash: [2, 3] },
     { id: 'cheevos',     label: '🏆 Cheevos',   color: '--color',     dash: [8, 3, 2, 3] },
     { id: 'unicorn',     label: '🦄 Unicorns',  color: '--purple-fg' },
-    { id: 'diamond',     label: '💎 Diamonds',  color: '--diamond'   },
-    { id: 'gold',        label: '🥇 Gold',      color: '--yellow-fg' },
-    { id: 'silver',      label: '🥈 Silver',    color: '--grey'      },
-    { id: 'bronze',      label: '🥉 Bronze',    color: '--orange-fg' },
+    { id: 'diamond',     label: '💎 Diamonds',  color: '--medal-diamond' },
+    { id: 'gold',        label: '🥇 Gold',      color: '--medal-gold'    },
+    { id: 'silver',      label: '🥈 Silver',    color: '--medal-silver'  },
+    { id: 'bronze',      label: '🥉 Bronze',    color: '--medal-bronze'  },
 ] as const;
 
 type SeriesID = typeof series[number]['id'];
@@ -55,6 +55,15 @@ langSelect.append(...Object.entries(data.langNames)
     .map(([id, name]) => <option value={id}>{name}</option>));
 
 const checkbox = (id: SeriesID) => $<HTMLInputElement>(`#series [name=${id}]`);
+
+// Each checkbox shows a sample of its curve, as there's no chart legend.
+// innerHTML because our JSX factory only makes <svg> and <use> as SVG.
+for (const s of series) {
+    const swatch = <svg class="swatch" viewBox="0 0 24 4"></svg>;
+    const dash   = 'dash' in s ? `stroke-dasharray="${s.dash.join(' ')}"` : '';
+    swatch.innerHTML = `<line ${dash} stroke="${color(s.color)}" stroke-width="2" x1="0" x2="24" y1="2" y2="2"/>`;
+    checkbox(s.id).after(swatch);
+}
 
 // Restore the filters from the URL so a set of curves can be shared.
 const params = new URLSearchParams(location.search);
@@ -179,16 +188,8 @@ const chart = new Chart<'line', Point[]>($<HTMLCanvasElement>('#chart canvas'), 
         interaction:         { intersect: false, mode: 'index' },
         maintainAspectRatio: false,
         plugins: {
-            legend: {
-                labels: { filter: item => !item.hidden },
-
-                // The checkboxes below are the source of truth.
-                onClick: (_e, item) => {
-                    const { id } = series.find(s => s.label === item.text)!;
-                    checkbox(id).checked = false;
-                    update();
-                },
-            },
+            // The checkboxes below double as the legend.
+            legend: { display: false },
             tooltip: {
                 callbacks: {
                     label: item => `${item.dataset.label}: ${comma(item.parsed.y ?? 0)}`,
