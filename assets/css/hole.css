@@ -116,10 +116,13 @@ aside > .copy {
     display: flex;
     flex-direction: row-reverse;
     position: absolute;
-    right: 1.5rem;
-    top: .5rem;
+    right: 0;
+    top: 0;
 
     .btn {
+        background: #fff;
+        border-color: #000;
+        color: #000;
         font-size: .875rem;
         padding: .125rem .5rem;
     }
