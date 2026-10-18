@@ -109,6 +109,24 @@ main .info {
 
 #err div, #exp div, #out div { white-space: pre }
 
+#exp, #out { position: relative }
+
+aside > .copy {
+    align-items: center;
+    display: flex;
+    flex-direction: row-reverse;
+    position: absolute;
+    right: 1.5rem;
+    top: .5rem;
+
+    .btn {
+        font-size: .875rem;
+        padding: .125rem .5rem;
+    }
+
+    [data-copy]:active + span { padding: 0 .5rem 0 0 }
+}
+
 #arg div {
     align-content: flex-start;
     align-items: flex-start;
