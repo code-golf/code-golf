@@ -125,9 +125,9 @@ aside > .copy {
     top: 0;
 
     .btn {
-        background: #fff;
+        background: var(--color);
         border: 0;
-        color: #000;
+        color: var(--background);
         justify-content: center;
         padding: .25rem 0;
         width: 2rem;
