@@ -416,16 +416,22 @@ h2 {
     grid-column: 1 / -1;
     grid-template-columns: auto 1fr auto auto;
 
+    /* Flat bars, like the achievement progress on golfer profiles. */
     progress {
-        accent-color: var(--blue-fg);
-        height: 1rem;
+        -webkit-appearance: none;
+        appearance: none;
+        background: none;
+        border: 1px solid var(--color);
+        height: .5rem;
         width: 100%;
+
+        /* Separate rules, as browsers drop a list with an unknown pseudo. */
+        &::-moz-progress-bar      { background: var(--link-color) }
+        &::-webkit-progress-value { background: var(--link-color) }
+        &::-webkit-progress-bar   { background: none }
     }
 
-    .ok {
-        color: var(--green-fg);
-        font-weight: bold;
-    }
+    .ok { font-weight: bold }
 }
 
 #polyglot-langs {
@@ -434,16 +440,23 @@ h2 {
     gap: .25rem;
     grid-column: 1 / -1;
 
+    /* Like the arguments, with the state on the border like the lang picker,
+       and the shown lang inverted like a selected tab. */
     button {
-        border: 1px solid var(--color);
-        border-radius: .25rem;
-        font-size: .875rem;
-        padding: 0 .375rem;
+        background: var(--background);
+        border: 1px solid var(--grey);
+        border-radius: .5rem;
+        color: var(--color);
+        padding: .25rem .375rem;
 
-        &.pass    { background: var(--green) }
-        &.fail    { background: var(--orange) }
-        &.testing { background: var(--light-blue) }
-        &.error   { background: var(--light-grey); color: var(--grey) }
-        &:disabled { outline: 2px solid var(--color) }
+        &.pass    { border-color: var(--green) }
+        &.fail    { border-color: var(--red) }
+        &.testing { border-color: var(--blue) }
+        &.error   { color: var(--grey) }
+
+        &[aria-pressed=true] {
+            background: var(--color);
+            color: var(--background);
+        }
     }
 }

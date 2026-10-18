@@ -768,7 +768,7 @@ async function submitPolyglot(
         });
         $('#pass-fail-msg').innerText = langs[id].name;
         $$<HTMLButtonElement>('#polyglot-langs button').forEach(
-            b => b.disabled = b.dataset.lang == id);
+            b => b.setAttribute('aria-pressed', String(b.dataset.lang == id)));
     };
 
     const titles = { pass: 'Pass', fail: 'Fail', testing: 'Testing…', error: 'Did not compile' };
