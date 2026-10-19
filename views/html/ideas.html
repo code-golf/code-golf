@@ -13,7 +13,8 @@
         {{ $class = "yellow" }}
     {{ end }}
 
-    <a class="card {{ $class }}" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
+    <a class="card {{ $class }}" data-category="{{ .Category }}"
+        href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
 {{ end }}
         <h2 class=span>
             {{ with .Lang }}{{ svg .ID }}{{ end }}
@@ -55,8 +56,15 @@
     </details>
 {{ end }}
 {{ with .Data.Ideas }}
-    <details open>
-        <summary>Other Ideas ({{ len . }})</summary>
+    <details id=other-ideas open>
+        <summary>
+            Other Ideas (<span id=other-ideas-count>{{ len . }}</span>)
+            <span id=idea-filters>
+                <label><input type=checkbox value=hole checked>Holes</label>
+                <label><input type=checkbox value=lang checked>Languages</label>
+                <label><input type=checkbox value=other checked>Others</label>
+            </span>
+        </summary>
         <div>{{ template "ideaGrid" . }}</div>
     </details>
 {{ end }}

@@ -26,6 +26,21 @@ main {
     padding-top: 0;
 }
 
+#idea-filters {
+    display: inline-flex;
+    font-size: 1rem;
+    font-weight: normal;
+    gap: 1rem;
+    margin-left: 1rem;
+
+    label {
+        align-items: center;
+        cursor: pointer;
+        display: inline-flex;
+        gap: .25rem;
+    }
+}
+
 .card {
     align-items: center;
     border: 2px solid var(--color);
@@ -37,6 +52,8 @@ main {
     text-decoration: none;
 
     &:hover { background: none }
+
+    &[hidden] { display: none }
 
     > h2 {
         align-items: center;
