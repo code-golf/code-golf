@@ -1,8 +1,10 @@
 {{ template "header" . }}
 
 {{ define "ideaGrid" }}{{ range . }}
+{{ $golfers := .Golfers }}
 {{ with .Hole }}
-    <a class="card {{ .CategoryColor }}" href="/{{ .ID }}" title="{{ .Name }} ({{ .Category }})">
+    <a class="card {{ .CategoryColor }}" href="/{{ .ID }}"
+        title="{{ .Name }} ({{ .Category }}) (solved by {{ amount $golfers "golfer" }})">
 {{ else }}
     {{ $class := "red" }}
     {{ if eq .Category "cheeevo" }}
@@ -14,27 +16,27 @@
     {{ end }}
 
     <a class="card {{ $class }}" data-category="{{ .Category }}"
-        href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
+        href="//github.com/code-golf/code-golf/issues/{{ .ID }}"
+        title="{{ .Title }}{{ if .Lang }} (used by {{ amount $golfers "golfer" }}){{ end }}">
 {{ end }}
         <h2 class=span>
             {{ with .Lang }}{{ svg .ID }}{{ end }}
             <span>{{ .Title }}</span>
         {{ if .Solved }}
-            {{ svg "check-square-fill" "class" "solved" "title" "Solved" }}
+            {{ svg "solved-pin" "class" "solved" }}
         {{ end }}
         </h2>
         {{ svg "thumbs-up" }}
         {{ .ThumbsUp }}
 
-        {{ $golfers := .Golfers }}
         {{ with .Hole }}
-            <span class=golfers title="Solved by {{ amount $golfers "golfer" }}">
+            <span class=golfers>
                 {{ svg .CategoryIcon }}
-                {{ comma $golfers }}
+                <span>{{ svg "person-fill" }}{{ comma $golfers }}</span>
             </span>
         {{ else with .Lang }}
-            <span class=golfers title="Used by {{ amount $golfers "golfer" }}">
-                {{ comma $golfers }}
+            <span class=golfers>
+                <span>{{ svg "person-fill" }}{{ comma $golfers }}</span>
             </span>
         {{ else }}
             <span></span>

@@ -34,15 +34,17 @@ main {
     margin-left: 1rem;
     vertical-align: middle;
 
-    /* Each filter is a chip in its category colour, outlined when off. */
+    /* Each filter is a box in its category colour, outlined when off. */
     label {
+        align-items: center;
         background: none;
         border: 2px solid var(--color);
-        border-radius: 1rem;
         color: var(--grey);
         cursor: pointer;
+        display: inline-flex;
+        gap: .375rem;
         line-height: 1.5;
-        padding: 0 .75rem;
+        padding: 0 .75rem 0 .5rem;
         user-select: none;
 
         &:has(:checked) { color: var(--color) }
@@ -55,9 +57,27 @@ main {
     }
 
     input {
-        opacity: 0;
-        position: absolute;
-        pointer-events: none;
+        -webkit-appearance: none;
+        appearance: none;
+        border: 2px solid currentColor;
+        cursor: pointer;
+        display: grid;
+        height: 1rem;
+        margin: 0;
+        place-content: center;
+        width: 1rem;
+
+        &:focus-visible { outline: none }
+
+        /* A tick, drawn as the bottom-right corner of a rotated box. */
+        &:checked::after {
+            border: solid currentColor;
+            border-width: 0 2px 2px 0;
+            content: "";
+            height: .5rem;
+            transform: translateY(-1px) rotate(45deg);
+            width: .25rem;
+        }
     }
 }
 
@@ -90,10 +110,15 @@ main {
             min-width: 0;
         }
 
-        /* The golfer has solved the experimental hole. */
+        /* The golfer has solved the experimental hole, in the top right
+           corner, the negative margins undo the card's padding. */
         > .solved {
+            align-self: flex-start;
+            color: var(--color);
             flex-shrink: 0;
-            margin-left: auto;
+            height: 1rem;
+            margin: -.5rem -.5rem 0 auto;
+            width: 1rem;
         }
     }
 
@@ -109,5 +134,12 @@ main {
         display: flex;
         gap: .25rem;
         justify-self: center;
+
+        /* The person icon tucked against the count. */
+        > span {
+            align-items: center;
+            display: inline-flex;
+            gap: .125rem;
+        }
     }
 }
