@@ -30,14 +30,34 @@ main {
     display: inline-flex;
     font-size: 1rem;
     font-weight: normal;
-    gap: 1rem;
+    gap: .5rem;
     margin-left: 1rem;
+    vertical-align: middle;
 
+    /* Each filter is a chip in its category colour, outlined when off. */
     label {
-        align-items: center;
+        background: none;
+        border: 2px solid var(--color);
+        border-radius: 1rem;
+        color: var(--grey);
         cursor: pointer;
-        display: inline-flex;
-        gap: .25rem;
+        line-height: 1.5;
+        padding: 0 .75rem;
+        user-select: none;
+
+        &:has(:checked) { color: var(--color) }
+        &:not(:has(:checked)) { border-color: var(--grey) }
+        &:has(:focus-visible) { outline: 2px solid var(--link-color) }
+        &:hover { filter: brightness(1.15) }
+        &.purple:has(:checked) { background: var(--purple) }
+        &.yellow:has(:checked) { background: var(--yellow) }
+        &.red:has(:checked)    { background: var(--red)    }
+    }
+
+    input {
+        opacity: 0;
+        position: absolute;
+        pointer-events: none;
     }
 }
 

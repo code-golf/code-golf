@@ -72,9 +72,9 @@
         <summary>
             Other Ideas (<span id=other-ideas-count>{{ len . }}</span>)
             <span id=idea-filters>
-                <label><input type=checkbox value=hole checked>Holes</label>
-                <label><input type=checkbox value=lang checked>Languages</label>
-                <label><input type=checkbox value=other checked>Others</label>
+                <label class=purple><input type=checkbox value=hole checked>Holes</label>
+                <label class=yellow><input type=checkbox value=lang checked>Languages</label>
+                <label class=red><input type=checkbox value=other checked>Others</label>
             </span>
         </summary>
         <div>{{ template "ideaGrid" . }}</div>
