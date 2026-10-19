@@ -26,7 +26,15 @@
         {{ svg "thumbs-up" }}
         {{ .ThumbsUp }}
 
-        {{ with .Hole }}{{ svg .CategoryIcon }}{{ else }}<span></span>{{ end }}
+        {{ $golfers := .Golfers }}
+        {{ with .Hole }}
+            <span class=golfers title="Solved by {{ amount $golfers "golfer" }}">
+                {{ svg .CategoryIcon }}
+                {{ comma $golfers }}
+            </span>
+        {{ else }}
+            <span></span>
+        {{ end }}
 
         {{ svg "thumbs-down" }}
         {{ .ThumbsDown }}

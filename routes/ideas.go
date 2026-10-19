@@ -8,6 +8,7 @@ import (
 
 	"github.com/code-golf/code-golf/config"
 	"github.com/code-golf/code-golf/session"
+	"github.com/lib/pq"
 )
 
 // GET /ideas
@@ -16,6 +17,7 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 		Category, Title          string
 		Solved                   bool
 		Hole                     *config.Hole
+		Golfers                  int
 		ID, ThumbsDown, ThumbsUp int
 		Lang                     *config.Lang
 	}
@@ -24,8 +26,31 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 
 	// FIXME This is only a slice because of semiprime/sphenic.
 	holes := map[int][]*config.Hole{}
-	for _, hole := range config.ExpHoleList {
+	holeIDs := make([]string, len(config.ExpHoleList))
+	for i, hole := range config.ExpHoleList {
 		holes[hole.Experiment] = append(holes[hole.Experiment], hole)
+		holeIDs[i] = hole.ID
+	}
+
+	// How many golfers have a passing solution for each experimental hole.
+	var solves []struct {
+		Golfers int
+		Hole    string
+	}
+	if err := session.Database(r).Select(
+		&solves,
+		`SELECT COUNT(DISTINCT user_id) golfers, hole
+		   FROM solutions
+		  WHERE hole = ANY($1) AND NOT failing
+	   GROUP BY hole`,
+		pq.Array(holeIDs),
+	); err != nil {
+		panic(err)
+	}
+
+	golfers := map[string]int{}
+	for _, solve := range solves {
+		golfers[solve.Hole] = solve.Golfers
 	}
 
 	langs := map[int]*config.Lang{}
@@ -61,6 +86,7 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 	for _, i := range ideas {
 		if holes, ok := holes[i.ID]; ok {
 			for _, hole := range holes {
+				i.Golfers = golfers[hole.ID]
 				i.Hole = hole
 				i.Solved = solved[hole.ID]
 				i.Title = hole.Name
