@@ -1,5 +1,6 @@
 // CodeMirror unprintable character extensions
-import { EditorView, keymap, Panel, showPanel, highlightSpecialChars } from '@codemirror/view';
+import { EditorView, keymap, Panel, showPanel, highlightSpecialChars,
+    runScopeHandlers } from '@codemirror/view';
 import { EditorState, StateEffect, StateField } from '@codemirror/state';
 import UnprintableElement from './_unprintable';
 
@@ -41,6 +42,7 @@ interface InsertCharState {
 }
 
 // Alt + hex digits inserts a character by its code point, Alt + N + digits by its decimal one.
+// Alt shortcuts (e.g. Alt + C) win on the first key, leading zeros reach those code points.
 const updateInsertCharState = StateEffect.define<string | boolean>();
 const setDecimalInsertChar  = StateEffect.define<null>();
 export const insertCharState = StateField.define<InsertCharState>({
@@ -106,7 +108,13 @@ export const insertChar = EditorView.domEventHandlers({
         // Decimal digits are read from the physical key, so that the digit row
         // also works on layouts where it needs Shift (e.g. AZERTY).
         const digit = event.code.match(/^(?:Digit|Numpad)(\d)$/)?.[1];
-        if (composing && code === '' && !decimal && event.key.toLowerCase() == 'n') {
+        if (composing && event.altKey && code === '' && !decimal
+            && runScopeHandlers(view, event, 'editor')) {
+            view.dispatch({ effects: updateInsertCharState.of(false) });
+            event.preventDefault();
+            return true;
+        }
+        else if (composing && code === '' && !decimal && event.key.toLowerCase() == 'n') {
             view.dispatch({ effects: setDecimalInsertChar.of(null) });
             event.preventDefault();
         }

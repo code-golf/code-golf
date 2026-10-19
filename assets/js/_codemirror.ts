@@ -143,6 +143,7 @@ export const extensions : { [key: string]: any } = {
             { key: 'Enter', run: insertNewline },
             { key: 'Tab',   run: insertTab, shift: indentLess },
             { key: 'Mod-/', run: toggleComment },
+            { key: 'Alt-c', run: toggleComment },
 
             // VS Code style shortcuts. preventDefault stops Mod-d/Mod-l from
             // bookmarking/focusing the address bar.
