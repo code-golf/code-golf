@@ -21,7 +21,7 @@ import {
     Scorings,
 } from '../_hole-common';
 import { highlightCodeBlocks } from '../_wiki';
-import UnprintableElement from '../_unprintable';
+import { argLines, argSpans } from '../_arg-highlight';
 
 const poolDragSources: {[key: string]: DragSource} = {};
 const poolElements: {[key: string]: HTMLElement} = {};
@@ -78,16 +78,14 @@ function updateReadonlyPanel(name: string) {
         output.innerHTML = subRes.Err.replace(/\n/g,'<br>');
         break;
     case 'out':
-        output.replaceChildren(UnprintableElement.escape(subRes.Out));
+        output.replaceChildren(argLines(subRes.Out, subRes.Argv, true));
         break;
     case 'exp':
-        output.innerText = subRes.Exp;
+        output.replaceChildren(argLines(subRes.Exp, subRes.Argv));
         break;
     case 'arg':
         // Hide arguments unless we have some.
-        output.replaceChildren(
-            ...subRes.Argv.map(a => <span>{a}</span>),
-        );
+        output.replaceChildren(...argSpans(subRes.Argv));
         break;
     case 'diff':
         const ignoreCase = JSON.parse($('#case-fold').innerText);
