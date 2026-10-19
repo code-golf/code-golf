@@ -26,6 +26,61 @@ main {
     padding-top: 0;
 }
 
+#idea-filters {
+    display: inline-flex;
+    font-size: 1rem;
+    font-weight: normal;
+    gap: .5rem;
+    margin-left: 1rem;
+    vertical-align: middle;
+
+    /* Each filter is a box in its category colour, outlined when off. */
+    label {
+        align-items: center;
+        background: none;
+        border: 2px solid var(--color);
+        color: var(--grey);
+        cursor: pointer;
+        display: inline-flex;
+        gap: .375rem;
+        line-height: 1.5;
+        padding: 0 .75rem 0 .5rem;
+        user-select: none;
+
+        &:has(:checked) { color: var(--color) }
+        &:not(:has(:checked)) { border-color: var(--grey) }
+        &:has(:focus-visible) { outline: 2px solid var(--link-color) }
+        &:hover { filter: brightness(1.15) }
+        &.purple:has(:checked) { background: var(--purple) }
+        &.yellow:has(:checked) { background: var(--yellow) }
+        &.red:has(:checked)    { background: var(--red)    }
+    }
+
+    input {
+        -webkit-appearance: none;
+        appearance: none;
+        border: 2px solid currentColor;
+        cursor: pointer;
+        display: grid;
+        height: 1rem;
+        margin: 0;
+        place-content: center;
+        width: 1rem;
+
+        &:focus-visible { outline: none }
+
+        /* A tick, drawn as the bottom-right corner of a rotated box. */
+        &:checked::after {
+            border: solid currentColor;
+            border-width: 0 2px 2px 0;
+            content: "";
+            height: .5rem;
+            transform: translateY(-1px) rotate(45deg);
+            width: .25rem;
+        }
+    }
+}
+
 .card {
     align-items: center;
     border: 2px solid var(--color);
@@ -37,6 +92,8 @@ main {
     text-decoration: none;
 
     &:hover { background: none }
+
+    &[hidden] { display: none }
 
     > h2 {
         align-items: center;
@@ -52,11 +109,37 @@ main {
             white-space: nowrap;
             min-width: 0;
         }
+
+        /* The golfer has solved the experimental hole, in the top right
+           corner, the negative margins undo the card's padding. */
+        > .solved {
+            align-self: flex-start;
+            color: var(--color);
+            flex-shrink: 0;
+            height: 1rem;
+            margin: -.5rem -.5rem 0 auto;
+            width: 1rem;
+        }
     }
 
     svg {
         height: 1rem;
         justify-self: center;
         width: 1rem;
+    }
+
+    /* How many golfers solved the experimental hole, or used the lang. */
+    > .golfers {
+        align-items: center;
+        display: flex;
+        gap: .25rem;
+        justify-self: center;
+
+        /* The person icon tucked against the count. */
+        > span {
+            align-items: center;
+            display: inline-flex;
+            gap: .125rem;
+        }
     }
 }
