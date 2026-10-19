@@ -34,6 +34,7 @@ RUN find . -name '*.opt-[12].pyc' -delete   \
           idlelib                           \
           lib-dynload/binascii.cpython-*.so \
           lib-dynload/zlib.cpython-*.so     \
+          profiling                         \
           pydoc_data                        \
           tkinter                           \
           turtle.py                         \
