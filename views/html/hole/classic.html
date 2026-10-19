@@ -13,6 +13,11 @@
         <div id=editor>
             <header>
                 <div id=strokes>0 bytes, 0 chars</div>
+                <div id=undoRedo>
+                    <button id=undoBtn>{{ svg "undo" }}Undo</button>
+                    <button id=redoBtn>{{ svg "redo" }}Redo</button>
+                </div>
+                <div id=selection></div>
                 <a class=hide href id=restoreLink>Restore solution</a>
             </header>
         </div>
