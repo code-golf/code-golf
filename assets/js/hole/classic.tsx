@@ -6,7 +6,7 @@ import {
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyButtons, getScorings, describeSelectedChar,
-    updateLocalStorage,
+    updateLocalStorage, saveHistory,
     ctrlEnter,
     getLastSubmittedCode,
     Scorings,
@@ -35,6 +35,7 @@ const editor = new EditorView({
             : formatScore(scorings.total)) + describeSelectedChar(tr.state, scorings);
 
         updateLocalStorage(code);
+        if (tr.docChanged) saveHistory(tr.state);
         updateRestoreLinkVisibility(editor);
 
         return result;
