@@ -18,6 +18,9 @@
         <h2 class=span>
             {{ with .Lang }}{{ svg .ID }}{{ end }}
             <span>{{ .Title }}</span>
+        {{ if .Solved }}
+            {{ svg "check-square-fill" "class" "solved" "title" "Solved" }}
+        {{ end }}
         </h2>
         {{ svg "thumbs-up" }}
         {{ .ThumbsUp }}

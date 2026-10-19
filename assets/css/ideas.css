@@ -52,6 +52,12 @@ main {
             white-space: nowrap;
             min-width: 0;
         }
+
+        /* The golfer has solved the experimental hole. */
+        > .solved {
+            flex-shrink: 0;
+            margin-left: auto;
+        }
     }
 
     svg {

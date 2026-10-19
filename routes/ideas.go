@@ -14,6 +14,7 @@ import (
 func ideasGET(w http.ResponseWriter, r *http.Request) {
 	type idea struct {
 		Category, Title          string
+		Solved                   bool
 		Hole                     *config.Hole
 		ID, ThumbsDown, ThumbsUp int
 		Lang                     *config.Lang
@@ -32,6 +33,23 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 		langs[lang.Experiment] = lang
 	}
 
+	// Experimental holes the golfer has a passing solution for.
+	solved := map[string]bool{}
+	if golfer := session.Golfer(r); golfer != nil {
+		var holes []string
+		if err := session.Database(r).Select(
+			&holes,
+			"SELECT DISTINCT hole FROM solutions WHERE user_id = $1 AND NOT failing",
+			golfer.ID,
+		); err != nil {
+			panic(err)
+		}
+
+		for _, hole := range holes {
+			solved[hole] = true
+		}
+	}
+
 	var ideas []idea
 	if err := session.Database(r).Select(
 		&ideas,
@@ -44,6 +62,7 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 		if holes, ok := holes[i.ID]; ok {
 			for _, hole := range holes {
 				i.Hole = hole
+				i.Solved = solved[hole.ID]
 				i.Title = hole.Name
 				data.Holes = append(data.Holes, i)
 			}
