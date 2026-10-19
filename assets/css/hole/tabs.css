@@ -23,6 +23,17 @@ body {
 
 .rotate-icon svg { rotate: 90deg }
 
+#previous-section {
+    overflow: auto;
+    padding: .375rem;
+
+    #previous pre { max-height: none }
+
+    #previous:not(.hide) + #previous-empty { display: none }
+
+    #previous-empty { color: var(--grey) }
+}
+
 section {
     /* undo display: grid */
     display: block;
