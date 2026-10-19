@@ -32,47 +32,20 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 		holeIDs[i] = hole.ID
 	}
 
-	// How many golfers have a passing solution for each experimental hole.
-	var solves []struct {
-		Golfers int
-		Hole    string
-	}
-	if err := session.Database(r).Select(
-		&solves,
-		`SELECT COUNT(DISTINCT user_id) golfers, hole
-		   FROM solutions
-		  WHERE hole = ANY($1) AND NOT failing
-	   GROUP BY hole`,
-		pq.Array(holeIDs),
-	); err != nil {
-		panic(err)
-	}
-
-	golfers := map[string]int{}
-	for _, solve := range solves {
-		golfers[solve.Hole] = solve.Golfers
-	}
-
 	langs := map[int]*config.Lang{}
-	for _, lang := range config.ExpLangList {
+	langIDs := make([]string, len(config.ExpLangList))
+	for i, lang := range config.ExpLangList {
 		langs[lang.Experiment] = lang
+		langIDs[i] = lang.ID
 	}
+
+	golfersByHole := ideaGolfers(r, "hole", holeIDs)
+	golfersByLang := ideaGolfers(r, "lang", langIDs)
 
 	// Experimental holes the golfer has a passing solution for.
-	solved := map[string]bool{}
+	var solvedHoles map[string]bool
 	if golfer := session.Golfer(r); golfer != nil {
-		var holes []string
-		if err := session.Database(r).Select(
-			&holes,
-			"SELECT DISTINCT hole FROM solutions WHERE user_id = $1 AND NOT failing",
-			golfer.ID,
-		); err != nil {
-			panic(err)
-		}
-
-		for _, hole := range holes {
-			solved[hole] = true
-		}
+		solvedHoles = ideaSolvedHoles(r, golfer.ID)
 	}
 
 	var ideas []idea
@@ -86,13 +59,14 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 	for _, i := range ideas {
 		if holes, ok := holes[i.ID]; ok {
 			for _, hole := range holes {
-				i.Golfers = golfers[hole.ID]
+				i.Golfers = golfersByHole[hole.ID]
 				i.Hole = hole
-				i.Solved = solved[hole.ID]
+				i.Solved = solvedHoles[hole.ID]
 				i.Title = hole.Name
 				data.Holes = append(data.Holes, i)
 			}
 		} else if lang, ok := langs[i.ID]; ok {
+			i.Golfers = golfersByLang[lang.ID]
 			i.Lang = lang
 			i.Title = lang.Name
 			data.Langs = append(data.Langs, i)
@@ -112,4 +86,47 @@ func ideasGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	render(w, r, "ideas", data, "Ideas")
+}
+
+// How many golfers have a passing solution for each of the given holes or
+// langs, column is either "hole" or "lang".
+func ideaGolfers(r *http.Request, column string, ids []string) map[string]int {
+	var rows []struct {
+		Golfers int
+		ID      string
+	}
+	if err := session.Database(r).Select(
+		&rows,
+		`SELECT COUNT(DISTINCT user_id) golfers, `+column+` id
+		   FROM solutions
+		  WHERE `+column+` = ANY($1) AND NOT failing
+	   GROUP BY `+column,
+		pq.Array(ids),
+	); err != nil {
+		panic(err)
+	}
+
+	golfers := map[string]int{}
+	for _, row := range rows {
+		golfers[row.ID] = row.Golfers
+	}
+	return golfers
+}
+
+// The holes the golfer has a passing solution for.
+func ideaSolvedHoles(r *http.Request, golferID int) map[string]bool {
+	var holes []string
+	if err := session.Database(r).Select(
+		&holes,
+		"SELECT DISTINCT hole FROM solutions WHERE user_id = $1 AND NOT failing",
+		golferID,
+	); err != nil {
+		panic(err)
+	}
+
+	solved := map[string]bool{}
+	for _, hole := range holes {
+		solved[hole] = true
+	}
+	return solved
 }

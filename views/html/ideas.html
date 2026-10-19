@@ -32,6 +32,10 @@
                 {{ svg .CategoryIcon }}
                 {{ comma $golfers }}
             </span>
+        {{ else with .Lang }}
+            <span class=golfers title="Used by {{ amount $golfers "golfer" }}">
+                {{ comma $golfers }}
+            </span>
         {{ else }}
             <span></span>
         {{ end }}

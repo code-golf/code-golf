@@ -83,7 +83,7 @@ main {
         width: 1rem;
     }
 
-    /* How many golfers solved the experimental hole. */
+    /* How many golfers solved the experimental hole, or used the lang. */
     > .golfers {
         align-items: center;
         display: flex;
