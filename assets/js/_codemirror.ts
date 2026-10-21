@@ -6,6 +6,7 @@ import { $ }                                              from './_util';
 export { EditorState, EditorView };
 
 // Extensions.
+import { calcErrors, evaluateSelections }        from './_codemirror_calc';
 import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
 import { addCursorAbove, addCursorBelow, history,
@@ -157,7 +158,11 @@ export const extensions : { [key: string]: any } = {
             { key: 'Shift-Alt-ArrowDown', run: addCursorBelow },
             { key: 'Shift-Alt-i',         run: addCursorsToLineEnds },
             { key: 'Escape',              run: simplifySelection },
+
+            // Python calculator. preventDefault stops focusing the search bar.
+            { key: 'Mod-e', run: evaluateSelections, preventDefault: true },
         ]),
+        calcErrors,
         highlightWhitespace(),
     ],
     'lineNumbers': lineNumbers(),

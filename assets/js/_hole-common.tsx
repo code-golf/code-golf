@@ -861,19 +861,19 @@ export function getScorings(tr: any, editor: any) {
             total.stroke = strokeLen(code, allowedStrokes);
         }
 
-        if (tr.selection) {
-            selection.byte = 0;
-            selection.char = 0;
+        // Read the state's selection, not tr.selection, which is only set by
+        // transactions that move it (e.g. not by effect-only ones).
+        selection.byte = 0;
+        selection.char = 0;
 
-            for (const range of tr.selection.ranges) {
-                const contents = code.slice(range.from, range.to);
-                selection.byte += byteLen(contents);
-                selection.char += charLen(contents);
+        for (const range of tr.state.selection.ranges) {
+            const contents = code.slice(range.from, range.to);
+            selection.byte += byteLen(contents);
+            selection.char += charLen(contents);
 
-                if (allowedStrokes !== undefined) {
-                    selection.stroke ??= 0;
-                    selection.stroke += strokeLen(contents, allowedStrokes);
-                }
+            if (allowedStrokes !== undefined) {
+                selection.stroke ??= 0;
+                selection.stroke += strokeLen(contents, allowedStrokes);
             }
         }
     }
