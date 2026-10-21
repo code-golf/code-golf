@@ -8,6 +8,7 @@ export { EditorState, EditorView };
 // Extensions.
 import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
+import { rainbowBrackets }                       from './_codemirror_rainbow';
 import { addCursorAbove, addCursorBelow, history,
     historyKeymap, indentLess, insertNewline, insertTab,
     moveLineDown, moveLineUp, selectLine,
@@ -168,7 +169,8 @@ export const extensions : { [key: string]: any } = {
             },
         },
     ),
-    'bracketMatching': bracketMatching(),
+    // Holding Alt also colours the brackets by depth.
+    'bracketMatching': [bracketMatching(), rainbowBrackets],
     'vim': vim({ status: true }),
 
     // Languages.
