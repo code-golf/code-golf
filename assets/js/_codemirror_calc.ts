@@ -4,7 +4,7 @@ import { calc }                                     from './_calc';
 
 type Range = { from: number, to: number };
 
-// Selections that failed to evaluate flash red for a second.
+// Selections that failed to evaluate flash red briefly.
 const setErrors = StateEffect.define<Range[]>();
 const errorMark = Decoration.mark({ class: 'cm-calc-error' });
 const timers    = new WeakMap<EditorView, ReturnType<typeof setTimeout>>();
@@ -48,7 +48,7 @@ export const evaluateSelections = (view: EditorView) => {
     if (failed.length) {
         clearTimeout(timers.get(view));
         timers.set(view, setTimeout(() => view.dom.isConnected &&
-            view.dispatch({ effects: setErrors.of([]) }), 1000));
+            view.dispatch({ effects: setErrors.of([]) }), 400));
     }
 
     return true;
