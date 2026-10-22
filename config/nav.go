@@ -32,6 +32,15 @@ var pathSlug = regexp.MustCompile("{[a-z]+}")
 // maybe something like unified/single namespace.
 func initNav() {
 	Nav = map[string]*Navigaton{
+		"golfer/diamonds": {
+			Path: "/golfers/{name}/diamonds/{hole}/{lang}/{scoring}",
+			Groups: []*LinkGroup{
+				group("Scoring", "scoring", "All", "Bytes", "Chars"),
+				groupLangs(false),
+				groupHoles(false),
+			},
+		},
+
 		"golfer/settings": {
 			OnePerRow: true,
 			Path:      "/golfer/settings/{page}",
