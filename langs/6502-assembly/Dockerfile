@@ -2,7 +2,7 @@ FROM alpine:3.23 AS builder
 
 RUN apk add --no-cache npm
 
-ENV VER=0.2.0
+ENV VER=0.5.0
 
 RUN npm install --prefix=/usr fluffy-6502@$VER
 

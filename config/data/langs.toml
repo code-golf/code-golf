@@ -20,8 +20,8 @@ example    = '''
 args       = [ '/usr/node_modules/fluffy-6502/runner.js' ]
 assembly   = true
 experiment = 628
-size       = '98.8 MiB'
-version    = 'Fluffy 6502 0.2.0'
+size       = '99.3 MiB'
+version    = 'Fluffy 6502 0.5.0'
 website    = 'https://github.com/CatsAreFluffy/6502golf/tree/main/packages/fluffy-6502'
 example    = '''
  ; Syntax is DASM-like

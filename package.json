@@ -30,7 +30,7 @@
     "codemirror-lang-zig": "",
     "diff": "",
     "esbuild": "",
-    "fluffy-6502": "",
+    "fluffy-6502": "^0.5.0",
     "golden-layout": "^2.6.0",
     "luxon": "",
     "lz-string": "",
