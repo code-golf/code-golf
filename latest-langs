@@ -14,7 +14,7 @@ sub get {
 
 constant %paths = (
     '05AB1E'        => 'github.com/Adriandmen/05AB1E',
-    '6502 Assembly' => 'https://registry.npmjs.org/fluffy-6502/latest',
+    '6502 Assembly' => 'registry.npmjs.org/fluffy-6502/latest',
     '><>'           => 'github.com/primo-ppcg/fish-jit',
     'ALGOL 68'      => 'algol68genie.nl/en/algol-68-genie/',
     'APL'           => 'dyalog.com/download-zone.htm?p=download',
