@@ -162,7 +162,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 			      AND $1 IN ('all', hole::text)
 			      AND $2 IN ('all', lang::text)
 			      AND $3 IN ('all', scoring::text)
-			      AND uses_ai IS NOT DISTINCT FROM $6
+			      AND medals.uses_ai IS NOT DISTINCT FROM $6
 			 ORDER BY rank, hole, lang, scoring, name
 			    LIMIT $4 OFFSET $5`
 
