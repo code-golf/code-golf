@@ -163,8 +163,8 @@ func main() {
 
 			// Users need a GitHub connection to appear in golfers_with_avatars.
 			if _, err := tx.Exec(
-				"INSERT INTO connections (id, connection, user_id, username) VALUES ($1, 'github', $1, $2)",
-				userID, info.Login,
+				"INSERT INTO connections (id, connection, user_id, username) VALUES ($1, 'github', $2, $3)",
+				userID, userID, info.Login,
 			); err != nil {
 				panic(err)
 			}
