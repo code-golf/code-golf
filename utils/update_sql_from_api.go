@@ -161,6 +161,14 @@ func main() {
 				panic(err)
 			}
 
+			// Users need a GitHub connection to appear in golfers_with_avatars.
+			if _, err := tx.Exec(
+				"INSERT INTO connections (id, connection, user_id, username) VALUES ($1, 'github', $1, $2)",
+				userID, info.Login,
+			); err != nil {
+				panic(err)
+			}
+
 			// Users need cheevos to avoid being superfluous.
 			if _, err := tx.Exec("INSERT INTO cheevos (earned, user_id, cheevo) VALUES ($1, $2, $3)",
 				info.Submitted, userID, "hello-world",
@@ -213,6 +221,12 @@ func main() {
 
 	if err := tx.Commit(); err != nil {
 		panic(err)
+	}
+
+	for _, view := range []string{"medals", "rankings", "points"} {
+		if _, err := db.Exec("REFRESH MATERIALIZED VIEW CONCURRENTLY " + view); err != nil {
+			panic(err)
+		}
 	}
 
 	fmt.Printf("\nUpdate count: %d\n", updateCount)
