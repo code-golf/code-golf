@@ -99,27 +99,25 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 
 	case "diamond-deltas":
 		description = "Deltas between diamonds and silvers"
-		sql = `WITH diamonds AS (
-			    SELECT *
+		sql = `WITH deltas AS (
+			    SELECT hole, lang, scoring,
+			           MIN(user_id) FILTER (WHERE medal = 'diamond') user_id,
+			           MIN(strokes) FILTER (WHERE medal = 'silver') -
+			           MIN(strokes) FILTER (WHERE medal = 'diamond') count
 			      FROM medals
-			     WHERE medal = 'diamond'
+			     WHERE medal IN ('diamond', 'silver')
+			       AND $1 IN ('all', hole::text)
+			       AND $2 IN ('all', lang::text)
+			       AND $3 IN ('all', scoring::text)
 			       AND uses_ai IS NOT DISTINCT FROM $6
-			), silvers AS (
-			    SELECT DISTINCT hole, lang, scoring, strokes
-			      FROM medals
-			     WHERE medal = 'silver'
-			       AND uses_ai IS NOT DISTINCT FROM $6
+			  GROUP BY hole, lang, scoring
 			) SELECT avatar_url, country_flag, name,
-			         hole, lang, scoring,
-			         silvers.strokes - diamonds.strokes count,
-			         RANK() OVER(ORDER BY silvers.strokes - diamonds.strokes DESC),
+			         hole, lang, scoring, count,
+			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
-			    FROM diamonds
-			    JOIN silvers USING (hole, lang, scoring)
+			    FROM deltas
 			    JOIN golfers_with_avatars ON id = user_id
-			   WHERE $1 IN ('all', hole::text)
-			     AND $2 IN ('all', lang::text)
-			     AND $3 IN ('all', scoring::text)
+			   WHERE count IS NOT NULL
 			ORDER BY rank, scoring
 			   LIMIT $4 OFFSET $5`
 
