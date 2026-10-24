@@ -176,10 +176,10 @@ func runCode(
 			run.Stderr = `Quine in Go must not use "embed".`
 			return nil
 		}
-	case "iogii", "stax":
+	case "iogii":
 		// Prevent trivial quines. Error out and return early.
-		if hole.ID == "quine" && len(code) > 0 && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
-			run.Stderr = "Quine in " + lang.Name + " must not consist solely of numeric characters."
+		if hole.ID == "quine" && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
+			run.Stderr = "Quine in iogii must not consist solely of numeric characters."
 			return nil
 		}
 	case "jq":
@@ -216,6 +216,16 @@ func runCode(
 		}
 	case "php":
 		code = "<?php " + code + " ;"
+	case "stax":
+		// Prevent trivial quines. Error out and return early.
+		if hole.ID == "quine" && regexp.MustCompile(`^\d+\n?$`).MatchString(code) {
+			run.Stderr = "Quine in Stax must not consist solely of numeric characters."
+			return nil
+		}
+		if hole.ID == "quine" && strings.Contains(code, "|?") {
+			run.Stderr = "Quine in Stax must not use |?."
+			return nil
+		}
 	case "racket":
 		if hole.ID == "quine" {
 			// Inserting `(current-print (λ (x) (void)))` before the code in the editor
