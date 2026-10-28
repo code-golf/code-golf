@@ -12,7 +12,9 @@ RUN sed -i '1c#!/usr/bin/node' /usr/node_modules/@defasm/cli/cli.js
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-*.so.1           /lib/
-COPY --from=0 /usr/bin/node                 /usr/bin/
+# No read perms makes the kernel flag defasm as non-dumpable to
+# prevent the solution reading the source code from process memory
+COPY --from=0 --chmod=0111 /usr/bin/node    /usr/bin/
 COPY --from=0 /usr/lib/libada.so.3          \
               /usr/lib/libbrotlicommon.so.1 \
               /usr/lib/libbrotlidec.so.1    \
