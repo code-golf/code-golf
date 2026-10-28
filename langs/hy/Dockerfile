@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache clang gcc llvm-dev make openssl-dev
 
-ENV CC='clang' PYVER=3.15.0 VER=1.3.1
+ENV CC='clang' PYVER=3.15.2 VER=1.3.1
 
 ADD --unpack https://www.python.org/ftp/python/$PYVER/Python-$PYVER.tar.xz /
 

@@ -1,4 +1,4 @@
-FROM rust:1.99.0-slim-trixie AS builder
+FROM rust:1.99.1-slim-trixie AS builder
 
 ENV VER=1.19.2
 

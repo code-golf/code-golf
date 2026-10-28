@@ -2,12 +2,16 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache autoconf cmake g++ gfortran linux-headers make python3
 
-# Fix GCC 15 with cstdint, see https://github.com/JuliaLang/julia/issues/58478
-ENV CXXFLAGS='-include cstdint -flto' LDFLAGS='-flto' VER=1.12.6
+ENV CXXFLAGS='-flto' LDFLAGS='-flto' VER=1.13.3
 
 ADD --unpack https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz /
 
 WORKDIR /julia-$VER
+
+# Fix Musl support, see https://github.com/JuliaLang/julia/pull/63558
+RUN apk add --no-cache patch
+COPY 63558.patch .
+RUN patch -p1 < 63558.patch
 
 RUN make -j`nproc` prefix=/usr MARCH=x86-64-v3 install
 
@@ -26,7 +30,7 @@ COPY --from=0 /usr/bin/julia            /usr/bin/
 COPY --from=0 /usr/lib/libcrypto.so.3   \
               /usr/lib/libgcc_s.so.1    \
               /usr/lib/libgfortran.so.5 \
-              /usr/lib/libjulia.so.1.12 \
+              /usr/lib/libjulia.so.1.13 \
               /usr/lib/libquadmath.so.0 \
               /usr/lib/libssl.so.3      \
               /usr/lib/libstdc++.so.6   \

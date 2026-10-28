@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache gcc make musl-dev
 
-ENV VER=5.5.1
+ENV VER=5.5.2
 
 ADD --unpack https://github.com/ocaml/ocaml/archive/refs/tags/$VER.tar.gz /
 

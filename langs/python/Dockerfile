@@ -3,7 +3,7 @@ FROM alpine:3.24 AS builder
 RUN apk add --no-cache clang gcc llvm-dev make
 
 # Also bump Coconut, Hy.
-ENV CC=clang VER=3.15.0
+ENV CC=clang VER=3.15.2
 
 ADD --unpack https://www.python.org/ftp/python/$VER/Python-$VER.tar.xz /
 
