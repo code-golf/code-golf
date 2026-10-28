@@ -111,11 +111,12 @@ var _ = answerFunc("reverse-polish-notation", func() []Answer {
 		genExpr(randInt(1, math.MaxInt16), expandRight, 0),
 		genExpr(0, expandRand, randInt(16, 31)),
 		genExpr(10, expandRight, 0),
+		genExpr(1020304, expandRight, 0),
 		genExpr(10, expandRand, randInt(16, 31)),
 		genExpr(100*randInt(2, 99)+10, expandRand, randInt(1, 31)),
 	}
 
-	for i := 7; i < count; i++ {
+	for i := 8; i < count; i++ {
 		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
