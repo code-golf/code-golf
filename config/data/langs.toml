@@ -1297,9 +1297,9 @@ end
 '''
 
 [Nim]
-args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '14.9 MiB'
-version = '2.2.12'
+args    = [ '/usr/bin/nim', 'r', '--colors:on', '-o:/tmp/code', '-' ]
+size    = '18.6 MiB'
+version = '2.4.0'
 website = 'https://nim-lang.org'
 example = '''
 import os

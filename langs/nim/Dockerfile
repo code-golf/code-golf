@@ -3,7 +3,7 @@ FROM alpine:3.24 AS builder
 RUN apk add --no-cache dash gcc musl-dev pcre tcc tcc-libs-static
 
 # Also bump Arturo.
-ENV VER=2.2.12
+ENV VER=2.4.0
 
 ADD --unpack https://nim-lang.org/download/nim-$VER.tar.xz /
 
