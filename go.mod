@@ -4,8 +4,8 @@ go 1.27
 
 require (
 	github.com/DATA-DOG/go-sqlmock v1.5.2
-	github.com/agnivade/levenshtein v1.2.1
-	github.com/buildkite/terminal-to-html/v3 v3.17.1
+	github.com/agnivade/levenshtein v1.2.2
+	github.com/buildkite/terminal-to-html/v3 v3.17.3
 	github.com/bwmarrin/discordgo v0.29.1-0.20260214123928-f43dd94faaac
 	github.com/go-chi/chi/v5 v5.5.0
 	github.com/go-git/go-billy/v5 v5.9.2
@@ -20,7 +20,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/vinovest/sqlx v1.7.2
 	github.com/yuin/goldmark v1.8.6
-	golang.org/x/net v0.61.0
+	golang.org/x/net v0.62.0
 	golang.org/x/oauth2 v0.37.0
 	golang.org/x/sync v0.24.0
 )
