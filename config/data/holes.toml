@@ -1907,6 +1907,9 @@ preamble = '''
 '''
 
 ['GPS Satellite Identification']
+authors = [
+    '01763586-18d2-7ce7-b70c-00ad668205de', # madex
+]
 category = 'Computing'
 links = [
     { name = 'IS-GPS-200', url = '//archive.gps.gov/technical/icwg/IS-GPS-200M.pdf' },
