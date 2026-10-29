@@ -22,7 +22,7 @@ FROM codegolf/lang-base
 COPY --from=0 /lib/ld-musl-*.so.1              /lib/
 COPY --from=0 /usr/bin/node                    \
               /usr/bin/stax                    /usr/bin/
-COPY --from=0 /usr/lib/libada.so.3             \
+COPY --from=0 /usr/lib/libada.so.4             \
               /usr/lib/libbrotlicommon.so.1    \
               /usr/lib/libbrotlidec.so.1       \
               /usr/lib/libbrotlienc.so.1       \

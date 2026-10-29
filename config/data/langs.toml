@@ -123,7 +123,7 @@ loop arg [a] [
 [Assembly]
 args     = [ '/usr/node_modules/@defasm/cli/cli.js', '--size-out=3', '-w', '-r' ]
 assembly = true
-size     = '74.9 MiB'
+size     = '72.0 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
 example  = '''
@@ -418,7 +418,7 @@ int main(int argc, char* argv[]) {
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '81.0 MiB'
+size    = '78.0 MiB'
 version = '0.11.15'
 website = 'https://civet.dev'
 example = '''
@@ -1808,7 +1808,7 @@ foreach (arg in vargv)
 args       = [ '/usr/bin/stax', '-' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 439
-size       = '78.6 MiB'
+size       = '75.6 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
