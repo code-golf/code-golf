@@ -1,8 +1,10 @@
 {{ template "header" . }}
 
 {{ define "ideaGrid" }}{{ range . }}
+{{ $golfers := .Golfers }}
 {{ with .Hole }}
-    <a class="card {{ .CategoryColor }}" href="/{{ .ID }}" title="{{ .Name }} ({{ .Category }})">
+    <a class="card {{ .CategoryColor }}" href="/{{ .ID }}"
+        title="{{ .Name }} ({{ .Category }}) (solved by {{ amount $golfers "golfer" }})">
 {{ else }}
     {{ $class := "red" }}
     {{ if eq .Category "cheeevo" }}
@@ -13,16 +15,32 @@
         {{ $class = "yellow" }}
     {{ end }}
 
-    <a class="card {{ $class }}" href="//github.com/code-golf/code-golf/issues/{{ .ID }}" title="{{ .Title }}">
+    <a class="card {{ $class }}" data-category="{{ .Category }}"
+        href="//github.com/code-golf/code-golf/issues/{{ .ID }}"
+        title="{{ .Title }}{{ if .Lang }} (used by {{ amount $golfers "golfer" }}){{ end }}">
 {{ end }}
         <h2 class=span>
             {{ with .Lang }}{{ svg .ID }}{{ end }}
             <span>{{ .Title }}</span>
+        {{ if .Solved }}
+            {{ svg "solved-pin" "class" "solved" }}
+        {{ end }}
         </h2>
         {{ svg "thumbs-up" }}
         {{ .ThumbsUp }}
 
-        {{ with .Hole }}{{ svg .CategoryIcon }}{{ else }}<span></span>{{ end }}
+        {{ with .Hole }}
+            <span class=golfers>
+                {{ svg .CategoryIcon }}
+                <span>{{ svg "person-fill" }}{{ comma $golfers }}</span>
+            </span>
+        {{ else with .Lang }}
+            <span class=golfers>
+                <span>{{ svg "person-fill" }}{{ comma $golfers }}</span>
+            </span>
+        {{ else }}
+            <span></span>
+        {{ end }}
 
         {{ svg "thumbs-down" }}
         {{ .ThumbsDown }}
@@ -52,8 +70,15 @@
     </details>
 {{ end }}
 {{ with .Data.Ideas }}
-    <details open>
-        <summary>Other Ideas ({{ len . }})</summary>
+    <details id=other-ideas open>
+        <summary>
+            Other Ideas (<span id=other-ideas-count>{{ len . }}</span>)
+            <span id=idea-filters>
+                <label class=purple><input type=checkbox value=hole checked>Holes</label>
+                <label class=yellow><input type=checkbox value=lang checked>Languages</label>
+                <label class=red><input type=checkbox value=other checked>Others</label>
+            </span>
+        </summary>
         <div>{{ template "ideaGrid" . }}</div>
     </details>
 {{ end }}
