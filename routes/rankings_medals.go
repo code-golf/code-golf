@@ -13,6 +13,7 @@ import (
 // GET /rankings/medals/{type}/{hole}/{lang}/{scoring}
 func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	data := struct {
+		AI                       string
 		Hole, PrevHole, NextHole *config.Hole
 		HoleID, LangID, Scoring  string
 		Type                     string
@@ -31,11 +32,28 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 			Submitted time.Time
 		}
 	}{
+		AI:      r.URL.Query().Get("ai"),
 		HoleID:  param(r, "hole"),
 		LangID:  param(r, "lang"),
 		Pager:   pager.New(r),
 		Scoring: param(r, "scoring"),
 		Type:    param(r, "type"),
+	}
+
+	// aiFilter is nil for "Both", true for "AI Only", false for "Human Only".
+	var aiFilter *bool
+
+	switch data.AI {
+	case "":
+		data.AI = "all"
+	case "human":
+		aiFilter = new(false)
+	case "ai":
+		aiFilter = new(true)
+	case "all":
+	default:
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	if data.HoleID != "all" && config.HoleByID[data.HoleID] == nil ||
@@ -50,7 +68,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var description, sql string
-	args := []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset}
+	args := []any{data.HoleID, data.LangID, data.Scoring, pager.PerPage, data.Pager.Offset, aiFilter}
 
 	// 1. Determine SQL and base Description based on Type
 	switch data.Type {
@@ -67,6 +85,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 			     WHERE $1 IN ('all', hole::text)
 			       AND $2 IN ('all', lang::text)
 			       AND $3 IN ('all', scoring::text)
+			       AND uses_ai IS NOT DISTINCT FROM $6
 			  GROUP BY user_id
 			) SELECT RANK() OVER(
 			             ORDER BY gold DESC, diamond DESC, silver DESC, bronze DESC
@@ -80,41 +99,42 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 
 	case "diamond-deltas":
 		description = "Deltas between diamonds and silvers"
-		sql = `WITH diamonds AS (
-			    SELECT *
-			      FROM rankings
-			     WHERE rank = 1 AND tie_count = 1 AND NOT experimental
-			), silvers AS (
-			    SELECT DISTINCT hole, lang, scoring, strokes
-			      FROM rankings
-			     WHERE rank = 2 AND NOT experimental
+		sql = `WITH deltas AS (
+			    SELECT hole, lang, scoring,
+			           MIN(user_id) FILTER (WHERE medal = 'diamond') user_id,
+			           MIN(strokes) FILTER (WHERE medal = 'silver') -
+			           MIN(strokes) FILTER (WHERE medal = 'diamond') count
+			      FROM medals
+			     WHERE medal IN ('diamond', 'silver')
+			       AND $1 IN ('all', hole::text)
+			       AND $2 IN ('all', lang::text)
+			       AND $3 IN ('all', scoring::text)
+			       AND uses_ai IS NOT DISTINCT FROM $6
+			  GROUP BY hole, lang, scoring
 			) SELECT avatar_url, country_flag, name,
-			         hole, lang, scoring,
-			         silvers.strokes - diamonds.strokes count,
-			         RANK() OVER(ORDER BY silvers.strokes - diamonds.strokes DESC),
+			         hole, lang, scoring, count,
+			         RANK() OVER(ORDER BY count DESC),
 			         COUNT(*) OVER () total
-			    FROM diamonds
-			    JOIN silvers USING (hole, lang, scoring)
+			    FROM deltas
 			    JOIN golfers_with_avatars ON id = user_id
-			   WHERE $1 IN ('all', hole::text)
-			     AND $2 IN ('all', lang::text)
-			     AND $3 IN ('all', scoring::text)
+			   WHERE count IS NOT NULL
 			ORDER BY rank, scoring
 			   LIMIT $4 OFFSET $5`
 
 	case "most-tied-golds":
 		description = "Most tied gold medals"
-		args = append(args, session.Golfer(r)) // $6
+		args = append(args, session.Golfer(r)) // $7
 
 		sql = `SELECT hole, lang, scoring, COUNT(*) count,
 			          RANK() OVER(ORDER BY COUNT(*) DESC),
-			          COUNT(*) FILTER (WHERE user_id = $6) > 0 me,
+			          COUNT(*) FILTER (WHERE user_id = $7) > 0 me,
 			          COUNT(*) OVER () total
 			     FROM medals
 			    WHERE medal = 'gold'
 			      AND $1 IN ('all', hole::text)
 			      AND $2 IN ('all', lang::text)
 			      AND $3 IN ('all', scoring::text)
+			      AND uses_ai IS NOT DISTINCT FROM $6
 			 GROUP BY hole, lang, scoring
 				HAVING COUNT(*) > 1
 			 ORDER BY rank, hole, lang, scoring
@@ -128,7 +148,7 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 		} else {
 			description = "🦄 Oldest unicorns (uncontested solves)"
 		}
-		args = append(args, medal) // $6
+		args = append(args, medal) // $7
 
 		sql = `SELECT avatar_url, country_flag, name,
 			          hole, lang, scoring, submitted,
@@ -136,10 +156,11 @@ func rankingsMedalsGET(w http.ResponseWriter, r *http.Request) {
 			          COUNT(*) OVER () total
 			     FROM medals
 			     JOIN golfers_with_avatars ON id = user_id
-			    WHERE medal = $6
+			    WHERE medal = $7
 			      AND $1 IN ('all', hole::text)
 			      AND $2 IN ('all', lang::text)
 			      AND $3 IN ('all', scoring::text)
+			      AND medals.uses_ai IS NOT DISTINCT FROM $6
 			 ORDER BY rank, hole, lang, scoring, name
 			    LIMIT $4 OFFSET $5`
 
