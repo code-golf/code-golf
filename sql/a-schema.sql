@@ -264,6 +264,18 @@ CREATE TABLE solutions (
     PRIMARY KEY (user_id, hole, lang, scoring)
 );
 
+-- Polyglots are scored on how many standard langs they pass, then bytes.
+CREATE TABLE polyglot_solutions (
+    submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
+    user_id   int       NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    hole      hole      NOT NULL,
+    code      text      NOT NULL,
+    langs     lang[]    NOT NULL CHECK (cardinality(langs) > 0),
+    -- Same limit as the solutions table.
+    CHECK (octet_length(code) <= 409600),
+    PRIMARY KEY (user_id, hole)
+);
+
 CREATE TABLE solutions_log (
     submitted timestamp NOT NULL DEFAULT TIMEZONE('UTC', NOW()),
     bytes     int       NOT NULL,
@@ -427,6 +439,7 @@ GRANT SELECT, INSERT, TRUNCATE       ON TABLE holes           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE ideas           TO "code-golf";
 GRANT SELECT, INSERT, TRUNCATE       ON TABLE langs           TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes           TO "code-golf";
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE polyglot_solutions TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE sessions        TO "code-golf";
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE solutions       TO "code-golf";
 GRANT SELECT, INSERT                 ON TABLE solutions_log   TO "code-golf";

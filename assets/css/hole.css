@@ -429,3 +429,56 @@ h2 {
 
 .pass.lastSubmittedCode .cm-editor { border-color: var(--green) !important }
 .fail.lastSubmittedCode .cm-editor { border-color: var(--red)   !important }
+
+/* Polyglot progress: compiled and passed bars, then one chip per lang. */
+#polyglot-progress {
+    align-items: center;
+    display: grid;
+    gap: .5rem 1rem;
+    grid-column: 1 / -1;
+    grid-template-columns: auto 1fr auto auto;
+
+    /* Flat bars, like the achievement progress on golfer profiles. */
+    progress {
+        -webkit-appearance: none;
+        appearance: none;
+        background: none;
+        border: 1px solid var(--color);
+        height: .5rem;
+        width: 100%;
+
+        /* Separate rules, as browsers drop a list with an unknown pseudo. */
+        &::-moz-progress-bar      { background: var(--link-color) }
+        &::-webkit-progress-value { background: var(--link-color) }
+        &::-webkit-progress-bar   { background: none }
+    }
+
+    .ok { font-weight: bold }
+}
+
+#polyglot-langs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    grid-column: 1 / -1;
+
+    /* Like the arguments, with the state on the border like the lang picker,
+       and the shown lang inverted like a selected tab. */
+    button {
+        background: var(--background);
+        border: 1px solid var(--grey);
+        border-radius: .5rem;
+        color: var(--color);
+        padding: .25rem .375rem;
+
+        &.pass    { border-color: var(--green) }
+        &.fail    { border-color: var(--red) }
+        &.testing { border-color: var(--blue) }
+        &.error   { color: var(--grey) }
+
+        &[aria-pressed=true] {
+            background: var(--color);
+            color: var(--background);
+        }
+    }
+}

@@ -32,6 +32,10 @@ var (
 
 	// Latest stable lang.
 	LatestLang *Lang
+
+	// Polyglot isn't a real lang and isn't in any of the lists above, its
+	// solutions are run in every standard lang instead.
+	PolyglotLang = &Lang{ID: "polyglot", Name: "Polyglot"}
 )
 
 type Lang struct {
@@ -113,6 +117,8 @@ func initLangs() {
 			return cmp.Compare(strings.ToLower(a.Name), strings.ToLower(b.Name))
 		})
 	}
+
+	PolyglotLang.LogoURL = assets.Paths["svg/polyglot.svg"]
 
 	LatestLang = slices.MaxFunc(LangList, func(a, b *Lang) int {
 		return strings.Compare(a.Released.String(), b.Released.String())
