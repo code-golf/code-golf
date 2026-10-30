@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: latest
 
-      - run: npm install
+      - run: npm install --allow-git=root
       - run: make lint
       - run: make test
       - run: go install filippo.io/mkcert@latest
