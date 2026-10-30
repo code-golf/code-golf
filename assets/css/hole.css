@@ -109,6 +109,51 @@ main .info {
 
 #err div, #exp div, #out div { white-space: pre }
 
+#arg, #err, #exp, #out {
+    position: relative;
+
+    /* Leave room for the copy button. */
+    > h3 { padding: 1.5rem 0 .25rem }
+}
+
+aside > .copy {
+    /* Sits at the top of the panel's vertical title. */
+    align-items: center;
+    display: flex;
+    left: 0;
+    position: absolute;
+    top: 0;
+
+    .btn {
+        background: var(--color);
+        border: 0;
+        color: var(--background);
+        justify-content: center;
+        padding: .25rem 0;
+        width: 2rem;
+
+        /* Embolden the icon rather than inheriting the generic .btn hover. */
+        &:hover {
+            background: var(--color);
+            color: var(--background);
+        }
+
+        &:hover svg {
+            stroke: currentColor;
+            stroke-width: .75;
+        }
+    }
+
+    > span {
+        background: var(--color);
+        color: var(--background);
+        font-weight: bold;
+        padding: .25rem .5rem;
+    }
+
+    [data-copy]:active + span { padding-left: .5rem }
+}
+
 #arg div {
     align-content: flex-start;
     align-items: flex-start;
@@ -117,7 +162,7 @@ main .info {
     gap: .375rem;
 }
 
-#arg span {
+#arg span:not(.copy, .copy *) {
     background: var(--arg-background);
     border-radius: .5rem;
     font-family: emoji, mahjong, 'Source Code Pro', monospace;
