@@ -36,6 +36,7 @@
     --link-color: hsl(205, 87%, 61%);
 
     --arg-background:     hsl(210, 8%, 25%);
+    --arg-highlight:      #000;
     --asm-dump:           hsl(210, 10%, 67%);
     --asm-error:          #f76970;
     --badge-background:   hsl(210, 8%, 25%);
