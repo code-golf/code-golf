@@ -32,6 +32,7 @@ declare global {
       input:    any;
       label:    any;
       li:       any;
+      mark:     any;
       optgroup: any;
       option:   any;
       p:        any;
