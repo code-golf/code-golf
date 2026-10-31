@@ -62,9 +62,10 @@ OD
 '''
 
 [APL]
-args       = [ '/usr/bin/apl', '-' ]
+args       = [ '/usr/bin/dyalogscript', '/tmp/code.dyalog' ]
 experiment = 135
 size       = '15.5 MiB'
+stdin-path = '/tmp/code.dyalog'
 version    = 'Dyalog APL 20.0.53963'
 website    = 'https://www.dyalog.com'
 example    = '''
@@ -123,6 +124,7 @@ loop arg [a] [
 [Assembly]
 args     = [ '/usr/node_modules/@defasm/cli/cli.js', '--size-out=3', '-w', '-r' ]
 assembly = true
+no-proc  = true
 size     = '72.0 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
@@ -1477,12 +1479,14 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-args    = [ '/usr/bin/prolog', '-' ]
-env     = [ 'LANG=C.UTF-8' ]
-size    = '57.5 MiB'
-version = 'SWI-Prolog 10.0.2'
-website = 'https://www.swi-prolog.org'
-example = '''
+args       = [ '/usr/bin/swipl', '-g', 'halt', '/tmp/code.pl' ]
+env        = [ 'LANG=C.UTF-8' ]
+no-proc    = true
+size       = '57.5 MiB'
+stdin-path = '/tmp/code.pl'
+version    = 'SWI-Prolog 10.0.2'
+website    = 'https://www.swi-prolog.org'
+example    = '''
 % Printing
 :- writeln("Hello, World!").
 

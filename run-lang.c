@@ -43,7 +43,32 @@
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 #define STR_WITH_LEN(str) str, sizeof(str) - 1
 
-int main(__attribute__((unused)) int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
+    bool no_proc = false;
+    char *stdin_path = NULL;
+
+    // Extract our options, which come first.
+    int i;
+    for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--no-proc") == 0) {
+            no_proc = true;
+            continue;
+        }
+        if (strncmp(argv[i], "--stdin-path=", 13) == 0) {
+            stdin_path = argv[i] + 13;
+            continue;
+        }
+        break;
+    }
+
+    if (i >= argc) {
+        fprintf(stderr,
+            "usage: %s [--no-proc] [--stdin-path=/path] <program> [args...]\n", argv[0]);
+        return 2;
+    }
+
+    argv += i;
+
     if (mount(NULL, "/", NULL, MS_PRIVATE|MS_REC, NULL) < 0)
         ERR_AND_EXIT("mount private");
 
@@ -61,31 +86,49 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (umount2("/", MNT_DETACH) < 0)
         ERR_AND_EXIT("umount2");
 
-    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
-        ERR_AND_EXIT("mount proc");
+    if (!no_proc) {
+        if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
+            ERR_AND_EXIT("mount proc");
 
-    // Clobber /proc/{locks,meminfo}. They can be used to inject state.
-    if (mount("/dev/null", "/proc/locks", NULL, MS_BIND, NULL) < 0)
-        ERR_AND_EXIT("mount /proc/locks");
-    if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
-        ERR_AND_EXIT("mount /proc/meminfo");
+        // Clobber /proc/{locks,meminfo}. They can be used to inject state.
+        if (mount("/dev/null", "/proc/locks", NULL, MS_BIND, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/locks");
+        if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/meminfo");
 
-    // Clobber /proc/stat. It can be used to inject state. Raku & V don't like this.
-    if (strcmp(argv[0], "/usr/bin/raku")   != 0
-     && strcmp(argv[0], "/usr/bin/V")      != 0)
-        if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
-            ERR_AND_EXIT("mount /proc/stat");
+        // Clobber /proc/stat. It can be used to inject state. Raku & V don't like this.
+        if (strcmp(argv[0], "/usr/bin/raku")   != 0
+         && strcmp(argv[0], "/usr/bin/V")      != 0)
+            if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
+                ERR_AND_EXIT("mount /proc/stat");
 
-    // Clobber /proc/sys. It can be used to inject state.
-    if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
-        ERR_AND_EXIT("mount /proc/sys");
+        // Clobber /proc/sys. It can be used to inject state.
+        if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/sys");
 
-    // Allow /proc/self/fd/0 to be read by the lang after we change user.
-    if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
-        ERR_AND_EXIT("chown /proc/self/fd/0");
+        // Allow /proc/self/fd/0 to be read by the lang after we change user.
+        if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
+            ERR_AND_EXIT("chown /proc/self/fd/0");
+    }
 
     if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount tmp");
+
+    // TODO Use fifo so the file can't be seeked?
+    if (stdin_path) {
+        FILE* fp;
+        if (!(fp = fopen(stdin_path, "w")))
+            ERR_AND_EXIT("fopen");
+
+        char buffer[4096];
+        ssize_t nbytes;
+        while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))))
+            if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
+                ERR_AND_EXIT("fwrite");
+
+        if (fclose(fp))
+            ERR_AND_EXIT("fclose");
+    }
 
     if (sethostname(STR_WITH_LEN("code-golf")) < 0)
         ERR_AND_EXIT("sethostname");

@@ -1,18 +1,10 @@
 FROM debian:trixie-slim AS builder
 
-RUN apt-get update                   \
- && DEBIAN_FRONTEND='noninteractive' \
-    apt-get install --yes gcc
-
 ENV VER=20.0.53963
 
 ADD https://www.dyalog.com/uploads/php/download.dyalog.com/download.php?file=20.0/linux_64_${VER}_unicode.x86_64.deb /dyalog.deb
 
 RUN dpkg -i dyalog.deb
-
-COPY apl.c /
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/apl -s apl.c
 
 FROM codegolf/lang-base
 
@@ -31,6 +23,6 @@ COPY --from=0 /opt/mdyalog/20.0/64/unicode/aplkeys/default        \
 COPY --from=0 /opt/mdyalog/20.0/64/unicode/apltrans/default       \
               /opt/mdyalog/20.0/64/unicode/apltrans/utf8          /opt/mdyalog/20.0/64/unicode/apltrans/
 COPY --from=0 /opt/mdyalog/20.0/64/unicode/scriptbin/dyalogscript /opt/mdyalog/20.0/64/unicode/scriptbin/
-COPY --from=0 /usr/bin/apl /usr/bin/dyalogscript                  /usr/bin/
+COPY --from=0 /usr/bin/dyalogscript                               /usr/bin/
 
-ENTRYPOINT ["apl"]
+ENTRYPOINT ["dyalogscript"]

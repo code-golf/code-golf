@@ -45,8 +45,10 @@ type Lang struct {
 	ID                   string         `json:"id"`
 	LogoURL              string         `json:"logo-url"`
 	Name                 string         `json:"name"`
+	NoProc               bool           `json:"-" toml:"no-proc"`
 	Released             toml.LocalDate `json:"released"`
 	Size                 string         `json:"size"`
+	StdinPath            string         `json:"-" toml:"stdin-path"`
 	Version              string         `json:"version"`
 	Website              string         `json:"website"`
 }

@@ -268,11 +268,19 @@ func runCode(
 		cmd.ExtraFiles = []*os.File{asmBytesWrite}
 	}
 
-	// Language arguments. Clone because we intend to mutate.
+	// Runner arguments.
+	if lang.NoProc {
+		cmd.Args = append(cmd.Args, "--no-proc")
+	}
+	if lang.StdinPath != "" {
+		cmd.Args = append(cmd.Args, "--stdin-path="+lang.StdinPath)
+	}
+
+	// Language arguments.
 	if hole.ID == "quine" && lang.ArgsQuine != nil {
-		cmd.Args = slices.Clone(lang.ArgsQuine)
+		cmd.Args = append(cmd.Args, lang.ArgsQuine...)
 	} else {
-		cmd.Args = slices.Clone(lang.Args)
+		cmd.Args = append(cmd.Args, lang.Args...)
 	}
 
 	// Pass code via args or stdin.
