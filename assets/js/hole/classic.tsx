@@ -87,6 +87,10 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
     $('#out div').replaceChildren(UnprintableElement.escape(data.Out));
+    $('#arg [data-copy]').dataset.copy = data.Argv.join('\n');
+    $('#err [data-copy]').dataset.copy = data.Err;
+    $('#exp [data-copy]').dataset.copy = data.Exp;
+    $('#out [data-copy]').dataset.copy = data.Out;
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
     const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.OutputDelimiter, data.MultisetItemDelimiter);
