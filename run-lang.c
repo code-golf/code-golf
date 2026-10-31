@@ -52,13 +52,13 @@ int main(int argc, char *argv[]) {
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--no-proc") == 0) {
             no_proc = true;
-            continue;
         }
-        if (strncmp(argv[i], "--stdin-path=", 13) == 0) {
+        else if (strncmp(argv[i], "--stdin-path=", 13) == 0) {
             stdin_path = argv[i] + 13;
-            continue;
         }
-        break;
+        else {
+            break;
+        }
     }
 
     if (i >= argc) {
