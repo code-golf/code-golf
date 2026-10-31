@@ -29,6 +29,17 @@
 
 <template id=template-details>{{ template "hole-details" . }}</template>
 
+<template id=template-previous>
+    <div class=hide id=previous>
+        <header>
+            <h2></h2>
+            <span class=copy><button class=btn data-copy id=copyPreviousBtn title=Copy>{{ svg "copy" }}</button><span>Copied</span></span>
+        </header>
+        <pre class=previous-code></pre>
+    </div>
+    <p id=previous-empty>Improve a solution to see the one it replaced here.</p>
+</template>
+
 <template id=template-scoreboard>
     <div id=scores-wrapper>
         <header>

@@ -292,7 +292,7 @@ main .info {
     padding: 1rem;
 }
 
-#strokes {
+#strokes, #notesTitle {
     font-weight: bold;
     padding: .375rem 0;
 }
@@ -347,6 +347,115 @@ h2 {
     display: flex;
     align-items: center;
     gap: 0.2rem;
+}
+
+#previous {
+    display: grid;
+    gap: .5rem;
+    grid-column: 1 / -1;
+
+    header {
+        align-items: center;
+        display: flex;
+        gap: 1rem;
+        justify-content: space-between;
+    }
+
+    h2 { font-size: 1rem }
+
+    pre {
+        border: 1px solid var(--color);
+        max-height: 12rem;
+        overflow: auto;
+        padding: .375rem;
+    }
+
+    .previous-code {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    /* Classic layout: a panel like Expected and Output. */
+    aside {
+        position: relative;
+
+        /* Leave room for the copy button, and a smaller font for the
+           longer title. */
+        > h3 {
+            font-size: 1.1rem;
+            padding: 2rem 0 .25rem;
+        }
+
+        /* Size the code box to the title rather than the other panels' fixed
+           height, scrolling any longer code. */
+        > div {
+            contain: size;
+            height: auto;
+        }
+    }
+
+    mark {
+        background: var(--red);
+        color: inherit;
+    }
+}
+
+/* Sits at the top of the panel's vertical title. */
+aside > .copy {
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+.copy {
+    align-items: center;
+    display: flex;
+
+    .btn {
+        background: var(--color);
+        border: 0;
+        color: var(--background);
+        justify-content: center;
+        padding: .25rem 0;
+        width: 2rem;
+
+        /* Embolden the icon rather than inheriting the generic .btn hover. */
+        &:hover {
+            background: var(--color);
+            color: var(--background);
+        }
+
+        &:hover svg {
+            stroke: currentColor;
+            stroke-width: .75;
+        }
+    }
+
+    > span {
+        background: var(--color);
+        color: var(--background);
+        font-weight: bold;
+        padding: .25rem .5rem;
+    }
+
+    [data-copy]:active + span { padding-left: .5rem }
+}
+
+.header-actions {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+}
+
+#notes {
+    flex: 1;
+
+    #notesStatus { color: var(--grey) }
+}
+
+main:not(.notes-mode) :is(#notes, #saveNotesBtn),
+main.notes-mode :is(#editor, #solutionPicker, #runBtn, #deleteBtn) {
+    display: none;
 }
 
 #picker, #solutionPicker {
