@@ -27,13 +27,17 @@
 {{ end }}
 {{ with .Data.Hole.Data }}
     <div>
-        <button class="btn orange" data-copy="{{ . }}">Copy as JSON</button>
+        <button class="btn orange" data-copy="{{ . }}">
+            {{ svg "copy" }} Copy as JSON
+        </button>
         <span>Copied</span>
     </div>
 {{ end }}
 {{ with .Data.Hole.Answer }}
     <div>
-        <button class="btn orange" data-copy="{{ . }}">Copy Answer</button>
+        <button class="btn orange" data-copy="{{ . }}">
+            {{ svg "copy" }} Copy Answer
+        </button>
         <span>Copied</span>
     </div>
 {{ end }}

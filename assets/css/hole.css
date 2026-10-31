@@ -196,7 +196,7 @@ aside > .copy {
 }
 
 [data-copy] {
-    display: inline;
+    display: inline-flex;
 
     + span {
         opacity: 0;
