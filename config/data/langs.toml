@@ -1790,9 +1790,11 @@ SELECT arg FROM argv;
 '''
 
 [Squirrel]
-args       = [ '/usr/bin/squirrel', '-' ]
+args       = [ '/usr/bin/squirrel', '/tmp/code.nut' ]
 experiment = 1598
-size       = '4.00 MiB'
+no-proc    = true
+size       = '3.99 MiB'
+stdin-path = '/tmp/code.nut'
 version    = '3.2'
 website    = 'http://squirrel-lang.org'
 example    = '''
