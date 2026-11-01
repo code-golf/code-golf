@@ -4396,7 +4396,6 @@ preamble  = '''
 authors = [
     '01811c7c-69f5-7cd1-83c8-5ab8e35a70e7', # inverseLorentz
 ]
-experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A001358', url = '//oeis.org/A001358' },
@@ -4861,7 +4860,6 @@ preamble = '''
 authors = [
     '01811c7c-69f5-7cd1-83c8-5ab8e35a70e7', # inverseLorentz
 ]
-experiment = 1154
 category = 'Sequence'
 links = [
     { name = 'OEIS A007304', url = '//oeis.org/A007304' },
