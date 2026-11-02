@@ -269,6 +269,9 @@ func runCode(
 	}
 
 	// Runner arguments.
+	if lang.Chdir != "" {
+		cmd.Args = append(cmd.Args, "--chdir="+lang.Chdir)
+	}
 	if lang.NoProc {
 		cmd.Args = append(cmd.Args, "--no-proc")
 	}

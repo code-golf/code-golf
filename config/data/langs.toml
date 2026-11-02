@@ -589,9 +589,10 @@ end
 '''
 
 [D]
-args    = [ '/usr/bin/D', '-' ]
+args    = [ '/usr/bin/dmd', '-color=on', '-run', '-' ]
+chdir   = '/tmp'    # FIXME dmd `-od=/tmp` doesn't work with `-run -`
 env     = [ 'PATH=/usr/bin' ]
-size    = '98.9 MiB'
+size    = '98.1 MiB'
 version = 'DMD 2.112.1'
 website = 'https://dlang.org'
 example = '''

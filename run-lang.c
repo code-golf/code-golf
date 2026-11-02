@@ -45,12 +45,15 @@
 
 int main(int argc, char *argv[]) {
     bool no_proc = false;
-    char *stdin_path = NULL;
+    char *chdir_path = NULL, *stdin_path = NULL;
 
     // Extract our options, which come first.
     int i;
     for (i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "--no-proc") == 0) {
+        if (strncmp(argv[i], "--chdir=", 8) == 0) {
+            chdir_path = argv[i] + 8;
+        }
+        else if (strcmp(argv[i], "--no-proc") == 0) {
             no_proc = true;
         }
         else if (strncmp(argv[i], "--stdin-path=", 13) == 0) {
@@ -113,6 +116,9 @@ int main(int argc, char *argv[]) {
 
     if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount tmp");
+
+    if (chdir_path && (chdir(chdir_path) < 0))
+        ERR_AND_EXIT("chdir");
 
     // TODO Use fifo so the file can't be seeked?
     if (stdin_path) {
