@@ -102,6 +102,27 @@ func genExpr(init int, expander func(*Node, int), expandCount int) *Node {
 	return node
 }
 
+// Expression is of the form "... term ..."
+func genExprWith(val int) *Node {
+	leftVal := randInt(0, math.MaxInt16-val)
+	rightVal := randInt(0, math.MaxInt16-val-leftVal)
+
+	left := genExpr(leftVal, expandRand, randInt(3, 8))
+	right := genExpr(rightVal, expandRand, randInt(3, 8))
+
+	return &Node{
+		op:    '+',
+		value: left.value + val + right.value,
+		left: &Node{
+			op:    '+',
+			value: left.value + val,
+			left:  left,
+			right: asNode(val),
+		},
+		right: right,
+	}
+}
+
 var _ = answerFunc("reverse-polish-notation", func() []Answer {
 	const count = 20
 
@@ -114,9 +135,11 @@ var _ = answerFunc("reverse-polish-notation", func() []Answer {
 		genExpr(10203, expandRight, 0),
 		genExpr(10, expandRand, randInt(16, 31)),
 		genExpr(100*randInt(2, 99)+10, expandRand, randInt(1, 31)),
+		genExprWith(10),
+		genExprWith(100*randInt(2, 99)+10),
 	}
 
-	for i := 8; i < count; i++ {
+	for i := 10; i < count; i++ {
 		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
