@@ -159,8 +159,8 @@ var _ = answerFunc("reverse-polish-notation", func() []Answer {
 		// Stax cases
 		genExpr(10203, expandRight, 0),
 		genExprWith(10, '+'),
-		genExprWith(10203, '+'),
-		genExprWith(210, '+'),
+		genExprWith(1041, '+'),
+		genExprWith(7810, '+'),
 		genExprWith(10, '*'),
 		genExprWith(10203, '*'),
 		genExprWith(210, '*'),
