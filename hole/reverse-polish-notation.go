@@ -136,7 +136,7 @@ var _ = answerFunc("reverse-polish-notation", func() []Answer {
 		genExpr(10, expandRand, randInt(16, 31)),
 		genExpr(100*randInt(2, 99)+10, expandRand, randInt(1, 31)),
 		genExprWith(10),
-		genExprWith(100*randInt(2, 99)+10),
+		genExprWith(100*randInt(2, 99) + 10),
 	}
 
 	for i := 10; i < count; i++ {
