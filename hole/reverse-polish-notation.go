@@ -102,20 +102,45 @@ func genExpr(init int, expander func(*Node, int), expandCount int) *Node {
 	return node
 }
 
-// Expression is of the form "... term ..."
-func genExprWith(val int) *Node {
-	leftVal := randInt(0, math.MaxInt16-val)
-	rightVal := randInt(0, math.MaxInt16-val-leftVal)
+// Expression is of the form "... val op ..."
+// Only accepts '+' or '*' as the op
+func genExprWith(val int, op byte) *Node {
+	var leftVal, rightVal int
+
+	switch op {
+	case '+':
+		leftVal = randInt(0, math.MaxInt16-val)
+		rightVal = randInt(0, math.MaxInt16-val-leftVal)
+
+	case '*':
+		max := math.MaxInt16
+		if val != 0 {
+			max /= val
+		}
+		leftVal = randInt(1, max)
+		rightVal = randInt(1, max/leftVal)
+	}
 
 	left := genExpr(leftVal, expandRand, randInt(3, 8))
 	right := genExpr(rightVal, expandRand, randInt(3, 8))
 
+	var inner, total int
+
+	switch op {
+	case '+':
+		inner = left.value + val
+		total = inner + right.value
+	case '*':
+		inner = left.value * val
+		total = inner * right.value
+	}
+
 	return &Node{
-		op:    '+',
-		value: left.value + val + right.value,
+		op:    op,
+		value: total,
 		left: &Node{
-			op:    '+',
-			value: left.value + val,
+			op:    op,
+			value: inner,
 			left:  left,
 			right: asNode(val),
 		},
@@ -131,15 +156,18 @@ var _ = answerFunc("reverse-polish-notation", func() []Answer {
 		genExpr(randInt(1, math.MaxInt16), expandRight, randInt(16, 31)),
 		genExpr(randInt(1, math.MaxInt16), expandRight, 0),
 		genExpr(0, expandRand, randInt(16, 31)),
+		// Stax cases
 		genExpr(10, expandRight, 0),
 		genExpr(10203, expandRight, 0),
-		genExpr(10, expandRand, randInt(16, 31)),
-		genExpr(100*randInt(2, 99)+10, expandRand, randInt(1, 31)),
-		genExprWith(10),
-		genExprWith(100*randInt(2, 99) + 10),
+		genExprWith(10, '+'),
+		genExprWith(10203, '+'),
+		genExprWith(100*randInt(2, 99)+10, '+'),
+		genExprWith(10, '*'),
+		genExprWith(10203, '*'),
+		genExprWith(100*randInt(2, 99)+10, '*'),
 	}
 
-	for i := 10; i < count; i++ {
+	for i := 12; i < count; i++ {
 		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
