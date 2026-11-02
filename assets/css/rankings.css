@@ -1,3 +1,11 @@
+th:has(#ai-filter) {
+    position: initial;
+}
+
+#ai-filter {
+    justify-content: center;
+}
+
 #pagination {
     display: flex;
     font-variant: tabular-nums;

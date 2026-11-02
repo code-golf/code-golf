@@ -306,27 +306,35 @@ CREATE VIEW stable_passing_solutions AS
        JOIN langs ON lang = langs.id
       WHERE holes.experiment = 0 AND langs.experiment = 0 AND NOT failing;
 
-CREATE MATERIALIZED VIEW medals AS WITH ranks AS (
-    SELECT user_id, hole, lang, scoring, submitted,
-           COUNT(*) OVER (PARTITION BY hole, lang, scoring),
-           RANK() OVER (
-               PARTITION BY hole, lang, scoring
-                   ORDER BY CASE WHEN scoring = 'bytes'
-                                 THEN bytes ELSE chars END
-           )
+CREATE MATERIALIZED VIEW medals AS WITH solutions AS (
+    SELECT user_id, hole, lang, scoring, submitted, uses_ai,
+           CASE WHEN scoring = 'bytes' THEN bytes ELSE chars END strokes
       FROM stable_passing_solutions
-) SELECT user_id, hole, lang, scoring, submitted,
+      JOIN users ON id = user_id
+), ranks AS (
+    SELECT user_id, hole, lang, scoring, submitted, strokes,
+           NULL::bool uses_ai,
+           COUNT(*) OVER (PARTITION BY hole, lang, scoring),
+           RANK() OVER (PARTITION BY hole, lang, scoring ORDER BY strokes)
+      FROM solutions
+     UNION ALL
+    SELECT user_id, hole, lang, scoring, submitted, strokes,
+           uses_ai,
+           COUNT(*) OVER (PARTITION BY hole, lang, scoring, uses_ai),
+           RANK() OVER (PARTITION BY hole, lang, scoring, uses_ai ORDER BY strokes)
+      FROM solutions
+) SELECT user_id, hole, lang, scoring, submitted, strokes, uses_ai,
          (enum_range(NULL::medal))[rank + 2] medal
     FROM ranks
    WHERE rank < 4
    UNION ALL
-  SELECT MIN(user_id) user_id, hole, lang, scoring, MIN(submitted), 'diamond'::medal
+  SELECT MIN(user_id) user_id, hole, lang, scoring, MIN(submitted), MIN(strokes), uses_ai, 'diamond'::medal
     FROM ranks
    WHERE rank = 1
-GROUP BY hole, lang, scoring
+GROUP BY hole, lang, scoring, uses_ai
   HAVING COUNT(*) = 1
    UNION ALL
-  SELECT user_id, hole, lang, scoring, submitted, 'unicorn'::medal
+  SELECT user_id, hole, lang, scoring, submitted, strokes, uses_ai, 'unicorn'::medal
     FROM ranks
    WHERE count = 1;
 
@@ -394,7 +402,7 @@ CREATE MATERIALIZED VIEW points AS WITH max_points_per_hole AS (
 GROUP BY user_id, scoring;
 
 -- Needed to refresh concurrently
-CREATE UNIQUE INDEX   medals_key ON   medals(user_id, hole, lang, scoring, medal);
+CREATE UNIQUE INDEX   medals_key ON   medals(user_id, hole, lang, scoring, medal, uses_ai);
 CREATE UNIQUE INDEX   points_key ON   points(user_id, scoring);
 CREATE UNIQUE INDEX rankings_key ON rankings(user_id, hole, lang, scoring);
 
