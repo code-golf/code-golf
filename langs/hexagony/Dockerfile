@@ -8,15 +8,12 @@ WORKDIR /hexagony
 
 ADD https://github.com/SirBogman/Hexagony.git?commit=$VER .
 
-COPY hexagony.csproj Hexagony.csproj
-
-RUN dotnet publish -c Release -r linux-musl-x64
+RUN sed -Ei 's/\bnet\d+\b/net10/' Hexagony.csproj \
+ && dotnet publish -c Release -o /out             \
+    -p:InvariantGlobalization=true -p:PublishAot=true -p:StaticExecutable=true
 
 FROM codegolf/lang-base
 
-COPY --from=0 /lib/ld-musl-*.so.1     /lib/
-COPY --from=0 /out/Hexagony           /usr/bin/hexagony
-COPY --from=0 /usr/lib/libgcc_s.so.1  \
-              /usr/lib/libstdc++.so.6 /usr/lib/
+COPY --from=0 /out/Hexagony /usr/bin/hexagony
 
 ENTRYPOINT ["hexagony"]

@@ -13,12 +13,12 @@ COPY stdin.patch .
 RUN patch -p0 < stdin.patch
 
 RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net10/' {} + \
- && dotnet publish Starship/Rockstar -c Release -o /usr/bin \
-    -p:InvariantGlobalization=true -p:StaticExecutable=true
+ && dotnet publish Starship/Rockstar -c Release -o /out                     \
+    -p:InvariantGlobalization=true -p:PublishAot=true -p:StaticExecutable=true
 
 FROM codegolf/lang-base
 
-COPY --from=0 /usr/bin/rockstar /usr/bin/
+COPY --from=0 /out/rockstar /usr/bin/
 
 ENTRYPOINT ["rockstar"]
 
