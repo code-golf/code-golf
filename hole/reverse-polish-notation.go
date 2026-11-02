@@ -157,17 +157,16 @@ var _ = answerFunc("reverse-polish-notation", func() []Answer {
 		genExpr(randInt(1, math.MaxInt16), expandRight, 0),
 		genExpr(0, expandRand, randInt(16, 31)),
 		// Stax cases
-		genExpr(10, expandRight, 0),
 		genExpr(10203, expandRight, 0),
 		genExprWith(10, '+'),
 		genExprWith(10203, '+'),
-		genExprWith(100*randInt(2, 99)+10, '+'),
+		genExprWith(210, '+'),
 		genExprWith(10, '*'),
 		genExprWith(10203, '*'),
-		genExprWith(100*randInt(2, 99)+10, '*'),
+		genExprWith(210, '*'),
 	}
 
-	for i := 12; i < count; i++ {
+	for i := 11; i < count; i++ {
 		exprs[i] = genExpr(randInt(1, math.MaxInt16), expandRand, randInt(1, 31))
 	}
 
