@@ -434,6 +434,19 @@ h2 {
     background-image: radial-gradient(circle 0.5rem at 50% 55%, #aaa 20%, transparent 5%) !important;
 }
 
+/* Rainbow brackets while Alt is held, also overriding the syntax highlighting nested inside. */
+:is(.cm-rainbow-1, .cm-rainbow-1 *) { color: var(--rainbow-1) }
+:is(.cm-rainbow-2, .cm-rainbow-2 *) { color: var(--rainbow-2) }
+:is(.cm-rainbow-3, .cm-rainbow-3 *) { color: var(--rainbow-3) }
+:is(.cm-rainbow-4, .cm-rainbow-4 *) { color: var(--rainbow-4) }
+:is(.cm-rainbow-5, .cm-rainbow-5 *) { color: var(--rainbow-5) }
+
+:is(.cm-rainbow-1, .cm-rainbow-2, .cm-rainbow-3, .cm-rainbow-4, .cm-rainbow-5) {
+    background:    color-mix(in srgb, currentColor 22%, transparent);
+    border-radius: 2px;
+    text-shadow:   var(--rainbow-glow);
+}
+
 #diffKindSettings {
     margin: 0.5rem;
 }
