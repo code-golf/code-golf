@@ -76,6 +76,7 @@ func Router(db *sqlx.DB) http.Handler {
 		r.Get("/scores/{hole}/{lang}/all", scoresAllGET)
 		r.Get("/scores/{hole}/{lang}/{scoring}", scoresGET)
 		r.Get("/scores/{hole}/{lang}/{scoring}/{page}", scoresGET)
+		r.Post("/polyglot", polyglotPOST)
 		r.Post("/solution", solutionPOST)
 		r.Get("/stats", statsGET)
 		r.Get("/stats/{page:cheevos}", statsCheevosGET)
@@ -115,6 +116,7 @@ func Router(db *sqlx.DB) http.Handler {
 				r.Get("/langs/{lang}", apiLangGET)
 				r.Get("/mini-rankings/{hole}/{lang}/{scoring:(?:bytes|chars)}"+
 					"/{view:(?:top|me|following)}", apiMiniRankingsGET)
+				r.Get("/polyglot-rankings/{hole}", apiPolyglotRankingsGET)
 
 				// API routes that require a logged-in golfer.
 				r.With(middleware.GolferArea).Group(func(r chi.Router) {
