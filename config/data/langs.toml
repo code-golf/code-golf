@@ -1727,11 +1727,13 @@ args.foreach(println)
 '''
 
 [Scheme]
-args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '8.22 MiB'
-version = 'Chez Scheme 10.4.1'
-website = 'https://cisco.github.io/ChezScheme/'
-example = '''
+args       = [ '/usr/bin/scheme', '--script', 'code.ss' ]
+chdir      = '/tmp'
+size       = '5.06 MiB'
+stdin-path = '/tmp/code.ss'
+version    = 'Chez Scheme 10.4.1'
+website    = 'https://cisco.github.io/ChezScheme/'
+example    = '''
 ; Printing
 (printf "~a~n" "Hello, World!")
 

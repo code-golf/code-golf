@@ -1,11 +1,10 @@
 FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl gcc make musl-dev
+RUN apk add --no-cache gcc make musl-dev
 
 ENV VER=10.4.1
 
-RUN curl -#L https://github.com/cisco/ChezScheme/releases/download/v$VER/csv$VER.tar.gz \
-  | tar xz --strip-components 1
+ADD https://github.com/cisco/ChezScheme.git#v$VER /
 
 RUN ./configure      \
     --disable-curses \
@@ -15,17 +14,12 @@ RUN ./configure      \
 
 RUN strip /usr/bin/scheme
 
-COPY scheme.c /
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/schemewrapper -s scheme.c
-
 FROM codegolf/lang-base
 
-COPY --from=0           /usr/bin/scheme        /usr/bin/
-COPY --from=0 --parents /boot/*/*.boot         \
-                        /lib/ld-musl-*.so.1    \
-                        /usr/bin/schemewrapper /
+COPY --from=0           /usr/bin/scheme     /usr/bin/
+COPY --from=0 --parents /boot/ta6le/*.boot  \
+                        /lib/ld-musl-*.so.1 /
 
-ENTRYPOINT ["schemewrapper"]
+ENTRYPOINT ["scheme"]
 
 CMD ["--version"]
