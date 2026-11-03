@@ -1280,10 +1280,12 @@ end
 '''
 
 [Luau]
-args       = [ '/usr/bin/luau', '-' ]
+args       = [ '/usr/bin/luau', '-O2', '-g0', '/tmp/code.luau', '-a' ]
 experiment = 1044
-size       = '6.21 MiB'
-version    = '0.744'
+no-proc    = true
+size       = '2.61 MiB'
+stdin-path = '/tmp/code.luau'
+version    = '0.745'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
