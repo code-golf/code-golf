@@ -1342,10 +1342,12 @@ Sys.argv
 '''
 
 [Odin]
-args       = [ '/usr/bin/odinwrapper', '-', '--' ]
+args       = [ '/usr/local/bin/odin', 'run', 'code.odin', '-file', '-o:none', '--' ]
+chdir      = '/tmp'
 experiment = 766
-size       = '336 MiB'
-version    = '2026-10'
+size       = '339 MiB'
+stdin-path = '/tmp/code.odin'
+version    = '2026-11'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
