@@ -50,6 +50,13 @@
     </nav>
 </template>
 
+<template id=template-undo-redo>
+    <div id=undoRedo>
+        <button id=undoBtn>{{ svg "undo" }}Undo</button>
+        <button id=redoBtn>{{ svg "redo" }}Redo</button>
+    </div>
+</template>
+
 <template id=template-run>
     <div id=run>
     {{ if .Golfer }}

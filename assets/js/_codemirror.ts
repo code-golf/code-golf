@@ -3,16 +3,16 @@ import { EditorView, keymap, lineNumbers, drawSelection,
     highlightWhitespace } from '@codemirror/view';
 import { $ }                                              from './_util';
 
-export { EditorState, EditorView };
+export { EditorState, EditorView, redo, redoDepth, undo, undoDepth };
 
 // Extensions.
 import { carriageReturn, insertChar, insertCharState,
     showUnprintables }                           from './_codemirror_unprintable';
 import { addCursorAbove, addCursorBelow, history,
     historyKeymap, indentLess, insertNewline, insertTab,
-    moveLineDown, moveLineUp, selectLine,
+    moveLineDown, moveLineUp, redo, redoDepth, selectLine,
     simplifySelection, standardKeymap,
-    toggleComment }                              from '@codemirror/commands';
+    toggleComment, undo, undoDepth }             from '@codemirror/commands';
 import { selectNextOccurrence,
     selectSelectionMatches }                     from '@codemirror/search';
 import { tags }                                  from '@lezer/highlight';

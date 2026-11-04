@@ -312,6 +312,35 @@ aside > .copy {
     text-align: right;
 }
 
+/* Undo/redo buttons, only on touch screens that have no ctrl+z. */
+#undoRedo {
+    display: none;
+    gap: .5rem;
+    padding-left: .5rem;
+
+    /* Labelled icons in the link colour, so they read as clickable. */
+    button {
+        align-items: center;
+        background: none;
+        border: 0;
+        color: var(--link-color);
+        cursor: pointer;
+        display: flex;
+        font: inherit;
+        gap: .25rem;
+        padding: .25rem;
+
+        &:not([disabled]):hover { text-decoration: underline }
+        &[disabled] { color: var(--grey); cursor: default }
+    }
+
+    svg { height: 1.25rem; width: 1.25rem }
+}
+
+@media (pointer: coarse) {
+    #undoRedo { display: flex }
+}
+
 #scores { border: 0 }
 
 /* Shrink the padding compared to a normal table */
@@ -337,9 +366,15 @@ aside > .copy {
     padding: 1rem;
 }
 
-#strokes {
+#strokes, #selection {
     font-weight: bold;
     padding: .375rem 0;
+}
+
+/* What's selected, after the strokes (and undo/redo) rather than centred. */
+#selection {
+    margin-right: auto;
+    padding-left: .5rem;
 }
 
 /* TODO Generalise the hole mapping table CSS, lose the specific IDs. */
