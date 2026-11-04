@@ -111,6 +111,7 @@ func GetInfo(db *sqlx.DB, name string) *GolferInfo {
 		          COUNT(*) FILTER (WHERE medal = 'silver' ) silver,
 		          COUNT(*) FILTER (WHERE medal = 'bronze' ) bronze
 		     FROM medals
+		    WHERE uses_ai IS NULL
 		 GROUP BY user_id
 		)  SELECT about,
 		          admin,
