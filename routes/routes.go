@@ -153,6 +153,7 @@ func Router(db *sqlx.DB) http.Handler {
 			r.Get("/", golferGET)
 			r.Post("/{action:(?:follow|unfollow|hide|unhide)}", golferActionPOST)
 			r.Get("/cheevos", golferCheevosGET)
+			r.Get("/curves", golferCurvesGET)
 			r.Get("/holes", redir("holes/rankings/lang/bytes"))
 			r.Get("/holes/{scoring:(?:bytes|chars)}", redir("rankings/lang/{scoring}"))
 			r.Get("/holes/{display:(?:rankings|points)}/{scope:(?:lang|overall)}"+

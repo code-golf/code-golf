@@ -46,6 +46,12 @@
     --rank-2-glow: none;
     --rank-3-glow: none;
 
+    /* Darker than the rank badges' gold/silver/burlywood to read on white. */
+    --medal-diamond: hsl(185, 80%, 35%);
+    --medal-gold:    #c9a227;
+    --medal-silver:  #a8a9ad;
+    --medal-bronze:  #b8864b;
+
     --play-color: silver;
 }
 

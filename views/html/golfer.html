@@ -128,6 +128,9 @@
             Holes
         </a>
 
+        {{ $slug = print "/golfers/" .Name "/curves" }}
+        <a {{ if ne $.Path $slug }} href="{{ $slug }}" {{ end }}>Curves</a>
+
     {{ if $me }}
         <a {{ if ne $.Path "/golfer/code-search" }} href=/golfer/code-search {{ end }}>
             Code Search
