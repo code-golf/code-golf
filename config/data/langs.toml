@@ -1127,8 +1127,9 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', 'delete load;delete read;delete readbuffer;delete writeFile', '-e', '$code', '--' ]
-size    = '49.6 MiB'
-version = 'V8 15.6.75.25'
+no-proc = true
+size    = '50.0 MiB'
+version = 'V8 15.7.112.23'
 website = 'https://v8.dev'
 example = '''
 // Printing
