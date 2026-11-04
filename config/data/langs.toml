@@ -2051,11 +2051,12 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-args    = [ '/usr/bin/zig', '-' ]
-size    = '205 MiB'
-version = '0.17.0'
-website = 'https://ziglang.org'
-example = '''
+args       = [ '/usr/bin/zig', 'run', '-freference-trace', '-fstrip', '--color', 'on', '/tmp/code.zig', '--' ]
+size       = '205 MiB'
+stdin-path = '/tmp/code.zig'
+version    = '0.17.1'
+website    = 'https://ziglang.org'
+example    = '''
 const std = @import("std");
 
 pub fn main(init: std.process.Init) !void {
