@@ -16,7 +16,10 @@
 #include <sys/prctl.h>
 #include <sys/syscall.h>
 #include <sys/sysmacros.h>
+#include <sys/wait.h>
 #include <unistd.h>
+
+#undef prlimit64
 
 // Not defined in alpine yet :-(
 #define __NR_open_tree_attr 467
@@ -46,12 +49,28 @@
 int main(int argc, char *argv[]) {
     bool no_proc = false;
     char *chdir_path = NULL, *stdin_path = NULL;
+    char **compile_argv = NULL;
 
     // Extract our options, which come first.
     int i;
     for (i = 1; i < argc; i++) {
         if (strncmp(argv[i], "--chdir=", 8) == 0) {
             chdir_path = argv[i] + 8;
+        }
+        else if (strcmp(argv[i], "--compile") == 0) {
+            int compile_start = ++i;
+
+            // The first "--" ends the compiler command.
+            while (i < argc && strcmp(argv[i], "--") != 0)
+                i++;
+
+            if (i == argc) {
+                fprintf(stderr, "run-lang: --compile requires a terminating --\n");
+                return 2;
+            }
+
+            argv[i] = NULL;
+            compile_argv = &argv[compile_start];
         }
         else if (strcmp(argv[i], "--no-proc") == 0) {
             no_proc = true;
@@ -116,25 +135,6 @@ int main(int argc, char *argv[]) {
 
     if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount tmp");
-
-    if (chdir_path && (chdir(chdir_path) < 0))
-        ERR_AND_EXIT("chdir");
-
-    // TODO Use fifo so the file can't be seeked?
-    if (stdin_path) {
-        FILE* fp;
-        if (!(fp = fopen(stdin_path, "w")))
-            ERR_AND_EXIT("fopen");
-
-        char buffer[4096];
-        ssize_t nbytes;
-        while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))))
-            if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
-                ERR_AND_EXIT("fwrite");
-
-        if (fclose(fp))
-            ERR_AND_EXIT("fclose");
-    }
 
     if (sethostname(STR_WITH_LEN("code-golf")) < 0)
         ERR_AND_EXIT("sethostname");
@@ -756,6 +756,46 @@ int main(int argc, char *argv[]) {
 #else
     fputs("seccomp is disabled!\n", stderr);
 #endif
+
+    if (chdir_path && (chdir(chdir_path) < 0))
+        ERR_AND_EXIT("chdir");
+
+    // TODO Use fifo so the file can't be seeked?
+    if (stdin_path) {
+        FILE* fp;
+        if (!(fp = fopen(stdin_path, "w")))
+            ERR_AND_EXIT("fopen");
+
+        char buffer[4096];
+        ssize_t nbytes;
+        while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))))
+            if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
+                ERR_AND_EXIT("fwrite");
+
+        if (fclose(fp))
+            ERR_AND_EXIT("fclose");
+    }
+
+    if (compile_argv) {
+        pid_t pid;
+
+        if (!(pid = fork())) {
+            execvp(compile_argv[0], compile_argv);
+            ERR_AND_EXIT("execvp");
+        }
+
+        int status;
+        waitpid(pid, &status, 0);
+
+        if (!WIFEXITED(status))
+            exit(EXIT_FAILURE);
+
+        if (WEXITSTATUS(status))
+            return WEXITSTATUS(status);
+
+        if (stdin_path && unlink(stdin_path) < 0)
+            ERR_AND_EXIT("unlink");
+    }
 
     execvp(argv[0], argv);
     ERR_AND_EXIT("execvp");

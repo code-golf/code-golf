@@ -472,8 +472,10 @@ example = '''
 '''
 
 [COBOL]
-args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.26 MiB'
+args    = [ '/usr/bin/c', '-lcob', '-run', '/tmp/code.c' ]
+compile = [ '/usr/local/bin/cobc', '-CFxo', '/tmp/code.c', '-' ]
+no-proc = true
+size    = '4.25 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -1967,10 +1969,14 @@ for arg in os.args[1..] {
 '''
 
 [Vala]
-args       = [ '/usr/bin/vala', '-' ]
+args       = [ './code' ]
+chdir      = '/tmp'
+compile    = [ '/usr/bin/valac', '--color=always', '--quiet', 'code.vala' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1354
+no-proc    = true
 size       = '106 MiB'
+stdin-path = '/tmp/code.vala'
 version    = '0.56.19'
 website    = 'https://vala.dev'
 example    = '''

@@ -272,6 +272,11 @@ func runCode(
 	if lang.Chdir != "" {
 		cmd.Args = append(cmd.Args, "--chdir="+lang.Chdir)
 	}
+	if len(lang.Compile) != 0 {
+		cmd.Args = append(cmd.Args, "--compile")
+		cmd.Args = append(cmd.Args, lang.Compile...)
+		cmd.Args = append(cmd.Args, "--")
+	}
 	if lang.NoProc {
 		cmd.Args = append(cmd.Args, "--no-proc")
 	}

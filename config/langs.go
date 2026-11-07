@@ -35,23 +35,23 @@ var (
 )
 
 type Lang struct {
-	Args, Redirects, Env []string       `json:"-"`
-	ArgsQuine            []string       `json:"-" toml:"args-quine"`
-	Assembly             bool           `json:"assembly"`
-	Chdir                string         `json:"-"`
-	Digest               string         `json:"digest"`
-	DigestTrunc          []byte         `json:"-"`
-	Example              string         `json:"example"`
-	Experiment           int            `json:"experiment,omitzero"`
-	ID                   string         `json:"id"`
-	LogoURL              string         `json:"logo-url"`
-	Name                 string         `json:"name"`
-	NoProc               bool           `json:"-" toml:"no-proc"`
-	Released             toml.LocalDate `json:"released"`
-	Size                 string         `json:"size"`
-	StdinPath            string         `json:"-" toml:"stdin-path"`
-	Version              string         `json:"version"`
-	Website              string         `json:"website"`
+	Args, Compile, Redirects, Env []string       `json:"-"`
+	ArgsQuine                     []string       `json:"-" toml:"args-quine"`
+	Assembly                      bool           `json:"assembly"`
+	Chdir                         string         `json:"-"`
+	Digest                        string         `json:"digest"`
+	DigestTrunc                   []byte         `json:"-"`
+	Example                       string         `json:"example"`
+	Experiment                    int            `json:"experiment,omitzero"`
+	ID                            string         `json:"id"`
+	LogoURL                       string         `json:"logo-url"`
+	Name                          string         `json:"name"`
+	NoProc                        bool           `json:"-" toml:"no-proc"`
+	Released                      toml.LocalDate `json:"released"`
+	Size                          string         `json:"size"`
+	StdinPath                     string         `json:"-" toml:"stdin-path"`
+	Version                       string         `json:"version"`
+	Website                       string         `json:"website"`
 }
 
 // Fresh lang is one that was released in the last 1,000 hours (~42 days).
