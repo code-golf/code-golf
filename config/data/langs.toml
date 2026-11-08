@@ -1998,6 +1998,7 @@ int main(string[] args) {
 
 [VimL]
 args    = [ '/usr/bin/viml', '-' ]
+no-proc = true
 size    = '35.5 MiB'
 version = '9.2'
 website = 'https://www.vim.org'
