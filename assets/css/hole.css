@@ -123,6 +123,7 @@ aside > .copy {
     left: 0;
     position: absolute;
     top: 0;
+    pointer-events:none;
 
     .btn {
         background: var(--color);
@@ -131,6 +132,7 @@ aside > .copy {
         justify-content: center;
         padding: .25rem 0;
         width: 2rem;
+        pointer-events:auto;
 
         /* Embolden the icon rather than inheriting the generic .btn hover. */
         &:hover {
