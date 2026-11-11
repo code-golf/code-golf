@@ -42,9 +42,10 @@ x is a no-op.
 
 ['ALGOL 68']
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
+no-proc  = true
 released = 2026-02-21
-size     = '1.53 MiB'
-version  = 'Algol 68 Genie 3.13.4'
+size     = '1.55 MiB'
+version  = 'Algol 68 Genie 3.14.0'
 website  = 'https://algol68genie.nl/en/algol-68-genie/'
 example  = '''
 # Printing #
