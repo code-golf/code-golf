@@ -284,8 +284,9 @@ v Accessing arguments
 
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
+no-proc = true
 size    = '837 KiB'
-version = '65fce31'
+version = '9f6fbc9'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
