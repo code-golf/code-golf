@@ -65,9 +65,10 @@ OD
 [APL]
 args       = [ '/usr/bin/dyalogscript', '/tmp/code.dyalog' ]
 experiment = 135
-size       = '15.5 MiB'
+no-proc    = false
+size       = '15.8 MiB'
 stdin-path = '/tmp/code.dyalog'
-version    = 'Dyalog APL 20.0.53963'
+version    = 'Dyalog APL 21.0.55109'
 website    = 'https://www.dyalog.com'
 example    = '''
 ⍝ Printing
