@@ -283,6 +283,9 @@ func runCode(
 	if lang.StdinPath != "" {
 		cmd.Args = append(cmd.Args, "--stdin-path="+lang.StdinPath)
 	}
+	if lang.StdinFifo {
+		cmd.Args = append(cmd.Args, "--stdin-fifo")
+	}
 
 	// Language arguments.
 	if hole.ID == "quine" && lang.ArgsQuine != nil {

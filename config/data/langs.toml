@@ -68,6 +68,7 @@ experiment = 135
 no-proc    = false
 size       = '15.8 MiB'
 stdin-path = '/tmp/code.dyalog'
+stdin-fifo = true
 version    = 'Dyalog APL 21.0.55109'
 website    = 'https://www.dyalog.com'
 example    = '''
@@ -1498,6 +1499,7 @@ env        = [ 'LANG=C.UTF-8' ]
 no-proc    = true
 size       = '57.5 MiB'
 stdin-path = '/tmp/code.pl'
+stdin-fifo = true
 version    = 'SWI-Prolog 10.0.2'
 website    = 'https://www.swi-prolog.org'
 example    = '''
@@ -1740,8 +1742,11 @@ args.foreach(println)
 [Scheme]
 args       = [ '/usr/bin/scheme', '--script', 'code.ss' ]
 chdir      = '/tmp'
+env        = [ 'SCHEMEHEAPDIRS=/boot/%m' ]
+no-proc    = true
 size       = '5.06 MiB'
 stdin-path = '/tmp/code.ss'
+stdin-fifo = true
 version    = 'Chez Scheme 10.4.1'
 website    = 'https://cisco.github.io/ChezScheme/'
 example    = '''
@@ -2006,11 +2011,14 @@ int main(string[] args) {
 '''
 
 [VimL]
-args    = [ '/usr/bin/viml', '-' ]
-size    = '35.5 MiB'
-version = '9.2'
-website = 'https://www.vim.org'
-example = '''
+args       = [ '/usr/bin/viml', '/tmp/code.vim' ]
+no-proc    = true
+size       = '35.5 MiB'
+stdin-path = '/tmp/code.vim'
+stdin-fifo = true
+version    = '9.2'
+website    = 'https://www.vim.org'
+example    = '''
 " Printing
 i
 Hello, World!

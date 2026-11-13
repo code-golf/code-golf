@@ -14,6 +14,7 @@
 #include <string.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
+#include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/sysmacros.h>
 #include <sys/wait.h>
@@ -47,7 +48,7 @@
 #define STR_WITH_LEN(str) str, sizeof(str) - 1
 
 int main(int argc, char *argv[]) {
-    bool no_proc = false;
+    bool no_proc = false, stdin_fifo = false;
     char *chdir_path = NULL, *stdin_path = NULL;
     char **compile_argv = NULL;
 
@@ -78,6 +79,9 @@ int main(int argc, char *argv[]) {
         else if (strncmp(argv[i], "--stdin-path=", 13) == 0) {
             stdin_path = argv[i] + 13;
         }
+        else if (strcmp(argv[i], "--stdin-fifo") == 0) {
+            stdin_fifo = true;
+        }
         else {
             break;
         }
@@ -85,7 +89,7 @@ int main(int argc, char *argv[]) {
 
     if (i >= argc) {
         fprintf(stderr,
-            "usage: %s [--no-proc] [--stdin-path=/path] <program> [args...]\n", argv[0]);
+            "usage: %s [--no-proc] [--stdin-path=/path] [--stdin-fifo] <program> [args...]\n", argv[0]);
         return 2;
     }
 
@@ -760,8 +764,7 @@ int main(int argc, char *argv[]) {
     if (chdir_path && (chdir(chdir_path) < 0))
         ERR_AND_EXIT("chdir");
 
-    // TODO Use fifo so the file can't be seeked?
-    if (stdin_path) {
+    if (stdin_path && !stdin_fifo) {
         FILE* fp;
         if (!(fp = fopen(stdin_path, "w")))
             ERR_AND_EXIT("fopen");
@@ -797,6 +800,47 @@ int main(int argc, char *argv[]) {
             ERR_AND_EXIT("unlink");
     }
 
-    execvp(argv[0], argv);
-    ERR_AND_EXIT("execvp");
+    if (stdin_path && stdin_fifo) {
+        if (mkfifo(stdin_path, 0600) < 0)
+            ERR_AND_EXIT("mkfifo");
+
+        pid_t pid;
+        if (!(pid = fork())) {
+            if (!freopen("/dev/null", "r", stdin))
+                ERR_AND_EXIT("freopen");
+
+            execvp(argv[0], argv);
+            ERR_AND_EXIT("execvp");
+        }
+
+        FILE* fp;
+        if (!(fp = fopen(stdin_path, "w")))
+            ERR_AND_EXIT("fopen");
+
+        if (unlink(stdin_path))
+            ERR_AND_EXIT("unlink");
+
+        signal(SIGPIPE, SIG_IGN);
+
+        char buffer[4096];
+        ssize_t nbytes;
+        while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer)))) {
+            if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes) {
+                if (errno != EPIPE)
+                    ERR_AND_EXIT("fwrite");
+                break;
+            }
+        }
+
+        if (fclose(fp) && errno != EPIPE)
+            ERR_AND_EXIT("fclose");
+
+        int status;
+        waitpid(pid, &status, 0);
+        return WIFEXITED(status) ? WEXITSTATUS(status) : 128;
+    }
+    else {
+        execvp(argv[0], argv);
+        ERR_AND_EXIT("execvp");
+    }
 }

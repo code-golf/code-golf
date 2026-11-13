@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
             "-eZ",
             "-V1",
             "-c", make_args_list(argc, argv),
-            "-S", "/proc/self/fd/0",
+            "-S", argv[1],
             "output",
             NULL
         );
