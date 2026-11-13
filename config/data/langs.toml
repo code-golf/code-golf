@@ -810,7 +810,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'ERL_LIBS=/tmp/build/dev/erlang', 'LANG=C.UTF-8' ]
-size    = '76.1 MiB'
+no-proc = true
+size    = '76.2 MiB'
 version = '1.19.2'
 website = 'https://gleam.run'
 example = '''
@@ -1021,7 +1022,8 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.18 MiB'
+no-proc    = true
+size       = '2.02 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1692,11 +1694,14 @@ end
 '''
 
 [Rust]
-args    = [ '/usr/bin/rust', '-' ]
-size    = '416 MiB'
-version = '1.99.1'
-website = 'https://www.rust-lang.org'
-example = '''
+args       = [ '/tmp/code' ]
+compile    = [ '/usr/local/bin/rustc', '--color=always', '--edition=2024', '-C', 'linker=/usr/bin/ld', '-O', '-o', '/tmp/code', '/tmp/code.rs' ]
+no-proc    = true
+size       = '422 MiB'
+stdin-path = '/tmp/code.rs'
+version    = '1.100.0'
+website    = 'https://www.rust-lang.org'
+example    = '''
 fn main() {
     // Printing
     println!("Hello, World!");
@@ -1910,7 +1915,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '31.6 MiB'
+no-proc    = true
+size       = '31.4 MiB'
 version    = '0.19.1'
 website    = 'https://www.uiua.org'
 example    = '''
@@ -2093,7 +2099,8 @@ pub fn main(init: std.process.Init) !void {
 [ZuzuScript]
 args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
-size       = '36.3 MiB'
+no-proc    = false
+size       = '36.0 MiB'
 version    = '0.7.1'
 website    = 'https://zuzulang.org'
 example    = '''
