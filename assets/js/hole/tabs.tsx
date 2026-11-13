@@ -13,7 +13,7 @@ import {
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
     getScorings, describeSelectedChar,
-    updateLocalStorage,
+    updateLocalStorage, saveHistory,
     getLang,
     setState,
     ctrlEnter,
@@ -170,6 +170,7 @@ function makeEditor(parent: HTMLDivElement) {
 
 
             updateLocalStorage(code);
+            if (tr.docChanged) saveHistory(tr.state);
             updateRestoreLinkVisibility(editor);
 
             return result;
