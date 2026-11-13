@@ -3,7 +3,12 @@
 {{ if eq .Name "wiki" }}{{ $nav = .Data.Nav }}{{ end }}
 
 <form id=form-nav>
-    <input name=base type=hidden value="/{{ .Name }}">
+    <!-- HACK golfer pages need the golfer's name in the base -->
+    {{ $base := print "/" .Name }}
+    {{ if eq .Name "golfer/diamonds" }}
+        {{ $base = print "/golfers/" .GolferInfo.Name "/diamonds" }}
+    {{ end }}
+    <input name=base type=hidden value="{{ $base }}">
 
 {{ if $nav.OnePerRow }}
     <select name=nav>

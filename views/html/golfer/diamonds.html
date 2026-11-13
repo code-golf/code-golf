@@ -1,0 +1,34 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+<main id=two-pane>
+    {{ template "nav" . }}
+
+{{ if .Data.Rows }}
+    <table class="nowrap-second-third sticky">
+        <thead>
+            <tr>
+                <th>#
+                <th>Hole
+                <th class=right>Submitted
+        <tbody>
+        {{ range .Data.Rows }}
+            <tr>
+                <td>{{ comma .Rank }}<sup>{{ ord .Rank }}</sup>
+                <td>
+                    <a href="/rankings/holes/{{ .Hole.ID }}/{{ .Lang.ID }}/{{ .Scoring }}">
+                        {{ svg .Lang.ID }}
+                        {{ svg .Scoring }}
+                        <span>{{ .Hole.Name }}</span>
+                    </a>
+                <td class=right>{{ time (.Submitted.In $.Location) }}
+        {{ end }}
+    </table>
+
+    {{ template "pagination" .Data.Pager }}
+{{ else }}
+    <p>No diamonds (uncontested gold medals) found.
+{{ end }}
+</main>
+
+{{ template "footer" }}
