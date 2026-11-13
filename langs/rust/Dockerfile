@@ -1,5 +1,5 @@
 # Also bump Gleam, Hush, Uiua, ZuzuScript.
-ARG VER=1.99.1
+ARG VER=1.100.0
 
 FROM rust:$VER-alpine3.24 AS builder
 
@@ -18,14 +18,10 @@ RUN find . -name '*.?san.a' -delete
 # Strip the giant rust libs.
 RUN strip lib/*.so
 
-COPY rust.c /
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/rust -s -static /rust.c
-
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-*.so.1                      /lib/
-COPY --from=0 /usr/bin/ld /usr/bin/rust                /usr/bin/
+COPY --from=0 /usr/bin/ld                              /usr/bin/
 COPY --from=0 /usr/lib/libbfd-2.45.1.so                \
               /usr/lib/libctf.so.0                     \
               /usr/lib/libgcc_s.so.1                   \
@@ -36,6 +32,6 @@ COPY --from=0 /usr/lib/libbfd-2.45.1.so                \
 COPY --from=0 /usr/local/rustup/toolchains/*/bin/rustc /usr/local/bin/
 COPY --from=0 /usr/local/rustup/toolchains/*/lib       /usr/local/lib
 
-ENTRYPOINT ["rust"]
+ENTRYPOINT ["rustc"]
 
 CMD ["--version"]

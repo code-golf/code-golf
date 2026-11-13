@@ -42,9 +42,10 @@ x is a no-op.
 
 ['ALGOL 68']
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
+no-proc  = true
 released = 2026-02-21
-size     = '1.53 MiB'
-version  = 'Algol 68 Genie 3.13.4'
+size     = '1.55 MiB'
+version  = 'Algol 68 Genie 3.14.0'
 website  = 'https://algol68genie.nl/en/algol-68-genie/'
 example  = '''
 # Printing #
@@ -64,9 +65,10 @@ OD
 [APL]
 args       = [ '/usr/bin/dyalogscript', '/tmp/code.dyalog' ]
 experiment = 135
-size       = '15.5 MiB'
+no-proc    = false
+size       = '15.8 MiB'
 stdin-path = '/tmp/code.dyalog'
-version    = 'Dyalog APL 20.0.53963'
+version    = 'Dyalog APL 21.0.55109'
 website    = 'https://www.dyalog.com'
 example    = '''
 ⍝ Printing
@@ -282,8 +284,9 @@ v Accessing arguments
 
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
+no-proc = true
 size    = '837 KiB'
-version = '65fce31'
+version = '9f6fbc9'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -807,7 +810,8 @@ end
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
 env     = [ 'ERL_LIBS=/tmp/build/dev/erlang', 'LANG=C.UTF-8' ]
-size    = '76.1 MiB'
+no-proc = true
+size    = '76.2 MiB'
 version = '1.19.2'
 website = 'https://gleam.run'
 example = '''
@@ -832,7 +836,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '374 MiB'
-version = '1.27.3'
+version = '1.27.4'
 website = 'https://go.dev'
 example = '''
 package main
@@ -1018,7 +1022,8 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.18 MiB'
+no-proc    = true
+size       = '2.02 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1689,11 +1694,14 @@ end
 '''
 
 [Rust]
-args    = [ '/usr/bin/rust', '-' ]
-size    = '416 MiB'
-version = '1.99.1'
-website = 'https://www.rust-lang.org'
-example = '''
+args       = [ '/tmp/code' ]
+compile    = [ '/usr/local/bin/rustc', '--color=always', '--edition=2024', '-C', 'linker=/usr/bin/ld', '-O', '-o', '/tmp/code', '/tmp/code.rs' ]
+no-proc    = true
+size       = '422 MiB'
+stdin-path = '/tmp/code.rs'
+version    = '1.100.0'
+website    = 'https://www.rust-lang.org'
+example    = '''
 fn main() {
     // Printing
     println!("Hello, World!");
@@ -1907,7 +1915,8 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '31.6 MiB'
+no-proc    = true
+size       = '31.4 MiB'
 version    = '0.19.1'
 website    = 'https://www.uiua.org'
 example    = '''
@@ -2091,7 +2100,8 @@ pub fn main(init: std.process.Init) !void {
 [ZuzuScript]
 args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
-size       = '36.3 MiB'
+no-proc    = false
+size       = '36.0 MiB'
 version    = '0.7.1'
 website    = 'https://zuzulang.org'
 example    = '''
