@@ -3,7 +3,7 @@ FROM alpine:3.24 AS builder
 RUN apk add --no-cache bzip2-dev curl-dev g++ gettext-dev gfortran make \
                        pcre2-dev perl tzdata xz-dev zlib-dev
 
-ENV BUSYBOX_VER=1.37.0 VER=4.6.1
+ENV BUSYBOX_VER=1.37.0 VER=4.6.2
 
 ADD --unpack https://cran.r-project.org/src/base/R-4/R-$VER.tar.xz /
 
