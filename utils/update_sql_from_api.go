@@ -17,13 +17,55 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io"
 	"math/rand/v2"
 	"net/http"
+	"regexp"
 	"sort"
 	"strings"
 
 	_ "github.com/lib/pq"
 )
+
+var golferLink = regexp.MustCompile(`<td><a href="/golfers/([^"]+)"`)
+
+func getAIUsers() map[string]bool {
+	aiUsers := map[string]bool{}
+
+	for _, scoring := range []string{"bytes", "chars"} {
+		for page := 1; ; page++ {
+			url := fmt.Sprintf(
+				"https://code.golf/rankings/holes/all/all/%s?ai=ai&page=%d",
+				scoring, page,
+			)
+			res, err := http.Get(url)
+			if err != nil {
+				panic(err)
+			}
+
+			body, err := io.ReadAll(res.Body)
+			res.Body.Close()
+			if err != nil {
+				panic(err)
+			}
+
+			if res.StatusCode != http.StatusOK {
+				break
+			}
+
+			matches := golferLink.FindAllSubmatch(body, -1)
+			for _, m := range matches {
+				aiUsers[string(m[1])] = true
+			}
+
+			if len(matches) < 100 {
+				break
+			}
+		}
+	}
+
+	return aiUsers
+}
 
 // Create a string containing the given number of characters and UTF-8 encoded bytes.
 func makeCode(chars *int, bytes int) (result string) {
@@ -150,13 +192,22 @@ func main() {
 	defer tx.Rollback()
 
 	userMap := getUserMap(db)
+	aiUsers := getAIUsers()
 
 	for _, info := range infoList {
 		if _, ok := userMap[info.Login]; !ok {
 			userID := getUnusedUserID(userMap)
 			userMap[info.Login] = userID
-			if _, err := tx.Exec("INSERT INTO users (id, name) VALUES($1, $2)",
-				userID, info.Login,
+			if _, err := tx.Exec("INSERT INTO users (id, name, uses_ai) VALUES($1, $2, $3)",
+				userID, info.Login, aiUsers[info.Login],
+			); err != nil {
+				panic(err)
+			}
+
+			// Users need a GitHub connection to appear in golfers_with_avatars.
+			if _, err := tx.Exec(
+				"INSERT INTO connections (id, connection, user_id, username) VALUES ($1, 'github', $2, $3)",
+				userID, userID, info.Login,
 			); err != nil {
 				panic(err)
 			}
@@ -167,6 +218,15 @@ func main() {
 			); err != nil {
 				panic(err)
 			}
+		}
+	}
+
+	if _, err := tx.Exec("UPDATE users SET uses_ai = false WHERE uses_ai"); err != nil {
+		panic(err)
+	}
+	for name := range aiUsers {
+		if _, err := tx.Exec("UPDATE users SET uses_ai = true WHERE name = $1", name); err != nil {
+			panic(err)
 		}
 	}
 
@@ -213,6 +273,12 @@ func main() {
 
 	if err := tx.Commit(); err != nil {
 		panic(err)
+	}
+
+	for _, view := range []string{"medals", "rankings", "points"} {
+		if _, err := db.Exec("REFRESH MATERIALIZED VIEW CONCURRENTLY " + view); err != nil {
+			panic(err)
+		}
 	}
 
 	fmt.Printf("\nUpdate count: %d\n", updateCount)
