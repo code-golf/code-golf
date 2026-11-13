@@ -13,6 +13,7 @@ import {
     updateRestoreLinkVisibility, setCodeForLangAndSolution,
     populateScores, getCurrentSolutionCode, initDeleteBtn, initCopyButtons,
     getScorings, describeSelectedChar,
+    initUndoRedo, updateUndoRedo,
     updateLocalStorage,
     getLang,
     setState,
@@ -164,13 +165,15 @@ function makeEditor(parent: HTMLDivElement) {
                     .join(', ');
             }
 
-            $('#strokes').innerText = (scorings.selection
-                ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
-                : formatScore(scorings.total)) + describeSelectedChar(tr.state, scorings);
+            $('#strokes').innerText = formatScore(scorings.total);
+            $('#selection').innerText = ((scorings.selection
+                ? `(${formatScore(scorings.selection)} selected)` : '')
+                + describeSelectedChar(tr.state, scorings)).trim();
 
 
             updateLocalStorage(code);
             updateRestoreLinkVisibility(editor);
+            updateUndoRedo(tr.state);
 
             return result;
         },
@@ -206,11 +209,14 @@ layout.registerComponentFactoryFunction('code', async container => {
 
     const header = (<header>
         <div id="strokes">0 bytes, 0 chars</div>
+        <div id="selection"></div>
         <a class="hide" href="" id="restoreLink">Restore solution</a>
     </header>) as HTMLElement;
     const editorDiv = <div id="editor"></div> as HTMLDivElement;
 
     makeEditor(editorDiv);
+
+    header.querySelector('#strokes')!.after($<HTMLTemplateElement>('#template-undo-redo').content.cloneNode(true));
 
     header.append($<HTMLTemplateElement>('#template-run').content.cloneNode(true));
 
@@ -223,6 +229,8 @@ layout.registerComponentFactoryFunction('code', async container => {
         e.preventDefault();
         setCode(getCurrentSolutionCode(), editor);
     };
+
+    initUndoRedo(editor);
 
     // Wire submit to clicking a button and a keyboard shortcut.
     const closuredSubmit = () => submit(editor, updateReadonlyPanels);

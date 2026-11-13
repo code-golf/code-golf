@@ -1,7 +1,8 @@
 import { ASMStateField }                               from '@defasm/codemirror';
 import { $, $$, avatar, byteLen, charLen, comma, ord, strokeLen } from './_util';
 import { Vim }                                         from '@replit/codemirror-vim';
-import { EditorState, EditorView, extensions }         from './_codemirror';
+import { EditorState, EditorView, extensions, redo, redoDepth,
+    undo, undoDepth }                                   from './_codemirror';
 import LZString                                        from 'lz-string';
 import { getAllowedStrokes }                           from './lang-allowed-strokes';
 
@@ -114,6 +115,27 @@ export function initDeleteBtn(deleteBtn: HTMLElement | undefined) {
         $<HTMLInputElement>('#delete-dialog [name=text]').value = '';
         $<HTMLDialogElement>('#delete-dialog').showModal();
     });
+}
+
+// Undo/redo buttons, for touch screens that have no ctrl+z.
+export function initUndoRedo(editor: EditorView) {
+    for (const [id, command] of [['#undoBtn', undo], ['#redoBtn', redo]] as const) {
+        const btn = $<HTMLButtonElement>(id);
+
+        // Keep the focus, and so the on-screen keyboard, on the editor.
+        btn.onmousedown = e => e.preventDefault();
+        btn.onclick = () => command(editor);
+    }
+
+    updateUndoRedo(editor.state);
+}
+
+export function updateUndoRedo(state: EditorState) {
+    const undoBtn = $<HTMLButtonElement>('#undoBtn') as HTMLButtonElement | null;
+    if (!undoBtn) return;
+
+    undoBtn.disabled = !undoDepth(state);
+    $<HTMLButtonElement>('#redoBtn').disabled = !redoDepth(state);
 }
 
 export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
