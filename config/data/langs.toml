@@ -667,8 +667,9 @@ none
 [Elixir]
 args    = [ '/usr/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
+no-proc = true
 size    = '58.9 MiB'
-version = '1.20.4'
+version = '1.20.5'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
