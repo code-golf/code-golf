@@ -1,6 +1,9 @@
 package routes
 
 import (
+	"database/sql"
+	"errors"
+	"maps"
 	"net/http"
 
 	"github.com/code-golf/code-golf/config"
@@ -22,7 +25,7 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		Hole:          config.AllHoleByID[param(r, "hole")],
 		HoleRedirects: config.HoleRedirects,
 		LangRedirects: config.LangRedirects,
-		Langs:         config.AllLangByID,
+		Langs:         maps.Clone(config.AllLangByID),
 		RankingsView:  "me",
 		Solutions:     []map[string]string{{}, {}},
 	}
@@ -31,6 +34,8 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
+
+	data.Langs[config.PolyglotLang.ID] = config.PolyglotLang
 
 	data.PrevHole, data.NextHole = getPrevNextHole(r, data.Hole)
 
@@ -87,6 +92,18 @@ func holeGET(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if err := rows.Err(); err != nil {
+			panic(err)
+		}
+
+		// A polyglot has no chars solution, offer the same code for both.
+		var polyglot string
+		if err := session.Database(r).QueryRow(
+			`SELECT code FROM polyglot_solutions WHERE hole = $1 AND user_id = $2`,
+			data.Hole.ID, golfer.ID,
+		).Scan(&polyglot); err == nil {
+			data.Solutions[0][config.PolyglotLang.ID] = polyglot
+			data.Solutions[1][config.PolyglotLang.ID] = polyglot
+		} else if !errors.Is(err, sql.ErrNoRows) {
 			panic(err)
 		}
 	}
