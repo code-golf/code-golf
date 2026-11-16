@@ -4877,6 +4877,86 @@ preamble = '''
     each on their own line.
 '''
 
+['Star Battle']
+authors = [
+    '01763586-18d2-7ce7-b70c-00ad668205de', # madex
+]
+category = 'Gaming'
+links = [
+    { name = 'Puzzle Star Battle', url = '//www.puzzle-star-battle.com/' },
+    { name = 'Puzzles Wiki',       url = '//www.puzzles.wiki/wiki/Star_Battle' },
+]
+experiment = 2781
+synopsis = 'Fill in the 9 stars of a Star Battle board.'
+preamble = '''
+<p>
+    Star Battle is a logic puzzle on a grid divided into regions: place stars
+    so that every row, column and region contains one star and no two stars
+    touch, not even diagonally. This hole uses the one-star variant on a
+    9 × 9 board with 9 regions.
+
+<p>
+    The board is drawn with Unicode box-drawing characters: heavy lines
+    border the regions and the frame, dotted lines separate cells within a
+    region, and every cell shows the digit (1-9) of its region. Write a
+    program that, given such a board as its argument, prints the same board
+    with a star in place of the digit of each of the 9 cells that solve it.
+
+<p>
+    For example, given this board:
+
+<pre>
+┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ 7 ∙ 7 ┃ 3 ∙ 3 ∙ 3 ∙ 3 ∙ 3 ┃ 1 ∙ 1 ┃
+┃∙∙∙∙∙∙∙┗━━━━━━━┓∙∙∙∙∙∙∙┏━━━┛∙∙∙┏━━━┫
+┃ 7 ∙ 7 ∙ 7 ∙ 7 ┃ 3 ∙ 3 ┃ 1 ∙ 1 ┃ 4 ┃
+┃∙∙∙∙∙∙∙∙∙∙∙┏━━━┛∙∙∙∙∙∙∙┗━━━━━━━┫∙∙∙┃
+┃ 7 ∙ 7 ∙ 7 ┃ 3 ∙ 3 ∙ 3 ∙ 3 ∙ 3 ┃ 4 ┃
+┃∙∙∙∙∙∙∙∙∙∙∙┃∙∙∙∙∙∙∙┏━━━┓∙∙∙┏━━━┻━━━┫
+┃ 7 ∙ 7 ∙ 7 ┃ 3 ∙ 3 ┃ 6 ┃ 3 ┃ 6 ∙ 6 ┃
+┃∙∙∙∙∙∙∙∙∙∙∙┃∙∙∙┏━━━┛∙∙∙┗━━━┛∙∙∙∙∙∙∙┃
+┃ 7 ∙ 7 ∙ 7 ┃ 3 ┃ 6 ∙ 6 ∙ 6 ∙ 6 ∙ 6 ┃
+┣━━━┳━━━┓∙∙∙┣━━━╋━━━┓∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙┃
+┃ 5 ┃ 9 ┃ 7 ┃ 2 ┃ 8 ┃ 6 ∙ 6 ∙ 6 ∙ 6 ┃
+┃∙∙∙┃∙∙∙┣━━━┛∙∙∙┗━━━┫∙∙∙┏━━━━━━━┓∙∙∙┃
+┃ 5 ┃ 9 ┃ 2 ∙ 2 ∙ 2 ┃ 6 ┃ 2 ∙ 2 ┃ 6 ┃
+┃∙∙∙┗━━━┫∙∙∙∙∙∙∙┏━━━┛∙∙∙┃∙∙∙┏━━━┛∙∙∙┃
+┃ 5 ∙ 5 ┃ 2 ∙ 2 ┃ 6 ∙ 6 ┃ 2 ┃ 6 ∙ 6 ┃
+┃∙∙∙┏━━━┛∙∙∙∙∙∙∙┗━━━━━━━┛∙∙∙┗━━━━━━━┫
+┃ 5 ┃ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ┃
+┗━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+</pre>
+
+<p>print this solution:
+
+<pre>
+┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ 7 ∙ 7 ┃ 3 ∙ 3 ∙ 3 ∙ 3 ∙ 3 ┃ * ∙ 1 ┃
+┃∙∙∙∙∙∙∙┗━━━━━━━┓∙∙∙∙∙∙∙┏━━━┛∙∙∙┏━━━┫
+┃ 7 ∙ 7 ∙ 7 ∙ 7 ┃ 3 ∙ * ┃ 1 ∙ 1 ┃ 4 ┃
+┃∙∙∙∙∙∙∙∙∙∙∙┏━━━┛∙∙∙∙∙∙∙┗━━━━━━━┫∙∙∙┃
+┃ 7 ∙ 7 ∙ 7 ┃ 3 ∙ 3 ∙ 3 ∙ 3 ∙ 3 ┃ * ┃
+┃∙∙∙∙∙∙∙∙∙∙∙┃∙∙∙∙∙∙∙┏━━━┓∙∙∙┏━━━┻━━━┫
+┃ 7 ∙ 7 ∙ * ┃ 3 ∙ 3 ┃ 6 ┃ 3 ┃ 6 ∙ 6 ┃
+┃∙∙∙∙∙∙∙∙∙∙∙┃∙∙∙┏━━━┛∙∙∙┗━━━┛∙∙∙∙∙∙∙┃
+┃ 7 ∙ 7 ∙ 7 ┃ 3 ┃ 6 ∙ 6 ∙ * ∙ 6 ∙ 6 ┃
+┣━━━┳━━━┓∙∙∙┣━━━╋━━━┓∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙┃
+┃ 5 ┃ 9 ┃ 7 ┃ 2 ┃ * ┃ 6 ∙ 6 ∙ 6 ∙ 6 ┃
+┃∙∙∙┃∙∙∙┣━━━┛∙∙∙┗━━━┫∙∙∙┏━━━━━━━┓∙∙∙┃
+┃ 5 ┃ * ┃ 2 ∙ 2 ∙ 2 ┃ 6 ┃ 2 ∙ 2 ┃ 6 ┃
+┃∙∙∙┗━━━┫∙∙∙∙∙∙∙┏━━━┛∙∙∙┃∙∙∙┏━━━┛∙∙∙┃
+┃ 5 ∙ 5 ┃ 2 ∙ * ┃ 6 ∙ 6 ┃ 2 ┃ 6 ∙ 6 ┃
+┃∙∙∙┏━━━┛∙∙∙∙∙∙∙┗━━━━━━━┛∙∙∙┗━━━━━━━┫
+┃ * ┃ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ┃
+┗━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+</pre>
+
+<p>
+    Every board has a unique solution. Reading the digits is just taking
+    every fourth character of every second line; the drawn lines are only a
+    visual aid.
+'''
+
 ['Star Wars GPT']
 authors = [
     '0176b716-b1a7-7e8b-a518-6ca24519dc1a', # stefangimmillaro
