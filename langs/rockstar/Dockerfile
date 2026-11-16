@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.403-alpine3.24-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:11.0.100-alpine3.24-amd64 AS builder
 
 RUN apk add --no-cache gcc musl-dev zlib-dev
 
@@ -8,7 +8,7 @@ WORKDIR /rockstar
 
 ADD https://github.com/RockstarLang/rockstar.git#v$VER .
 
-RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net10/' {} + \
+RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net11/' {} + \
  && dotnet publish Starship/Rockstar -c Release -o /out                     \
     -p:InvariantGlobalization=true -p:PublishAot=true -p:StaticExecutable=true
 

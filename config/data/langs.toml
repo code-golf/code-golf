@@ -375,8 +375,9 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '112 MiB'
-version = 'C# 14.0 on .NET 10.0.14'
+no-proc = true
+size    = '115 MiB'
+version = 'C# 15.0 on .NET 11.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -708,8 +709,9 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '114 MiB'
-version = 'F# 10.0 on .NET 10.0.14'
+no-proc = true
+size    = '119 MiB'
+version = 'F# 10.0 on .NET 11.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -999,7 +1001,7 @@ class Main {
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
 no-proc = true
-size    = '4.16 MiB'
+size    = '4.20 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -1480,8 +1482,9 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '140 MiB'
-version    = 'PowerShell 7.6.9 on .NET 10.0.14'
+no-proc    = true
+size       = '144 MiB'
+version    = 'PowerShell 7.7.0 on .NET 11.0.0'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
