@@ -25,7 +25,11 @@ function showDebug(runtime) {
 if (process.argv[2] !== "--version") {
     const program = fs.readFileSync(0, "utf8");
     const stdin = process.argv.slice(3);
-    const runtime = new Runtime(output => process.stdout.write(output));
+    const runtime = new Runtime(
+        output => process.stdout.write(output),
+        // Output info and remove <code>...</code> tags
+        info => process.stderr.write(info.replace(/<\/?code>/g, "") + "\n"),
+    );
 
     for (const state of runtime.runProgram(program, stdin)) {
         // Handle debug output from "|`"
