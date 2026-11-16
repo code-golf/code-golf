@@ -1939,8 +1939,7 @@ preamble = '''
         G2<sub>9</sub> ⊕ G2<sub>10</sub>, both computed before shifting.
 </ol>
 
-<p>
-    For example, the code of PRN 1 starts <tt>1100100000111001…</tt>
+<p>For example, the code of PRN 1 starts <tt>1100100000111001…</tt>
 
 <div>
     <table>
@@ -4883,7 +4882,7 @@ authors = [
 ]
 category = 'Gaming'
 links = [
-    { name = 'Puzzle Star Battle', url = '//www.puzzle-star-battle.com/' },
+    { name = 'Puzzle Star Battle', url = '//www.puzzle-star-battle.com' },
     { name = 'Puzzles Wiki',       url = '//www.puzzles.wiki/wiki/Star_Battle' },
 ]
 experiment = 2781
@@ -4896,14 +4895,13 @@ preamble = '''
     9 × 9 board with 9 regions.
 
 <p>
-    The board is drawn with Unicode box-drawing characters: heavy lines
-    border the regions and the frame, dotted lines separate cells within a
-    region, and every cell shows the digit (1-9) of its region. Write a
-    program that, given such a board as its argument, prints the same board
-    with a star in place of the digit of each of the 9 cells that solve it.
+    The board is drawn with Unicode box-drawing characters: heavy lines border
+    the regions and the frame, dotted lines separate cells within a region,
+    and every cell shows the digit (1-9) of its region. Write a program that,
+    given such a board as its argument, prints the same board with a star in
+    place of the digit of each of the 9 cells that solve it.
 
-<p>
-    For example, given this board:
+<p>For example, given this board:
 
 <pre>
 ┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
@@ -4952,9 +4950,9 @@ preamble = '''
 </pre>
 
 <p>
-    Every board has a unique solution. Reading the digits is just taking
-    every fourth character of every second line; the drawn lines are only a
-    visual aid.
+    Every board has a unique solution. Reading the digits is just taking every
+    fourth character of every second line; the drawn lines are only a visual
+    aid.
 '''
 
 ['Star Wars GPT']
