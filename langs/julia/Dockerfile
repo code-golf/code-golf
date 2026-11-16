@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache autoconf cmake g++ gfortran linux-headers make python3
 
-ENV CXXFLAGS='-flto' LDFLAGS='-flto' VER=1.13.3
+ENV CXXFLAGS='-flto' LDFLAGS='-flto' VER=1.13.4
 
 ADD --unpack https://github.com/JuliaLang/julia/releases/download/v$VER/julia-$VER.tar.gz /
 

@@ -395,8 +395,9 @@ foreach (String arg in args)
 
 ['C++']
 args    = [ '/usr/bin/cpp', '-' ]
+no-proc = true
 size    = '118 MiB'
-version = 'Clang 23.1.4'
+version = 'Clang 23.1.5'
 website = 'https://clang.llvm.org'
 example = '''
 #include <print>
@@ -575,8 +576,9 @@ example   = '''
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
+no-proc = false
 size    = '334 MiB'
-version = '1.22.1'
+version = '1.22.3'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -621,8 +623,9 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '187 MiB'
-version = '3.13.7'
+no-proc = false
+size    = '189 MiB'
+version = '3.14.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -1097,8 +1100,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '1.00 MiB'
-version = '1.42.1'
+size    = '1.02 MiB'
+version = '1.43.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1170,8 +1173,9 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '355 MiB'
-version = '1.13.3'
+no-proc = false
+size    = '354 MiB'
+version = '1.13.4'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1292,9 +1296,9 @@ end
 args       = [ '/usr/bin/luau', '-O2', '-g0', '/tmp/code.luau', '-a' ]
 experiment = 1044
 no-proc    = true
-size       = '2.61 MiB'
+size       = '2.63 MiB'
 stdin-path = '/tmp/code.luau'
-version    = '0.745'
+version    = '0.747'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1596,9 +1600,10 @@ example    = '''
 
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
+no-proc   = true
 redirects = [ 'perl6' ]
-size      = '71.4 MiB'
-version   = 'Raku 6.d on Rakudo 2026.09'
+size      = '72.9 MiB'
+version   = 'Raku 6.d on Rakudo 2026.11'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1852,8 +1857,9 @@ Lm
 
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
+no-proc = false
 size    = '583 MiB'
-version = '6.4.1'
+version = '6.4.2'
 website = 'https://swift.org'
 example = '''
 // Printing

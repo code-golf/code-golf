@@ -118,9 +118,8 @@ int main(int argc, char *argv[]) {
         if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
             ERR_AND_EXIT("mount /proc/meminfo");
 
-        // Clobber /proc/stat. It can be used to inject state. Raku & V don't like this.
-        if (strcmp(argv[0], "/usr/bin/raku")   != 0
-         && strcmp(argv[0], "/usr/bin/V")      != 0)
+        // Clobber /proc/stat. It can be used to inject state. V doesn't like this.
+        if (strcmp(argv[0], "/usr/bin/V") != 0)
             if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
                 ERR_AND_EXIT("mount /proc/stat");
 
