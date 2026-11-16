@@ -907,10 +907,12 @@ for (arg in args)
 '''
 
 [Harbour]
-args       = [ '/usr/bin/harbour', '-' ]
+args       = [ '/usr/bin/hbmk2', '/tmp/code.hb' ]
 experiment = 1614
-size       = '12.2 MiB'
-version    = '3.0.0'
+no-proc    = true
+size       = '8.20 MiB'
+stdin-path = '/tmp/code.hb'
+version    = '3.2.0'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
