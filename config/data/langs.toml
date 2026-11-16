@@ -1949,9 +1949,11 @@ example    = '''
 '''
 
 [Umka]
-args       = [ '/usr/bin/umka', '-' ]
+args       = [ '/usr/bin/umka', '-warn', '/tmp/code.um' ]
 experiment = 1921
-size       = '1.01 MiB'
+no-proc    = true
+size       = '996 KiB'
+stdin-path = '/tmp/code.um'
 version    = '1.5.7'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
