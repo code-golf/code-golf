@@ -2021,7 +2021,7 @@ int main(string[] args) {
 [VimL]
 args       = [ '/usr/bin/viml', '/tmp/code.vim' ]
 no-proc    = true
-size       = '35.5 MiB'
+size       = '34.8 MiB'
 stdin-path = '/tmp/code.vim'
 stdin-fifo = true
 version    = '9.2'
