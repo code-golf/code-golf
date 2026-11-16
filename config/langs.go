@@ -50,6 +50,7 @@ type Lang struct {
 	Released                      toml.LocalDate `json:"released"`
 	Size                          string         `json:"size"`
 	StdinPath                     string         `json:"-" toml:"stdin-path"`
+	StdinFifo                     bool           `json:"-" toml:"stdin-fifo"`
 	Version                       string         `json:"version"`
 	Website                       string         `json:"website"`
 }
