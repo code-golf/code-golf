@@ -396,12 +396,15 @@ foreach (String arg in args)
 '''
 
 ['C++']
-args    = [ '/usr/bin/cpp', '-' ]
-no-proc = true
-size    = '118 MiB'
-version = 'Clang 23.1.5'
-website = 'https://clang.llvm.org'
-example = '''
+args       = [ 'code' ]
+chdir      = '/tmp'
+compile    = [ '/usr/bin/clang', '-std=c++26', '--target=x86_64-alpine-linux-musl', '-O2', '-lstdc++', '-fcolor-diagnostics', '-o', 'code', 'code.cpp', '/unbuffered.cpp' ]
+no-proc    = true
+size       = '118 MiB'
+stdin-path = 'code.cpp'
+version    = 'Clang 23.1.6'
+website    = 'https://clang.llvm.org'
+example    = '''
 #include <print>
 
 int main(int argc, char* argv[]) {
@@ -419,7 +422,7 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-// Code is compiled with clang with -std=c++23
+// Code is compiled with clang with -std=c++26
 // See: https://clang.llvm.org/cxx_status.html
 '''
 

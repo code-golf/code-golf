@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache cmake g++ linux-headers ninja python3
 
-ENV VER=23.1.5
+ENV VER=23.1.6
 
 ADD --unpack https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-$VER.tar.gz /
 
@@ -29,16 +29,11 @@ RUN ninja install
 RUN strip /usr/lib/libLLVM.so.23.1 \
           /usr/lib/libclang-cpp.so.23.1
 
-COPY cpp.c /
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/cpp -s -static /cpp.c
-
 FROM codegolf/lang-base
 
 COPY --from=0 /lib/ld-musl-*.so.1               /lib/
 COPY --from=0 /usr/bin/clang                    \
               /usr/bin/clang++                  \
-              /usr/bin/cpp                      \
               /usr/bin/ld                       /usr/bin/
 COPY --from=0 /usr/include/*.h                  /usr/include/
 COPY --from=0 /usr/include/bits/*.h             /usr/include/bits/
@@ -67,6 +62,6 @@ COPY --from=0 /usr/lib/gcc/*/15.2.0/crtbegin.o  \
 
 COPY unbuffered.cpp /
 
-ENTRYPOINT ["cpp"]
+ENTRYPOINT ["clang"]
 
 CMD ["--version"]
