@@ -782,8 +782,8 @@ int main(int argc, char *argv[]) {
         pid_t pid;
 
         if (!(pid = fork())) {
-            execvp(compile_argv[0], compile_argv);
-            ERR_AND_EXIT("execvp");
+            execv(compile_argv[0], compile_argv);
+            ERR_AND_EXIT("execv");
         }
 
         int status;
@@ -808,8 +808,8 @@ int main(int argc, char *argv[]) {
             if (!freopen("/dev/null", "r", stdin))
                 ERR_AND_EXIT("freopen");
 
-            execvp(argv[0], argv);
-            ERR_AND_EXIT("execvp");
+            execv(argv[0], argv);
+            ERR_AND_EXIT("execv");
         }
 
         FILE* fp;
@@ -839,7 +839,7 @@ int main(int argc, char *argv[]) {
         return WIFEXITED(status) ? WEXITSTATUS(status) : 128;
     }
     else {
-        execvp(argv[0], argv);
-        ERR_AND_EXIT("execvp");
+        execv(argv[0], argv);
+        ERR_AND_EXIT("execv");
     }
 }

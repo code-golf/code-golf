@@ -1708,11 +1708,12 @@ end
 '''
 
 [Rust]
-args       = [ '/tmp/code' ]
-compile    = [ '/usr/local/bin/rustc', '--color=always', '--edition=2024', '-C', 'linker=/usr/bin/ld', '-O', '-o', '/tmp/code', '/tmp/code.rs' ]
+args       = [ 'code' ]
+chdir      = '/tmp'
+compile    = [ '/usr/local/bin/rustc', '--color=always', '--edition=2024', '-C', 'linker=/usr/bin/ld', '-O', 'code.rs' ]
 no-proc    = true
 size       = '422 MiB'
-stdin-path = '/tmp/code.rs'
+stdin-path = 'code.rs'
 version    = '1.100.0'
 website    = 'https://www.rust-lang.org'
 example    = '''
@@ -1998,7 +1999,7 @@ for arg in os.args[1..] {
 '''
 
 [Vala]
-args       = [ './code' ]
+args       = [ 'code' ]
 chdir      = '/tmp'
 compile    = [ '/usr/bin/valac', '--color=always', '--quiet', 'code.vala' ]
 env        = [ 'PATH=/usr/bin' ]
