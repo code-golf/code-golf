@@ -6,6 +6,7 @@ import {
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
     initDeleteBtn, initCopyButtons, getScorings, describeSelectedChar,
+    initUndoRedo, updateUndoRedo,
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
@@ -30,12 +31,14 @@ const editor = new EditorView({
                 .join(', ');
         }
 
-        $('#strokes').innerText = (scorings.selection
-            ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
-            : formatScore(scorings.total)) + describeSelectedChar(tr.state, scorings);
+        $('#strokes').innerText = formatScore(scorings.total);
+        $('#selection').innerText = ((scorings.selection
+            ? `(${formatScore(scorings.selection)} selected)` : '')
+            + describeSelectedChar(tr.state, scorings)).trim();
 
         updateLocalStorage(code);
         updateRestoreLinkVisibility(editor);
+        updateUndoRedo(tr.state);
 
         return result;
     },
@@ -61,6 +64,7 @@ $('#runBtn').onclick = closuredSubmit;
 window.onkeydown = ctrlEnter(closuredSubmit);
 
 initCopyButtons($$('[data-copy]'));
+initUndoRedo(editor);
 initDeleteBtn($('#deleteBtn'));
 
 $$('#rankingsView a').forEach(a => a.onclick = e => {
