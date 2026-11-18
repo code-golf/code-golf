@@ -123,6 +123,9 @@ export function initCopyButtons(buttons: NodeListOf<HTMLElement>) {
 }
 
 const langs: Record<string, Lang> = JSON.parse($('#languages').innerText);
+
+// Polyglot is a pseudo lang, its code is run in every standard lang.
+const polyglot = 'polyglot';
 const sortedLangs  =
     Object.values(langs).sort((a, b) => a.name.localeCompare(b.name));
 
@@ -226,6 +229,8 @@ function updateLangPicker() {
     let currentLangUnused = false;
 
     for (const l of sortedLangs) {
+        if (l.id == polyglot) continue;
+
         if (!getSolutionCode(l.id, 0) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 0)) &&
             !localStorage.getItem(getAutoSaveKey(l.id, 1))) {
@@ -237,6 +242,13 @@ function updateLangPicker() {
 
     if (experimentalLangGroup.childElementCount > 0)
         langSelect.appendChild(experimentalLangGroup);
+
+    if (!getSolutionCode(polyglot, 0) &&
+        !localStorage.getItem(getAutoSaveKey(polyglot, 0))) {
+        langSelect.insertBefore(<option value={polyglot}>Polyglot (every language)</option>,
+            langSelect.firstChild!.nextSibling);
+        currentLangUnused ||= lang == polyglot;
+    }
 
     if (langSelect.childElementCount > 1) {
         langSelect.addEventListener('change', (e: Event) => {
@@ -326,7 +338,7 @@ export async function refreshScores(editor: any) {
         $('#solutionPicker').classList.add('hide');
 
     // Hide the delete button if we have no solutions.
-    hideDeleteBtn = !dbBytes && !dbChars;
+    hideDeleteBtn = (!dbBytes && !dbChars) || lang == polyglot;
     $('#deleteBtn')?.classList.toggle('hide', hideDeleteBtn);
 
     await populateScores(editor);
@@ -552,6 +564,9 @@ export async function submit(
     updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
 ): Promise<boolean> {
     if (!editor) return false;
+    $('#polyglot-progress')?.remove();
+    if (lang == polyglot) return submitPolyglot(editor, updateReadonlyPanels);
+
     $('#status > h2').innerText = '…';
     $('#status').className = 'grey';
 
@@ -707,6 +722,177 @@ export async function submit(
     return pass;
 }
 
+interface PolyglotEvent {
+    total?:     number,
+    lang?:      string,
+    phase?:     'compile' | 'test',
+    ok?:        boolean,
+    runs?:      Run[],
+    done?:      boolean,
+    langs?:     string[],
+    logged_in?: boolean,
+    saved?:     boolean,
+}
+
+// Run the code in every standard lang, streaming the progress: first whether
+// it compiles (runs the first test case cleanly), then whether it passes.
+async function submitPolyglot(
+    editor: any,
+    // eslint-disable-next-line no-unused-vars
+    updateReadonlyPanels: (d: ReadonlyPanelsData) => void,
+): Promise<boolean> {
+    const code = editor.state.doc.toString();
+    lastSubmittedCode = code;
+    const submissionID = ++latestSubmissionID;
+
+    let langCount = 0, compileTested = 0, compiled = 0, testTested = 0, passed = 0;
+    const results: Record<string, { phase: string, ok: boolean, runs: Run[] }> = {};
+
+    const compileBar  = <progress value="0"></progress> as HTMLProgressElement;
+    const testBar     = <progress value="0"></progress> as HTMLProgressElement;
+    const compileText = <span></span>, compileOK = <span class="ok"></span>;
+    const testText    = <span></span>, testOK    = <span class="ok"></span>;
+    const chips       = <div id="polyglot-langs"></div>;
+
+    const showLang = (id: string) => {
+        const { runs } = results[id];
+        const run = runs.find(r => !r.pass) ?? runs[runs.length - 1];
+        updateReadonlyPanels({
+            Pass: run.pass,
+            Argv: run.args,
+            Exp: run.answer,
+            Err: run.stderr,
+            Out: run.stdout,
+            OutputDelimiter: run.output_delimiter,
+            MultisetItemDelimiter: run.multiset_item_delimiter,
+        });
+        $('#pass-fail-msg').innerText = langs[id].name;
+        $$<HTMLButtonElement>('#polyglot-langs button').forEach(
+            b => b.setAttribute('aria-pressed', String(b.dataset.lang == id)));
+    };
+
+    const titles = { pass: 'Pass', fail: 'Fail', testing: 'Testing…', error: 'Did not compile' };
+
+    const render = () => {
+        compileBar.max = langCount || 1;
+        compileBar.value = compileTested;
+        compileText.innerText = `${compileTested}/${langCount}`;
+        compileOK.innerText = `✓ ${compiled}`;
+
+        testBar.max = compiled || 1;
+        testBar.value = testTested;
+        testText.innerText = `${testTested}/${compiled}`;
+        testOK.innerText = `✓ ${passed}`;
+
+        // Passing langs first, then the ones that compiled, then the rest.
+        const state = (id: string): keyof typeof titles => results[id].phase == 'test'
+            ? (results[id].ok ? 'pass' : 'fail')
+            : (results[id].ok ? 'testing' : 'error');
+        const order = ['pass', 'testing', 'fail', 'error'];
+
+        chips.replaceChildren(...Object.keys(results)
+            .sort((a, b) => order.indexOf(state(a)) - order.indexOf(state(b))
+                || langs[a].name.localeCompare(langs[b].name))
+            .map(id => {
+                const chip = <button class={state(id)} data-lang={id}
+                    title={titles[state(id)]}>{langs[id].name}</button>;
+                chip.onclick = () => showLang(id);
+                return chip;
+            }));
+    };
+
+    $('#status > h2').replaceChildren(
+        'Polyglot: ', <span id="pass-fail-msg"></span>);
+    $('#status > h2').after(<div id="polyglot-progress">
+        <span>Compiled</span>{compileBar}{compileText}{compileOK}
+        <span>Passed</span>{testBar}{testText}{testOK}
+        {chips}
+    </div>);
+    $('#status').className = 'grey';
+    $('#thirdParty').replaceChildren();
+    render();
+
+    const res = await fetch('/polyglot', {
+        method: 'POST',
+        body: JSON.stringify({ code, hole }),
+    });
+
+    if (res.status != 200 || !res.body) {
+        alert('Error ' + res.status);
+        return false;
+    }
+
+    let done: PolyglotEvent | undefined;
+    const reader  = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer    = '';
+
+    while (true) {
+        const { value, done: eof } = await reader.read();
+
+        // A newer submission took over, stop listening to this one.
+        if (submissionID != latestSubmissionID) {
+            reader.cancel();
+            return false;
+        }
+
+        buffer += decoder.decode(value, { stream: !eof });
+        const lines = buffer.split('\n');
+        buffer = lines.pop()!;
+
+        for (const line of lines.filter(l => l)) {
+            const e = JSON.parse(line) as PolyglotEvent;
+            if (e.total) langCount = e.total;
+            else if (e.done) done = e;
+            else if (e.lang) {
+                results[e.lang] = { phase: e.phase!, ok: !!e.ok, runs: e.runs! };
+                if (e.phase == 'compile') {
+                    compileTested++;
+                    if (e.ok) compiled++;
+                }
+                else {
+                    testTested++;
+                    if (e.ok) passed++;
+                }
+            }
+        }
+        render();
+
+        if (eof) break;
+    }
+
+    if (!done) return false;
+    savedInDB = !!done.logged_in;
+
+    const pass = passed > 0;
+    $('main')?.classList.remove('pass', 'fail');
+    $('main')?.classList.add(pass ? 'pass' : 'fail', 'lastSubmittedCode');
+    $('#status').className = pass ? 'green' : 'red';
+
+    if (done.saved) {
+        for (const i of [0, 1] as const) {
+            solutions[i][polyglot] = code;
+            if (localStorage.getItem(getAutoSaveKey(polyglot, i)) == code)
+                localStorage.removeItem(getAutoSaveKey(polyglot, i));
+        }
+        updateRestoreLinkVisibility(editor);
+    }
+
+    // Show the best lang's runs: a pass, else a compiled fail, else anything.
+    const first = $<HTMLButtonElement>('#polyglot-langs button');
+    if (first) showLang(first.dataset.lang!);
+    $('#pass-fail-msg').innerText = `${passed} ${passed == 1 ? 'language' : 'languages'}`;
+
+    $('#popups').replaceChildren(...done.saved ? [<div>
+        <h3>Polyglot Saved</h3>
+        <p>{passed} langs, {comma(byteLen(code))} bytes</p>
+    </div>] : []);
+
+    refreshScores(editor);
+
+    return pass;
+}
+
 export function updateLocalStorage(code: string) {
     // Avoid future conflicts by only storing code locally that's
     // different from the server's copy.
@@ -758,6 +944,7 @@ export function setCodeForLangAndSolution(editor: any) {
     const charsTab = $('#scoringTabs a:last-child');
     if (charsTab)
         charsTab.classList.toggle('hide', currentLang.assembly);
+    $('#scoringTabs')?.classList.toggle('hide', lang == polyglot);
 
     refreshScores(editor);
 
@@ -768,6 +955,8 @@ export function setCodeForLangAndSolution(editor: any) {
 export async function populateScores(editor: any) {
     // Populate the rankings table.
     if (!$('#scores')) return;
+    $('#allLink')?.classList.toggle('hide', lang == polyglot);
+    if (lang == polyglot) return populatePolyglotScores();
     const scoringID = scorings[scoring].toLowerCase();
     const path      = `/${hole}/${lang}/${scoringID}`;
     const view      = $('#rankingsView a:not([href])').innerText.trim().toLowerCase();
@@ -824,6 +1013,27 @@ export async function populateScores(editor: any) {
             };
         }
     });
+}
+
+async function populatePolyglotScores() {
+    const res  = await fetch(`/api/polyglot-rankings/${hole}`);
+    const rows = res.ok ? await res.json() : [];
+
+    $('#scores').replaceChildren(<tbody class="polyglot">{
+        rows.length ? rows.map((r: any) => <tr class={r.me ? 'me' : ''}>
+            <td>{r.rank}<sup>{ord(r.rank)}</sup></td>
+            <td>
+                <a href={`/golfers/${r.golfer.name}`}>
+                    <img src={avatar(r.golfer.avatar_url, 48)}/>
+                    <span>{r.golfer.name}</span>
+                </a>
+            </td>
+            <td title="Languages passed">{r.langs} langs</td>
+            <td title="Bytes">{comma(r.bytes)}</td>
+        </tr>) : <tr><td colspan={4}>(Empty)</td></tr>
+    }</tbody>);
+
+    $('#scores-wrapper').scrollTop = 0;
 }
 
 export interface Scorings {

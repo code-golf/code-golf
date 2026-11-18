@@ -35,6 +35,7 @@ declare global {
       optgroup: any;
       option:   any;
       p:        any;
+      progress: any;
       section:  any;
       select:   any;
       span:     any;
