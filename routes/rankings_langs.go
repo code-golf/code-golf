@@ -75,7 +75,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			    SELECT lang, COUNT(*) AS golds,
 			           COALESCE(bool_or(user_id = $4), false) me
 			      FROM medals
-			     WHERE hole = $1 AND scoring = $2 AND medal = 'gold'
+			     WHERE hole = $1 AND scoring = $2 AND medal = 'gold' AND uses_ai IS NULL
 			  GROUP BY lang
 			 ) m ON r.lang = m.lang
 			 WHERE $3 IN ('all', r.lang::text)
@@ -114,7 +114,7 @@ func rankingsLangsGET(w http.ResponseWriter, r *http.Request) {
 			    SELECT hole, COUNT(*) AS golds,
 			           COALESCE(bool_or(user_id = $3), false) me
 			      FROM medals
-			     WHERE lang = $2 AND scoring = $1 AND medal = 'gold'
+			     WHERE lang = $2 AND scoring = $1 AND medal = 'gold' AND uses_ai IS NULL
 			  GROUP BY hole
 			 ) m ON r.hole = m.hole
 			 WHERE r.lang = $2
