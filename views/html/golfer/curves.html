@@ -1,0 +1,39 @@
+{{ template "header" . }}
+{{ template "golfer" . }}
+
+<main>
+    <label id=filters>
+        Language
+        <select id=lang><option value="">All</option></select>
+    </label>
+
+    <div id=chart><canvas></canvas></div>
+    <p class=hide id=no-curves>Tick a curve below to show it.
+
+    <fieldset id=series>
+        <legend>Curves</legend>
+        <label><input checked name=bytes       type=checkbox> Bytes</label>
+        <label><input checked name=chars       type=checkbox> Chars</label>
+        <label><input checked name=bytesPoints type=checkbox> Bytes points</label>
+        <label><input         name=charsPoints type=checkbox> Chars points</label>
+        <label><input checked name=holes       type=checkbox> ⛳ Holes</label>
+        <label><input         name=langs       type=checkbox> 🔣 Langs</label>
+        <label><input         name=cheevos     type=checkbox> 🏆 Cheevos</label>
+        <label><input         name=unicorn     type=checkbox> 🦄 Unicorns</label>
+        <label><input checked name=diamond     type=checkbox> 💎 Diamonds</label>
+        <label><input checked name=gold        type=checkbox> 🥇 Gold</label>
+        <label><input         name=silver      type=checkbox> 🥈 Silver</label>
+        <label><input         name=bronze      type=checkbox> 🥉 Bronze</label>
+    </fieldset>
+
+    <p id=note>
+        Points and medals are worked out from today's leaderboards: points are
+        what each past solution would be worth now, medals are the ones held
+        now, dated when they were won.
+</main>
+
+<script id=curves-data type=application/json>
+    {{ .Data }}
+</script>
+
+{{ template "footer" }}

@@ -50,6 +50,11 @@
     --rank-2-glow: 0 0 10px 2px silver;
     --rank-3-glow: 0 0 10px 2px burlywood;
 
+    --medal-diamond: hsl(185, 70%, 55%);
+    --medal-gold:    gold;
+    --medal-silver:  silver;
+    --medal-bronze:  burlywood;
+
     --play-color: #444;
 }
 
