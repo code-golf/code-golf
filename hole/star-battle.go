@@ -8,10 +8,9 @@ import (
 )
 
 // Modelled on https://github.com/code-golf/code-golf/issues/2781: a 9 × 9
-// Star Battle board with 9 regions, printed in the style of Sudoku (Fill-in).
-// The argument is the drawn board, the expected output is the same board with
-// the 9 stars filled in. Regions are shown as digits 1-9; heavy lines mark
-// borders between regions, dots separate cells within a region.
+// Star Battle board with 9 regions. The argument is the board as nine lines of
+// nine digits, where each digit is the cell's region; the expected output is
+// the same board with the 9 stars filled in.
 //
 // Every board has exactly one solution: pick a random valid placement of 9
 // non-touching stars, grow 9 connected regions outward from the stars, then
@@ -49,27 +48,6 @@ var starPlacements = func() [][9]int {
 
 	return out
 }()
-
-// Heavy box drawing runes for the border arms meeting at a junction, packed as
-// up<<3|down<<2|left<<1|right. Interior junctions have an even number of arms
-// (region borders are closed loops); along the frame a third arm can join.
-var starJunction = [16]rune{
-	1:  '╺', // right
-	2:  '╸', // left
-	3:  '━', // left + right
-	4:  '╻', // down
-	5:  '┏', // down + right
-	6:  '┓', // down + left
-	7:  '┳', // down + left + right
-	8:  '╹', // up
-	9:  '┗', // up + right
-	10: '┛', // up + left
-	11: '┻', // up + left + right
-	12: '┃', // up + down
-	13: '┣', // up + down + right
-	14: '┫', // up + down + left
-	15: '╋', // all four
-}
 
 type starCell struct{ row, col int }
 
@@ -281,87 +259,27 @@ func starBattleBoard() (board [9][9]byte, sol [9]int) {
 	}
 }
 
-// Print the board as a 9 × 9 grid. Heavy lines mark the outer frame and the
-// borders between regions, while cells inside a region are separated by dots.
-// Cells hold their region digit, or a star where stars[row] == col.
+// Print the board as nine lines of nine characters. Cells hold their region
+// digit, or a star where stars[row] == col.
 func starBattlePrint(g [9][9]byte, stars *[9]int) string {
-	// vert[r][c] is the edge left of cell (r, c), horz[r][c] the edge above
-	// it. Both are true along the outer frame.
-	var vert, horz [10][10]bool
+	var b strings.Builder
+	b.Grow(9*10 - 1)
 
 	for row := range 9 {
 		for col := range 9 {
-			vert[row][col] = col == 0 || g[row][col-1] != g[row][col]
-			horz[row][col] = row == 0 || g[row-1][col] != g[row][col]
-		}
-
-		vert[row][9], horz[9][row] = true, true
-	}
-
-	var b strings.Builder
-	b.Grow(19 * 112)
-
-	for row := range 10 {
-		for col := range 10 {
-			arms := 0
-
-			if row > 0 && vert[row-1][col] {
-				arms |= 8
-			}
-
-			if row < 9 && vert[row][col] {
-				arms |= 4
-			}
-
-			if col > 0 && horz[row][col-1] {
-				arms |= 2
-			}
-
-			if col < 9 && horz[row][col] {
-				arms |= 1
-			}
-
-			if arms == 0 {
-				b.WriteRune('∙')
+			if stars != nil && stars[row] == col {
+				b.WriteByte('*')
 			} else {
-				b.WriteRune(starJunction[arms])
-			}
-
-			if col < 9 {
-				if horz[row][col] {
-					b.WriteString("━━━")
-				} else {
-					b.WriteString("∙∙∙")
-				}
+				b.WriteByte(g[row][col])
 			}
 		}
 
-		b.WriteByte('\n')
-
-		if row < 9 {
-			for col := range 9 {
-				if vert[row][col] {
-					b.WriteRune('┃')
-				} else {
-					b.WriteRune('∙')
-				}
-
-				b.WriteByte(' ')
-
-				if stars != nil && stars[row] == col {
-					b.WriteByte('*')
-				} else {
-					b.WriteByte(g[row][col])
-				}
-
-				b.WriteString(" ")
-			}
-
-			b.WriteString("┃\n")
+		if row < 8 {
+			b.WriteByte('\n')
 		}
 	}
 
-	return b.String()[:b.Len()-1]
+	return b.String()
 }
 
 var _ = answerFunc("star-battle", func() []Answer {

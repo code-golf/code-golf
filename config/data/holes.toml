@@ -4895,64 +4895,41 @@ preamble = '''
     9 × 9 board with 9 regions.
 
 <p>
-    The board is drawn with Unicode box-drawing characters: heavy lines border
-    the regions and the frame, dotted lines separate cells within a region,
-    and every cell shows the digit (1-9) of its region. Write a program that,
-    given such a board as its argument, prints the same board with a star in
-    place of the digit of each of the 9 cells that solve it.
+    The board is given as nine lines of nine digits. Every cell shows the digit
+    (1-9) of its region, and orthogonally touching cells with the same digit
+    belong to the same region. Write a program that, given such a board as its
+    argument, prints the same board with a star in place of the digit of each of
+    the 9 cells that solve it.
 
 <p>For example, given this board:
 
 <pre>
-┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
-┃ 7 ∙ 7 ┃ 3 ∙ 3 ∙ 3 ∙ 3 ∙ 3 ┃ 1 ∙ 1 ┃
-┃∙∙∙∙∙∙∙┗━━━━━━━┓∙∙∙∙∙∙∙┏━━━┛∙∙∙┏━━━┫
-┃ 7 ∙ 7 ∙ 7 ∙ 7 ┃ 3 ∙ 3 ┃ 1 ∙ 1 ┃ 4 ┃
-┃∙∙∙∙∙∙∙∙∙∙∙┏━━━┛∙∙∙∙∙∙∙┗━━━━━━━┫∙∙∙┃
-┃ 7 ∙ 7 ∙ 7 ┃ 3 ∙ 3 ∙ 3 ∙ 3 ∙ 3 ┃ 4 ┃
-┃∙∙∙∙∙∙∙∙∙∙∙┃∙∙∙∙∙∙∙┏━━━┓∙∙∙┏━━━┻━━━┫
-┃ 7 ∙ 7 ∙ 7 ┃ 3 ∙ 3 ┃ 6 ┃ 3 ┃ 6 ∙ 6 ┃
-┃∙∙∙∙∙∙∙∙∙∙∙┃∙∙∙┏━━━┛∙∙∙┗━━━┛∙∙∙∙∙∙∙┃
-┃ 7 ∙ 7 ∙ 7 ┃ 3 ┃ 6 ∙ 6 ∙ 6 ∙ 6 ∙ 6 ┃
-┣━━━┳━━━┓∙∙∙┣━━━╋━━━┓∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙┃
-┃ 5 ┃ 9 ┃ 7 ┃ 2 ┃ 8 ┃ 6 ∙ 6 ∙ 6 ∙ 6 ┃
-┃∙∙∙┃∙∙∙┣━━━┛∙∙∙┗━━━┫∙∙∙┏━━━━━━━┓∙∙∙┃
-┃ 5 ┃ 9 ┃ 2 ∙ 2 ∙ 2 ┃ 6 ┃ 2 ∙ 2 ┃ 6 ┃
-┃∙∙∙┗━━━┫∙∙∙∙∙∙∙┏━━━┛∙∙∙┃∙∙∙┏━━━┛∙∙∙┃
-┃ 5 ∙ 5 ┃ 2 ∙ 2 ┃ 6 ∙ 6 ┃ 2 ┃ 6 ∙ 6 ┃
-┃∙∙∙┏━━━┛∙∙∙∙∙∙∙┗━━━━━━━┛∙∙∙┗━━━━━━━┫
-┃ 5 ┃ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ┃
-┗━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+773333311
+777733114
+777333334
+777336366
+777366666
+597286666
+592226226
+552266266
+522222222
 </pre>
 
 <p>print this solution:
 
 <pre>
-┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
-┃ 7 ∙ 7 ┃ 3 ∙ 3 ∙ 3 ∙ 3 ∙ 3 ┃ * ∙ 1 ┃
-┃∙∙∙∙∙∙∙┗━━━━━━━┓∙∙∙∙∙∙∙┏━━━┛∙∙∙┏━━━┫
-┃ 7 ∙ 7 ∙ 7 ∙ 7 ┃ 3 ∙ * ┃ 1 ∙ 1 ┃ 4 ┃
-┃∙∙∙∙∙∙∙∙∙∙∙┏━━━┛∙∙∙∙∙∙∙┗━━━━━━━┫∙∙∙┃
-┃ 7 ∙ 7 ∙ 7 ┃ 3 ∙ 3 ∙ 3 ∙ 3 ∙ 3 ┃ * ┃
-┃∙∙∙∙∙∙∙∙∙∙∙┃∙∙∙∙∙∙∙┏━━━┓∙∙∙┏━━━┻━━━┫
-┃ 7 ∙ 7 ∙ * ┃ 3 ∙ 3 ┃ 6 ┃ 3 ┃ 6 ∙ 6 ┃
-┃∙∙∙∙∙∙∙∙∙∙∙┃∙∙∙┏━━━┛∙∙∙┗━━━┛∙∙∙∙∙∙∙┃
-┃ 7 ∙ 7 ∙ 7 ┃ 3 ┃ 6 ∙ 6 ∙ * ∙ 6 ∙ 6 ┃
-┣━━━┳━━━┓∙∙∙┣━━━╋━━━┓∙∙∙∙∙∙∙∙∙∙∙∙∙∙∙┃
-┃ 5 ┃ 9 ┃ 7 ┃ 2 ┃ * ┃ 6 ∙ 6 ∙ 6 ∙ 6 ┃
-┃∙∙∙┃∙∙∙┣━━━┛∙∙∙┗━━━┫∙∙∙┏━━━━━━━┓∙∙∙┃
-┃ 5 ┃ * ┃ 2 ∙ 2 ∙ 2 ┃ 6 ┃ 2 ∙ 2 ┃ 6 ┃
-┃∙∙∙┗━━━┫∙∙∙∙∙∙∙┏━━━┛∙∙∙┃∙∙∙┏━━━┛∙∙∙┃
-┃ 5 ∙ 5 ┃ 2 ∙ * ┃ 6 ∙ 6 ┃ 2 ┃ 6 ∙ 6 ┃
-┃∙∙∙┏━━━┛∙∙∙∙∙∙∙┗━━━━━━━┛∙∙∙┗━━━━━━━┫
-┃ * ┃ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ∙ 2 ┃
-┗━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+7733333*1
+77773*114
+77733333*
+77*336366
+777366*66
+5972*6666
+5*2226226
+552*66266
+*22222222
 </pre>
 
-<p>
-    Every board has a unique solution. Reading the digits is just taking every
-    fourth character of every second line; the drawn lines are only a visual
-    aid.
+<p>Every board has a unique solution.
 '''
 
 ['Star Wars GPT']
