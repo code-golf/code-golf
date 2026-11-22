@@ -17,7 +17,7 @@ import { selectNextOccurrence,
     selectSelectionMatches }                     from '@codemirror/search';
 import { tags }                                  from '@lezer/highlight';
 import { bracketMatching, defaultHighlightStyle,
-    HighlightStyle, LanguageSupport, StreamLanguage,
+    HighlightStyle, LanguageSupport, LRLanguage, StreamLanguage,
     syntaxHighlighting }                         from '@codemirror/language';
 import { oneDarkTheme, oneDarkHighlightStyle }   from '@codemirror/theme-one-dark';
 import { vim }                                   from '@replit/codemirror-vim';
@@ -54,6 +54,7 @@ import { jq }                                       from 'codemirror-lang-jq';
 import { julia }                                    from '@codemirror/legacy-modes/mode/julia';
 import { k }                                        from 'codemirror-lang-k';
 import { knight }                                   from 'codemirror-lang-knight';
+import { parser as leanParser }                     from '@ndim/lezer-lean';
 import { lua }                                      from '@codemirror/legacy-modes/mode/lua';
 import { nim }                                      from 'nim-codemirror-mode';
 import { pascal }                                   from '@codemirror/legacy-modes/mode/pascal';
@@ -81,6 +82,7 @@ const elixir     = new LanguageSupport(elixirLanguage);
 const gleam      = new LanguageSupport(gleamLanguage);
 const go         = new LanguageSupport(goLanguage);
 const javascript = new LanguageSupport(javascriptLanguage);
+const lean       = new LanguageSupport(LRLanguage.define({ name: 'lean', parser: leanParser }));
 const php        = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
 const python     = new LanguageSupport(pythonLanguage);
 const sql        = new LanguageSupport(SQLite.language);
@@ -230,7 +232,7 @@ export const extensions : { [key: string]: any } = {
     'k':             k(),
     'knight':        knight(),
     'kotlin':        StreamLanguage.define(kotlin),
-    // TODO lean
+    'lean':          lean,
     // TODO lily
     'lua':           StreamLanguage.define(lua),
     'luau':          StreamLanguage.define(lua),

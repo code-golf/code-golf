@@ -14,6 +14,7 @@
     "@defasm/codemirror": "",
     "@exercism/codemirror-lang-gleam": "",
     "@exercism/codemirror-lang-wren": "github:exercism/codemirror-lang-wren#3bde996",
+    "@ndim/lezer-lean": "",
     "@replit/codemirror-vim": "",
     "@rockstarlang/codemirror-lang-rockstar": "",
     "chart.js": "",
