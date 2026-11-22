@@ -18,8 +18,8 @@ example    = '''
 
 ['><>']
 args    = [ '/usr/bin/fish', '--no-prng', '-c', '$code', '-u' ]
-size    = '648 KiB'
-version = '96b1cfc'
+size    = '662 KiB'
+version = 'e9fe296'
 website = 'https://github.com/primo-ppcg/fish-jit'
 example = '''
 \ printing
@@ -42,9 +42,10 @@ x is a no-op.
 
 ['ALGOL 68']
 args     = [ '/usr/bin/algol-68', '--execute', '$code', '--' ]
+no-proc  = true
 released = 2026-02-21
-size     = '1.44 MiB'
-version  = 'Algol 68 Genie 3.13.3'
+size     = '1.55 MiB'
+version  = 'Algol 68 Genie 3.14.0'
 website  = 'https://algol68genie.nl/en/algol-68-genie/'
 example  = '''
 # Printing #
@@ -62,10 +63,13 @@ OD
 '''
 
 [APL]
-args       = [ '/usr/bin/apl', '-' ]
+args       = [ '/usr/bin/dyalogscript', '/tmp/code.dyalog' ]
 experiment = 135
-size       = '14.4 MiB'
-version    = 'Dyalog APL 19.0.50027'
+no-proc    = false
+size       = '15.8 MiB'
+stdin-fifo = true
+stdin-path = '/tmp/code.dyalog'
+version    = 'Dyalog APL 21.0.55109'
 website    = 'https://www.dyalog.com'
 example    = '''
 ⍝ Printing
@@ -83,8 +87,8 @@ example    = '''
 args     = [ '/usr/bin/arkscript', '-' ]
 env      = [ 'ARKSCRIPT_PATH=/usr/lib/Ark' ]
 released = 2026-03-19
-size     = '3.21 MiB'
-version  = '4.7.2'
+size     = '3.23 MiB'
+version  = '4.8.0'
 website  = 'https://arkscript-lang.dev'
 example  = '''
 (import std.List)
@@ -123,7 +127,8 @@ loop arg [a] [
 [Assembly]
 args     = [ '/usr/node_modules/@defasm/cli/cli.js', '--size-out=3', '-w', '-r' ]
 assembly = true
-size     = '74.9 MiB'
+no-proc  = true
+size     = '72.0 MiB'
 version  = 'DefAssembler 2.4.5'
 website  = 'https://www.npmjs.com/package/@defasm/core'
 example  = '''
@@ -280,8 +285,9 @@ v Accessing arguments
 
 [Berry]
 args    = [ '/usr/bin/berry', '-' ]
-size    = '832 KiB'
-version = 'c304823'
+no-proc = true
+size    = '837 KiB'
+version = '9f6fbc9'
 website = 'https://berry-lang.github.io'
 example = '''
 # Printing
@@ -369,8 +375,9 @@ int main(int argc, char* argv[]) {
 ['C#']
 args    = [ '/usr/bin/c-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '112 MiB'
-version = 'C# 14.0 on .NET 10.0.11'
+no-proc = true
+size    = '115 MiB'
+version = 'C# 15.0 on .NET 11.0.0'
 website = 'https://docs.microsoft.com/dotnet/csharp/'
 example = '''
 // Printing
@@ -389,11 +396,15 @@ foreach (String arg in args)
 '''
 
 ['C++']
-args    = [ '/usr/bin/cpp', '-' ]
-size    = '115 MiB'
-version = 'Clang 22.1.8'
-website = 'https://clang.llvm.org'
-example = '''
+args       = [ 'code' ]
+chdir      = '/tmp'
+compile    = [ '/usr/bin/clang', '-std=c++26', '--target=x86_64-alpine-linux-musl', '-O2', '-lstdc++', '-fcolor-diagnostics', '-o', 'code', 'code.cpp', '/unbuffered.cpp' ]
+no-proc    = true
+size       = '118 MiB'
+stdin-path = 'code.cpp'
+version    = 'Clang 23.1.6'
+website    = 'https://clang.llvm.org'
+example    = '''
 #include <print>
 
 int main(int argc, char* argv[]) {
@@ -411,15 +422,15 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
-// Code is compiled with clang with -std=c++23
+// Code is compiled with clang with -std=c++26
 // See: https://clang.llvm.org/cxx_status.html
 '''
 
 [Civet]
 args    = [ '/usr/local/dist/civet', '--comptime', '--no-config', '-' ]
 env     = [ 'NODE_ICU_DATA=/usr/share/icu' ]
-size    = '80.8 MiB'
-version = '0.11.13'
+size    = '78.0 MiB'
+version = '0.11.15'
 website = 'https://civet.dev'
 example = '''
 // Printing
@@ -437,7 +448,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/opt/java/bin/java', '-jar', 'cjam.jar', '/proc/self/fd/0' ]
 experiment = 1493
-size       = '57.8 MiB'
+size       = '58.4 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
 example    = '''
@@ -453,8 +464,8 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/bb', '/proc/self/fd/0' ]
-size    = '70.1 MiB'
-version = 'Babashka 1.13.219'
+size    = '72.6 MiB'
+version = 'Babashka 1.13.229'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -470,8 +481,10 @@ example = '''
 '''
 
 [COBOL]
-args    = [ '/usr/bin/cobol', '-' ]
-size    = '4.26 MiB'
+args    = [ '/usr/bin/c', '-lcob', '-run', '/tmp/code.c' ]
+compile = [ '/usr/local/bin/cobc', '-CFxo', '/tmp/code.c', '-' ]
+no-proc = true
+size    = '4.25 MiB'
 version = 'GnuCOBOL 3.2.0'
 website = 'https://gnucobol.sourceforge.io'
 example = '''
@@ -506,7 +519,7 @@ end-program.
 [Coconut]
 args    = [ '/usr/bin/coconut', '--quiet', '--target', 'sys', '--keep-lines', '--argv' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '84.6 MiB'
+size    = '86.2 MiB'
 version = '3.2.0'
 website = 'https://coconut-lang.org'
 example = '''
@@ -528,8 +541,8 @@ for arg in sys.argv[1:]:
 args       = [ '/usr/bin/coffee', '/proc/self/fd/0' ]
 env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 450
-size       = '79.2 MiB'
-version    = '2.7.0'
+size       = '76.4 MiB'
+version    = '2.7.1'
 website    = 'https://coffeescript.org'
 example    = '''
 # Printing
@@ -568,8 +581,9 @@ example   = '''
 [Crystal]
 args    = [ '/usr/bin/crystal', 'run', '--stdin-filename', 'code.cr', '--' ]
 env     = [ 'CRYSTAL_CACHE_DIR=/tmp', 'PATH=/usr/bin:/bin' ]
-size    = '299 MiB'
-version = '1.21.0'
+no-proc = false
+size    = '334 MiB'
+version = '1.22.3'
 website = 'https://crystal-lang.org'
 example = '''
 # Printing
@@ -587,10 +601,11 @@ end
 '''
 
 [D]
-args    = [ '/usr/bin/D', '-' ]
+args    = [ '/usr/bin/dmd', '-color=on', '-run', '-' ]
+chdir   = '/tmp'    # FIXME dmd `-od=/tmp` doesn't work with `-run -`
 env     = [ 'PATH=/usr/bin' ]
-size    = '98.7 MiB'
-version = 'DMD 2.112.0'
+size    = '98.1 MiB'
+version = 'DMD 2.112.1'
 website = 'https://dlang.org'
 example = '''
 import std.stdio;
@@ -613,8 +628,9 @@ void main(string[] argv) {
 
 [Dart]
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
-size    = '187 MiB'
-version = '3.13.0'
+no-proc = false
+size    = '189 MiB'
+version = '3.14.0'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -657,10 +673,11 @@ none
 '''
 
 [Elixir]
-args    = [ '/usr/local/bin/elixir', '--color', '-e', '$code', '--' ]
+args    = [ '/usr/bin/elixir', '--color', '-e', '$code', '--' ]
 env     = [ 'LANG=C.UTF-8' ]
-size    = '58.8 MiB'
-version = '1.20.3'
+no-proc = true
+size    = '58.9 MiB'
+version = '1.20.5'
 website = 'https://elixir-lang.org'
 example = '''
 # Printing
@@ -677,8 +694,8 @@ for arg <- System.argv, do: IO.puts arg
 args     = [ '/usr/bin/erlang', '-' ]
 env      = [ 'LANG=C.UTF-8' ]
 released = 2025-11-27
-size     = '51.1 MiB'
-version  = 'OTP 29.0.5'
+size     = '51.2 MiB'
+version  = 'OTP 29.1.2'
 website  = 'https://www.erlang.org'
 example  = '''
 main(Args) ->
@@ -695,8 +712,9 @@ main(Args) ->
 ['F#']
 args    = [ '/usr/bin/f-sharp', '-' ]
 env     = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size    = '114 MiB'
-version = 'F# 10.0 on .NET 10.0.11'
+no-proc = true
+size    = '119 MiB'
+version = 'F# 10.0 on .NET 11.0.0'
 website = 'https://fsharp.org'
 example = '''
 [<EntryPoint>]
@@ -717,8 +735,8 @@ let main args =
 
 [Factor]
 args    = [ '/usr/bin/factor', '/proc/self/fd/0' ]
-size    = '178 MiB'
-version = '0.101'
+size    = '219 MiB'
+version = '0.102'
 website = 'https://factorcode.org'
 example = '''
 ! Printing
@@ -801,9 +819,10 @@ end
 
 [Gleam]
 args    = [ '/usr/bin/gleam', '-' ]
-env     = [ 'LANG=C.UTF-8' ]
-size    = '75.9 MiB'
-version = '1.18.1'
+env     = [ 'ERL_LIBS=/tmp/build/dev/erlang', 'LANG=C.UTF-8' ]
+no-proc = true
+size    = '76.2 MiB'
+version = '1.19.2'
 website = 'https://gleam.run'
 example = '''
 import argv
@@ -827,7 +846,7 @@ pub fn main() {
 args    = [ '/usr/bin/gowrapper', '-' ]
 env     = [ 'GOCACHE=/tmp/cache' ]
 size    = '374 MiB'
-version = '1.27.0'
+version = '1.27.4'
 website = 'https://go.dev'
 example = '''
 package main
@@ -874,8 +893,8 @@ n*
 args     = [ '/usr/bin/groovy', '-e', '$code' ]
 env      = [ 'JAVA_HOME=/opt/java', 'JAVA_OPTS=-XX:ActiveProcessorCount=1' ]
 released = 2025-08-29
-size     = '66.0 MiB'
-version  = '5.0.8'
+size     = '67.8 MiB'
+version  = '6.0.0'
 website  = 'https://groovy-lang.org'
 example  = '''
 // Printing
@@ -891,10 +910,12 @@ for (arg in args)
 '''
 
 [Harbour]
-args       = [ '/usr/bin/harbour', '-' ]
+args       = [ '/usr/bin/hbmk2', '/tmp/code.hb' ]
 experiment = 1614
-size       = '12.2 MiB'
-version    = '3.0.0'
+no-proc    = true
+size       = '8.20 MiB'
+stdin-path = '/tmp/code.hb'
+version    = '3.2.0'
 website    = 'https://harbour.github.io'
 example    = '''
 LOCAL i
@@ -940,8 +961,8 @@ export fn main() void = {
 
 [Haskell]
 args    = [ '/usr/bin/haskell', '-' ]
-size    = '356 MiB'
-version = 'GHC 9.10.3'
+size    = '766 MiB'
+version = 'GHC 9.14.1'
 website = 'https://www.haskell.org/ghc/'
 example = '''
 import System.Environment
@@ -984,7 +1005,8 @@ class Main {
 
 [Hexagony]
 args    = [ '/usr/bin/hexagony', '-d', '-' ]
-size    = '7.72 MiB'
+no-proc = true
+size    = '4.20 MiB'
 version = '770406a'
 website = 'https://github.com/SirBogman/Hexagony'
 example = '''
@@ -1012,7 +1034,8 @@ example = '''
 [Hush]
 args       = [ '/usr/bin/hush', '-' ]
 experiment = 656
-size       = '2.18 MiB'
+no-proc    = true
+size       = '2.02 MiB'
 version    = '0.1.4'
 website    = 'https://hush-shell.github.io'
 example    = '''
@@ -1033,7 +1056,7 @@ end
 [Hy]
 args       = [ '/usr/bin/hy', '-' ]
 experiment = 586
-size       = '45.7 MiB'
+size       = '46.4 MiB'
 version    = '1.3.1'
 website    = 'https://hylang.org'
 example    = '''
@@ -1069,8 +1092,8 @@ $
 [J]
 args    = [ '/usr/bin/j', '/proc/self/fd/0' ]
 env     = [ 'GLIBC_TUNABLES=glibc.rtld.execstack=2' ]
-size    = '11.5 MiB'
-version = '9.6.3'
+size    = '11.6 MiB'
+version = '9.7.1'
 website = 'https://www.jsoftware.com'
 example = '''
 NB.Printing
@@ -1085,8 +1108,8 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '989 KiB'
-version = '1.41.2'
+size    = '1.02 MiB'
+version = '1.43.0'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1102,9 +1125,9 @@ example = '''
 '''
 
 [Java]
-args    = [ '/usr/bin/java', '-' ]
-size    = '52.5 MiB'
-version = 'OpenJDK 25.0.4'
+args    = [ '/opt/java/bin/java', '-XX:+AutoCreateSharedArchive', '-XX:SharedArchiveFile=/cds.jsa', '-Xlog:cds=off', '/code.java' ]
+size    = '52.9 MiB'
+version = 'OpenJDK 27.0.1.0.2'
 website = 'https://openjdk.java.net'
 example = '''
 void main(String[] args) {
@@ -1123,8 +1146,9 @@ void main(String[] args) {
 
 [JavaScript]
 args    = [ '/usr/bin/javascript', '-e', 'delete load;delete read;delete readbuffer;delete writeFile', '-e', '$code', '--' ]
-size    = '48.5 MiB'
-version = 'V8 15.1.206.16'
+no-proc = true
+size    = '50.0 MiB'
+version = 'V8 15.7.112.23'
 website = 'https://v8.dev'
 example = '''
 // Printing
@@ -1157,8 +1181,9 @@ $ARGS.positional[]
 
 [Julia]
 args    = [ '/usr/bin/julia', '--color=yes', '--eval', '$code', '--' ]
-size    = '357 MiB'
-version = '1.12.6'
+no-proc = false
+size    = '354 MiB'
+version = '1.13.4'
 website = 'https://julialang.org'
 example = '''
 # Printing
@@ -1195,7 +1220,7 @@ example = '''
 args       = [ '/usr/bin/knight', '-e', '$code' ]
 experiment = 2360
 size       = '372 KiB'
-version    = '1981682'
+version    = 'a2c31e4'
 website    = 'https://github.com/synt7x/knightjit'
 example    = '''
 # Printing
@@ -1216,8 +1241,8 @@ example    = '''
 
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
-size    = '141 MiB'
-version = '2.4.10'
+size    = '140 MiB'
+version = '2.4.21'
 website = 'https://kotlinlang.org'
 example = '''
 // Printing
@@ -1297,10 +1322,12 @@ end
 '''
 
 [Luau]
-args       = [ '/usr/bin/luau', '-' ]
+args       = [ '/usr/bin/luau', '-O2', '-g0', '/tmp/code.luau', '-a' ]
 experiment = 1044
-size       = '6.09 MiB'
-version    = '0.734'
+no-proc    = true
+size       = '2.63 MiB'
+stdin-path = '/tmp/code.luau'
+version    = '0.747'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1318,9 +1345,9 @@ end
 '''
 
 [Nim]
-args    = [ '/usr/bin/nim', '--colors:on', '-o:/tmp/code', '-r', 'c', '-' ]
-size    = '14.9 MiB'
-version = '2.2.10'
+args    = [ '/usr/bin/nim', 'r', '--colors:on', '-o:/tmp/code', '-' ]
+size    = '18.6 MiB'
+version = '2.4.0'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1340,7 +1367,7 @@ for arg in commandLineParams():
 [OCaml]
 args    = [ '/usr/bin/ocaml', '-color=always', '/proc/self/fd/0' ]
 size    = '101 MiB'
-version = '5.5.0'
+version = '5.5.2'
 website = 'https://ocaml.org'
 example = '''
 (* Printing *)
@@ -1359,10 +1386,12 @@ Sys.argv
 '''
 
 [Odin]
-args       = [ '/usr/bin/odinwrapper', '-', '--' ]
+args       = [ '/usr/local/bin/odin', 'run', 'code.odin', '-file', '-o:none', '--' ]
+chdir      = '/tmp'
 experiment = 766
-size       = '331 MiB'
-version    = '2026-08'
+size       = '339 MiB'
+stdin-path = '/tmp/code.odin'
+version    = '2026-11'
 website    = 'https://odin-lang.org'
 example    = '''
 package main
@@ -1429,7 +1458,7 @@ say for @ARGV;
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
 size    = '15.5 MiB'
-version = '8.5.9'
+version = '8.5.12'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1479,8 +1508,9 @@ main(Args) =>
 args       = [ '/usr/bin/powershell' ]
 args-quine = [ '/usr/bin/powershell', '--explicit' ]
 env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
-size       = '140 MiB'
-version    = 'PowerShell 7.6.5 on .NET 10.0.11'
+no-proc    = true
+size       = '144 MiB'
+version    = 'PowerShell 7.7.0 on .NET 11.0.0'
 website    = 'https://docs.microsoft.com/powershell/scripting/overview'
 example    = '''
 # Printing
@@ -1498,12 +1528,15 @@ ForEach ($arg in $args) {
 '''
 
 [Prolog]
-args    = [ '/usr/bin/prolog', '-' ]
-env     = [ 'LANG=C.UTF-8' ]
-size    = '57.5 MiB'
-version = 'SWI-Prolog 10.0.2'
-website = 'https://www.swi-prolog.org'
-example = '''
+args       = [ '/usr/bin/swipl', '-g', 'halt', '/tmp/code.pl' ]
+env        = [ 'LANG=C.UTF-8' ]
+no-proc    = true
+size       = '57.5 MiB'
+stdin-fifo = true
+stdin-path = '/tmp/code.pl'
+version    = 'SWI-Prolog 10.0.2'
+website    = 'https://www.swi-prolog.org'
+example    = '''
 % Printing
 :- writeln("Hello, World!").
 
@@ -1519,8 +1552,8 @@ example = '''
 [Python]
 args    = [ '/usr/bin/python', '-u', '-' ]
 env     = [ 'PYTHON_COLORS=1' ]
-size    = '32.6 MiB'
-version = '3.14.7'
+size    = '31.1 MiB'
+version = '3.15.2'
 website = 'https://www.python.org'
 example = '''
 import sys
@@ -1559,8 +1592,9 @@ foreach string arg in (ARGV)
 [R]
 args       = [ '/usr/bin/R', '-' ]
 args-quine = [ '/usr/bin/R', '-e', "source('stdin')" ]
+no-proc    = true
 size       = '30.6 MiB'
-version    = '4.6.1'
+version    = '4.6.2'
 website    = 'https://www.r-project.org'
 example    = '''
 # Printing
@@ -1597,9 +1631,10 @@ example    = '''
 
 [Raku]
 args      = [ '/usr/bin/raku', '-' ]
+no-proc   = true
 redirects = [ 'perl6' ]
-size      = '82.0 MiB'
-version   = 'Raku 6.d on Rakudo 2026.07'
+size      = '72.9 MiB'
+version   = 'Raku 6.d on Rakudo 2026.11'
 website   = 'https://raku.org'
 example   = '''
 # Printing
@@ -1656,9 +1691,10 @@ end
 
 [Rockstar]
 args      = [ '/usr/bin/rockstar', '-' ]
+no-proc   = true
 redirects = [ 'rockstar-2' ]
-size      = '3.92 MiB'
-version   = '2.0.31'
+size      = '3.31 MiB'
+version   = '2.0.38'
 website   = 'https://codewithrockstar.com'
 example   = '''
 (Printing)
@@ -1678,7 +1714,7 @@ end
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
 size    = '38.6 MiB'
-version = '4.0.6'
+version = '4.0.9'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -1696,11 +1732,15 @@ end
 '''
 
 [Rust]
-args    = [ '/usr/bin/rust', '-' ]
-size    = '421 MiB'
-version = '1.97.1'
-website = 'https://www.rust-lang.org'
-example = '''
+args       = [ 'code' ]
+chdir      = '/tmp'
+compile    = [ '/usr/local/bin/rustc', '--color=always', '--edition=2024', '-C', 'linker=/usr/bin/ld', '-O', 'code.rs' ]
+no-proc    = true
+size       = '422 MiB'
+stdin-path = 'code.rs'
+version    = '1.100.0'
+website    = 'https://www.rust-lang.org'
+example    = '''
 fn main() {
     // Printing
     println!("Hello, World!");
@@ -1721,7 +1761,7 @@ fn main() {
 args       = [ '/usr/local/bin/scala', '-opt:none', '-Xsource:3-cross', '-e', '$code', '--' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 235
-size       = '84.2 MiB'
+size       = '84.9 MiB'
 version    = '2.13.18'
 website    = 'https://www.scala-lang.org'
 example    = '''
@@ -1737,11 +1777,16 @@ args.foreach(println)
 '''
 
 [Scheme]
-args    = [ '/usr/bin/schemewrapper', '-' ]
-size    = '8.22 MiB'
-version = 'Chez Scheme 10.4.1'
-website = 'https://cisco.github.io/ChezScheme/'
-example = '''
+args       = [ '/usr/bin/scheme', '--script', 'code.ss' ]
+chdir      = '/tmp'
+env        = [ 'SCHEMEHEAPDIRS=/boot/%m' ]
+no-proc    = true
+size       = '5.06 MiB'
+stdin-fifo = true
+stdin-path = '/tmp/code.ss'
+version    = 'Chez Scheme 10.4.1'
+website    = 'https://cisco.github.io/ChezScheme/'
+example    = '''
 ; Printing
 (printf "~a~n" "Hello, World!")
 
@@ -1783,8 +1828,8 @@ G
 
 [SQL]
 args    = [ '/usr/bin/sql', '-' ]
-size    = '1.32 MiB'
-version = 'SQLite 3.53.4'
+size    = '1.33 MiB'
+version = 'SQLite 3.54.1'
 website = 'https://sqlite.org'
 example = '''
 -- Printing
@@ -1807,9 +1852,11 @@ SELECT arg FROM argv;
 '''
 
 [Squirrel]
-args       = [ '/usr/bin/squirrel', '-' ]
+args       = [ '/usr/bin/squirrel', '/tmp/code.nut' ]
 experiment = 1598
-size       = '4.00 MiB'
+no-proc    = true
+size       = '3.99 MiB'
+stdin-path = '/tmp/code.nut'
 version    = '3.2'
 website    = 'http://squirrel-lang.org'
 example    = '''
@@ -1827,9 +1874,9 @@ foreach (arg in vargv)
 
 [Stax]
 args       = [ '/usr/bin/stax', '-' ]
-env        = [ 'DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1' ]
+env        = [ 'NODE_ICU_DATA=/usr/share/icu' ]
 experiment = 439
-size       = '79.5 MiB'
+size       = '75.6 MiB'
 version    = '1.2.1'
 website    = 'https://github.com/tomtheisen/stax'
 example    = '''
@@ -1845,8 +1892,9 @@ Lm
 
 [Swift]
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
-size    = '576 MiB'
-version = '6.3.3'
+no-proc = false
+size    = '583 MiB'
+version = '6.4.2'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -1865,8 +1913,8 @@ for arg in CommandLine.arguments[1...] {
 
 [Tcl]
 args    = [ '/usr/bin/tcl', '/proc/self/fd/0' ]
-size    = '5.82 MiB'
-version = '9.0.4'
+size    = '6.10 MiB'
+version = '9.1.0'
 website = 'https://www.tcl-lang.org'
 example = '''
 # Printing
@@ -1910,8 +1958,9 @@ Hello, World!
 [Uiua]
 args       = [ '/usr/bin/uiua', 'eval', '--', '$code' ]
 experiment = 1115
-size       = '28.0 MiB'
-version    = '0.18.1'
+no-proc    = true
+size       = '31.4 MiB'
+version    = '0.19.1'
 website    = 'https://www.uiua.org'
 example    = '''
 # Printing
@@ -1925,10 +1974,12 @@ example    = '''
 '''
 
 [Umka]
-args       = [ '/usr/bin/umka', '-' ]
+args       = [ '/usr/bin/umka', '-warn', '/tmp/code.um' ]
 experiment = 1921
-size       = '1.00 MiB'
-version    = '1.5.6'
+no-proc    = true
+size       = '996 KiB'
+stdin-path = '/tmp/code.um'
+version    = '1.5.7'
 website    = 'https://github.com/vtereshkov/umka-lang'
 example    = '''
 import "std.um"
@@ -1951,7 +2002,7 @@ fn main() {
 
 [V]
 args    = [ '/usr/bin/V', '-' ]
-size    = '43.4 MiB'
+size    = '43.5 MiB'
 version = '0.5.1'
 website = 'https://vlang.io'
 example = '''
@@ -1972,10 +2023,14 @@ for arg in os.args[1..] {
 '''
 
 [Vala]
-args       = [ '/usr/bin/vala', '-' ]
+args       = [ 'code' ]
+chdir      = '/tmp'
+compile    = [ '/usr/bin/valac', '--color=always', '--quiet', 'code.vala' ]
 env        = [ 'PATH=/usr/bin' ]
 experiment = 1354
+no-proc    = true
 size       = '106 MiB'
+stdin-path = '/tmp/code.vala'
 version    = '0.56.19'
 website    = 'https://vala.dev'
 example    = '''
@@ -1996,11 +2051,14 @@ int main(string[] args) {
 '''
 
 [VimL]
-args    = [ '/usr/bin/viml', '-' ]
-size    = '35.5 MiB'
-version = '9.2'
-website = 'https://www.vim.org'
-example = '''
+args       = [ '/usr/bin/viml', '/tmp/code.vim' ]
+no-proc    = true
+size       = '34.8 MiB'
+stdin-fifo = true
+stdin-path = '/tmp/code.vim'
+version    = '9.2'
+website    = 'https://www.vim.org'
+example    = '''
 " Printing
 i
 Hello, World!
@@ -2023,7 +2081,7 @@ w
 [Vyxal]
 args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
-size       = '78.4 MiB'
+size       = '79.0 MiB'
 version    = '3.12.0'
 website    = 'https://vyxal.github.io'
 example    = '''
@@ -2056,11 +2114,12 @@ for (a in Process.arguments) System.print(a)
 '''
 
 [Zig]
-args    = [ '/usr/bin/zig', '-' ]
-size    = '191 MiB'
-version = '0.16.0'
-website = 'https://ziglang.org'
-example = '''
+args       = [ '/usr/bin/zig', 'run', '-freference-trace', '-fstrip', '--color', 'on', '/tmp/code.zig', '--' ]
+size       = '205 MiB'
+stdin-path = '/tmp/code.zig'
+version    = '0.17.1'
+website    = 'https://ziglang.org'
+example    = '''
 const std = @import("std");
 
 pub fn main(init: std.process.Init) !void {
@@ -2088,7 +2147,8 @@ pub fn main(init: std.process.Init) !void {
 [ZuzuScript]
 args       = [ '/usr/bin/zuzu', '-e', '$code', '--' ]
 experiment = 2677
-size       = '36.1 MiB'
+no-proc    = false
+size       = '36.0 MiB'
 version    = '0.7.1'
 website    = 'https://zuzulang.org'
 example    = '''

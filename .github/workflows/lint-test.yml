@@ -9,15 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: latest
 
-      - run: npm install
+      - run: npm install --allow-git=root
       - run: make lint
       - run: make test
       - run: go install filippo.io/mkcert@latest

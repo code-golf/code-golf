@@ -17,10 +17,6 @@ RUN ./configure                      \
  && strip /usr/lib/libvala-$VER.so.0 \
           /usr/lib/vala-$VER/libvalaccodegen.so
 
-COPY vala.c .
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/vala -s vala.c
-
 FROM codegolf/lang-base
 
 ARG VER
@@ -31,7 +27,6 @@ COPY --from=0 /usr/bin/as                                \
               /usr/bin/gcc                               \
               /usr/bin/ld                                \
               /usr/bin/pkg-config                        \
-              /usr/bin/vala                              \
               /usr/bin/valac                             /usr/bin/
 COPY --from=0 /usr/include                               /usr/include
 COPY --from=0 /usr/lib/Scrt1.o                           \
@@ -78,6 +73,6 @@ COPY --from=0 /usr/share/gir-1.0/GLib-2.0.gir            \
 COPY --from=0 /usr/share/vala-$VER/vapi/glib-2.0.vapi    \
               /usr/share/vala-$VER/vapi/gobject-2.0.vapi /usr/share/vala-$VER/vapi/
 
-ENTRYPOINT ["vala"]
+ENTRYPOINT ["valac"]
 
 CMD ["--version"]

@@ -3,8 +3,10 @@
 #define _GNU_SOURCE
 #include <asm/unistd.h>
 #include <errno.h>
+#include <linux/audit.h>
 #include <linux/filter.h>
 #include <linux/seccomp.h>
+#include <linux/vm_sockets.h>
 #include <sched.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -12,9 +14,13 @@
 #include <string.h>
 #include <sys/mount.h>
 #include <sys/prctl.h>
+#include <sys/stat.h>
 #include <sys/syscall.h>
 #include <sys/sysmacros.h>
+#include <sys/wait.h>
 #include <unistd.h>
+
+#undef prlimit64
 
 // Not defined in alpine yet :-(
 #define __NR_open_tree_attr 467
@@ -28,10 +34,67 @@
     BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
     BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
 
+#define ALLOW_I386(number) \
+    BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, number, 0, 1), \
+    BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ALLOW)
+#define I386_SYSCALL_COUNT 24 // Update when adding/removing ALLOW_I386 entries.
+
+// Soft deny, errors rather than killing the process, used for io_uring.
+#define DENY(name) \
+    BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, __NR_##name, 0, 1), \
+    BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_ERRNO | ENOSYS)
+
 #define ERR_AND_EXIT(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 #define STR_WITH_LEN(str) str, sizeof(str) - 1
 
-int main(__attribute__((unused)) int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
+    bool no_proc = false, stdin_fifo = false;
+    char *chdir_path = NULL, *stdin_path = NULL;
+    char **compile_argv = NULL;
+
+    // Extract our options, which come first.
+    int i;
+    for (i = 1; i < argc; i++) {
+        if (strncmp(argv[i], "--chdir=", 8) == 0) {
+            chdir_path = argv[i] + 8;
+        }
+        else if (strcmp(argv[i], "--compile") == 0) {
+            int compile_start = ++i;
+
+            // The first "--" ends the compiler command.
+            while (i < argc && strcmp(argv[i], "--") != 0)
+                i++;
+
+            if (i == argc) {
+                fprintf(stderr, "run-lang: --compile requires a terminating --\n");
+                return 2;
+            }
+
+            argv[i] = NULL;
+            compile_argv = &argv[compile_start];
+        }
+        else if (strcmp(argv[i], "--no-proc") == 0) {
+            no_proc = true;
+        }
+        else if (strncmp(argv[i], "--stdin-path=", 13) == 0) {
+            stdin_path = argv[i] + 13;
+        }
+        else if (strcmp(argv[i], "--stdin-fifo") == 0) {
+            stdin_fifo = true;
+        }
+        else {
+            break;
+        }
+    }
+
+    if (i >= argc) {
+        fprintf(stderr,
+            "usage: %s [--no-proc] [--stdin-path=/path] [--stdin-fifo] <program> [args...]\n", argv[0]);
+        return 2;
+    }
+
+    argv += i;
+
     if (mount(NULL, "/", NULL, MS_PRIVATE|MS_REC, NULL) < 0)
         ERR_AND_EXIT("mount private");
 
@@ -49,26 +112,29 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     if (umount2("/", MNT_DETACH) < 0)
         ERR_AND_EXIT("umount2");
 
-    if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
-        ERR_AND_EXIT("mount proc");
+    if (!no_proc) {
+        if (mount("proc", "/proc", "proc", MS_NODEV|MS_NOEXEC|MS_NOSUID, NULL) < 0)
+            ERR_AND_EXIT("mount proc");
 
-    // Clobber /proc/meminfo. It can be used to inject state.
-    if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
-        ERR_AND_EXIT("mount /proc/meminfo");
+        // Clobber /proc/{locks,meminfo}. They can be used to inject state.
+        if (mount("/dev/null", "/proc/locks", NULL, MS_BIND, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/locks");
+        if (mount("/dev/null", "/proc/meminfo", NULL, MS_BIND, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/meminfo");
 
-    // Clobber /proc/stat. It can be used to inject state. Raku & V don't like this.
-    if (strcmp(argv[0], "/usr/bin/raku")   != 0
-     && strcmp(argv[0], "/usr/bin/V")      != 0)
-        if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
-            ERR_AND_EXIT("mount /proc/stat");
+        // Clobber /proc/stat. It can be used to inject state. V doesn't like this.
+        if (strcmp(argv[0], "/usr/bin/V") != 0)
+            if (mount("/dev/null", "/proc/stat", NULL, MS_BIND, NULL) < 0)
+                ERR_AND_EXIT("mount /proc/stat");
 
-    // Clobber /proc/sys. It can be used to inject state.
-    if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
-        ERR_AND_EXIT("mount /proc/sys");
+        // Clobber /proc/sys. It can be used to inject state.
+        if (mount("tmpfs", "/proc/sys", "tmpfs", MS_NODEV|MS_NOEXEC|MS_NOSUID|MS_RDONLY, NULL) < 0)
+            ERR_AND_EXIT("mount /proc/sys");
 
-    // Allow /proc/self/fd/0 to be read by the lang after we change user.
-    if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
-        ERR_AND_EXIT("chown /proc/self/fd/0");
+        // Allow /proc/self/fd/0 to be read by the lang after we change user.
+        if (chown("/proc/self/fd/0", NOBODY, NOBODY) < 0)
+            ERR_AND_EXIT("chown /proc/self/fd/0");
+    }
 
     if (mount("tmpfs", "/tmp", "tmpfs", MS_NODEV|MS_NOSUID, NULL) < 0)
         ERR_AND_EXIT("mount tmp");
@@ -87,6 +153,39 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     // sudo journalctl -f _AUDIT_TYPE_NAME=SECCOMP
     // ... SECCOMP ... syscall=xxx ...
     struct sock_filter filter[] = {
+        BPF_STMT(BPF_LD+BPF_W+BPF_ABS, offsetof(struct seccomp_data, arch)),
+        BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, AUDIT_ARCH_I386, 3, 0),
+        BPF_JUMP(BPF_JMP+BPF_JEQ+BPF_K, AUDIT_ARCH_X86_64, 1, 0),
+        BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_KILL),
+        BPF_STMT(BPF_JMP+BPF_JA, I386_SYSCALL_COUNT * 2 + 2),
+
+        BPF_STMT(BPF_LD+BPF_W+BPF_ABS, offsetof(struct seccomp_data, nr)),
+        ALLOW_I386(1),   // exit
+        ALLOW_I386(3),   // read
+        ALLOW_I386(4),   // write
+        ALLOW_I386(6),   // close
+        ALLOW_I386(19),  // lseek
+        ALLOW_I386(20),  // getpid
+        ALLOW_I386(45),  // brk
+        ALLOW_I386(78),  // gettimeofday
+        ALLOW_I386(90),  // mmap
+        ALLOW_I386(91),  // munmap
+        ALLOW_I386(125), // mprotect
+        ALLOW_I386(145), // readv
+        ALLOW_I386(146), // writev
+        ALLOW_I386(162), // nanosleep
+        ALLOW_I386(163), // mremap
+        ALLOW_I386(168), // poll
+        ALLOW_I386(192), // mmap2
+        ALLOW_I386(224), // gettid
+        ALLOW_I386(252), // exit_group
+        ALLOW_I386(265), // clock_gettime
+        ALLOW_I386(308), // pselect6
+        ALLOW_I386(309), // ppoll
+        ALLOW_I386(355), // getrandom
+        ALLOW_I386(403), // clock_gettime64
+        BPF_STMT(BPF_RET+BPF_K, SECCOMP_RET_KILL),
+
         BPF_STMT(BPF_LD+BPF_W+BPF_ABS, offsetof(struct seccomp_data, nr)),
 
         // FIXME Julia attempts this wildly high syscall :-S
@@ -225,9 +324,9 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(io_getevents),      // 208
         ALLOW(io_setup),          // 206
         ALLOW(io_submit),         // 209
-        ALLOW(io_uring_enter),    // 426
-        ALLOW(io_uring_register), // 427
-        ALLOW(io_uring_setup),    // 425
+        DENY(io_uring_enter),     // 426
+        DENY(io_uring_register),  // 427
+        DENY(io_uring_setup),     // 425
 
         // Multiplexed I/O
         ALLOW(epoll_create),  // 213
@@ -269,8 +368,20 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
         ALLOW(listen),      // 50
         ALLOW(setsockopt),  // 54
         ALLOW(shutdown),    // 48
-        ALLOW(socket),      // 41
-        ALLOW(socketpair),  // 53
+
+        // socket 41: if domain == AF_VSOCK then kill, else allow.
+        BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, __NR_socket, 0, 4),
+        BPF_STMT(BPF_LD + BPF_W + BPF_ABS, offsetof(struct seccomp_data, args[0])),
+        BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, AF_VSOCK, 0, 1),
+        BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_KILL),
+        BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_ALLOW),
+
+        // socketpair 53: if domain == AF_VSOCK then kill, else allow.
+        BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, __NR_socketpair, 0, 4),
+        BPF_STMT(BPF_LD + BPF_W + BPF_ABS, offsetof(struct seccomp_data, args[0])),
+        BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, AF_VSOCK, 0, 1),
+        BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_KILL),
+        BPF_STMT(BPF_RET + BPF_K, SECCOMP_RET_ALLOW),
 
         // Send/Receive
         ALLOW(recvfrom), // 45
@@ -649,6 +760,86 @@ int main(__attribute__((unused)) int argc, char *argv[]) {
     fputs("seccomp is disabled!\n", stderr);
 #endif
 
-    execvp(argv[0], argv);
-    ERR_AND_EXIT("execvp");
+    if (chdir_path && (chdir(chdir_path) < 0))
+        ERR_AND_EXIT("chdir");
+
+    if (stdin_path && !stdin_fifo) {
+        FILE* fp;
+        if (!(fp = fopen(stdin_path, "w")))
+            ERR_AND_EXIT("fopen");
+
+        char buffer[4096];
+        ssize_t nbytes;
+        while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer))))
+            if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes)
+                ERR_AND_EXIT("fwrite");
+
+        if (fclose(fp))
+            ERR_AND_EXIT("fclose");
+    }
+
+    if (compile_argv) {
+        pid_t pid;
+
+        if (!(pid = fork())) {
+            execv(compile_argv[0], compile_argv);
+            ERR_AND_EXIT("execv");
+        }
+
+        int status;
+        waitpid(pid, &status, 0);
+
+        if (!WIFEXITED(status))
+            exit(EXIT_FAILURE);
+
+        if (WEXITSTATUS(status))
+            return WEXITSTATUS(status);
+
+        if (stdin_path && unlink(stdin_path) < 0)
+            ERR_AND_EXIT("unlink");
+    }
+
+    if (stdin_path && stdin_fifo) {
+        if (mkfifo(stdin_path, 0600) < 0)
+            ERR_AND_EXIT("mkfifo");
+
+        pid_t pid;
+        if (!(pid = fork())) {
+            if (!freopen("/dev/null", "r", stdin))
+                ERR_AND_EXIT("freopen");
+
+            execv(argv[0], argv);
+            ERR_AND_EXIT("execv");
+        }
+
+        FILE* fp;
+        if (!(fp = fopen(stdin_path, "w")))
+            ERR_AND_EXIT("fopen");
+
+        if (unlink(stdin_path))
+            ERR_AND_EXIT("unlink");
+
+        signal(SIGPIPE, SIG_IGN);
+
+        char buffer[4096];
+        ssize_t nbytes;
+        while ((nbytes = read(STDIN_FILENO, buffer, sizeof(buffer)))) {
+            if (fwrite(buffer, sizeof(char), nbytes, fp) != (size_t) nbytes) {
+                if (errno != EPIPE)
+                    ERR_AND_EXIT("fwrite");
+                break;
+            }
+        }
+
+        if (fclose(fp) && errno != EPIPE)
+            ERR_AND_EXIT("fclose");
+
+        int status;
+        waitpid(pid, &status, 0);
+        return WIFEXITED(status) ? WEXITSTATUS(status) : 128;
+    }
+    else {
+        execv(argv[0], argv);
+        ERR_AND_EXIT("execv");
+    }
 }

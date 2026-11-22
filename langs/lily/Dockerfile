@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache clang cmake gcc make
 
-ENV LDFLAGS='-static' VER=2.5
+ENV LDFLAGS='-static' VER=2.6
 
 WORKDIR /lily
 

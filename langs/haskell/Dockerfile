@@ -1,6 +1,6 @@
-FROM alpine:3.24 AS builder
+FROM alpine:edge AS builder
 
-ENV VER=9.10.3
+ENV VER=9.14.1
 
 RUN apk add --no-cache ghc=$VER-r2 musl-dev
 
@@ -20,9 +20,9 @@ RUN find /usr/lib -not \(                    \
     \) -delete
 
 # Delete unused binaries and libraries.
-RUN rm -r /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER-inplace/Cabal-* \
-          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER-inplace/ghci-*  \
- && find /usr/lib/ghc-$VER/bin -type f                                \
+RUN rm -r /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER-*/Cabal-* \
+          /usr/lib/ghc-$VER/lib/x86_64-linux-ghc-$VER-*/ghci-*  \
+ && find /usr/lib/ghc-$VER/bin -type f                          \
     -not \( -name ghc-$VER -or -name runghc-$VER \) -delete
 
 FROM codegolf/lang-base

@@ -1,8 +1,8 @@
-ARG VER=9.6 PATCH=3
+ARG VER=9.7
 
 FROM debian:trixie-slim AS builder
 
-ARG VER PATCH
+ARG VER
 
 RUN apt-get update                   \
  && DEBIAN_FRONTEND='noninteractive' \
@@ -10,7 +10,7 @@ RUN apt-get update                   \
 
 WORKDIR /j$VER
 
-RUN curl -#L https://www.jsoftware.com/download/j$VER/install/j$VER.${PATCH}_linux64.tar.gz \
+RUN curl -#L https://www.jsoftware.com/download/j$VER/install/j${VER}_linux64.tar.gz \
   | tar xz --exclude updateje.sh --strip-components 1
 
 RUN ./bin/install-usr.sh

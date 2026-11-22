@@ -1,13 +1,12 @@
 FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache curl icu-data npm
+RUN apk add --no-cache icu-data npm
 
-ENV VER=2.7.0
+ENV VER=2.7.1
 
 WORKDIR /usr
 
-RUN curl -#L https://github.com/jashkenas/coffeescript/tarball/$VER \
-  | tar xz --strip-components 1
+ADD https://github.com/jashkenas/coffeescript.git#$VER .
 
 RUN npm install --global coffeescript
 
@@ -18,7 +17,7 @@ COPY --from=0 /usr/package.json                     /usr/
 COPY --from=0 /usr/bin/coffee                       \
               /usr/bin/env                          \
               /usr/bin/node                         /usr/bin/
-COPY --from=0 /usr/lib/libada.so.3                  \
+COPY --from=0 /usr/lib/libada.so.4                  \
               /usr/lib/libbrotlicommon.so.1         \
               /usr/lib/libbrotlidec.so.1            \
               /usr/lib/libbrotlienc.so.1            \

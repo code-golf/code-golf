@@ -95,7 +95,7 @@ var _ = answerFunc("lucky-tickets", func() []Answer {
 		}
 	}
 
-	tests = shuffle(tests)
+	shuffle(tests)
 
 	const argc = 20 // Preserve original argc
 	return outputTests(tests[:argc], tests[len(tests)-argc:])

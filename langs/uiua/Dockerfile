@@ -1,6 +1,6 @@
-FROM rust:1.97.1-slim-trixie AS builder
+FROM rust:1.100.0-slim-trixie AS builder
 
-ENV CRT='x86_64-unknown-linux-musl' VER=0.18.1
+ENV CRT='x86_64-unknown-linux-musl' VER=0.19.1
 
 RUN rustup target add $CRT
 

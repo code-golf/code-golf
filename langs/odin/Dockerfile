@@ -1,11 +1,10 @@
 FROM alpine:3.24 AS builder
 
-RUN apk add --no-cache clang curl dash gcc llvm-dev make
+RUN apk add --no-cache clang dash gcc llvm-dev make
 
-ENV CPPFLAGS='-march=x86-64-v3' VER=2026-08
+ENV CPPFLAGS='-march=x86-64-v3' VER=2026-11
 
-RUN curl -#L https://github.com/odin-lang/Odin/archive/refs/tags/dev-$VER.tar.gz \
-  | tar xz --directory /usr/local/lib --strip-components 1
+ADD https://github.com/odin-lang/Odin.git#dev-$VER /usr/local/lib
 
 RUN ln -s /usr/local/lib/base \
           /usr/local/bin/base \
@@ -18,17 +17,12 @@ WORKDIR /usr/local/lib
 RUN make -j`nproc` release \
  && strip odin
 
-COPY odin.c /
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/odinwrapper -s /odin.c
-
 FROM codegolf/lang-base
 
 COPY --from=0 /usr/bin/dash                     /bin/sh
 COPY --from=0 /lib/ld-musl-*.so.1               /lib/
 COPY --from=0 /usr/bin/clang                    \
-              /usr/bin/ld                       \
-              /usr/bin/odinwrapper              /usr/bin/
+              /usr/bin/ld                       /usr/bin/
 COPY --from=0 /usr/lib/crt1.o                   \
               /usr/lib/crti.o                   \
               /usr/lib/crtn.o                   \
@@ -60,6 +54,6 @@ COPY --from=0 /usr/local/bin/base               /usr/local/bin/base
 COPY --from=0 /usr/local/bin/core               /usr/local/bin/core
 COPY --from=0 /usr/local/bin/vendor             /usr/local/bin/vendor
 
-ENTRYPOINT ["odinwrapper"]
+ENTRYPOINT ["odin"]
 
-CMD ["--version"]
+CMD ["version"]

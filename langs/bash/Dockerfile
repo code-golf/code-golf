@@ -6,7 +6,7 @@ ENV URL=https://ftpmirror.gnu.org/bash VER=5.3
 
 RUN curl -#L $URL/bash-$VER.tar.gz | tar xz --strip-components 1
 
-RUN curl -#L $URL/bash-$VER-patches/bash53-00[1-15] | patch -p0
+RUN curl -#L $URL/bash-$VER-patches/bash53-00[1-20] | patch -p0
 
 RUN ./configure                      \
     --disable-command-timing         \

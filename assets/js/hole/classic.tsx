@@ -5,7 +5,7 @@ import {
     init, hole, setSolution,
     setCode, refreshScores, submit, updateRestoreLinkVisibility,
     ReadonlyPanelsData, setCodeForLangAndSolution, getCurrentSolutionCode,
-    initDeleteBtn, initCopyButtons, getScorings,
+    initDeleteBtn, initCopyButtons, getScorings, describeSelectedChar,
     updateLocalStorage,
     ctrlEnter,
     getLastSubmittedCode,
@@ -30,9 +30,9 @@ const editor = new EditorView({
                 .join(', ');
         }
 
-        $('#strokes').innerText = scorings.selection
+        $('#strokes').innerText = (scorings.selection
             ? `${formatScore(scorings.total)} (${formatScore(scorings.selection)} selected)`
-            : formatScore(scorings.total);
+            : formatScore(scorings.total)) + describeSelectedChar(tr.state, scorings);
 
         updateLocalStorage(code);
         updateRestoreLinkVisibility(editor);
@@ -87,6 +87,10 @@ function updateReadonlyPanels(data: ReadonlyPanelsData) {
     // Always show exp & out.
     $('#exp div').innerText = data.Exp;
     $('#out div').replaceChildren(UnprintableElement.escape(data.Out));
+    $('#arg [data-copy]').dataset.copy = data.Argv.join('\n');
+    $('#err [data-copy]').dataset.copy = data.Err;
+    $('#exp [data-copy]').dataset.copy = data.Exp;
+    $('#out [data-copy]').dataset.copy = data.Out;
 
     const ignoreCase = JSON.parse($('#case-fold').innerText);
     const diff = diffView(hole, data.Exp, data.Out, data.Argv, ignoreCase, data.OutputDelimiter, data.MultisetItemDelimiter);

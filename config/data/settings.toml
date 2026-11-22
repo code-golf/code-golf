@@ -23,6 +23,15 @@ name    = 'Show Followed Golfers in Feed'
 default = true
 
 [[hole]]
+id      = 'ai-filter'
+name    = 'Scoreboard Golfers'
+options = [
+    { id = 'all',   name = 'Both' },
+    { id = 'human', name = 'Human Only' },
+    { id = 'ai',    name = 'AI-Assisted Only' },
+]
+
+[[hole]]
 id      = 'editor-keymap'
 name    = 'Editor Keymap'
 options = [

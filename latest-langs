@@ -52,7 +52,7 @@ constant %paths = (
     'Go'           => 'endoflife.date/api/go.json',
     'GolfScript'   => 'github.com/lynn/golfscript/tree/code-golf',
     'Groovy'       => 'endoflife.date/api/apache-groovy.json',
-    'Harbour'      => 'sourceforge.net/projects/harbour-project/files',
+    'Harbour'      => 'github.com/harbour/core/releases/latest',
     'Hare'         => 'git.sr.ht/~sircmpwn/harec',
     'Haskell'      => 'pkgs.alpinelinux.org/package/edge/community/x86_64/ghc',
     'Haxe'         => 'github.com/HaxeFoundation/haxe/releases/latest',
@@ -110,7 +110,7 @@ constant %paths = (
     'VimL'         => 'en.wikipedia.org/wiki/Vim_(text_editor)',
     'Vyxal'        => 'github.com/Vyxal/Vyxal/releases/latest',
     'Wren'         => 'github.com/wren-lang/wren/releases/latest',
-    'Zig'          => 'ziglang.org',
+    'Zig'          => 'ziglang.org/download/',
     'ZuzuScript'   => 'crates.io/api/v1/crates/zuzu-rust',
 );
 
@@ -130,10 +130,10 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'algol68genie'      / { $res ~~ / 'algol68g-' <(<ver>)> / }
         when / 'alpinelinux'       / { $res ~~ / 'Version' .+? <(<ver>)> '-r' \d+ / }
         when / 'aplwiki'           / { $res ~~ / ' release' .+? <(<ver>)> / }
-        when / 'chromium'          / { $res ~~ / 'Version' .+? <(<ver>)> / }
+        when / 'chromium'          / { $res ~~ / '>Version' .+? <(<ver>)> / }
         when / 'codeberg'          / { $res ~~ / '"shortsha">' <(<ver>)> / }
         when / 'crates.io'         / { $res.&from-json<crate><max_stable_version> }
-        when / 'dyalog.com'        / { $res ~~ / <(<ver>)> ' for Linux (DEB)' / }
+        when / 'dyalog.com'        / { $res ~~ / <(<ver>)> ' for Linux' / }
         when / 'endoflife'         / { $res.&from-json[0]<latest>.match(/<(<ver>)>/).subst(/\+.*/) }
         when / 'fennel-lang'       / { $res ~~ / 'fennel-' <(<ver>)> / }
         when / 'ftp.gnu.org'       / { $res ~~ / '-' <(<ver>)> '.tar.gz' / }
@@ -149,7 +149,7 @@ for %langs{ @langs || * }:p.sort: *.key.fc -> (:key($name), :value(%lang)) {
         when / 'sourceforge'       / { $res ~~ / 'Latest' .+? <(<ver>)> / }
         when / 'sqlite.org'        / { $res ~~ / 'Version' .+? <(<ver>)> / }
         when / 'swi-prolog'        / { $res ~~ / 'stable' .+? <(<ver>)> / }
-        when / 'ziglang.org'       / { $res ~~ / 'Release' .+? <(<ver>)> / }
+        when / 'ziglang.org'       / { $res ~~ / 'release-' <(<ver>)> / }
         when / 'api.github.com'    / {
             $res.&from-json.grep(
                 .ends-with('releases')

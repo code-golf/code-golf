@@ -1,28 +1,20 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0.400-alpine3.24-amd64 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:11.0.100-alpine3.24-amd64 AS builder
 
 RUN apk add --no-cache gcc musl-dev zlib-dev
 
-ENV VER=2.0.31
+ENV VER=2.0.38
 
 WORKDIR /rockstar
 
 ADD https://github.com/RockstarLang/rockstar.git#v$VER .
 
-RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net10/' {} + \
- && dotnet publish Starship/Rockstar -c Release -o /usr/local/bin \
-    -p:InvariantGlobalization=true
-
-COPY rockstar.c .
-
-RUN gcc -Wall -Werror -Wextra -o /usr/bin/rockstar -s -static rockstar.c
+RUN find Starship -name '*.csproj' -exec sed -Ei 's/\bnet\d+\b/net11/' {} + \
+ && dotnet publish Starship/Rockstar -c Release -o /out                     \
+    -p:InvariantGlobalization=true -p:PublishAot=true -p:StaticExecutable=true
 
 FROM codegolf/lang-base
 
-COPY --from=0 --parents /lib/ld-musl-*.so.1     \
-                        /usr/bin/rockstar       \
-                        /usr/local/bin/rockstar /
-
-ENV PATH=/usr/bin
+COPY --from=0 /out/rockstar /usr/bin/
 
 ENTRYPOINT ["rockstar"]
 

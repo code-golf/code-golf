@@ -62,7 +62,7 @@ func Wiki(db *sqlx.DB) error {
 		case "Home":
 			slug = ""
 		case "Constraint-Specifications", "Hole-Specific-Tips", "Other-Sites",
-			"Spigot-Algorithms", "Tutorial":
+			"Spigot-Algorithms", "Tutorial", "Useful-Links":
 			name = strings.ReplaceAll(name, "-", " ")
 		default:
 			if lang, ok := config.AllLangByID[slug]; ok {

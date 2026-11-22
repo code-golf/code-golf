@@ -3,15 +3,14 @@ FROM node:26-trixie-slim
 RUN apt-get update                                \
  && DEBIAN_FRONTEND='noninteractive'              \
     apt-get install --no-install-recommends --yes \
-    ca-certificates curl fontforge fonttools make \
+    ca-certificates fontforge fonttools make      \
     python3-fontforge unzip woff2 zip
 
 ENV VER=bbe76d8
 
 WORKDIR /twemoji-colr
 
-RUN curl -#L https://github.com/matrix-org/twemoji-colr/tarball/$VER \
-  | tar xz --strip-components 1
+ADD https://github.com/matrix-org/twemoji-colr.git?commit=$VER .
 
 RUN npm install
 

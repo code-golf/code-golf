@@ -101,7 +101,8 @@ $('#search-nav-form').onsubmit = e => {
 let currentIndex = 0;
 let currentResults: SearchNavResult[] = [];
 
-$<HTMLDialogElement>('#search-nav-dialog').onkeydown = (e: KeyboardEvent) => {
+const searchDialog = $<HTMLDialogElement>('#search-nav-dialog');
+searchDialog.onkeydown = (e: KeyboardEvent) => {
     if (e.key === 'ArrowDown') {
         currentIndex++;
         renderResults();
@@ -111,6 +112,15 @@ $<HTMLDialogElement>('#search-nav-dialog').onkeydown = (e: KeyboardEvent) => {
         currentIndex--;
         renderResults();
         e.preventDefault();
+    } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const href = $<HTMLAnchorElement>('li.current-result a')?.href;
+        if (!href) return;
+
+        window.open(href);
+        searchDialog.close();
     }
 };
 
