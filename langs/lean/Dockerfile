@@ -15,7 +15,7 @@ COPY leanwrapper.c /
 
 RUN gcc -Wall -Werror -Wextra -o /usr/bin/lean -s -static leanwrapper.c
 
-RUN strip $(find /lean -type f -name "*.a")
+RUN strip --strip-debug $(find /lean -type f -name "*.a")
 RUN strip $(find /lean -type f -name "*.so*" ! -name "*libc++.so" ! -name "*libgcc_s.so")
 
 FROM codegolf/lang-base
