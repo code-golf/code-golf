@@ -82,7 +82,10 @@ const elixir     = new LanguageSupport(elixirLanguage);
 const gleam      = new LanguageSupport(gleamLanguage);
 const go         = new LanguageSupport(goLanguage);
 const javascript = new LanguageSupport(javascriptLanguage);
-const lean       = new LanguageSupport(LRLanguage.define({ name: 'lean', parser: leanParser }));
+const lean       = new LanguageSupport(LRLanguage.define({
+    name: 'lean', parser: leanParser,
+    languageData: { commentTokens: { line: '--', block: { open: '/-', close: '-/' } } },
+}));
 const php        = new LanguageSupport(phpLanguage.configure({ top: 'Program' }));
 const python     = new LanguageSupport(pythonLanguage);
 const sql        = new LanguageSupport(SQLite.language);
