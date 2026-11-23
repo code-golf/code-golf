@@ -36,7 +36,7 @@ func statsSessionsGET(w http.ResponseWriter, r *http.Request) {
 		switch name {
 		case "Chrome", "Edge", "Firefox", "Opera":
 			version = fmt.Sprint(userAgent.VersionNo.Major)
-		case "Safari":
+		case "Ladybird", "Safari":
 			version = fmt.Sprintf("%d.%d",
 				userAgent.VersionNo.Major, userAgent.VersionNo.Minor)
 		case "Samsung Browser", "curl":
