@@ -2,7 +2,7 @@ FROM alpine:3.24 AS builder
 
 RUN apk add --no-cache gcc make musl-dev
 
-ENV VER=5.4.1
+ENV VER=5.4.2
 
 ADD --unpack https://ftpmirror.gnu.org/gnu/gawk/gawk-$VER.tar.xz /
 

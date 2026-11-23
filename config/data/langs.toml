@@ -198,8 +198,9 @@ syscall
 
 [AWK]
 args    = [ '/usr/bin/awk', '-v', 'RS=\0', '$code' ]
-size    = '2.26 MiB'
-version = 'GNU AWK 5.4.1'
+no-proc = true
+size    = '2.27 MiB'
+version = 'GNU AWK 5.4.2'
 website = 'https://www.gnu.org/software/gawk/'
 example = '''
 BEGIN {
@@ -448,6 +449,7 @@ for arg of process.argv[2..]
 [CJam]
 args       = [ '/opt/java/bin/java', '-jar', 'cjam.jar', '/proc/self/fd/0' ]
 experiment = 1493
+no-proc    = false
 size       = '58.4 MiB'
 version    = '0.6.5'
 website    = 'https://sourceforge.net/projects/cjam/'
@@ -464,8 +466,9 @@ eaN*
 
 [Clojure]
 args    = [ '/usr/bin/bb', '/proc/self/fd/0' ]
+no-proc = false
 size    = '72.6 MiB'
-version = 'Babashka 1.13.229'
+version = 'Babashka 1.13.230'
 website = 'https://babashka.org'
 example = '''
 ; Printing
@@ -630,7 +633,7 @@ void main(string[] argv) {
 args    = [ '/usr/bin/dart', '/proc/self/fd/0' ]
 no-proc = false
 size    = '189 MiB'
-version = '3.14.0'
+version = '3.14.1'
 website = 'https://dart.dev'
 example = '''
 void main(List<String> argv) {
@@ -875,7 +878,8 @@ func main() {
 [GolfScript]
 args       = [ '/usr/bin/golfscript', '-n', '-e', '$code', '--' ]
 args-quine = [ '/usr/bin/golfscript', '-n', '-e', '$code', '-q', '--' ]
-size       = '38.6 MiB'
+no-proc    = true
+size       = '38.7 MiB'
 version    = '6155e9f'
 website    = 'https://golfscript.com/golfscript/'
 example    = '''
@@ -892,6 +896,7 @@ n*
 [Groovy]
 args     = [ '/usr/bin/groovy', '-e', '$code' ]
 env      = [ 'JAVA_HOME=/opt/java', 'JAVA_OPTS=-XX:ActiveProcessorCount=1' ]
+no-proc  = false
 released = 2025-08-29
 size     = '67.8 MiB'
 version  = '6.0.0'
@@ -1074,8 +1079,9 @@ example    = '''
 
 [iogii]
 args     = [ '/usr/bin/iogii', '-' ]
+no-proc  = false
 released = 2026-05-21
-size     = '8.81 MiB'
+size     = '8.83 MiB'
 version  = '1.2.1'
 website  = 'https://golfscript.com/iogii/'
 example  = '''
@@ -1108,8 +1114,9 @@ echo each 2}.ARGV
 
 [Janet]
 args    = [ '/usr/bin/janet', '/proc/self/fd/0' ]
-size    = '1.02 MiB'
-version = '1.43.0'
+no-proc = false
+size    = '1.03 MiB'
+version = '1.43.1'
 website = 'https://janet-lang.org'
 example = '''
 # Printing
@@ -1126,8 +1133,9 @@ example = '''
 
 [Java]
 args    = [ '/opt/java/bin/java', '-XX:+AutoCreateSharedArchive', '-XX:SharedArchiveFile=/cds.jsa', '-Xlog:cds=off', '/code.java' ]
-size    = '52.9 MiB'
-version = 'OpenJDK 27.0.1.0.2'
+no-proc = false
+size    = '53.0 MiB'
+version = 'OpenJDK 27.0.1.1'
 website = 'https://openjdk.java.net'
 example = '''
 void main(String[] args) {
@@ -1241,6 +1249,7 @@ example    = '''
 
 [Kotlin]
 args    = [ '/opt/java/bin/java', '--enable-native-access=ALL-UNNAMED', '--sun-misc-unsafe-memory-access=allow', '-jar', '/usr/lib/kotlin-compiler.jar', '-Xuse-fast-jar-file-system', '-e', '$code', '--' ]
+no-proc = false
 size    = '140 MiB'
 version = '2.4.21'
 website = 'https://kotlinlang.org'
@@ -1306,7 +1315,7 @@ experiment = 1044
 no-proc    = true
 size       = '2.63 MiB'
 stdin-path = '/tmp/code.luau'
-version    = '0.747'
+version    = '0.748'
 website    = 'https://luau.org'
 example    = '''
 -- Printing
@@ -1325,8 +1334,9 @@ end
 
 [Nim]
 args    = [ '/usr/bin/nim', 'r', '--colors:on', '-o:/tmp/code', '-' ]
-size    = '18.6 MiB'
-version = '2.4.0'
+no-proc = true
+size    = '18.7 MiB'
+version = '2.4.2'
 website = 'https://nim-lang.org'
 example = '''
 import os
@@ -1436,8 +1446,9 @@ say for @ARGV;
 
 [PHP]
 args    = [ '/usr/bin/php', '--' ]
+no-proc = true
 size    = '15.5 MiB'
-version = '8.5.12'
+version = '8.6.0'
 website = 'https://www.php.net'
 example = '''
 # Printing
@@ -1510,10 +1521,10 @@ ForEach ($arg in $args) {
 args       = [ '/usr/bin/swipl', '-g', 'halt', '/tmp/code.pl' ]
 env        = [ 'LANG=C.UTF-8' ]
 no-proc    = true
-size       = '57.5 MiB'
+size       = '64.6 MiB'
 stdin-fifo = true
 stdin-path = '/tmp/code.pl'
-version    = 'SWI-Prolog 10.0.2'
+version    = 'SWI-Prolog 11.0.0'
 website    = 'https://www.swi-prolog.org'
 example    = '''
 % Printing
@@ -1692,8 +1703,9 @@ end
 
 [Ruby]
 args    = [ '/usr/bin/ruby', '-' ]
+no-proc = true
 size    = '38.6 MiB'
-version = '4.0.9'
+version = '4.0.10'
 website = 'https://www.ruby-lang.org'
 example = '''
 # Printing
@@ -1740,6 +1752,7 @@ fn main() {
 args       = [ '/usr/local/bin/scala', '-opt:none', '-Xsource:3-cross', '-e', '$code', '--' ]
 env        = [ 'JAVA_HOME=/opt/java' ]
 experiment = 235
+no-proc    = false
 size       = '84.9 MiB'
 version    = '2.13.18'
 website    = 'https://www.scala-lang.org'
@@ -1873,7 +1886,7 @@ Lm
 args    = [ '/usr/bin/swift', '-color-diagnostics', '-module-cache-path', '/tmp', '-' ]
 no-proc = false
 size    = '583 MiB'
-version = '6.4.2'
+version = '6.4.3'
 website = 'https://swift.org'
 example = '''
 // Printing
@@ -2060,7 +2073,8 @@ w
 [Vyxal]
 args       = [ '/opt/java/bin/java', '--sun-misc-unsafe-memory-access=allow', '-jar', 'vyxal.jar', '-O', '--code', '$code', '--' ]
 experiment = 1846
-size       = '79.0 MiB'
+no-proc    = false
+size       = '78.9 MiB'
 version    = '3.12.0'
 website    = 'https://vyxal.github.io'
 example    = '''

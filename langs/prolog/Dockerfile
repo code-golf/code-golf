@@ -1,4 +1,4 @@
-ARG VER=10.0.2
+ARG VER=11.0.0
 
 FROM swipl:$VER AS builder
 
@@ -22,7 +22,8 @@ COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6                \
               /lib/x86_64-linux-gnu/libstdc++.so.6           \
               /lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4 \
               /lib/x86_64-linux-gnu/libtinfo.so.6            \
-              /lib/x86_64-linux-gnu/libz.so.1                /lib/
+              /lib/x86_64-linux-gnu/libz.so.1                \
+              /lib/x86_64-linux-gnu/libzstd.so.1             /lib/
 COPY --from=0 /lib64/ld-linux-x86-64.so.2                    /lib64/
 COPY --from=0 /usr/bin/swipl                                 /usr/bin/
 COPY --from=0 /usr/lib/locale                                /usr/lib/locale
