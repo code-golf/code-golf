@@ -71,6 +71,7 @@ constant %paths = (
     'K'            => 'codeberg.org/ngn/k',
     'Knight'       => 'github.com/synt7x/knightjit',
     'Kotlin'       => 'github.com/JetBrains/kotlin/releases/latest',
+    'Lean'         => 'github.com/leanprover/lean4/releases/latest',
     'Lily'         => 'gitlab.com/FascinatedBox/lily/-/tags',
     'Lua'          => 'github.com/lua/lua/releases/latest',
     'Luau'         => 'github.com/luau-lang/luau/releases/latest',
