@@ -16,6 +16,16 @@
     <table class="nowrap-second{{ if (or $diamondDeltas $oldest) }}-third{{ end }} sticky">
         <thead>
             <tr>
+                <th colspan={{ if $overall }}7{{ else if $mostTiedGolds }}3{{ else }}4{{ end }}>
+                    <div class=tabs id=ai-filter>
+                        <a {{ if eq .Data.AI "all" }} class=on {{ end }}
+                            href="?ai=all">Both</a>
+                        <a {{ if eq .Data.AI "human" }} class=on {{ end }}
+                            href="?ai=human">Human Only</a>
+                        <a {{ if eq .Data.AI "ai" }} class=on {{ end }}
+                            href="?ai=ai">AI-Assisted Only</a>
+                    </div>
+            <tr>
                 <th>#
             {{ if $hasGolfer }}
                 <th>Golfer
