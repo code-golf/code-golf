@@ -113,6 +113,7 @@ svgo:
 
 test:
 	go test ./...
+	node --test assets/js/*.test.ts
 
 .PHONY: xt
 xt:
