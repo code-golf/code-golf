@@ -1111,6 +1111,26 @@ preamble = '''
     of the week.
 '''
 
+['DeVicci’s Tesseract Constant']
+category = 'Mathematics'
+links = [
+    { name = 'MathWorld',    url = '//mathworld.wolfram.com/PrinceRupertsCube.html' },
+    { name = 'OEIS A243309', url = '//oeis.org/A243309' },
+    { name = 'Wikipedia',    url = '//en.wikipedia.org/wiki/Prince_Rupert%27s_cube' },
+]
+experiment = 2796
+synopsis = 'Print the first 1,000 digits of DeVicci’s tesseract constant.'
+preamble = '''
+<p>
+    DeVicci’s tesseract constant is the edge length of the largest cube that
+    fits inside a unit <a href=//en.wikipedia.org/wiki/Tesseract>tesseract</a>,
+    the four-dimensional analogue of <a href=//en.wikipedia.org/wiki/Prince_Rupert%27s_cube>Prince
+    Rupert’s cube</a>. It is the root near 1.0074347569 of
+    <b>4x⁸ − 28x⁶ − 7x⁴ + 16x² + 16 = 0</b>.
+
+<p>Print the first <b>1,000</b> decimal digits of the constant.
+'''
+
 ['DFA Simulator']
 authors = [
     '0176b716-b1a7-7e8b-a518-6ca24519dc1a', # stefangimmillaro
