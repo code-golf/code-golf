@@ -66,8 +66,23 @@ type Run struct {
 func Play(
 	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
 ) ([]Run, error) {
-	var answers []Answer
+	return playAnswers(ctx, hole, lang, code, holeAnswers(hole))
+}
 
+// PlayFirst only plays the first test case of a hole, which is enough to tell
+// whether the code runs at all in the given lang.
+func PlayFirst(
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string,
+) (Run, error) {
+	runs, err := playAnswers(ctx, hole, lang, code, holeAnswers(hole)[:1])
+	if err != nil {
+		return Run{}, err
+	}
+
+	return runs[0], nil
+}
+
+func holeAnswers(hole *config.Hole) (answers []Answer) {
 	switch hole.ID {
 
 	// Holes with fixed test cases.
@@ -89,6 +104,12 @@ func Play(
 		}
 	}
 
+	return
+}
+
+func playAnswers(
+	ctx context.Context, hole *config.Hole, lang *config.Lang, code string, answers []Answer,
+) ([]Run, error) {
 	runs := make([]Run, len(answers))
 
 	// HACK: Kotlin times out if ran concurrently, prevent this with weight 5.
