@@ -37,6 +37,12 @@
     --badge-background:   #343a40;
     --cheevo-not-earned:  #343a40;
     --red-text:           var(--red);
+    --rainbow-1:          hsl( 42, 100%, 38%);
+    --rainbow-2:          hsl(320, 100%, 45%);
+    --rainbow-3:          hsl(192, 100%, 36%);
+    --rainbow-4:          hsl(110,  90%, 33%);
+    --rainbow-5:          hsl( 12, 100%, 50%);
+    --rainbow-glow:       none;
     --summary-background: #343a40;
     --summary-color:      #fdfdfd;
 
